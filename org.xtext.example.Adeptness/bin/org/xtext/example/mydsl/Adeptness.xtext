@@ -1,0 +1,129 @@
+grammar org.xtext.example.mydsl.Adeptness with org.eclipse.xtext.common.Terminals
+
+generate adeptness "http://www.xtext.org/example/mydsl/Adeptness"
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+Adeptness:
+	(elements+=AbstractElement)*
+;
+
+AbstractElement:
+	PackageDeclaration | Type | Import
+;
+
+Import:
+	'import' importedNamespace=QualifiedNameWithWildcard
+;
+
+QualifiedNameWithWildcard:
+	QualifiedName '.*'?
+;
+
+QualifiedName:
+	ID ('.' ID)*
+;
+
+Type:
+	DataType | Signal
+;
+//Each signal could have more than one oracles
+Signal:
+	'signal' name=ID '{'
+		(check_static_upper+=Check_Static_upper_only)*
+		(check_static_lower+=Check_Static_lower_only)*
+		(check_range+=Check_Range)*
+		(check_gap+=Check_Gap)*
+	'}'
+;
+
+
+//Oracle for upper limit --> Below reference signal
+Check_Static_upper_only:
+	'Check_Static_Upper' name=ID '{'
+		(inclusive_bound=InclusiveBound)
+		(bound_up=Bound_up)
+	'}'
+;
+//Oracle for lower limit --> Above reference signal
+Check_Static_lower_only:
+	'Check_Static_Lower' name=ID '{'
+		(inclusive_bound=InclusiveBound)
+		(bound_low=Bound_Down)
+	'}'
+;
+//Oracle for Above and Below limit --> In range reference signal
+Check_Range:
+	'Check_Range' name=ID '{'
+		(inclusive_bound=InclusiveBound)
+		(bound_low=Bound_Down)
+		(bound_up=Bound_up)
+	'}'
+;
+//Oracle for !Above and !Below limit --> Gap reference signal
+Check_Gap:
+	'Check_Gap' name=ID '{'
+		(inclusive_bound=InclusiveBound)
+		(bound_low=Bound_Down)
+		(bound_up=Bound_up)
+	'}'
+;
+//If the limits must be included ==
+InclusiveBound:
+	'inclusiveBound' name=ID '=' value= BOOLEAN
+;
+//Upper limit
+Bound_up:
+	'bound_up' name=ID '=' value=DOUBLE
+;
+//Lower limit
+Bound_Down:
+	'bound_down' name=ID '=' value=DOUBLE
+;
+//Boolean declaration
+BOOLEAN:
+	bool=b	
+;
+b returns ecore::EBoolean: 'true' | 'false';
+//Double declaration
+DOUBLE:
+	dVal = d
+;
+d returns ecore::EDouble : ('-')? INT('.'INT)?;
+
+/*Output:
+	'outPut' name=ID '=' value=BOOLEAN
+;
+
+StopSim:
+	'stopSim' name=ID '=' value=BOOLEAN
+;
+
+CallBack:
+	'callBack' name=ID '=' value=STRING
+;
+
+Assertion:
+	'assertion' name=ID '=' value=BOOLEAN
+;*/
+/*Bound_Up_Low:
+	'bound_up_low' name=ID '=' value=BOOLEAN
+;
+
+Bound_Lower:
+	'bound_lower' name=ID '=' value=BOOLEAN
+;
+
+Bound_Upper:
+	'bound_upper' name=ID '=' value=BOOLEAN
+;*/	
+
+//DataType declaration
+DataType:
+	'datatype' name=ID
+;
+//Package declaration
+PackageDeclaration:
+	'package' name=QualifiedName '{'
+		(elements+=AbstractElement)*
+	'}'	
+;

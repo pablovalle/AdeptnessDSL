@@ -1,0 +1,22 @@
+signal first{
+	Check_Static_Upper first_up{
+		inclusiveBound inclusive= true
+		bound_up upper_limit=20		
+	}
+	
+	Check_Static_Lower first_below{
+		inclusiveBound inclusive=true
+		bound_down lower_limit=-10
+	}
+	Check_Range first_range{
+		inclusiveBound inclusive= false
+		bound_down lower_limit=0
+		bound_up upper_limit=10
+	}
+	Check_Gap first_gap{
+		inclusiveBound inclus= false
+		bound_down lower_limit= 10
+		bound_up upper_limit=20
+	}
+	
+}

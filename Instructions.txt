@@ -1,0 +1,18 @@
+1) signal with its name
+
+2) oracle type
+	- Check_Static_Upper -->Below reference (true/false inclusive bound and float bound_up)
+	- Check_Static_Lower -->Above reference (true/false inclusive bound and float bound_down)
+	- Check_Range--> In range reference (true/false inclusive bound, float bound_up and float bound_down)
+	- Check_Gap--> In gap reference (true/false inclusive bound, float bound_up and float bound_down)
+
+3) When speaking abour bound up and bound down, their position is compared between them. The biggest one must be bound_up and the other bound_down.
+Example--> range from 1 to 10, bound_down--> 1 and bound_up-->10
+Example2--> gap not to be between 1 and 10, bound_down-->1 and bound_up-->10
+
+4) More than one signal could be created 
+
+5) Output function name is set by the programmer
+	- Ideally must be, "signalName"_"OracleType"_"OracleNumber"
+	- Example--> Check_Range for first signal function is--> signal first{Check_Range first_Range_1{...}}
+	
