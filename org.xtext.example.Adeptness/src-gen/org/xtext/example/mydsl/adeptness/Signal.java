@@ -14,10 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.adeptness.Signal#getCheck_static_upper <em>Check static upper</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.Signal#getCheck_static_lower <em>Check static lower</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.Signal#getCheck_range <em>Check range</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.Signal#getCheck_gap <em>Check gap</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Signal#getOracle <em>Oracle</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSignal()
@@ -27,51 +24,15 @@ import org.eclipse.emf.common.util.EList;
 public interface Signal extends Type
 {
   /**
-   * Returns the value of the '<em><b>Check static upper</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.example.mydsl.adeptness.Check_Static_upper_only}.
+   * Returns the value of the '<em><b>Oracle</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.example.mydsl.adeptness.Oracle}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Check static upper</em>' containment reference list.
-   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSignal_Check_static_upper()
+   * @return the value of the '<em>Oracle</em>' containment reference list.
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSignal_Oracle()
    * @model containment="true"
    * @generated
    */
-  EList<Check_Static_upper_only> getCheck_static_upper();
-
-  /**
-   * Returns the value of the '<em><b>Check static lower</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.example.mydsl.adeptness.Check_Static_lower_only}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Check static lower</em>' containment reference list.
-   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSignal_Check_static_lower()
-   * @model containment="true"
-   * @generated
-   */
-  EList<Check_Static_lower_only> getCheck_static_lower();
-
-  /**
-   * Returns the value of the '<em><b>Check range</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.example.mydsl.adeptness.Check_Range}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Check range</em>' containment reference list.
-   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSignal_Check_range()
-   * @model containment="true"
-   * @generated
-   */
-  EList<Check_Range> getCheck_range();
-
-  /**
-   * Returns the value of the '<em><b>Check gap</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.example.mydsl.adeptness.Check_Gap}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Check gap</em>' containment reference list.
-   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSignal_Check_gap()
-   * @model containment="true"
-   * @generated
-   */
-  EList<Check_Gap> getCheck_gap();
+  EList<Oracle> getOracle();
 
 } // Signal

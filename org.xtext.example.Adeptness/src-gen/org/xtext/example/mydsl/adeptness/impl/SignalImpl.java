@@ -16,10 +16,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
-import org.xtext.example.mydsl.adeptness.Check_Gap;
-import org.xtext.example.mydsl.adeptness.Check_Range;
-import org.xtext.example.mydsl.adeptness.Check_Static_lower_only;
-import org.xtext.example.mydsl.adeptness.Check_Static_upper_only;
+import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.Signal;
 
 /**
@@ -30,10 +27,7 @@ import org.xtext.example.mydsl.adeptness.Signal;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SignalImpl#getCheck_static_upper <em>Check static upper</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SignalImpl#getCheck_static_lower <em>Check static lower</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SignalImpl#getCheck_range <em>Check range</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SignalImpl#getCheck_gap <em>Check gap</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SignalImpl#getOracle <em>Oracle</em>}</li>
  * </ul>
  *
  * @generated
@@ -41,44 +35,14 @@ import org.xtext.example.mydsl.adeptness.Signal;
 public class SignalImpl extends TypeImpl implements Signal
 {
   /**
-   * The cached value of the '{@link #getCheck_static_upper() <em>Check static upper</em>}' containment reference list.
+   * The cached value of the '{@link #getOracle() <em>Oracle</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getCheck_static_upper()
+   * @see #getOracle()
    * @generated
    * @ordered
    */
-  protected EList<Check_Static_upper_only> check_static_upper;
-
-  /**
-   * The cached value of the '{@link #getCheck_static_lower() <em>Check static lower</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getCheck_static_lower()
-   * @generated
-   * @ordered
-   */
-  protected EList<Check_Static_lower_only> check_static_lower;
-
-  /**
-   * The cached value of the '{@link #getCheck_range() <em>Check range</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getCheck_range()
-   * @generated
-   * @ordered
-   */
-  protected EList<Check_Range> check_range;
-
-  /**
-   * The cached value of the '{@link #getCheck_gap() <em>Check gap</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getCheck_gap()
-   * @generated
-   * @ordered
-   */
-  protected EList<Check_Gap> check_gap;
+  protected EList<Oracle> oracle;
 
   /**
    * <!-- begin-user-doc -->
@@ -107,58 +71,13 @@ public class SignalImpl extends TypeImpl implements Signal
    * @generated
    */
   @Override
-  public EList<Check_Static_upper_only> getCheck_static_upper()
+  public EList<Oracle> getOracle()
   {
-    if (check_static_upper == null)
+    if (oracle == null)
     {
-      check_static_upper = new EObjectContainmentEList<Check_Static_upper_only>(Check_Static_upper_only.class, this, AdeptnessPackage.SIGNAL__CHECK_STATIC_UPPER);
+      oracle = new EObjectContainmentEList<Oracle>(Oracle.class, this, AdeptnessPackage.SIGNAL__ORACLE);
     }
-    return check_static_upper;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EList<Check_Static_lower_only> getCheck_static_lower()
-  {
-    if (check_static_lower == null)
-    {
-      check_static_lower = new EObjectContainmentEList<Check_Static_lower_only>(Check_Static_lower_only.class, this, AdeptnessPackage.SIGNAL__CHECK_STATIC_LOWER);
-    }
-    return check_static_lower;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EList<Check_Range> getCheck_range()
-  {
-    if (check_range == null)
-    {
-      check_range = new EObjectContainmentEList<Check_Range>(Check_Range.class, this, AdeptnessPackage.SIGNAL__CHECK_RANGE);
-    }
-    return check_range;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EList<Check_Gap> getCheck_gap()
-  {
-    if (check_gap == null)
-    {
-      check_gap = new EObjectContainmentEList<Check_Gap>(Check_Gap.class, this, AdeptnessPackage.SIGNAL__CHECK_GAP);
-    }
-    return check_gap;
+    return oracle;
   }
 
   /**
@@ -171,14 +90,8 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
-      case AdeptnessPackage.SIGNAL__CHECK_STATIC_UPPER:
-        return ((InternalEList<?>)getCheck_static_upper()).basicRemove(otherEnd, msgs);
-      case AdeptnessPackage.SIGNAL__CHECK_STATIC_LOWER:
-        return ((InternalEList<?>)getCheck_static_lower()).basicRemove(otherEnd, msgs);
-      case AdeptnessPackage.SIGNAL__CHECK_RANGE:
-        return ((InternalEList<?>)getCheck_range()).basicRemove(otherEnd, msgs);
-      case AdeptnessPackage.SIGNAL__CHECK_GAP:
-        return ((InternalEList<?>)getCheck_gap()).basicRemove(otherEnd, msgs);
+      case AdeptnessPackage.SIGNAL__ORACLE:
+        return ((InternalEList<?>)getOracle()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -193,14 +106,8 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
-      case AdeptnessPackage.SIGNAL__CHECK_STATIC_UPPER:
-        return getCheck_static_upper();
-      case AdeptnessPackage.SIGNAL__CHECK_STATIC_LOWER:
-        return getCheck_static_lower();
-      case AdeptnessPackage.SIGNAL__CHECK_RANGE:
-        return getCheck_range();
-      case AdeptnessPackage.SIGNAL__CHECK_GAP:
-        return getCheck_gap();
+      case AdeptnessPackage.SIGNAL__ORACLE:
+        return getOracle();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -216,21 +123,9 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
-      case AdeptnessPackage.SIGNAL__CHECK_STATIC_UPPER:
-        getCheck_static_upper().clear();
-        getCheck_static_upper().addAll((Collection<? extends Check_Static_upper_only>)newValue);
-        return;
-      case AdeptnessPackage.SIGNAL__CHECK_STATIC_LOWER:
-        getCheck_static_lower().clear();
-        getCheck_static_lower().addAll((Collection<? extends Check_Static_lower_only>)newValue);
-        return;
-      case AdeptnessPackage.SIGNAL__CHECK_RANGE:
-        getCheck_range().clear();
-        getCheck_range().addAll((Collection<? extends Check_Range>)newValue);
-        return;
-      case AdeptnessPackage.SIGNAL__CHECK_GAP:
-        getCheck_gap().clear();
-        getCheck_gap().addAll((Collection<? extends Check_Gap>)newValue);
+      case AdeptnessPackage.SIGNAL__ORACLE:
+        getOracle().clear();
+        getOracle().addAll((Collection<? extends Oracle>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -246,17 +141,8 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
-      case AdeptnessPackage.SIGNAL__CHECK_STATIC_UPPER:
-        getCheck_static_upper().clear();
-        return;
-      case AdeptnessPackage.SIGNAL__CHECK_STATIC_LOWER:
-        getCheck_static_lower().clear();
-        return;
-      case AdeptnessPackage.SIGNAL__CHECK_RANGE:
-        getCheck_range().clear();
-        return;
-      case AdeptnessPackage.SIGNAL__CHECK_GAP:
-        getCheck_gap().clear();
+      case AdeptnessPackage.SIGNAL__ORACLE:
+        getOracle().clear();
         return;
     }
     super.eUnset(featureID);
@@ -272,14 +158,8 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
-      case AdeptnessPackage.SIGNAL__CHECK_STATIC_UPPER:
-        return check_static_upper != null && !check_static_upper.isEmpty();
-      case AdeptnessPackage.SIGNAL__CHECK_STATIC_LOWER:
-        return check_static_lower != null && !check_static_lower.isEmpty();
-      case AdeptnessPackage.SIGNAL__CHECK_RANGE:
-        return check_range != null && !check_range.isEmpty();
-      case AdeptnessPackage.SIGNAL__CHECK_GAP:
-        return check_gap != null && !check_gap.isEmpty();
+      case AdeptnessPackage.SIGNAL__ORACLE:
+        return oracle != null && !oracle.isEmpty();
     }
     return super.eIsSet(featureID);
   }

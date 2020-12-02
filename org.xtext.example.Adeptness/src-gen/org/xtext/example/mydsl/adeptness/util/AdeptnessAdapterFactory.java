@@ -101,24 +101,64 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
         return createSignalAdapter();
       }
       @Override
-      public Adapter caseCheck_Static_upper_only(Check_Static_upper_only object)
+      public Adapter caseOracle(Oracle object)
       {
-        return createCheck_Static_upper_onlyAdapter();
+        return createOracleAdapter();
       }
       @Override
-      public Adapter caseCheck_Static_lower_only(Check_Static_lower_only object)
+      public Adapter caseCheck(Check object)
       {
-        return createCheck_Static_lower_onlyAdapter();
+        return createCheckAdapter();
       }
       @Override
-      public Adapter caseCheck_Range(Check_Range object)
+      public Adapter caseFailReason(FailReason object)
       {
-        return createCheck_RangeAdapter();
+        return createFailReasonAdapter();
       }
       @Override
-      public Adapter caseCheck_Gap(Check_Gap object)
+      public Adapter caseHighPeaks(HighPeaks object)
       {
-        return createCheck_GapAdapter();
+        return createHighPeaksAdapter();
+      }
+      @Override
+      public Adapter caseConstDeg(ConstDeg object)
+      {
+        return createConstDegAdapter();
+      }
+      @Override
+      public Adapter caseHighTime(HighTime object)
+      {
+        return createHighTimeAdapter();
+      }
+      @Override
+      public Adapter caseHighPeak(HighPeak object)
+      {
+        return createHighPeakAdapter();
+      }
+      @Override
+      public Adapter caseReference(Reference object)
+      {
+        return createReferenceAdapter();
+      }
+      @Override
+      public Adapter caseUpper(Upper object)
+      {
+        return createUpperAdapter();
+      }
+      @Override
+      public Adapter caseLower(Lower object)
+      {
+        return createLowerAdapter();
+      }
+      @Override
+      public Adapter caseRange(Range object)
+      {
+        return createRangeAdapter();
+      }
+      @Override
+      public Adapter caseGap(Gap object)
+      {
+        return createGapAdapter();
       }
       @Override
       public Adapter caseInclusiveBound(InclusiveBound object)
@@ -253,61 +293,181 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Check_Static_upper_only <em>Check Static upper only</em>}'.
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Oracle <em>Oracle</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.xtext.example.mydsl.adeptness.Check_Static_upper_only
+   * @see org.xtext.example.mydsl.adeptness.Oracle
    * @generated
    */
-  public Adapter createCheck_Static_upper_onlyAdapter()
+  public Adapter createOracleAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Check_Static_lower_only <em>Check Static lower only</em>}'.
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Check <em>Check</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.xtext.example.mydsl.adeptness.Check_Static_lower_only
+   * @see org.xtext.example.mydsl.adeptness.Check
    * @generated
    */
-  public Adapter createCheck_Static_lower_onlyAdapter()
+  public Adapter createCheckAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Check_Range <em>Check Range</em>}'.
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.FailReason <em>Fail Reason</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.xtext.example.mydsl.adeptness.Check_Range
+   * @see org.xtext.example.mydsl.adeptness.FailReason
    * @generated
    */
-  public Adapter createCheck_RangeAdapter()
+  public Adapter createFailReasonAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Check_Gap <em>Check Gap</em>}'.
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.HighPeaks <em>High Peaks</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.xtext.example.mydsl.adeptness.Check_Gap
+   * @see org.xtext.example.mydsl.adeptness.HighPeaks
    * @generated
    */
-  public Adapter createCheck_GapAdapter()
+  public Adapter createHighPeaksAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.ConstDeg <em>Const Deg</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.ConstDeg
+   * @generated
+   */
+  public Adapter createConstDegAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.HighTime <em>High Time</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.HighTime
+   * @generated
+   */
+  public Adapter createHighTimeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.HighPeak <em>High Peak</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.HighPeak
+   * @generated
+   */
+  public Adapter createHighPeakAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Reference <em>Reference</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.Reference
+   * @generated
+   */
+  public Adapter createReferenceAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Upper <em>Upper</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.Upper
+   * @generated
+   */
+  public Adapter createUpperAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Lower <em>Lower</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.Lower
+   * @generated
+   */
+  public Adapter createLowerAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Range <em>Range</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.Range
+   * @generated
+   */
+  public Adapter createRangeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Gap <em>Gap</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.Gap
+   * @generated
+   */
+  public Adapter createGapAdapter()
   {
     return null;
   }

@@ -151,36 +151,29 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	public class SignalElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Signal");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cSignalKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cCPSKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cCheck_static_upperAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cCheck_static_upperCheck_Static_upper_onlyParserRuleCall_3_0 = (RuleCall)cCheck_static_upperAssignment_3.eContents().get(0);
-		private final Assignment cCheck_static_lowerAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cCheck_static_lowerCheck_Static_lower_onlyParserRuleCall_4_0 = (RuleCall)cCheck_static_lowerAssignment_4.eContents().get(0);
-		private final Assignment cCheck_rangeAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final RuleCall cCheck_rangeCheck_RangeParserRuleCall_5_0 = (RuleCall)cCheck_rangeAssignment_5.eContents().get(0);
-		private final Assignment cCheck_gapAssignment_6 = (Assignment)cGroup.eContents().get(6);
-		private final RuleCall cCheck_gapCheck_GapParserRuleCall_6_0 = (RuleCall)cCheck_gapAssignment_6.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cOracleAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cOracleOracleParserRuleCall_3_0 = (RuleCall)cOracleAssignment_3.eContents().get(0);
+		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		////Each signal could have more than one oracles
 		//Signal:
-		//	'signal' name=ID '{'
-		//	check_static_upper+=Check_Static_upper_only*
-		//	check_static_lower+=Check_Static_lower_only*
-		//	check_range+=Check_Range*
-		//	check_gap+=Check_Gap*
-		//	'}';
+		//	'CPS' name=ID ':'
+		//	oracle+=Oracle+ ';'
+		//	/*(check_static_upper+=Check_Static_upper_only)*
+		//		(check_static_lower+=Check_Static_lower_only)*
+		//		(check_range+=Check_Range)*
+		//		(check_gap+=Check_Gap)*/;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'signal' name=ID '{' check_static_upper+=Check_Static_upper_only* check_static_lower+=Check_Static_lower_only*
-		//check_range+=Check_Range* check_gap+=Check_Gap* '}'
+		//'CPS' name=ID ':' oracle+=Oracle+ ';'
 		public Group getGroup() { return cGroup; }
 		
-		//'signal'
-		public Keyword getSignalKeyword_0() { return cSignalKeyword_0; }
+		//'CPS'
+		public Keyword getCPSKeyword_0() { return cCPSKeyword_0; }
 		
 		//name=ID
 		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
@@ -188,247 +181,560 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
 		
-		//'{'
-		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
+		//':'
+		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
 		
-		//check_static_upper+=Check_Static_upper_only*
-		public Assignment getCheck_static_upperAssignment_3() { return cCheck_static_upperAssignment_3; }
+		//oracle+=Oracle+
+		public Assignment getOracleAssignment_3() { return cOracleAssignment_3; }
 		
-		//Check_Static_upper_only
-		public RuleCall getCheck_static_upperCheck_Static_upper_onlyParserRuleCall_3_0() { return cCheck_static_upperCheck_Static_upper_onlyParserRuleCall_3_0; }
+		//Oracle
+		public RuleCall getOracleOracleParserRuleCall_3_0() { return cOracleOracleParserRuleCall_3_0; }
 		
-		//check_static_lower+=Check_Static_lower_only*
-		public Assignment getCheck_static_lowerAssignment_4() { return cCheck_static_lowerAssignment_4; }
-		
-		//Check_Static_lower_only
-		public RuleCall getCheck_static_lowerCheck_Static_lower_onlyParserRuleCall_4_0() { return cCheck_static_lowerCheck_Static_lower_onlyParserRuleCall_4_0; }
-		
-		//check_range+=Check_Range*
-		public Assignment getCheck_rangeAssignment_5() { return cCheck_rangeAssignment_5; }
-		
-		//Check_Range
-		public RuleCall getCheck_rangeCheck_RangeParserRuleCall_5_0() { return cCheck_rangeCheck_RangeParserRuleCall_5_0; }
-		
-		//check_gap+=Check_Gap*
-		public Assignment getCheck_gapAssignment_6() { return cCheck_gapAssignment_6; }
-		
-		//Check_Gap
-		public RuleCall getCheck_gapCheck_GapParserRuleCall_6_0() { return cCheck_gapCheck_GapParserRuleCall_6_0; }
-		
-		//'}'
-		public Keyword getRightCurlyBracketKeyword_7() { return cRightCurlyBracketKeyword_7; }
+		//';'
+		public Keyword getSemicolonKeyword_4() { return cSemicolonKeyword_4; }
 	}
-	public class Check_Static_upper_onlyElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Check_Static_upper_only");
+	public class OracleElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Oracle");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cCheck_Static_UpperKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cOracleKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cInclusive_boundAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cInclusive_boundInclusiveBoundParserRuleCall_3_0 = (RuleCall)cInclusive_boundAssignment_3.eContents().get(0);
-		private final Assignment cBound_upAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cBound_upBound_upParserRuleCall_4_0 = (RuleCall)cBound_upAssignment_4.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cCheckAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cCheckCheckParserRuleCall_3_0 = (RuleCall)cCheckAssignment_3.eContents().get(0);
+		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		
+		//Oracle:
+		//	'Oracle' name=ID ':'
+		//	check+=Check+ ';';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'Oracle' name=ID ':' check+=Check+ ';'
+		public Group getGroup() { return cGroup; }
+		
+		//'Oracle'
+		public Keyword getOracleKeyword_0() { return cOracleKeyword_0; }
+		
+		//name=ID
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//ID
+		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		
+		//':'
+		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
+		
+		//check+=Check+
+		public Assignment getCheckAssignment_3() { return cCheckAssignment_3; }
+		
+		//Check
+		public RuleCall getCheckCheckParserRuleCall_3_0() { return cCheckCheckParserRuleCall_3_0; }
+		
+		//';'
+		public Keyword getSemicolonKeyword_4() { return cSemicolonKeyword_4; }
+	}
+	public class CheckElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Check");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cChecksKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameSTRINGTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Keyword cIsKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cReferenceAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cReferenceReferenceParserRuleCall_3_0 = (RuleCall)cReferenceAssignment_3.eContents().get(0);
+		private final Assignment cFailReasonAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cFailReasonFailReasonParserRuleCall_4_0 = (RuleCall)cFailReasonAssignment_4.eContents().get(0);
+		private final Assignment cDescriptionAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cDescriptionSTRINGTerminalRuleCall_5_0 = (RuleCall)cDescriptionAssignment_5.eContents().get(0);
+		private final Keyword cCommaKeyword_6 = (Keyword)cGroup.eContents().get(6);
+		
+		//Check:
+		//	'checks:' name=STRING 'is'
+		//	reference=Reference failReason+=FailReason+
+		//	description=STRING ',';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'checks:' name=STRING 'is' reference=Reference failReason+=FailReason+ description=STRING ','
+		public Group getGroup() { return cGroup; }
+		
+		//'checks:'
+		public Keyword getChecksKeyword_0() { return cChecksKeyword_0; }
+		
+		//name=STRING
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//STRING
+		public RuleCall getNameSTRINGTerminalRuleCall_1_0() { return cNameSTRINGTerminalRuleCall_1_0; }
+		
+		//'is'
+		public Keyword getIsKeyword_2() { return cIsKeyword_2; }
+		
+		//reference=Reference
+		public Assignment getReferenceAssignment_3() { return cReferenceAssignment_3; }
+		
+		//Reference
+		public RuleCall getReferenceReferenceParserRuleCall_3_0() { return cReferenceReferenceParserRuleCall_3_0; }
+		
+		//failReason+=FailReason+
+		public Assignment getFailReasonAssignment_4() { return cFailReasonAssignment_4; }
+		
+		//FailReason
+		public RuleCall getFailReasonFailReasonParserRuleCall_4_0() { return cFailReasonFailReasonParserRuleCall_4_0; }
+		
+		//description=STRING
+		public Assignment getDescriptionAssignment_5() { return cDescriptionAssignment_5; }
+		
+		//STRING
+		public RuleCall getDescriptionSTRINGTerminalRuleCall_5_0() { return cDescriptionSTRINGTerminalRuleCall_5_0; }
+		
+		//','
+		public Keyword getCommaKeyword_6() { return cCommaKeyword_6; }
+	}
+	public class FailReasonElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.FailReason");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cFailsKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cIfKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
+		private final Assignment cHighPeakAssignment_3_0 = (Assignment)cAlternatives_3.eContents().get(0);
+		private final RuleCall cHighPeakHighPeakParserRuleCall_3_0_0 = (RuleCall)cHighPeakAssignment_3_0.eContents().get(0);
+		private final Assignment cHighTimeAssignment_3_1 = (Assignment)cAlternatives_3.eContents().get(1);
+		private final RuleCall cHighTimeHighTimeParserRuleCall_3_1_0 = (RuleCall)cHighTimeAssignment_3_1.eContents().get(0);
+		private final Assignment cConstDegAssignment_3_2 = (Assignment)cAlternatives_3.eContents().get(2);
+		private final RuleCall cConstDegConstDegParserRuleCall_3_2_0 = (RuleCall)cConstDegAssignment_3_2.eContents().get(0);
+		private final Assignment cHigPeaksAssignment_3_3 = (Assignment)cAlternatives_3.eContents().get(3);
+		private final RuleCall cHigPeaksHighPeaksParserRuleCall_3_3_0 = (RuleCall)cHigPeaksAssignment_3_3.eContents().get(0);
+		private final Keyword cCommaKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		
+		//FailReason:
+		//	'fails' 'if' ':' (highPeak=HighPeak | highTime=HighTime | constDeg=ConstDeg | HigPeaks=HighPeaks) ',';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'fails' 'if' ':' (highPeak=HighPeak | highTime=HighTime | constDeg=ConstDeg | HigPeaks=HighPeaks) ','
+		public Group getGroup() { return cGroup; }
+		
+		//'fails'
+		public Keyword getFailsKeyword_0() { return cFailsKeyword_0; }
+		
+		//'if'
+		public Keyword getIfKeyword_1() { return cIfKeyword_1; }
+		
+		//':'
+		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
+		
+		//(highPeak=HighPeak | highTime=HighTime | constDeg=ConstDeg | HigPeaks=HighPeaks)
+		public Alternatives getAlternatives_3() { return cAlternatives_3; }
+		
+		//highPeak=HighPeak
+		public Assignment getHighPeakAssignment_3_0() { return cHighPeakAssignment_3_0; }
+		
+		//HighPeak
+		public RuleCall getHighPeakHighPeakParserRuleCall_3_0_0() { return cHighPeakHighPeakParserRuleCall_3_0_0; }
+		
+		//highTime=HighTime
+		public Assignment getHighTimeAssignment_3_1() { return cHighTimeAssignment_3_1; }
+		
+		//HighTime
+		public RuleCall getHighTimeHighTimeParserRuleCall_3_1_0() { return cHighTimeHighTimeParserRuleCall_3_1_0; }
+		
+		//constDeg=ConstDeg
+		public Assignment getConstDegAssignment_3_2() { return cConstDegAssignment_3_2; }
+		
+		//ConstDeg
+		public RuleCall getConstDegConstDegParserRuleCall_3_2_0() { return cConstDegConstDegParserRuleCall_3_2_0; }
+		
+		//HigPeaks=HighPeaks
+		public Assignment getHigPeaksAssignment_3_3() { return cHigPeaksAssignment_3_3; }
+		
+		//HighPeaks
+		public RuleCall getHigPeaksHighPeaksParserRuleCall_3_3_0() { return cHigPeaksHighPeaksParserRuleCall_3_3_0; }
+		
+		//','
+		public Keyword getCommaKeyword_4() { return cCommaKeyword_4; }
+	}
+	public class HighPeaksElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.HighPeaks");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cValueKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cIsKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cHigherKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Keyword cThanKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cCantAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cCantDOUBLEParserRuleCall_4_0 = (RuleCall)cCantAssignment_4.eContents().get(0);
+		private final Keyword cInKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Keyword cIntervalKeyword_6 = (Keyword)cGroup.eContents().get(6);
+		private final Keyword cOfKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		private final Assignment cTimeAssignment_8 = (Assignment)cGroup.eContents().get(8);
+		private final RuleCall cTimeDOUBLEParserRuleCall_8_0 = (RuleCall)cTimeAssignment_8.eContents().get(0);
+		
+		//HighPeaks:
+		//	'value' 'is' 'higher' 'than' cant=DOUBLE 'in' 'interval' 'of' time=DOUBLE;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'value' 'is' 'higher' 'than' cant=DOUBLE 'in' 'interval' 'of' time=DOUBLE
+		public Group getGroup() { return cGroup; }
+		
+		//'value'
+		public Keyword getValueKeyword_0() { return cValueKeyword_0; }
+		
+		//'is'
+		public Keyword getIsKeyword_1() { return cIsKeyword_1; }
+		
+		//'higher'
+		public Keyword getHigherKeyword_2() { return cHigherKeyword_2; }
+		
+		//'than'
+		public Keyword getThanKeyword_3() { return cThanKeyword_3; }
+		
+		//cant=DOUBLE
+		public Assignment getCantAssignment_4() { return cCantAssignment_4; }
+		
+		//DOUBLE
+		public RuleCall getCantDOUBLEParserRuleCall_4_0() { return cCantDOUBLEParserRuleCall_4_0; }
+		
+		//'in'
+		public Keyword getInKeyword_5() { return cInKeyword_5; }
+		
+		//'interval'
+		public Keyword getIntervalKeyword_6() { return cIntervalKeyword_6; }
+		
+		//'of'
+		public Keyword getOfKeyword_7() { return cOfKeyword_7; }
+		
+		//time=DOUBLE
+		public Assignment getTimeAssignment_8() { return cTimeAssignment_8; }
+		
+		//DOUBLE
+		public RuleCall getTimeDOUBLEParserRuleCall_8_0() { return cTimeDOUBLEParserRuleCall_8_0; }
+	}
+	public class ConstDegElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.ConstDeg");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cConstantKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cDegradationKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Assignment cUpperAssignment_2_0 = (Assignment)cAlternatives_2.eContents().get(0);
+		private final RuleCall cUpperUpperParserRuleCall_2_0_0 = (RuleCall)cUpperAssignment_2_0.eContents().get(0);
+		private final Assignment cLowerAssignment_2_1 = (Assignment)cAlternatives_2.eContents().get(1);
+		private final RuleCall cLowerLowerParserRuleCall_2_1_0 = (RuleCall)cLowerAssignment_2_1.eContents().get(0);
+		
+		//ConstDeg:
+		//	'constant' 'degradation' (upper=Upper | lower=Lower);
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'constant' 'degradation' (upper=Upper | lower=Lower)
+		public Group getGroup() { return cGroup; }
+		
+		//'constant'
+		public Keyword getConstantKeyword_0() { return cConstantKeyword_0; }
+		
+		//'degradation'
+		public Keyword getDegradationKeyword_1() { return cDegradationKeyword_1; }
+		
+		//(upper=Upper | lower=Lower)
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+		
+		//upper=Upper
+		public Assignment getUpperAssignment_2_0() { return cUpperAssignment_2_0; }
+		
+		//Upper
+		public RuleCall getUpperUpperParserRuleCall_2_0_0() { return cUpperUpperParserRuleCall_2_0_0; }
+		
+		//lower=Lower
+		public Assignment getLowerAssignment_2_1() { return cLowerAssignment_2_1; }
+		
+		//Lower
+		public RuleCall getLowerLowerParserRuleCall_2_1_0() { return cLowerLowerParserRuleCall_2_1_0; }
+	}
+	public class HighTimeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.HighTime");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cHigherKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cThanKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cCantAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cCantDOUBLEParserRuleCall_2_0 = (RuleCall)cCantAssignment_2.eContents().get(0);
+		private final Keyword cInKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Keyword cAKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Keyword cTimeKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Keyword cOfKeyword_6 = (Keyword)cGroup.eContents().get(6);
+		private final Assignment cTimeAssignment_7 = (Assignment)cGroup.eContents().get(7);
+		private final RuleCall cTimeDOUBLEParserRuleCall_7_0 = (RuleCall)cTimeAssignment_7.eContents().get(0);
+		
+		//HighTime:
+		//	'higher' 'than' cant=DOUBLE 'in' 'a' 'time' 'of' time=DOUBLE;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'higher' 'than' cant=DOUBLE 'in' 'a' 'time' 'of' time=DOUBLE
+		public Group getGroup() { return cGroup; }
+		
+		//'higher'
+		public Keyword getHigherKeyword_0() { return cHigherKeyword_0; }
+		
+		//'than'
+		public Keyword getThanKeyword_1() { return cThanKeyword_1; }
+		
+		//cant=DOUBLE
+		public Assignment getCantAssignment_2() { return cCantAssignment_2; }
+		
+		//DOUBLE
+		public RuleCall getCantDOUBLEParserRuleCall_2_0() { return cCantDOUBLEParserRuleCall_2_0; }
+		
+		//'in'
+		public Keyword getInKeyword_3() { return cInKeyword_3; }
+		
+		//'a'
+		public Keyword getAKeyword_4() { return cAKeyword_4; }
+		
+		//'time'
+		public Keyword getTimeKeyword_5() { return cTimeKeyword_5; }
+		
+		//'of'
+		public Keyword getOfKeyword_6() { return cOfKeyword_6; }
+		
+		//time=DOUBLE
+		public Assignment getTimeAssignment_7() { return cTimeAssignment_7; }
+		
+		//DOUBLE
+		public RuleCall getTimeDOUBLEParserRuleCall_7_0() { return cTimeDOUBLEParserRuleCall_7_0; }
+	}
+	public class HighPeakElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.HighPeak");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cHighestKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cValueKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cIsKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Keyword cHigherKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Keyword cThanKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cCantAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cCantDOUBLEParserRuleCall_5_0 = (RuleCall)cCantAssignment_5.eContents().get(0);
+		
+		//HighPeak:
+		//	'highest' 'value' 'is' 'higher' 'than' cant=DOUBLE;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'highest' 'value' 'is' 'higher' 'than' cant=DOUBLE
+		public Group getGroup() { return cGroup; }
+		
+		//'highest'
+		public Keyword getHighestKeyword_0() { return cHighestKeyword_0; }
+		
+		//'value'
+		public Keyword getValueKeyword_1() { return cValueKeyword_1; }
+		
+		//'is'
+		public Keyword getIsKeyword_2() { return cIsKeyword_2; }
+		
+		//'higher'
+		public Keyword getHigherKeyword_3() { return cHigherKeyword_3; }
+		
+		//'than'
+		public Keyword getThanKeyword_4() { return cThanKeyword_4; }
+		
+		//cant=DOUBLE
+		public Assignment getCantAssignment_5() { return cCantAssignment_5; }
+		
+		//DOUBLE
+		public RuleCall getCantDOUBLEParserRuleCall_5_0() { return cCantDOUBLEParserRuleCall_5_0; }
+	}
+	public class ReferenceElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Reference");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Alternatives cAlternatives_0 = (Alternatives)cGroup.eContents().get(0);
+		private final Assignment cUpperAssignment_0_0 = (Assignment)cAlternatives_0.eContents().get(0);
+		private final RuleCall cUpperUpperParserRuleCall_0_0_0 = (RuleCall)cUpperAssignment_0_0.eContents().get(0);
+		private final Assignment cLowerAssignment_0_1 = (Assignment)cAlternatives_0.eContents().get(1);
+		private final RuleCall cLowerLowerParserRuleCall_0_1_0 = (RuleCall)cLowerAssignment_0_1.eContents().get(0);
+		private final Assignment cRangeAssignment_0_2 = (Assignment)cAlternatives_0.eContents().get(2);
+		private final RuleCall cRangeRangeParserRuleCall_0_2_0 = (RuleCall)cRangeAssignment_0_2.eContents().get(0);
+		private final Assignment cGapAssignment_0_3 = (Assignment)cAlternatives_0.eContents().get(3);
+		private final RuleCall cGapGapParserRuleCall_0_3_0 = (RuleCall)cGapAssignment_0_3.eContents().get(0);
+		private final Keyword cCommaKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		
+		//Reference:
+		//	(upper=Upper | lower=Lower | range=Range | gap=Gap) ',';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//(upper=Upper | lower=Lower | range=Range | gap=Gap) ','
+		public Group getGroup() { return cGroup; }
+		
+		//(upper=Upper | lower=Lower | range=Range | gap=Gap)
+		public Alternatives getAlternatives_0() { return cAlternatives_0; }
+		
+		//upper=Upper
+		public Assignment getUpperAssignment_0_0() { return cUpperAssignment_0_0; }
+		
+		//Upper
+		public RuleCall getUpperUpperParserRuleCall_0_0_0() { return cUpperUpperParserRuleCall_0_0_0; }
+		
+		//lower=Lower
+		public Assignment getLowerAssignment_0_1() { return cLowerAssignment_0_1; }
+		
+		//Lower
+		public RuleCall getLowerLowerParserRuleCall_0_1_0() { return cLowerLowerParserRuleCall_0_1_0; }
+		
+		//range=Range
+		public Assignment getRangeAssignment_0_2() { return cRangeAssignment_0_2; }
+		
+		//Range
+		public RuleCall getRangeRangeParserRuleCall_0_2_0() { return cRangeRangeParserRuleCall_0_2_0; }
+		
+		//gap=Gap
+		public Assignment getGapAssignment_0_3() { return cGapAssignment_0_3; }
+		
+		//Gap
+		public RuleCall getGapGapParserRuleCall_0_3_0() { return cGapGapParserRuleCall_0_3_0; }
+		
+		//','
+		public Keyword getCommaKeyword_1() { return cCommaKeyword_1; }
+	}
+	public class UpperElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Upper");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cBelowKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cThanKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cBound_uppAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cBound_uppBound_upParserRuleCall_2_0 = (RuleCall)cBound_uppAssignment_2.eContents().get(0);
 		
 		////Oracle for upper limit --> Below reference signal
-		//Check_Static_upper_only:
-		//	'Check_Static_Upper' name=ID '{'
-		//	inclusive_bound=InclusiveBound bound_up=Bound_up '}';
+		//Upper:
+		//	'below' 'than' bound_upp=Bound_up;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'Check_Static_Upper' name=ID '{' inclusive_bound=InclusiveBound bound_up=Bound_up '}'
+		//'below' 'than' bound_upp=Bound_up
 		public Group getGroup() { return cGroup; }
 		
-		//'Check_Static_Upper'
-		public Keyword getCheck_Static_UpperKeyword_0() { return cCheck_Static_UpperKeyword_0; }
+		//'below'
+		public Keyword getBelowKeyword_0() { return cBelowKeyword_0; }
 		
-		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		//'than'
+		public Keyword getThanKeyword_1() { return cThanKeyword_1; }
 		
-		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
-		
-		//'{'
-		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
-		
-		//inclusive_bound=InclusiveBound
-		public Assignment getInclusive_boundAssignment_3() { return cInclusive_boundAssignment_3; }
-		
-		//InclusiveBound
-		public RuleCall getInclusive_boundInclusiveBoundParserRuleCall_3_0() { return cInclusive_boundInclusiveBoundParserRuleCall_3_0; }
-		
-		//bound_up=Bound_up
-		public Assignment getBound_upAssignment_4() { return cBound_upAssignment_4; }
+		//bound_upp=Bound_up
+		public Assignment getBound_uppAssignment_2() { return cBound_uppAssignment_2; }
 		
 		//Bound_up
-		public RuleCall getBound_upBound_upParserRuleCall_4_0() { return cBound_upBound_upParserRuleCall_4_0; }
-		
-		//'}'
-		public Keyword getRightCurlyBracketKeyword_5() { return cRightCurlyBracketKeyword_5; }
+		public RuleCall getBound_uppBound_upParserRuleCall_2_0() { return cBound_uppBound_upParserRuleCall_2_0; }
 	}
-	public class Check_Static_lower_onlyElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Check_Static_lower_only");
+	public class LowerElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Lower");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cCheck_Static_LowerKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cInclusive_boundAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cInclusive_boundInclusiveBoundParserRuleCall_3_0 = (RuleCall)cInclusive_boundAssignment_3.eContents().get(0);
-		private final Assignment cBound_lowAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cBound_lowBound_DownParserRuleCall_4_0 = (RuleCall)cBound_lowAssignment_4.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Keyword cAboveKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cThanKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cBound_lowerAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cBound_lowerBound_DownParserRuleCall_2_0 = (RuleCall)cBound_lowerAssignment_2.eContents().get(0);
 		
 		////Oracle for lower limit --> Above reference signal
-		//Check_Static_lower_only:
-		//	'Check_Static_Lower' name=ID '{'
-		//	inclusive_bound=InclusiveBound bound_low=Bound_Down '}';
+		//Lower:
+		//	'above' 'than' bound_lower=Bound_Down;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'Check_Static_Lower' name=ID '{' inclusive_bound=InclusiveBound bound_low=Bound_Down '}'
+		//'above' 'than' bound_lower=Bound_Down
 		public Group getGroup() { return cGroup; }
 		
-		//'Check_Static_Lower'
-		public Keyword getCheck_Static_LowerKeyword_0() { return cCheck_Static_LowerKeyword_0; }
+		//'above'
+		public Keyword getAboveKeyword_0() { return cAboveKeyword_0; }
 		
-		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		//'than'
+		public Keyword getThanKeyword_1() { return cThanKeyword_1; }
 		
-		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
-		
-		//'{'
-		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
-		
-		//inclusive_bound=InclusiveBound
-		public Assignment getInclusive_boundAssignment_3() { return cInclusive_boundAssignment_3; }
-		
-		//InclusiveBound
-		public RuleCall getInclusive_boundInclusiveBoundParserRuleCall_3_0() { return cInclusive_boundInclusiveBoundParserRuleCall_3_0; }
-		
-		//bound_low=Bound_Down
-		public Assignment getBound_lowAssignment_4() { return cBound_lowAssignment_4; }
+		//bound_lower=Bound_Down
+		public Assignment getBound_lowerAssignment_2() { return cBound_lowerAssignment_2; }
 		
 		//Bound_Down
-		public RuleCall getBound_lowBound_DownParserRuleCall_4_0() { return cBound_lowBound_DownParserRuleCall_4_0; }
-		
-		//'}'
-		public Keyword getRightCurlyBracketKeyword_5() { return cRightCurlyBracketKeyword_5; }
+		public RuleCall getBound_lowerBound_DownParserRuleCall_2_0() { return cBound_lowerBound_DownParserRuleCall_2_0; }
 	}
-	public class Check_RangeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Check_Range");
+	public class RangeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Range");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cCheck_RangeKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cInclusive_boundAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cInclusive_boundInclusiveBoundParserRuleCall_3_0 = (RuleCall)cInclusive_boundAssignment_3.eContents().get(0);
-		private final Assignment cBound_lowAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cBound_lowBound_DownParserRuleCall_4_0 = (RuleCall)cBound_lowAssignment_4.eContents().get(0);
-		private final Assignment cBound_upAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final RuleCall cBound_upBound_upParserRuleCall_5_0 = (RuleCall)cBound_upAssignment_5.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
+		private final Keyword cInKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cRangeKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cBetweenKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cBound_lowerAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cBound_lowerBound_DownParserRuleCall_3_0 = (RuleCall)cBound_lowerAssignment_3.eContents().get(0);
+		private final Keyword cAndKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cBound_uppAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cBound_uppBound_upParserRuleCall_5_0 = (RuleCall)cBound_uppAssignment_5.eContents().get(0);
 		
 		////Oracle for Above and Below limit --> In range reference signal
-		//Check_Range:
-		//	'Check_Range' name=ID '{'
-		//	inclusive_bound=InclusiveBound bound_low=Bound_Down bound_up=Bound_up '}';
+		//Range:
+		//	'in' 'range' 'between' bound_lower=Bound_Down 'and' bound_upp=Bound_up;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'Check_Range' name=ID '{' inclusive_bound=InclusiveBound bound_low=Bound_Down bound_up=Bound_up '}'
+		//'in' 'range' 'between' bound_lower=Bound_Down 'and' bound_upp=Bound_up
 		public Group getGroup() { return cGroup; }
 		
-		//'Check_Range'
-		public Keyword getCheck_RangeKeyword_0() { return cCheck_RangeKeyword_0; }
+		//'in'
+		public Keyword getInKeyword_0() { return cInKeyword_0; }
 		
-		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		//'range'
+		public Keyword getRangeKeyword_1() { return cRangeKeyword_1; }
 		
-		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		//'between'
+		public Keyword getBetweenKeyword_2() { return cBetweenKeyword_2; }
 		
-		//'{'
-		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
-		
-		//inclusive_bound=InclusiveBound
-		public Assignment getInclusive_boundAssignment_3() { return cInclusive_boundAssignment_3; }
-		
-		//InclusiveBound
-		public RuleCall getInclusive_boundInclusiveBoundParserRuleCall_3_0() { return cInclusive_boundInclusiveBoundParserRuleCall_3_0; }
-		
-		//bound_low=Bound_Down
-		public Assignment getBound_lowAssignment_4() { return cBound_lowAssignment_4; }
+		//bound_lower=Bound_Down
+		public Assignment getBound_lowerAssignment_3() { return cBound_lowerAssignment_3; }
 		
 		//Bound_Down
-		public RuleCall getBound_lowBound_DownParserRuleCall_4_0() { return cBound_lowBound_DownParserRuleCall_4_0; }
+		public RuleCall getBound_lowerBound_DownParserRuleCall_3_0() { return cBound_lowerBound_DownParserRuleCall_3_0; }
 		
-		//bound_up=Bound_up
-		public Assignment getBound_upAssignment_5() { return cBound_upAssignment_5; }
+		//'and'
+		public Keyword getAndKeyword_4() { return cAndKeyword_4; }
+		
+		//bound_upp=Bound_up
+		public Assignment getBound_uppAssignment_5() { return cBound_uppAssignment_5; }
 		
 		//Bound_up
-		public RuleCall getBound_upBound_upParserRuleCall_5_0() { return cBound_upBound_upParserRuleCall_5_0; }
-		
-		//'}'
-		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
+		public RuleCall getBound_uppBound_upParserRuleCall_5_0() { return cBound_uppBound_upParserRuleCall_5_0; }
 	}
-	public class Check_GapElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Check_Gap");
+	public class GapElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Gap");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cCheck_GapKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cInclusive_boundAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cInclusive_boundInclusiveBoundParserRuleCall_3_0 = (RuleCall)cInclusive_boundAssignment_3.eContents().get(0);
-		private final Assignment cBound_lowAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cBound_lowBound_DownParserRuleCall_4_0 = (RuleCall)cBound_lowAssignment_4.eContents().get(0);
-		private final Assignment cBound_upAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final RuleCall cBound_upBound_upParserRuleCall_5_0 = (RuleCall)cBound_upAssignment_5.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
+		private final Keyword cNotKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cInKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cRangeKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Keyword cBetweenKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cBound_lowerAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cBound_lowerBound_DownParserRuleCall_4_0 = (RuleCall)cBound_lowerAssignment_4.eContents().get(0);
+		private final Keyword cAndKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Assignment cBound_uppAssignment_6 = (Assignment)cGroup.eContents().get(6);
+		private final RuleCall cBound_uppBound_upParserRuleCall_6_0 = (RuleCall)cBound_uppAssignment_6.eContents().get(0);
 		
 		////Oracle for !Above and !Below limit --> Gap reference signal
-		//Check_Gap:
-		//	'Check_Gap' name=ID '{'
-		//	inclusive_bound=InclusiveBound bound_low=Bound_Down bound_up=Bound_up '}';
+		//Gap:
+		//	'not' 'in' 'range' 'between' bound_lower=Bound_Down 'and' bound_upp=Bound_up;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'Check_Gap' name=ID '{' inclusive_bound=InclusiveBound bound_low=Bound_Down bound_up=Bound_up '}'
+		//'not' 'in' 'range' 'between' bound_lower=Bound_Down 'and' bound_upp=Bound_up
 		public Group getGroup() { return cGroup; }
 		
-		//'Check_Gap'
-		public Keyword getCheck_GapKeyword_0() { return cCheck_GapKeyword_0; }
+		//'not'
+		public Keyword getNotKeyword_0() { return cNotKeyword_0; }
 		
-		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		//'in'
+		public Keyword getInKeyword_1() { return cInKeyword_1; }
 		
-		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		//'range'
+		public Keyword getRangeKeyword_2() { return cRangeKeyword_2; }
 		
-		//'{'
-		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
+		//'between'
+		public Keyword getBetweenKeyword_3() { return cBetweenKeyword_3; }
 		
-		//inclusive_bound=InclusiveBound
-		public Assignment getInclusive_boundAssignment_3() { return cInclusive_boundAssignment_3; }
-		
-		//InclusiveBound
-		public RuleCall getInclusive_boundInclusiveBoundParserRuleCall_3_0() { return cInclusive_boundInclusiveBoundParserRuleCall_3_0; }
-		
-		//bound_low=Bound_Down
-		public Assignment getBound_lowAssignment_4() { return cBound_lowAssignment_4; }
+		//bound_lower=Bound_Down
+		public Assignment getBound_lowerAssignment_4() { return cBound_lowerAssignment_4; }
 		
 		//Bound_Down
-		public RuleCall getBound_lowBound_DownParserRuleCall_4_0() { return cBound_lowBound_DownParserRuleCall_4_0; }
+		public RuleCall getBound_lowerBound_DownParserRuleCall_4_0() { return cBound_lowerBound_DownParserRuleCall_4_0; }
 		
-		//bound_up=Bound_up
-		public Assignment getBound_upAssignment_5() { return cBound_upAssignment_5; }
+		//'and'
+		public Keyword getAndKeyword_5() { return cAndKeyword_5; }
+		
+		//bound_upp=Bound_up
+		public Assignment getBound_uppAssignment_6() { return cBound_uppAssignment_6; }
 		
 		//Bound_up
-		public RuleCall getBound_upBound_upParserRuleCall_5_0() { return cBound_upBound_upParserRuleCall_5_0; }
-		
-		//'}'
-		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
+		public RuleCall getBound_uppBound_upParserRuleCall_6_0() { return cBound_uppBound_upParserRuleCall_6_0; }
 	}
 	public class InclusiveBoundElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.InclusiveBound");
@@ -468,75 +774,35 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	public class Bound_upElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Bound_up");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cBound_upKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cEqualsSignKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cValueAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cValueDOUBLEParserRuleCall_3_0 = (RuleCall)cValueAssignment_3.eContents().get(0);
+		private final Assignment cValueAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cValueDOUBLEParserRuleCall_0 = (RuleCall)cValueAssignment.eContents().get(0);
 		
 		////Upper limit
 		//Bound_up:
-		//	'bound_up' name=ID '=' value=DOUBLE;
+		//	value=DOUBLE;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'bound_up' name=ID '=' value=DOUBLE
-		public Group getGroup() { return cGroup; }
-		
-		//'bound_up'
-		public Keyword getBound_upKeyword_0() { return cBound_upKeyword_0; }
-		
-		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
-		
-		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
-		
-		//'='
-		public Keyword getEqualsSignKeyword_2() { return cEqualsSignKeyword_2; }
-		
 		//value=DOUBLE
-		public Assignment getValueAssignment_3() { return cValueAssignment_3; }
+		public Assignment getValueAssignment() { return cValueAssignment; }
 		
 		//DOUBLE
-		public RuleCall getValueDOUBLEParserRuleCall_3_0() { return cValueDOUBLEParserRuleCall_3_0; }
+		public RuleCall getValueDOUBLEParserRuleCall_0() { return cValueDOUBLEParserRuleCall_0; }
 	}
 	public class Bound_DownElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Bound_Down");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cBound_downKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cEqualsSignKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cValueAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cValueDOUBLEParserRuleCall_3_0 = (RuleCall)cValueAssignment_3.eContents().get(0);
+		private final Assignment cValueAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cValueDOUBLEParserRuleCall_0 = (RuleCall)cValueAssignment.eContents().get(0);
 		
 		////Lower limit
 		//Bound_Down:
-		//	'bound_down' name=ID '=' value=DOUBLE;
+		//	value=DOUBLE;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'bound_down' name=ID '=' value=DOUBLE
-		public Group getGroup() { return cGroup; }
-		
-		//'bound_down'
-		public Keyword getBound_downKeyword_0() { return cBound_downKeyword_0; }
-		
-		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
-		
-		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
-		
-		//'='
-		public Keyword getEqualsSignKeyword_2() { return cEqualsSignKeyword_2; }
-		
 		//value=DOUBLE
-		public Assignment getValueAssignment_3() { return cValueAssignment_3; }
+		public Assignment getValueAssignment() { return cValueAssignment; }
 		
 		//DOUBLE
-		public RuleCall getValueDOUBLEParserRuleCall_3_0() { return cValueDOUBLEParserRuleCall_3_0; }
+		public RuleCall getValueDOUBLEParserRuleCall_0() { return cValueDOUBLEParserRuleCall_0; }
 	}
 	public class BOOLEANElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.BOOLEAN");
@@ -627,31 +893,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		
-		///*Output:
-		//	'outPut' name=ID '=' value=BOOLEAN
-		//;
-		//
-		//StopSim:
-		//	'stopSim' name=ID '=' value=BOOLEAN
-		//;
-		//
-		//CallBack:
-		//	'callBack' name=ID '=' value=STRING
-		//;
-		//
-		//Assertion:
-		//	'assertion' name=ID '=' value=BOOLEAN
-		//;*/ /*Bound_Up_Low:
-		//	'bound_up_low' name=ID '=' value=BOOLEAN
-		//;
-		//
-		//Bound_Lower:
-		//	'bound_lower' name=ID '=' value=BOOLEAN
-		//;
-		//
-		//Bound_Upper:
-		//	'bound_upper' name=ID '=' value=BOOLEAN
-		//;*/ //DataType declaration
+		////DataType declaration
 		//DataType:
 		//	'datatype' name=ID;
 		@Override public ParserRule getRule() { return rule; }
@@ -719,10 +961,18 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	private final QualifiedNameElements pQualifiedName;
 	private final TypeElements pType;
 	private final SignalElements pSignal;
-	private final Check_Static_upper_onlyElements pCheck_Static_upper_only;
-	private final Check_Static_lower_onlyElements pCheck_Static_lower_only;
-	private final Check_RangeElements pCheck_Range;
-	private final Check_GapElements pCheck_Gap;
+	private final OracleElements pOracle;
+	private final CheckElements pCheck;
+	private final FailReasonElements pFailReason;
+	private final HighPeaksElements pHighPeaks;
+	private final ConstDegElements pConstDeg;
+	private final HighTimeElements pHighTime;
+	private final HighPeakElements pHighPeak;
+	private final ReferenceElements pReference;
+	private final UpperElements pUpper;
+	private final LowerElements pLower;
+	private final RangeElements pRange;
+	private final GapElements pGap;
 	private final InclusiveBoundElements pInclusiveBound;
 	private final Bound_upElements pBound_up;
 	private final Bound_DownElements pBound_Down;
@@ -749,10 +999,18 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		this.pQualifiedName = new QualifiedNameElements();
 		this.pType = new TypeElements();
 		this.pSignal = new SignalElements();
-		this.pCheck_Static_upper_only = new Check_Static_upper_onlyElements();
-		this.pCheck_Static_lower_only = new Check_Static_lower_onlyElements();
-		this.pCheck_Range = new Check_RangeElements();
-		this.pCheck_Gap = new Check_GapElements();
+		this.pOracle = new OracleElements();
+		this.pCheck = new CheckElements();
+		this.pFailReason = new FailReasonElements();
+		this.pHighPeaks = new HighPeaksElements();
+		this.pConstDeg = new ConstDegElements();
+		this.pHighTime = new HighTimeElements();
+		this.pHighPeak = new HighPeakElements();
+		this.pReference = new ReferenceElements();
+		this.pUpper = new UpperElements();
+		this.pLower = new LowerElements();
+		this.pRange = new RangeElements();
+		this.pGap = new GapElements();
 		this.pInclusiveBound = new InclusiveBoundElements();
 		this.pBound_up = new Bound_upElements();
 		this.pBound_Down = new Bound_DownElements();
@@ -853,12 +1111,12 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	
 	////Each signal could have more than one oracles
 	//Signal:
-	//	'signal' name=ID '{'
-	//	check_static_upper+=Check_Static_upper_only*
-	//	check_static_lower+=Check_Static_lower_only*
-	//	check_range+=Check_Range*
-	//	check_gap+=Check_Gap*
-	//	'}';
+	//	'CPS' name=ID ':'
+	//	oracle+=Oracle+ ';'
+	//	/*(check_static_upper+=Check_Static_upper_only)*
+	//		(check_static_lower+=Check_Static_lower_only)*
+	//		(check_range+=Check_Range)*
+	//		(check_gap+=Check_Gap)*/;
 	public SignalElements getSignalAccess() {
 		return pSignal;
 	}
@@ -867,52 +1125,131 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		return getSignalAccess().getRule();
 	}
 	
-	////Oracle for upper limit --> Below reference signal
-	//Check_Static_upper_only:
-	//	'Check_Static_Upper' name=ID '{'
-	//	inclusive_bound=InclusiveBound bound_up=Bound_up '}';
-	public Check_Static_upper_onlyElements getCheck_Static_upper_onlyAccess() {
-		return pCheck_Static_upper_only;
+	//Oracle:
+	//	'Oracle' name=ID ':'
+	//	check+=Check+ ';';
+	public OracleElements getOracleAccess() {
+		return pOracle;
 	}
 	
-	public ParserRule getCheck_Static_upper_onlyRule() {
-		return getCheck_Static_upper_onlyAccess().getRule();
+	public ParserRule getOracleRule() {
+		return getOracleAccess().getRule();
+	}
+	
+	//Check:
+	//	'checks:' name=STRING 'is'
+	//	reference=Reference failReason+=FailReason+
+	//	description=STRING ',';
+	public CheckElements getCheckAccess() {
+		return pCheck;
+	}
+	
+	public ParserRule getCheckRule() {
+		return getCheckAccess().getRule();
+	}
+	
+	//FailReason:
+	//	'fails' 'if' ':' (highPeak=HighPeak | highTime=HighTime | constDeg=ConstDeg | HigPeaks=HighPeaks) ',';
+	public FailReasonElements getFailReasonAccess() {
+		return pFailReason;
+	}
+	
+	public ParserRule getFailReasonRule() {
+		return getFailReasonAccess().getRule();
+	}
+	
+	//HighPeaks:
+	//	'value' 'is' 'higher' 'than' cant=DOUBLE 'in' 'interval' 'of' time=DOUBLE;
+	public HighPeaksElements getHighPeaksAccess() {
+		return pHighPeaks;
+	}
+	
+	public ParserRule getHighPeaksRule() {
+		return getHighPeaksAccess().getRule();
+	}
+	
+	//ConstDeg:
+	//	'constant' 'degradation' (upper=Upper | lower=Lower);
+	public ConstDegElements getConstDegAccess() {
+		return pConstDeg;
+	}
+	
+	public ParserRule getConstDegRule() {
+		return getConstDegAccess().getRule();
+	}
+	
+	//HighTime:
+	//	'higher' 'than' cant=DOUBLE 'in' 'a' 'time' 'of' time=DOUBLE;
+	public HighTimeElements getHighTimeAccess() {
+		return pHighTime;
+	}
+	
+	public ParserRule getHighTimeRule() {
+		return getHighTimeAccess().getRule();
+	}
+	
+	//HighPeak:
+	//	'highest' 'value' 'is' 'higher' 'than' cant=DOUBLE;
+	public HighPeakElements getHighPeakAccess() {
+		return pHighPeak;
+	}
+	
+	public ParserRule getHighPeakRule() {
+		return getHighPeakAccess().getRule();
+	}
+	
+	//Reference:
+	//	(upper=Upper | lower=Lower | range=Range | gap=Gap) ',';
+	public ReferenceElements getReferenceAccess() {
+		return pReference;
+	}
+	
+	public ParserRule getReferenceRule() {
+		return getReferenceAccess().getRule();
+	}
+	
+	////Oracle for upper limit --> Below reference signal
+	//Upper:
+	//	'below' 'than' bound_upp=Bound_up;
+	public UpperElements getUpperAccess() {
+		return pUpper;
+	}
+	
+	public ParserRule getUpperRule() {
+		return getUpperAccess().getRule();
 	}
 	
 	////Oracle for lower limit --> Above reference signal
-	//Check_Static_lower_only:
-	//	'Check_Static_Lower' name=ID '{'
-	//	inclusive_bound=InclusiveBound bound_low=Bound_Down '}';
-	public Check_Static_lower_onlyElements getCheck_Static_lower_onlyAccess() {
-		return pCheck_Static_lower_only;
+	//Lower:
+	//	'above' 'than' bound_lower=Bound_Down;
+	public LowerElements getLowerAccess() {
+		return pLower;
 	}
 	
-	public ParserRule getCheck_Static_lower_onlyRule() {
-		return getCheck_Static_lower_onlyAccess().getRule();
+	public ParserRule getLowerRule() {
+		return getLowerAccess().getRule();
 	}
 	
 	////Oracle for Above and Below limit --> In range reference signal
-	//Check_Range:
-	//	'Check_Range' name=ID '{'
-	//	inclusive_bound=InclusiveBound bound_low=Bound_Down bound_up=Bound_up '}';
-	public Check_RangeElements getCheck_RangeAccess() {
-		return pCheck_Range;
+	//Range:
+	//	'in' 'range' 'between' bound_lower=Bound_Down 'and' bound_upp=Bound_up;
+	public RangeElements getRangeAccess() {
+		return pRange;
 	}
 	
-	public ParserRule getCheck_RangeRule() {
-		return getCheck_RangeAccess().getRule();
+	public ParserRule getRangeRule() {
+		return getRangeAccess().getRule();
 	}
 	
 	////Oracle for !Above and !Below limit --> Gap reference signal
-	//Check_Gap:
-	//	'Check_Gap' name=ID '{'
-	//	inclusive_bound=InclusiveBound bound_low=Bound_Down bound_up=Bound_up '}';
-	public Check_GapElements getCheck_GapAccess() {
-		return pCheck_Gap;
+	//Gap:
+	//	'not' 'in' 'range' 'between' bound_lower=Bound_Down 'and' bound_upp=Bound_up;
+	public GapElements getGapAccess() {
+		return pGap;
 	}
 	
-	public ParserRule getCheck_GapRule() {
-		return getCheck_GapAccess().getRule();
+	public ParserRule getGapRule() {
+		return getGapAccess().getRule();
 	}
 	
 	////If the limits must be included ==
@@ -928,7 +1265,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	
 	////Upper limit
 	//Bound_up:
-	//	'bound_up' name=ID '=' value=DOUBLE;
+	//	value=DOUBLE;
 	public Bound_upElements getBound_upAccess() {
 		return pBound_up;
 	}
@@ -939,7 +1276,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	
 	////Lower limit
 	//Bound_Down:
-	//	'bound_down' name=ID '=' value=DOUBLE;
+	//	value=DOUBLE;
 	public Bound_DownElements getBound_DownAccess() {
 		return pBound_Down;
 	}
@@ -990,31 +1327,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		return getDAccess().getRule();
 	}
 	
-	///*Output:
-	//	'outPut' name=ID '=' value=BOOLEAN
-	//;
-	//
-	//StopSim:
-	//	'stopSim' name=ID '=' value=BOOLEAN
-	//;
-	//
-	//CallBack:
-	//	'callBack' name=ID '=' value=STRING
-	//;
-	//
-	//Assertion:
-	//	'assertion' name=ID '=' value=BOOLEAN
-	//;*/ /*Bound_Up_Low:
-	//	'bound_up_low' name=ID '=' value=BOOLEAN
-	//;
-	//
-	//Bound_Lower:
-	//	'bound_lower' name=ID '=' value=BOOLEAN
-	//;
-	//
-	//Bound_Upper:
-	//	'bound_upper' name=ID '=' value=BOOLEAN
-	//;*/ //DataType declaration
+	////DataType declaration
 	//DataType:
 	//	'datatype' name=ID;
 	public DataTypeElements getDataTypeAccess() {

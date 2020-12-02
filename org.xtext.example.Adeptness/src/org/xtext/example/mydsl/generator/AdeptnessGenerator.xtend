@@ -7,13 +7,13 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
-import org.xtext.example.mydsl.adeptness.Check_Gap
-import org.xtext.example.mydsl.adeptness.Check_Range
-import org.xtext.example.mydsl.adeptness.Check_Static_lower_only
-import org.xtext.example.mydsl.adeptness.Check_Static_upper_only
+
 import org.xtext.example.mydsl.adeptness.Signal
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
+import org.xtext.example.mydsl.adeptness.Oracle
+import org.eclipse.emf.common.util.EList
+import org.xtext.example.mydsl.adeptness.Check
 
 /**
  * Generates code from your model files on save.
@@ -27,10 +27,10 @@ class AdeptnessGenerator extends AbstractGenerator {
 	//String directory="C:\\Users\\hazibek02\\runtime-EclipseXtext\\Matlab\\src-gen\\lehenengoa\\"; 
 
     override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-    	fsa.generateFile("adeptness.xml", resource.allContents.toIterable.filter(Signal).createXML());
+    	//fsa.generateFile("adeptness.xml", resource.allContents.toIterable.filter(Signal).createXML());
       		for(e: resource.allContents.toIterable.filter(Signal)){
        	
-			for(f: e.check_range){
+			/*for(f: e.check_range){
 				fsa.generateFile(f.fullyQualifiedName.toString("/")+".c", f.create_range_c())
 				fsa.generateFile(f.fullyQualifiedName.toString("/")+".h", f.create_range_h())
 				fsa.generateFile(f.fullyQualifiedName.toString("/")+".m", f.create_range_m())
@@ -53,12 +53,18 @@ class AdeptnessGenerator extends AbstractGenerator {
 				fsa.generateFile(d.fullyQualifiedName.toString("/")+".h", d.create_up_h())
 				fsa.generateFile(d.fullyQualifiedName.toString("/")+".m", d.create_up_m())
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
+			}*/
+			for(q: e.oracle){
+				fsa.generateFile(q.fullyQualifiedName.toString("/")+".c", q.create_oracle_c())
+				fsa.generateFile(q.fullyQualifiedName.toString("/")+".h", q.create_oracle_h())
+				fsa.generateFile(q.fullyQualifiedName.toString("/")+".m", q.create_oracle_m())
+				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
 			}
 			
 		}
     }
 	
-	def createXML(Iterable<Signal> signals)'''
+	/*def createXML(Iterable<Signal> signals)'''
 	<?xml version='1.0' encoding="UTF-8"?>
 		«FOR s : signals»
 			<Signal>
@@ -108,11 +114,106 @@ class AdeptnessGenerator extends AbstractGenerator {
 				</SignalDescription>
 			</Signal>
 		«ENDFOR»
+	'''*/
+	
+	
+	def create_oracle_m(Oracle param)'''
+	
+	def= legacy_code('initialize');
+	def.OutputFcnSpec= 'double y1=«param.name.toString()»(double u1)';
+	def.SourceFiles= {'«param.name.toString()».c'};
+	def.HeaderFiles= {'«param.name.toString()».h'};
+	def.SFunctionName= 'S_«param.name.toString()»';
+	legacy_code('sfcn_cmex_generate' ,def)
+	legacy_code('compile' ,def)
+	exit
+	'''
+	def create_oracle_h(Oracle param)'''
+	#ifndef «param.name.toString().toUpperCase»_H
+	#define «param.name.toString().toUpperCase»_H
+	«FOR param1: param.check»
+		«IF param1.reference.upper!==null»
+		struct Ret{
+			int assert;
+			double diff;
+		};
+		struct Ret BelowReference (double «param1.name.toString()»);
+		«ELSEIF param1.reference.lower!==null»
+		struct Ret{
+			int assert;
+			double diff;
+		};
+		struct Ret AboveRefrence (double «param1.name.toString()»);
+		«ELSEIF param1.reference.range!==null»
+		struct Ret{
+			int assert;
+			double diff_up;
+			double diff_down;
+		};
+		struct Ret RangeReference (double «param1.name.toString()»);
+		«ELSEIF param1.reference.gap!==null»
+		struct Ret{
+			int assert;
+			double diff_up;
+			double diff_down;
+		};
+		struct Ret GapReference (double «param1.name.toString()»);
+		«ENDIF»
+	«ENDFOR»
+	
+	#endif
 	'''
 	
+	def create_oracle_c(Oracle param)'''
+	#include "«param.name.toString()».h"
+	«FOR param1: param.check»
+		//«param1.description.toString»
+		«IF param1.reference.upper!==null»
+		struct Ret BelowReference (double «param1.name.toString()»){
+			struct Ret ret;
+			ret.assert=0;
+			if(«param1.name.toString()»<=«param1.reference.upper.bound_upp.value.DVal»){
+				ret.assertret=1;
+			}
+			ret.diff=«param1.reference.upper.bound_upp.value.DVal»-«param1.name.toString()»;
+			
+		«ELSEIF param1.reference.lower!==null»
+		struct Ret AboveReference (double «param1.name.toString()»){
+			struct Ret ret;
+			ret.assert=0;
+			if(«param1.name.toString()»>=«param1.reference.lower.bound_lower.value.DVal»){
+				ret.assert=1;
+			}
+			ret.diff=«param1.name.toString()»-«param1.reference.lower.bound_lower.value.DVal»;
+			
+		«ELSEIF param1.reference.range!==null»
+		struct Ret RangeReference (double «param1.name.toString()»){
+			struct Ret ret;
+			if(«param1.name.toString()»>=«param1.reference.range.bound_lower.value.DVal» && «param1.name.toString()»<=«param1.reference.range.bound_upp.value.DVal»){
+				ret.assert=1;
+			}
+			ret.diff_up=«param1.reference.range.bound_upp.value.DVal»-«param1.name.toString()»;
+			ret.diff_down=«param1.name.toString()»-«param1.reference.range.bound_lower.value.DVal»;
+			
+		«ELSEIF param1.reference.gap!==null»
+		struct Ret GapReference (double «param1.name.toString()»){
+			struct Ret ret;
+			if(«param1.name.toString()»<=«param1.reference.gap.bound_lower.value.DVal» || «param1.name.toString()»>=«param1.reference.gap.bound_upp.value.DVal»){
+				ret.assert=1;
+			}
+			ret.diff_up=«param1.name.toString()»-«param1.reference.gap.bound_upp.value.DVal»;
+			ret.diff_down=«param1.reference.gap.bound_lower.value.DVal»-«param1.name.toString()»;
+		«ENDIF»
+			return ret;
+		}
+	«ENDFOR»
+		
+
+	'''
 	
+
 	
-	def create_up_m(Check_Static_upper_only param)'''
+	/*def create_up_m(Check_Static_upper_only param)'''
 	
 	def= legacy_code('initialize');
 	def.OutputFcnSpec= 'double y1=«param.name.toString()»(double u1)';
@@ -251,5 +352,5 @@ class AdeptnessGenerator extends AbstractGenerator {
 		«ENDIF»
 		return ret;
 	}
-	'''
+	'''*/
 }

@@ -112,31 +112,87 @@ public class AdeptnessSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case AdeptnessPackage.CHECK_STATIC_UPPER_ONLY:
+      case AdeptnessPackage.ORACLE:
       {
-        Check_Static_upper_only check_Static_upper_only = (Check_Static_upper_only)theEObject;
-        T result = caseCheck_Static_upper_only(check_Static_upper_only);
+        Oracle oracle = (Oracle)theEObject;
+        T result = caseOracle(oracle);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case AdeptnessPackage.CHECK_STATIC_LOWER_ONLY:
+      case AdeptnessPackage.CHECK:
       {
-        Check_Static_lower_only check_Static_lower_only = (Check_Static_lower_only)theEObject;
-        T result = caseCheck_Static_lower_only(check_Static_lower_only);
+        Check check = (Check)theEObject;
+        T result = caseCheck(check);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case AdeptnessPackage.CHECK_RANGE:
+      case AdeptnessPackage.FAIL_REASON:
       {
-        Check_Range check_Range = (Check_Range)theEObject;
-        T result = caseCheck_Range(check_Range);
+        FailReason failReason = (FailReason)theEObject;
+        T result = caseFailReason(failReason);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case AdeptnessPackage.CHECK_GAP:
+      case AdeptnessPackage.HIGH_PEAKS:
       {
-        Check_Gap check_Gap = (Check_Gap)theEObject;
-        T result = caseCheck_Gap(check_Gap);
+        HighPeaks highPeaks = (HighPeaks)theEObject;
+        T result = caseHighPeaks(highPeaks);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case AdeptnessPackage.CONST_DEG:
+      {
+        ConstDeg constDeg = (ConstDeg)theEObject;
+        T result = caseConstDeg(constDeg);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case AdeptnessPackage.HIGH_TIME:
+      {
+        HighTime highTime = (HighTime)theEObject;
+        T result = caseHighTime(highTime);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case AdeptnessPackage.HIGH_PEAK:
+      {
+        HighPeak highPeak = (HighPeak)theEObject;
+        T result = caseHighPeak(highPeak);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case AdeptnessPackage.REFERENCE:
+      {
+        Reference reference = (Reference)theEObject;
+        T result = caseReference(reference);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case AdeptnessPackage.UPPER:
+      {
+        Upper upper = (Upper)theEObject;
+        T result = caseUpper(upper);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case AdeptnessPackage.LOWER:
+      {
+        Lower lower = (Lower)theEObject;
+        T result = caseLower(lower);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case AdeptnessPackage.RANGE:
+      {
+        Range range = (Range)theEObject;
+        T result = caseRange(range);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case AdeptnessPackage.GAP:
+      {
+        Gap gap = (Gap)theEObject;
+        T result = caseGap(gap);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -277,65 +333,193 @@ public class AdeptnessSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Check Static upper only</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Oracle</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Check Static upper only</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Oracle</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseCheck_Static_upper_only(Check_Static_upper_only object)
+  public T caseOracle(Oracle object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Check Static lower only</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Check</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Check Static lower only</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Check</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseCheck_Static_lower_only(Check_Static_lower_only object)
+  public T caseCheck(Check object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Check Range</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Fail Reason</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Check Range</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Fail Reason</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseCheck_Range(Check_Range object)
+  public T caseFailReason(FailReason object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Check Gap</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>High Peaks</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Check Gap</em>'.
+   * @return the result of interpreting the object as an instance of '<em>High Peaks</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseCheck_Gap(Check_Gap object)
+  public T caseHighPeaks(HighPeaks object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Const Deg</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Const Deg</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseConstDeg(ConstDeg object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>High Time</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>High Time</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseHighTime(HighTime object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>High Peak</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>High Peak</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseHighPeak(HighPeak object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Reference</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Reference</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseReference(Reference object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Upper</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Upper</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseUpper(Upper object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Lower</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Lower</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseLower(Lower object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Range</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Range</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRange(Range object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Gap</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Gap</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseGap(Gap object)
   {
     return null;
   }

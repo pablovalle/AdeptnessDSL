@@ -14,45 +14,81 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Signal" eSuperTypes="#//Type">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="check_static_upper" upperBound="-1"
-        eType="#//Check_Static_upper_only" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="check_static_lower" upperBound="-1"
-        eType="#//Check_Static_lower_only" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="check_range" upperBound="-1"
-        eType="#//Check_Range" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="check_gap" upperBound="-1"
-        eType="#//Check_Gap" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="oracle" upperBound="-1"
+        eType="#//Oracle" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Check_Static_upper_only">
+  <eClassifiers xsi:type="ecore:EClass" name="Oracle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="inclusive_bound" eType="#//InclusiveBound"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_up" eType="#//Bound_up"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="check" upperBound="-1"
+        eType="#//Check" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Check_Static_lower_only">
+  <eClassifiers xsi:type="ecore:EClass" name="Check">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="inclusive_bound" eType="#//InclusiveBound"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="#//Reference"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_low" eType="#//Bound_Down"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="failReason" upperBound="-1"
+        eType="#//FailReason" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Check_Range">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="inclusive_bound" eType="#//InclusiveBound"
+  <eClassifiers xsi:type="ecore:EClass" name="FailReason">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="highPeak" eType="#//HighPeak"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_low" eType="#//Bound_Down"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="highTime" eType="#//HighTime"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_up" eType="#//Bound_up"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constDeg" eType="#//ConstDeg"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="HigPeaks" eType="#//HighPeaks"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Check_Gap">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="inclusive_bound" eType="#//InclusiveBound"
+  <eClassifiers xsi:type="ecore:EClass" name="HighPeaks">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cant" eType="#//DOUBLE"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_low" eType="#//Bound_Down"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="time" eType="#//DOUBLE"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_up" eType="#//Bound_up"
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstDeg">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="upper" eType="#//Upper"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lower" eType="#//Lower"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="HighTime">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cant" eType="#//DOUBLE"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="time" eType="#//DOUBLE"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="HighPeak">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cant" eType="#//DOUBLE"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Reference">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="upper" eType="#//Upper"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lower" eType="#//Lower"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//Range"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="gap" eType="#//Gap" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Upper">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Lower">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_lower" eType="#//Bound_Down"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Range">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_lower" eType="#//Bound_Down"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Gap">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_lower" eType="#//Bound_Down"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="InclusiveBound">
@@ -61,12 +97,10 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Bound_up">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//DOUBLE"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Bound_Down">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//DOUBLE"
         containment="true"/>
   </eClassifiers>

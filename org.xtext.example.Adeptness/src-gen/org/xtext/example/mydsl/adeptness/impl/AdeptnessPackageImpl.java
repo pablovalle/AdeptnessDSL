@@ -16,16 +16,24 @@ import org.xtext.example.mydsl.adeptness.AdeptnessFactory;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.Bound_Down;
 import org.xtext.example.mydsl.adeptness.Bound_up;
-import org.xtext.example.mydsl.adeptness.Check_Gap;
-import org.xtext.example.mydsl.adeptness.Check_Range;
-import org.xtext.example.mydsl.adeptness.Check_Static_lower_only;
-import org.xtext.example.mydsl.adeptness.Check_Static_upper_only;
+import org.xtext.example.mydsl.adeptness.Check;
+import org.xtext.example.mydsl.adeptness.ConstDeg;
 import org.xtext.example.mydsl.adeptness.DataType;
+import org.xtext.example.mydsl.adeptness.FailReason;
+import org.xtext.example.mydsl.adeptness.Gap;
+import org.xtext.example.mydsl.adeptness.HighPeak;
+import org.xtext.example.mydsl.adeptness.HighPeaks;
+import org.xtext.example.mydsl.adeptness.HighTime;
 import org.xtext.example.mydsl.adeptness.Import;
 import org.xtext.example.mydsl.adeptness.InclusiveBound;
+import org.xtext.example.mydsl.adeptness.Lower;
+import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.PackageDeclaration;
+import org.xtext.example.mydsl.adeptness.Range;
+import org.xtext.example.mydsl.adeptness.Reference;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.Type;
+import org.xtext.example.mydsl.adeptness.Upper;
 
 /**
  * <!-- begin-user-doc -->
@@ -75,28 +83,84 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass check_Static_upper_onlyEClass = null;
+  private EClass oracleEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass check_Static_lower_onlyEClass = null;
+  private EClass checkEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass check_RangeEClass = null;
+  private EClass failReasonEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass check_GapEClass = null;
+  private EClass highPeaksEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass constDegEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass highTimeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass highPeakEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass referenceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass upperEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass lowerEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass rangeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass gapEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -304,7 +368,7 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getSignal_Check_static_upper()
+  public EReference getSignal_Oracle()
   {
     return (EReference)signalEClass.getEStructuralFeatures().get(0);
   }
@@ -315,9 +379,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getSignal_Check_static_lower()
+  public EClass getOracle()
   {
-    return (EReference)signalEClass.getEStructuralFeatures().get(1);
+    return oracleEClass;
   }
 
   /**
@@ -326,9 +390,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getSignal_Check_range()
+  public EAttribute getOracle_Name()
   {
-    return (EReference)signalEClass.getEStructuralFeatures().get(2);
+    return (EAttribute)oracleEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -337,9 +401,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getSignal_Check_gap()
+  public EReference getOracle_Check()
   {
-    return (EReference)signalEClass.getEStructuralFeatures().get(3);
+    return (EReference)oracleEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -348,9 +412,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EClass getCheck_Static_upper_only()
+  public EClass getCheck()
   {
-    return check_Static_upper_onlyEClass;
+    return checkEClass;
   }
 
   /**
@@ -359,9 +423,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EAttribute getCheck_Static_upper_only_Name()
+  public EAttribute getCheck_Name()
   {
-    return (EAttribute)check_Static_upper_onlyEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)checkEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -370,9 +434,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getCheck_Static_upper_only_Inclusive_bound()
+  public EReference getCheck_Reference()
   {
-    return (EReference)check_Static_upper_onlyEClass.getEStructuralFeatures().get(1);
+    return (EReference)checkEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -381,9 +445,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getCheck_Static_upper_only_Bound_up()
+  public EReference getCheck_FailReason()
   {
-    return (EReference)check_Static_upper_onlyEClass.getEStructuralFeatures().get(2);
+    return (EReference)checkEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -392,9 +456,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EClass getCheck_Static_lower_only()
+  public EAttribute getCheck_Description()
   {
-    return check_Static_lower_onlyEClass;
+    return (EAttribute)checkEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -403,9 +467,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EAttribute getCheck_Static_lower_only_Name()
+  public EClass getFailReason()
   {
-    return (EAttribute)check_Static_lower_onlyEClass.getEStructuralFeatures().get(0);
+    return failReasonEClass;
   }
 
   /**
@@ -414,9 +478,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getCheck_Static_lower_only_Inclusive_bound()
+  public EReference getFailReason_HighPeak()
   {
-    return (EReference)check_Static_lower_onlyEClass.getEStructuralFeatures().get(1);
+    return (EReference)failReasonEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -425,9 +489,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getCheck_Static_lower_only_Bound_low()
+  public EReference getFailReason_HighTime()
   {
-    return (EReference)check_Static_lower_onlyEClass.getEStructuralFeatures().get(2);
+    return (EReference)failReasonEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -436,9 +500,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EClass getCheck_Range()
+  public EReference getFailReason_ConstDeg()
   {
-    return check_RangeEClass;
+    return (EReference)failReasonEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -447,9 +511,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EAttribute getCheck_Range_Name()
+  public EReference getFailReason_HigPeaks()
   {
-    return (EAttribute)check_RangeEClass.getEStructuralFeatures().get(0);
+    return (EReference)failReasonEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -458,9 +522,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getCheck_Range_Inclusive_bound()
+  public EClass getHighPeaks()
   {
-    return (EReference)check_RangeEClass.getEStructuralFeatures().get(1);
+    return highPeaksEClass;
   }
 
   /**
@@ -469,9 +533,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getCheck_Range_Bound_low()
+  public EReference getHighPeaks_Cant()
   {
-    return (EReference)check_RangeEClass.getEStructuralFeatures().get(2);
+    return (EReference)highPeaksEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -480,9 +544,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getCheck_Range_Bound_up()
+  public EReference getHighPeaks_Time()
   {
-    return (EReference)check_RangeEClass.getEStructuralFeatures().get(3);
+    return (EReference)highPeaksEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -491,9 +555,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EClass getCheck_Gap()
+  public EClass getConstDeg()
   {
-    return check_GapEClass;
+    return constDegEClass;
   }
 
   /**
@@ -502,9 +566,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EAttribute getCheck_Gap_Name()
+  public EReference getConstDeg_Upper()
   {
-    return (EAttribute)check_GapEClass.getEStructuralFeatures().get(0);
+    return (EReference)constDegEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -513,9 +577,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getCheck_Gap_Inclusive_bound()
+  public EReference getConstDeg_Lower()
   {
-    return (EReference)check_GapEClass.getEStructuralFeatures().get(1);
+    return (EReference)constDegEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -524,9 +588,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getCheck_Gap_Bound_low()
+  public EClass getHighTime()
   {
-    return (EReference)check_GapEClass.getEStructuralFeatures().get(2);
+    return highTimeEClass;
   }
 
   /**
@@ -535,9 +599,207 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getCheck_Gap_Bound_up()
+  public EReference getHighTime_Cant()
   {
-    return (EReference)check_GapEClass.getEStructuralFeatures().get(3);
+    return (EReference)highTimeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getHighTime_Time()
+  {
+    return (EReference)highTimeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getHighPeak()
+  {
+    return highPeakEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getHighPeak_Cant()
+  {
+    return (EReference)highPeakEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getReference()
+  {
+    return referenceEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getReference_Upper()
+  {
+    return (EReference)referenceEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getReference_Lower()
+  {
+    return (EReference)referenceEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getReference_Range()
+  {
+    return (EReference)referenceEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getReference_Gap()
+  {
+    return (EReference)referenceEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getUpper()
+  {
+    return upperEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getUpper_Bound_upp()
+  {
+    return (EReference)upperEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getLower()
+  {
+    return lowerEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getLower_Bound_lower()
+  {
+    return (EReference)lowerEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getRange()
+  {
+    return rangeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getRange_Bound_lower()
+  {
+    return (EReference)rangeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getRange_Bound_upp()
+  {
+    return (EReference)rangeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getGap()
+  {
+    return gapEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getGap_Bound_lower()
+  {
+    return (EReference)gapEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getGap_Bound_upp()
+  {
+    return (EReference)gapEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -590,20 +852,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EAttribute getBound_up_Name()
-  {
-    return (EAttribute)bound_upEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EReference getBound_up_Value()
   {
-    return (EReference)bound_upEClass.getEStructuralFeatures().get(1);
+    return (EReference)bound_upEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -623,20 +874,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EAttribute getBound_Down_Name()
-  {
-    return (EAttribute)bound_DownEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EReference getBound_Down_Value()
   {
-    return (EReference)bound_DownEClass.getEStructuralFeatures().get(1);
+    return (EReference)bound_DownEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -770,43 +1010,67 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     createEAttribute(typeEClass, TYPE__NAME);
 
     signalEClass = createEClass(SIGNAL);
-    createEReference(signalEClass, SIGNAL__CHECK_STATIC_UPPER);
-    createEReference(signalEClass, SIGNAL__CHECK_STATIC_LOWER);
-    createEReference(signalEClass, SIGNAL__CHECK_RANGE);
-    createEReference(signalEClass, SIGNAL__CHECK_GAP);
+    createEReference(signalEClass, SIGNAL__ORACLE);
 
-    check_Static_upper_onlyEClass = createEClass(CHECK_STATIC_UPPER_ONLY);
-    createEAttribute(check_Static_upper_onlyEClass, CHECK_STATIC_UPPER_ONLY__NAME);
-    createEReference(check_Static_upper_onlyEClass, CHECK_STATIC_UPPER_ONLY__INCLUSIVE_BOUND);
-    createEReference(check_Static_upper_onlyEClass, CHECK_STATIC_UPPER_ONLY__BOUND_UP);
+    oracleEClass = createEClass(ORACLE);
+    createEAttribute(oracleEClass, ORACLE__NAME);
+    createEReference(oracleEClass, ORACLE__CHECK);
 
-    check_Static_lower_onlyEClass = createEClass(CHECK_STATIC_LOWER_ONLY);
-    createEAttribute(check_Static_lower_onlyEClass, CHECK_STATIC_LOWER_ONLY__NAME);
-    createEReference(check_Static_lower_onlyEClass, CHECK_STATIC_LOWER_ONLY__INCLUSIVE_BOUND);
-    createEReference(check_Static_lower_onlyEClass, CHECK_STATIC_LOWER_ONLY__BOUND_LOW);
+    checkEClass = createEClass(CHECK);
+    createEAttribute(checkEClass, CHECK__NAME);
+    createEReference(checkEClass, CHECK__REFERENCE);
+    createEReference(checkEClass, CHECK__FAIL_REASON);
+    createEAttribute(checkEClass, CHECK__DESCRIPTION);
 
-    check_RangeEClass = createEClass(CHECK_RANGE);
-    createEAttribute(check_RangeEClass, CHECK_RANGE__NAME);
-    createEReference(check_RangeEClass, CHECK_RANGE__INCLUSIVE_BOUND);
-    createEReference(check_RangeEClass, CHECK_RANGE__BOUND_LOW);
-    createEReference(check_RangeEClass, CHECK_RANGE__BOUND_UP);
+    failReasonEClass = createEClass(FAIL_REASON);
+    createEReference(failReasonEClass, FAIL_REASON__HIGH_PEAK);
+    createEReference(failReasonEClass, FAIL_REASON__HIGH_TIME);
+    createEReference(failReasonEClass, FAIL_REASON__CONST_DEG);
+    createEReference(failReasonEClass, FAIL_REASON__HIG_PEAKS);
 
-    check_GapEClass = createEClass(CHECK_GAP);
-    createEAttribute(check_GapEClass, CHECK_GAP__NAME);
-    createEReference(check_GapEClass, CHECK_GAP__INCLUSIVE_BOUND);
-    createEReference(check_GapEClass, CHECK_GAP__BOUND_LOW);
-    createEReference(check_GapEClass, CHECK_GAP__BOUND_UP);
+    highPeaksEClass = createEClass(HIGH_PEAKS);
+    createEReference(highPeaksEClass, HIGH_PEAKS__CANT);
+    createEReference(highPeaksEClass, HIGH_PEAKS__TIME);
+
+    constDegEClass = createEClass(CONST_DEG);
+    createEReference(constDegEClass, CONST_DEG__UPPER);
+    createEReference(constDegEClass, CONST_DEG__LOWER);
+
+    highTimeEClass = createEClass(HIGH_TIME);
+    createEReference(highTimeEClass, HIGH_TIME__CANT);
+    createEReference(highTimeEClass, HIGH_TIME__TIME);
+
+    highPeakEClass = createEClass(HIGH_PEAK);
+    createEReference(highPeakEClass, HIGH_PEAK__CANT);
+
+    referenceEClass = createEClass(REFERENCE);
+    createEReference(referenceEClass, REFERENCE__UPPER);
+    createEReference(referenceEClass, REFERENCE__LOWER);
+    createEReference(referenceEClass, REFERENCE__RANGE);
+    createEReference(referenceEClass, REFERENCE__GAP);
+
+    upperEClass = createEClass(UPPER);
+    createEReference(upperEClass, UPPER__BOUND_UPP);
+
+    lowerEClass = createEClass(LOWER);
+    createEReference(lowerEClass, LOWER__BOUND_LOWER);
+
+    rangeEClass = createEClass(RANGE);
+    createEReference(rangeEClass, RANGE__BOUND_LOWER);
+    createEReference(rangeEClass, RANGE__BOUND_UPP);
+
+    gapEClass = createEClass(GAP);
+    createEReference(gapEClass, GAP__BOUND_LOWER);
+    createEReference(gapEClass, GAP__BOUND_UPP);
 
     inclusiveBoundEClass = createEClass(INCLUSIVE_BOUND);
     createEAttribute(inclusiveBoundEClass, INCLUSIVE_BOUND__NAME);
     createEReference(inclusiveBoundEClass, INCLUSIVE_BOUND__VALUE);
 
     bound_upEClass = createEClass(BOUND_UP);
-    createEAttribute(bound_upEClass, BOUND_UP__NAME);
     createEReference(bound_upEClass, BOUND_UP__VALUE);
 
     bound_DownEClass = createEClass(BOUND_DOWN);
-    createEAttribute(bound_DownEClass, BOUND_DOWN__NAME);
     createEReference(bound_DownEClass, BOUND_DOWN__VALUE);
 
     booleanEClass = createEClass(BOOLEAN);
@@ -870,43 +1134,67 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     initEAttribute(getType_Name(), ecorePackage.getEString(), "name", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(signalEClass, Signal.class, "Signal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getSignal_Check_static_upper(), this.getCheck_Static_upper_only(), null, "check_static_upper", null, 0, -1, Signal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getSignal_Check_static_lower(), this.getCheck_Static_lower_only(), null, "check_static_lower", null, 0, -1, Signal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getSignal_Check_range(), this.getCheck_Range(), null, "check_range", null, 0, -1, Signal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getSignal_Check_gap(), this.getCheck_Gap(), null, "check_gap", null, 0, -1, Signal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSignal_Oracle(), this.getOracle(), null, "oracle", null, 0, -1, Signal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(check_Static_upper_onlyEClass, Check_Static_upper_only.class, "Check_Static_upper_only", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getCheck_Static_upper_only_Name(), ecorePackage.getEString(), "name", null, 0, 1, Check_Static_upper_only.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCheck_Static_upper_only_Inclusive_bound(), this.getInclusiveBound(), null, "inclusive_bound", null, 0, 1, Check_Static_upper_only.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCheck_Static_upper_only_Bound_up(), this.getBound_up(), null, "bound_up", null, 0, 1, Check_Static_upper_only.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(oracleEClass, Oracle.class, "Oracle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getOracle_Name(), ecorePackage.getEString(), "name", null, 0, 1, Oracle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getOracle_Check(), this.getCheck(), null, "check", null, 0, -1, Oracle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(check_Static_lower_onlyEClass, Check_Static_lower_only.class, "Check_Static_lower_only", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getCheck_Static_lower_only_Name(), ecorePackage.getEString(), "name", null, 0, 1, Check_Static_lower_only.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCheck_Static_lower_only_Inclusive_bound(), this.getInclusiveBound(), null, "inclusive_bound", null, 0, 1, Check_Static_lower_only.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCheck_Static_lower_only_Bound_low(), this.getBound_Down(), null, "bound_low", null, 0, 1, Check_Static_lower_only.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(checkEClass, Check.class, "Check", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getCheck_Name(), ecorePackage.getEString(), "name", null, 0, 1, Check.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCheck_Reference(), this.getReference(), null, "reference", null, 0, 1, Check.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCheck_FailReason(), this.getFailReason(), null, "failReason", null, 0, -1, Check.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getCheck_Description(), ecorePackage.getEString(), "description", null, 0, 1, Check.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(check_RangeEClass, Check_Range.class, "Check_Range", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getCheck_Range_Name(), ecorePackage.getEString(), "name", null, 0, 1, Check_Range.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCheck_Range_Inclusive_bound(), this.getInclusiveBound(), null, "inclusive_bound", null, 0, 1, Check_Range.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCheck_Range_Bound_low(), this.getBound_Down(), null, "bound_low", null, 0, 1, Check_Range.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCheck_Range_Bound_up(), this.getBound_up(), null, "bound_up", null, 0, 1, Check_Range.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(failReasonEClass, FailReason.class, "FailReason", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getFailReason_HighPeak(), this.getHighPeak(), null, "highPeak", null, 0, 1, FailReason.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getFailReason_HighTime(), this.getHighTime(), null, "highTime", null, 0, 1, FailReason.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getFailReason_ConstDeg(), this.getConstDeg(), null, "constDeg", null, 0, 1, FailReason.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getFailReason_HigPeaks(), this.getHighPeaks(), null, "HigPeaks", null, 0, 1, FailReason.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(check_GapEClass, Check_Gap.class, "Check_Gap", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getCheck_Gap_Name(), ecorePackage.getEString(), "name", null, 0, 1, Check_Gap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCheck_Gap_Inclusive_bound(), this.getInclusiveBound(), null, "inclusive_bound", null, 0, 1, Check_Gap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCheck_Gap_Bound_low(), this.getBound_Down(), null, "bound_low", null, 0, 1, Check_Gap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCheck_Gap_Bound_up(), this.getBound_up(), null, "bound_up", null, 0, 1, Check_Gap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(highPeaksEClass, HighPeaks.class, "HighPeaks", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getHighPeaks_Cant(), this.getDOUBLE(), null, "cant", null, 0, 1, HighPeaks.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getHighPeaks_Time(), this.getDOUBLE(), null, "time", null, 0, 1, HighPeaks.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(constDegEClass, ConstDeg.class, "ConstDeg", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getConstDeg_Upper(), this.getUpper(), null, "upper", null, 0, 1, ConstDeg.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getConstDeg_Lower(), this.getLower(), null, "lower", null, 0, 1, ConstDeg.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(highTimeEClass, HighTime.class, "HighTime", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getHighTime_Cant(), this.getDOUBLE(), null, "cant", null, 0, 1, HighTime.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getHighTime_Time(), this.getDOUBLE(), null, "time", null, 0, 1, HighTime.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(highPeakEClass, HighPeak.class, "HighPeak", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getHighPeak_Cant(), this.getDOUBLE(), null, "cant", null, 0, 1, HighPeak.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(referenceEClass, Reference.class, "Reference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getReference_Upper(), this.getUpper(), null, "upper", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getReference_Lower(), this.getLower(), null, "lower", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getReference_Range(), this.getRange(), null, "range", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getReference_Gap(), this.getGap(), null, "gap", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(upperEClass, Upper.class, "Upper", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getUpper_Bound_upp(), this.getBound_up(), null, "bound_upp", null, 0, 1, Upper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(lowerEClass, Lower.class, "Lower", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getLower_Bound_lower(), this.getBound_Down(), null, "bound_lower", null, 0, 1, Lower.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(rangeEClass, Range.class, "Range", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRange_Bound_lower(), this.getBound_Down(), null, "bound_lower", null, 0, 1, Range.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRange_Bound_upp(), this.getBound_up(), null, "bound_upp", null, 0, 1, Range.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(gapEClass, Gap.class, "Gap", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getGap_Bound_lower(), this.getBound_Down(), null, "bound_lower", null, 0, 1, Gap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getGap_Bound_upp(), this.getBound_up(), null, "bound_upp", null, 0, 1, Gap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(inclusiveBoundEClass, InclusiveBound.class, "InclusiveBound", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getInclusiveBound_Name(), ecorePackage.getEString(), "name", null, 0, 1, InclusiveBound.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getInclusiveBound_Value(), this.getBOOLEAN(), null, "value", null, 0, 1, InclusiveBound.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(bound_upEClass, Bound_up.class, "Bound_up", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getBound_up_Name(), ecorePackage.getEString(), "name", null, 0, 1, Bound_up.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getBound_up_Value(), this.getDOUBLE(), null, "value", null, 0, 1, Bound_up.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(bound_DownEClass, Bound_Down.class, "Bound_Down", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getBound_Down_Name(), ecorePackage.getEString(), "name", null, 0, 1, Bound_Down.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getBound_Down_Value(), this.getDOUBLE(), null, "value", null, 0, 1, Bound_Down.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(booleanEClass, org.xtext.example.mydsl.adeptness.BOOLEAN.class, "BOOLEAN", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

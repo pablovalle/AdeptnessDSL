@@ -180,40 +180,13 @@ public interface AdeptnessPackage extends EPackage
   int SIGNAL__NAME = TYPE__NAME;
 
   /**
-   * The feature id for the '<em><b>Check static upper</b></em>' containment reference list.
+   * The feature id for the '<em><b>Oracle</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SIGNAL__CHECK_STATIC_UPPER = TYPE_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Check static lower</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SIGNAL__CHECK_STATIC_LOWER = TYPE_FEATURE_COUNT + 1;
-
-  /**
-   * The feature id for the '<em><b>Check range</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SIGNAL__CHECK_RANGE = TYPE_FEATURE_COUNT + 2;
-
-  /**
-   * The feature id for the '<em><b>Check gap</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SIGNAL__CHECK_GAP = TYPE_FEATURE_COUNT + 3;
+  int SIGNAL__ORACLE = TYPE_FEATURE_COUNT + 0;
 
   /**
    * The number of structural features of the '<em>Signal</em>' class.
@@ -222,63 +195,17 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SIGNAL_FEATURE_COUNT = TYPE_FEATURE_COUNT + 4;
+  int SIGNAL_FEATURE_COUNT = TYPE_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.Check_Static_upper_onlyImpl <em>Check Static upper only</em>}' class.
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.OracleImpl <em>Oracle</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.xtext.example.mydsl.adeptness.impl.Check_Static_upper_onlyImpl
-   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getCheck_Static_upper_only()
+   * @see org.xtext.example.mydsl.adeptness.impl.OracleImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getOracle()
    * @generated
    */
-  int CHECK_STATIC_UPPER_ONLY = 5;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CHECK_STATIC_UPPER_ONLY__NAME = 0;
-
-  /**
-   * The feature id for the '<em><b>Inclusive bound</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CHECK_STATIC_UPPER_ONLY__INCLUSIVE_BOUND = 1;
-
-  /**
-   * The feature id for the '<em><b>Bound up</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CHECK_STATIC_UPPER_ONLY__BOUND_UP = 2;
-
-  /**
-   * The number of structural features of the '<em>Check Static upper only</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CHECK_STATIC_UPPER_ONLY_FEATURE_COUNT = 3;
-
-  /**
-   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.Check_Static_lower_onlyImpl <em>Check Static lower only</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.xtext.example.mydsl.adeptness.impl.Check_Static_lower_onlyImpl
-   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getCheck_Static_lower_only()
-   * @generated
-   */
-  int CHECK_STATIC_LOWER_ONLY = 6;
+  int ORACLE = 5;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -287,44 +214,35 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CHECK_STATIC_LOWER_ONLY__NAME = 0;
+  int ORACLE__NAME = 0;
 
   /**
-   * The feature id for the '<em><b>Inclusive bound</b></em>' containment reference.
+   * The feature id for the '<em><b>Check</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CHECK_STATIC_LOWER_ONLY__INCLUSIVE_BOUND = 1;
+  int ORACLE__CHECK = 1;
 
   /**
-   * The feature id for the '<em><b>Bound low</b></em>' containment reference.
+   * The number of structural features of the '<em>Oracle</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CHECK_STATIC_LOWER_ONLY__BOUND_LOW = 2;
+  int ORACLE_FEATURE_COUNT = 2;
 
   /**
-   * The number of structural features of the '<em>Check Static lower only</em>' class.
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.CheckImpl <em>Check</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CHECK_STATIC_LOWER_ONLY_FEATURE_COUNT = 3;
-
-  /**
-   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.Check_RangeImpl <em>Check Range</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.xtext.example.mydsl.adeptness.impl.Check_RangeImpl
-   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getCheck_Range()
+   * @see org.xtext.example.mydsl.adeptness.impl.CheckImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getCheck()
    * @generated
    */
-  int CHECK_RANGE = 7;
+  int CHECK = 6;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -333,98 +251,422 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CHECK_RANGE__NAME = 0;
+  int CHECK__NAME = 0;
 
   /**
-   * The feature id for the '<em><b>Inclusive bound</b></em>' containment reference.
+   * The feature id for the '<em><b>Reference</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CHECK_RANGE__INCLUSIVE_BOUND = 1;
+  int CHECK__REFERENCE = 1;
 
   /**
-   * The feature id for the '<em><b>Bound low</b></em>' containment reference.
+   * The feature id for the '<em><b>Fail Reason</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CHECK_RANGE__BOUND_LOW = 2;
+  int CHECK__FAIL_REASON = 2;
 
   /**
-   * The feature id for the '<em><b>Bound up</b></em>' containment reference.
+   * The feature id for the '<em><b>Description</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CHECK_RANGE__BOUND_UP = 3;
+  int CHECK__DESCRIPTION = 3;
 
   /**
-   * The number of structural features of the '<em>Check Range</em>' class.
+   * The number of structural features of the '<em>Check</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CHECK_RANGE_FEATURE_COUNT = 4;
+  int CHECK_FEATURE_COUNT = 4;
 
   /**
-   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.Check_GapImpl <em>Check Gap</em>}' class.
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.FailReasonImpl <em>Fail Reason</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.xtext.example.mydsl.adeptness.impl.Check_GapImpl
-   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getCheck_Gap()
+   * @see org.xtext.example.mydsl.adeptness.impl.FailReasonImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getFailReason()
    * @generated
    */
-  int CHECK_GAP = 8;
+  int FAIL_REASON = 7;
 
   /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CHECK_GAP__NAME = 0;
-
-  /**
-   * The feature id for the '<em><b>Inclusive bound</b></em>' containment reference.
+   * The feature id for the '<em><b>High Peak</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CHECK_GAP__INCLUSIVE_BOUND = 1;
+  int FAIL_REASON__HIGH_PEAK = 0;
 
   /**
-   * The feature id for the '<em><b>Bound low</b></em>' containment reference.
+   * The feature id for the '<em><b>High Time</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CHECK_GAP__BOUND_LOW = 2;
+  int FAIL_REASON__HIGH_TIME = 1;
 
   /**
-   * The feature id for the '<em><b>Bound up</b></em>' containment reference.
+   * The feature id for the '<em><b>Const Deg</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CHECK_GAP__BOUND_UP = 3;
+  int FAIL_REASON__CONST_DEG = 2;
 
   /**
-   * The number of structural features of the '<em>Check Gap</em>' class.
+   * The feature id for the '<em><b>Hig Peaks</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CHECK_GAP_FEATURE_COUNT = 4;
+  int FAIL_REASON__HIG_PEAKS = 3;
+
+  /**
+   * The number of structural features of the '<em>Fail Reason</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FAIL_REASON_FEATURE_COUNT = 4;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.HighPeaksImpl <em>High Peaks</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.HighPeaksImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getHighPeaks()
+   * @generated
+   */
+  int HIGH_PEAKS = 8;
+
+  /**
+   * The feature id for the '<em><b>Cant</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int HIGH_PEAKS__CANT = 0;
+
+  /**
+   * The feature id for the '<em><b>Time</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int HIGH_PEAKS__TIME = 1;
+
+  /**
+   * The number of structural features of the '<em>High Peaks</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int HIGH_PEAKS_FEATURE_COUNT = 2;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.ConstDegImpl <em>Const Deg</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.ConstDegImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getConstDeg()
+   * @generated
+   */
+  int CONST_DEG = 9;
+
+  /**
+   * The feature id for the '<em><b>Upper</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONST_DEG__UPPER = 0;
+
+  /**
+   * The feature id for the '<em><b>Lower</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONST_DEG__LOWER = 1;
+
+  /**
+   * The number of structural features of the '<em>Const Deg</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONST_DEG_FEATURE_COUNT = 2;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.HighTimeImpl <em>High Time</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.HighTimeImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getHighTime()
+   * @generated
+   */
+  int HIGH_TIME = 10;
+
+  /**
+   * The feature id for the '<em><b>Cant</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int HIGH_TIME__CANT = 0;
+
+  /**
+   * The feature id for the '<em><b>Time</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int HIGH_TIME__TIME = 1;
+
+  /**
+   * The number of structural features of the '<em>High Time</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int HIGH_TIME_FEATURE_COUNT = 2;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.HighPeakImpl <em>High Peak</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.HighPeakImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getHighPeak()
+   * @generated
+   */
+  int HIGH_PEAK = 11;
+
+  /**
+   * The feature id for the '<em><b>Cant</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int HIGH_PEAK__CANT = 0;
+
+  /**
+   * The number of structural features of the '<em>High Peak</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int HIGH_PEAK_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.ReferenceImpl <em>Reference</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.ReferenceImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getReference()
+   * @generated
+   */
+  int REFERENCE = 12;
+
+  /**
+   * The feature id for the '<em><b>Upper</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REFERENCE__UPPER = 0;
+
+  /**
+   * The feature id for the '<em><b>Lower</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REFERENCE__LOWER = 1;
+
+  /**
+   * The feature id for the '<em><b>Range</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REFERENCE__RANGE = 2;
+
+  /**
+   * The feature id for the '<em><b>Gap</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REFERENCE__GAP = 3;
+
+  /**
+   * The number of structural features of the '<em>Reference</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REFERENCE_FEATURE_COUNT = 4;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.UpperImpl <em>Upper</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.UpperImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getUpper()
+   * @generated
+   */
+  int UPPER = 13;
+
+  /**
+   * The feature id for the '<em><b>Bound upp</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UPPER__BOUND_UPP = 0;
+
+  /**
+   * The number of structural features of the '<em>Upper</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UPPER_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.LowerImpl <em>Lower</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.LowerImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getLower()
+   * @generated
+   */
+  int LOWER = 14;
+
+  /**
+   * The feature id for the '<em><b>Bound lower</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LOWER__BOUND_LOWER = 0;
+
+  /**
+   * The number of structural features of the '<em>Lower</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LOWER_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.RangeImpl <em>Range</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.RangeImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getRange()
+   * @generated
+   */
+  int RANGE = 15;
+
+  /**
+   * The feature id for the '<em><b>Bound lower</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RANGE__BOUND_LOWER = 0;
+
+  /**
+   * The feature id for the '<em><b>Bound upp</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RANGE__BOUND_UPP = 1;
+
+  /**
+   * The number of structural features of the '<em>Range</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RANGE_FEATURE_COUNT = 2;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.GapImpl <em>Gap</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.GapImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getGap()
+   * @generated
+   */
+  int GAP = 16;
+
+  /**
+   * The feature id for the '<em><b>Bound lower</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GAP__BOUND_LOWER = 0;
+
+  /**
+   * The feature id for the '<em><b>Bound upp</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GAP__BOUND_UPP = 1;
+
+  /**
+   * The number of structural features of the '<em>Gap</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GAP_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.InclusiveBoundImpl <em>Inclusive Bound</em>}' class.
@@ -434,7 +676,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getInclusiveBound()
    * @generated
    */
-  int INCLUSIVE_BOUND = 9;
+  int INCLUSIVE_BOUND = 17;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -471,16 +713,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBound_up()
    * @generated
    */
-  int BOUND_UP = 10;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BOUND_UP__NAME = 0;
+  int BOUND_UP = 18;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -489,7 +722,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int BOUND_UP__VALUE = 1;
+  int BOUND_UP__VALUE = 0;
 
   /**
    * The number of structural features of the '<em>Bound up</em>' class.
@@ -498,7 +731,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int BOUND_UP_FEATURE_COUNT = 2;
+  int BOUND_UP_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl <em>Bound Down</em>}' class.
@@ -508,16 +741,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBound_Down()
    * @generated
    */
-  int BOUND_DOWN = 11;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BOUND_DOWN__NAME = 0;
+  int BOUND_DOWN = 19;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -526,7 +750,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int BOUND_DOWN__VALUE = 1;
+  int BOUND_DOWN__VALUE = 0;
 
   /**
    * The number of structural features of the '<em>Bound Down</em>' class.
@@ -535,7 +759,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int BOUND_DOWN_FEATURE_COUNT = 2;
+  int BOUND_DOWN_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.BOOLEANImpl <em>BOOLEAN</em>}' class.
@@ -545,7 +769,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBOOLEAN()
    * @generated
    */
-  int BOOLEAN = 12;
+  int BOOLEAN = 20;
 
   /**
    * The feature id for the '<em><b>Bool</b></em>' attribute.
@@ -573,7 +797,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getDOUBLE()
    * @generated
    */
-  int DOUBLE = 13;
+  int DOUBLE = 21;
 
   /**
    * The feature id for the '<em><b>DVal</b></em>' attribute.
@@ -601,7 +825,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getDataType()
    * @generated
    */
-  int DATA_TYPE = 14;
+  int DATA_TYPE = 22;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -629,7 +853,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getPackageDeclaration()
    * @generated
    */
-  int PACKAGE_DECLARATION = 15;
+  int PACKAGE_DECLARATION = 23;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -743,242 +967,432 @@ public interface AdeptnessPackage extends EPackage
   EClass getSignal();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Signal#getCheck_static_upper <em>Check static upper</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Signal#getOracle <em>Oracle</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Check static upper</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Signal#getCheck_static_upper()
+   * @return the meta object for the containment reference list '<em>Oracle</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Signal#getOracle()
    * @see #getSignal()
    * @generated
    */
-  EReference getSignal_Check_static_upper();
+  EReference getSignal_Oracle();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Signal#getCheck_static_lower <em>Check static lower</em>}'.
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Oracle <em>Oracle</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Check static lower</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Signal#getCheck_static_lower()
-   * @see #getSignal()
+   * @return the meta object for class '<em>Oracle</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Oracle
    * @generated
    */
-  EReference getSignal_Check_static_lower();
+  EClass getOracle();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Signal#getCheck_range <em>Check range</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Check range</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Signal#getCheck_range()
-   * @see #getSignal()
-   * @generated
-   */
-  EReference getSignal_Check_range();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Signal#getCheck_gap <em>Check gap</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Check gap</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Signal#getCheck_gap()
-   * @see #getSignal()
-   * @generated
-   */
-  EReference getSignal_Check_gap();
-
-  /**
-   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Check_Static_upper_only <em>Check Static upper only</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Check Static upper only</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Static_upper_only
-   * @generated
-   */
-  EClass getCheck_Static_upper_only();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Check_Static_upper_only#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Oracle#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Static_upper_only#getName()
-   * @see #getCheck_Static_upper_only()
+   * @see org.xtext.example.mydsl.adeptness.Oracle#getName()
+   * @see #getOracle()
    * @generated
    */
-  EAttribute getCheck_Static_upper_only_Name();
+  EAttribute getOracle_Name();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Check_Static_upper_only#getInclusive_bound <em>Inclusive bound</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Oracle#getCheck <em>Check</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Inclusive bound</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Static_upper_only#getInclusive_bound()
-   * @see #getCheck_Static_upper_only()
+   * @return the meta object for the containment reference list '<em>Check</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Oracle#getCheck()
+   * @see #getOracle()
    * @generated
    */
-  EReference getCheck_Static_upper_only_Inclusive_bound();
+  EReference getOracle_Check();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Check_Static_upper_only#getBound_up <em>Bound up</em>}'.
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Check <em>Check</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Bound up</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Static_upper_only#getBound_up()
-   * @see #getCheck_Static_upper_only()
+   * @return the meta object for class '<em>Check</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Check
    * @generated
    */
-  EReference getCheck_Static_upper_only_Bound_up();
+  EClass getCheck();
 
   /**
-   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Check_Static_lower_only <em>Check Static lower only</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Check Static lower only</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Static_lower_only
-   * @generated
-   */
-  EClass getCheck_Static_lower_only();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Check_Static_lower_only#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Check#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Static_lower_only#getName()
-   * @see #getCheck_Static_lower_only()
+   * @see org.xtext.example.mydsl.adeptness.Check#getName()
+   * @see #getCheck()
    * @generated
    */
-  EAttribute getCheck_Static_lower_only_Name();
+  EAttribute getCheck_Name();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Check_Static_lower_only#getInclusive_bound <em>Inclusive bound</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Check#getReference <em>Reference</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Inclusive bound</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Static_lower_only#getInclusive_bound()
-   * @see #getCheck_Static_lower_only()
+   * @return the meta object for the containment reference '<em>Reference</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Check#getReference()
+   * @see #getCheck()
    * @generated
    */
-  EReference getCheck_Static_lower_only_Inclusive_bound();
+  EReference getCheck_Reference();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Check_Static_lower_only#getBound_low <em>Bound low</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Check#getFailReason <em>Fail Reason</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Bound low</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Static_lower_only#getBound_low()
-   * @see #getCheck_Static_lower_only()
+   * @return the meta object for the containment reference list '<em>Fail Reason</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Check#getFailReason()
+   * @see #getCheck()
    * @generated
    */
-  EReference getCheck_Static_lower_only_Bound_low();
+  EReference getCheck_FailReason();
 
   /**
-   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Check_Range <em>Check Range</em>}'.
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Check#getDescription <em>Description</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Check Range</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Range
+   * @return the meta object for the attribute '<em>Description</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Check#getDescription()
+   * @see #getCheck()
    * @generated
    */
-  EClass getCheck_Range();
+  EAttribute getCheck_Description();
 
   /**
-   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Check_Range#getName <em>Name</em>}'.
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.FailReason <em>Fail Reason</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Name</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Range#getName()
-   * @see #getCheck_Range()
+   * @return the meta object for class '<em>Fail Reason</em>'.
+   * @see org.xtext.example.mydsl.adeptness.FailReason
    * @generated
    */
-  EAttribute getCheck_Range_Name();
+  EClass getFailReason();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Check_Range#getInclusive_bound <em>Inclusive bound</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.FailReason#getHighPeak <em>High Peak</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Inclusive bound</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Range#getInclusive_bound()
-   * @see #getCheck_Range()
+   * @return the meta object for the containment reference '<em>High Peak</em>'.
+   * @see org.xtext.example.mydsl.adeptness.FailReason#getHighPeak()
+   * @see #getFailReason()
    * @generated
    */
-  EReference getCheck_Range_Inclusive_bound();
+  EReference getFailReason_HighPeak();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Check_Range#getBound_low <em>Bound low</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.FailReason#getHighTime <em>High Time</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Bound low</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Range#getBound_low()
-   * @see #getCheck_Range()
+   * @return the meta object for the containment reference '<em>High Time</em>'.
+   * @see org.xtext.example.mydsl.adeptness.FailReason#getHighTime()
+   * @see #getFailReason()
    * @generated
    */
-  EReference getCheck_Range_Bound_low();
+  EReference getFailReason_HighTime();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Check_Range#getBound_up <em>Bound up</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.FailReason#getConstDeg <em>Const Deg</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Bound up</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Range#getBound_up()
-   * @see #getCheck_Range()
+   * @return the meta object for the containment reference '<em>Const Deg</em>'.
+   * @see org.xtext.example.mydsl.adeptness.FailReason#getConstDeg()
+   * @see #getFailReason()
    * @generated
    */
-  EReference getCheck_Range_Bound_up();
+  EReference getFailReason_ConstDeg();
 
   /**
-   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Check_Gap <em>Check Gap</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.FailReason#getHigPeaks <em>Hig Peaks</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Check Gap</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Gap
+   * @return the meta object for the containment reference '<em>Hig Peaks</em>'.
+   * @see org.xtext.example.mydsl.adeptness.FailReason#getHigPeaks()
+   * @see #getFailReason()
    * @generated
    */
-  EClass getCheck_Gap();
+  EReference getFailReason_HigPeaks();
 
   /**
-   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Check_Gap#getName <em>Name</em>}'.
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.HighPeaks <em>High Peaks</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Name</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Gap#getName()
-   * @see #getCheck_Gap()
+   * @return the meta object for class '<em>High Peaks</em>'.
+   * @see org.xtext.example.mydsl.adeptness.HighPeaks
    * @generated
    */
-  EAttribute getCheck_Gap_Name();
+  EClass getHighPeaks();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Check_Gap#getInclusive_bound <em>Inclusive bound</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.HighPeaks#getCant <em>Cant</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Inclusive bound</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Gap#getInclusive_bound()
-   * @see #getCheck_Gap()
+   * @return the meta object for the containment reference '<em>Cant</em>'.
+   * @see org.xtext.example.mydsl.adeptness.HighPeaks#getCant()
+   * @see #getHighPeaks()
    * @generated
    */
-  EReference getCheck_Gap_Inclusive_bound();
+  EReference getHighPeaks_Cant();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Check_Gap#getBound_low <em>Bound low</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.HighPeaks#getTime <em>Time</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Bound low</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Gap#getBound_low()
-   * @see #getCheck_Gap()
+   * @return the meta object for the containment reference '<em>Time</em>'.
+   * @see org.xtext.example.mydsl.adeptness.HighPeaks#getTime()
+   * @see #getHighPeaks()
    * @generated
    */
-  EReference getCheck_Gap_Bound_low();
+  EReference getHighPeaks_Time();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Check_Gap#getBound_up <em>Bound up</em>}'.
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.ConstDeg <em>Const Deg</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Bound up</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Check_Gap#getBound_up()
-   * @see #getCheck_Gap()
+   * @return the meta object for class '<em>Const Deg</em>'.
+   * @see org.xtext.example.mydsl.adeptness.ConstDeg
    * @generated
    */
-  EReference getCheck_Gap_Bound_up();
+  EClass getConstDeg();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.ConstDeg#getUpper <em>Upper</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Upper</em>'.
+   * @see org.xtext.example.mydsl.adeptness.ConstDeg#getUpper()
+   * @see #getConstDeg()
+   * @generated
+   */
+  EReference getConstDeg_Upper();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.ConstDeg#getLower <em>Lower</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Lower</em>'.
+   * @see org.xtext.example.mydsl.adeptness.ConstDeg#getLower()
+   * @see #getConstDeg()
+   * @generated
+   */
+  EReference getConstDeg_Lower();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.HighTime <em>High Time</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>High Time</em>'.
+   * @see org.xtext.example.mydsl.adeptness.HighTime
+   * @generated
+   */
+  EClass getHighTime();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.HighTime#getCant <em>Cant</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Cant</em>'.
+   * @see org.xtext.example.mydsl.adeptness.HighTime#getCant()
+   * @see #getHighTime()
+   * @generated
+   */
+  EReference getHighTime_Cant();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.HighTime#getTime <em>Time</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Time</em>'.
+   * @see org.xtext.example.mydsl.adeptness.HighTime#getTime()
+   * @see #getHighTime()
+   * @generated
+   */
+  EReference getHighTime_Time();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.HighPeak <em>High Peak</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>High Peak</em>'.
+   * @see org.xtext.example.mydsl.adeptness.HighPeak
+   * @generated
+   */
+  EClass getHighPeak();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.HighPeak#getCant <em>Cant</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Cant</em>'.
+   * @see org.xtext.example.mydsl.adeptness.HighPeak#getCant()
+   * @see #getHighPeak()
+   * @generated
+   */
+  EReference getHighPeak_Cant();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Reference <em>Reference</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Reference</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Reference
+   * @generated
+   */
+  EClass getReference();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Reference#getUpper <em>Upper</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Upper</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Reference#getUpper()
+   * @see #getReference()
+   * @generated
+   */
+  EReference getReference_Upper();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Reference#getLower <em>Lower</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Lower</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Reference#getLower()
+   * @see #getReference()
+   * @generated
+   */
+  EReference getReference_Lower();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Reference#getRange <em>Range</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Range</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Reference#getRange()
+   * @see #getReference()
+   * @generated
+   */
+  EReference getReference_Range();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Reference#getGap <em>Gap</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Gap</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Reference#getGap()
+   * @see #getReference()
+   * @generated
+   */
+  EReference getReference_Gap();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Upper <em>Upper</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Upper</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Upper
+   * @generated
+   */
+  EClass getUpper();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Upper#getBound_upp <em>Bound upp</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Bound upp</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Upper#getBound_upp()
+   * @see #getUpper()
+   * @generated
+   */
+  EReference getUpper_Bound_upp();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Lower <em>Lower</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Lower</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Lower
+   * @generated
+   */
+  EClass getLower();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Lower#getBound_lower <em>Bound lower</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Bound lower</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Lower#getBound_lower()
+   * @see #getLower()
+   * @generated
+   */
+  EReference getLower_Bound_lower();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Range <em>Range</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Range</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Range
+   * @generated
+   */
+  EClass getRange();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Range#getBound_lower <em>Bound lower</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Bound lower</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Range#getBound_lower()
+   * @see #getRange()
+   * @generated
+   */
+  EReference getRange_Bound_lower();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Range#getBound_upp <em>Bound upp</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Bound upp</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Range#getBound_upp()
+   * @see #getRange()
+   * @generated
+   */
+  EReference getRange_Bound_upp();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Gap <em>Gap</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Gap</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Gap
+   * @generated
+   */
+  EClass getGap();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Gap#getBound_lower <em>Bound lower</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Bound lower</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Gap#getBound_lower()
+   * @see #getGap()
+   * @generated
+   */
+  EReference getGap_Bound_lower();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Gap#getBound_upp <em>Bound upp</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Bound upp</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Gap#getBound_upp()
+   * @see #getGap()
+   * @generated
+   */
+  EReference getGap_Bound_upp();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.InclusiveBound <em>Inclusive Bound</em>}'.
@@ -1023,17 +1437,6 @@ public interface AdeptnessPackage extends EPackage
   EClass getBound_up();
 
   /**
-   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Bound_up#getName <em>Name</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Name</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Bound_up#getName()
-   * @see #getBound_up()
-   * @generated
-   */
-  EAttribute getBound_up_Name();
-
-  /**
    * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Bound_up#getValue <em>Value</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1053,17 +1456,6 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    */
   EClass getBound_Down();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Bound_Down#getName <em>Name</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Name</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Bound_Down#getName()
-   * @see #getBound_Down()
-   * @generated
-   */
-  EAttribute getBound_Down_Name();
 
   /**
    * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Bound_Down#getValue <em>Value</em>}'.
@@ -1258,46 +1650,22 @@ public interface AdeptnessPackage extends EPackage
     EClass SIGNAL = eINSTANCE.getSignal();
 
     /**
-     * The meta object literal for the '<em><b>Check static upper</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Oracle</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference SIGNAL__CHECK_STATIC_UPPER = eINSTANCE.getSignal_Check_static_upper();
+    EReference SIGNAL__ORACLE = eINSTANCE.getSignal_Oracle();
 
     /**
-     * The meta object literal for the '<em><b>Check static lower</b></em>' containment reference list feature.
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.OracleImpl <em>Oracle</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.OracleImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getOracle()
      * @generated
      */
-    EReference SIGNAL__CHECK_STATIC_LOWER = eINSTANCE.getSignal_Check_static_lower();
-
-    /**
-     * The meta object literal for the '<em><b>Check range</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference SIGNAL__CHECK_RANGE = eINSTANCE.getSignal_Check_range();
-
-    /**
-     * The meta object literal for the '<em><b>Check gap</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference SIGNAL__CHECK_GAP = eINSTANCE.getSignal_Check_gap();
-
-    /**
-     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.Check_Static_upper_onlyImpl <em>Check Static upper only</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.xtext.example.mydsl.adeptness.impl.Check_Static_upper_onlyImpl
-     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getCheck_Static_upper_only()
-     * @generated
-     */
-    EClass CHECK_STATIC_UPPER_ONLY = eINSTANCE.getCheck_Static_upper_only();
+    EClass ORACLE = eINSTANCE.getOracle();
 
     /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -1305,33 +1673,25 @@ public interface AdeptnessPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute CHECK_STATIC_UPPER_ONLY__NAME = eINSTANCE.getCheck_Static_upper_only_Name();
+    EAttribute ORACLE__NAME = eINSTANCE.getOracle_Name();
 
     /**
-     * The meta object literal for the '<em><b>Inclusive bound</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Check</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference CHECK_STATIC_UPPER_ONLY__INCLUSIVE_BOUND = eINSTANCE.getCheck_Static_upper_only_Inclusive_bound();
+    EReference ORACLE__CHECK = eINSTANCE.getOracle_Check();
 
     /**
-     * The meta object literal for the '<em><b>Bound up</b></em>' containment reference feature.
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.CheckImpl <em>Check</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.CheckImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getCheck()
      * @generated
      */
-    EReference CHECK_STATIC_UPPER_ONLY__BOUND_UP = eINSTANCE.getCheck_Static_upper_only_Bound_up();
-
-    /**
-     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.Check_Static_lower_onlyImpl <em>Check Static lower only</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.xtext.example.mydsl.adeptness.impl.Check_Static_lower_onlyImpl
-     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getCheck_Static_lower_only()
-     * @generated
-     */
-    EClass CHECK_STATIC_LOWER_ONLY = eINSTANCE.getCheck_Static_lower_only();
+    EClass CHECK = eINSTANCE.getCheck();
 
     /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -1339,107 +1699,299 @@ public interface AdeptnessPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute CHECK_STATIC_LOWER_ONLY__NAME = eINSTANCE.getCheck_Static_lower_only_Name();
+    EAttribute CHECK__NAME = eINSTANCE.getCheck_Name();
 
     /**
-     * The meta object literal for the '<em><b>Inclusive bound</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Reference</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference CHECK_STATIC_LOWER_ONLY__INCLUSIVE_BOUND = eINSTANCE.getCheck_Static_lower_only_Inclusive_bound();
+    EReference CHECK__REFERENCE = eINSTANCE.getCheck_Reference();
 
     /**
-     * The meta object literal for the '<em><b>Bound low</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Fail Reason</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference CHECK_STATIC_LOWER_ONLY__BOUND_LOW = eINSTANCE.getCheck_Static_lower_only_Bound_low();
+    EReference CHECK__FAIL_REASON = eINSTANCE.getCheck_FailReason();
 
     /**
-     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.Check_RangeImpl <em>Check Range</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.xtext.example.mydsl.adeptness.impl.Check_RangeImpl
-     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getCheck_Range()
-     * @generated
-     */
-    EClass CHECK_RANGE = eINSTANCE.getCheck_Range();
-
-    /**
-     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute CHECK_RANGE__NAME = eINSTANCE.getCheck_Range_Name();
+    EAttribute CHECK__DESCRIPTION = eINSTANCE.getCheck_Description();
 
     /**
-     * The meta object literal for the '<em><b>Inclusive bound</b></em>' containment reference feature.
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.FailReasonImpl <em>Fail Reason</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.FailReasonImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getFailReason()
+     * @generated
+     */
+    EClass FAIL_REASON = eINSTANCE.getFailReason();
+
+    /**
+     * The meta object literal for the '<em><b>High Peak</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference CHECK_RANGE__INCLUSIVE_BOUND = eINSTANCE.getCheck_Range_Inclusive_bound();
+    EReference FAIL_REASON__HIGH_PEAK = eINSTANCE.getFailReason_HighPeak();
 
     /**
-     * The meta object literal for the '<em><b>Bound low</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>High Time</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference CHECK_RANGE__BOUND_LOW = eINSTANCE.getCheck_Range_Bound_low();
+    EReference FAIL_REASON__HIGH_TIME = eINSTANCE.getFailReason_HighTime();
 
     /**
-     * The meta object literal for the '<em><b>Bound up</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Const Deg</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference CHECK_RANGE__BOUND_UP = eINSTANCE.getCheck_Range_Bound_up();
+    EReference FAIL_REASON__CONST_DEG = eINSTANCE.getFailReason_ConstDeg();
 
     /**
-     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.Check_GapImpl <em>Check Gap</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.xtext.example.mydsl.adeptness.impl.Check_GapImpl
-     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getCheck_Gap()
-     * @generated
-     */
-    EClass CHECK_GAP = eINSTANCE.getCheck_Gap();
-
-    /**
-     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Hig Peaks</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute CHECK_GAP__NAME = eINSTANCE.getCheck_Gap_Name();
+    EReference FAIL_REASON__HIG_PEAKS = eINSTANCE.getFailReason_HigPeaks();
 
     /**
-     * The meta object literal for the '<em><b>Inclusive bound</b></em>' containment reference feature.
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.HighPeaksImpl <em>High Peaks</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.HighPeaksImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getHighPeaks()
+     * @generated
+     */
+    EClass HIGH_PEAKS = eINSTANCE.getHighPeaks();
+
+    /**
+     * The meta object literal for the '<em><b>Cant</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference CHECK_GAP__INCLUSIVE_BOUND = eINSTANCE.getCheck_Gap_Inclusive_bound();
+    EReference HIGH_PEAKS__CANT = eINSTANCE.getHighPeaks_Cant();
 
     /**
-     * The meta object literal for the '<em><b>Bound low</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Time</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference CHECK_GAP__BOUND_LOW = eINSTANCE.getCheck_Gap_Bound_low();
+    EReference HIGH_PEAKS__TIME = eINSTANCE.getHighPeaks_Time();
 
     /**
-     * The meta object literal for the '<em><b>Bound up</b></em>' containment reference feature.
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.ConstDegImpl <em>Const Deg</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.ConstDegImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getConstDeg()
+     * @generated
+     */
+    EClass CONST_DEG = eINSTANCE.getConstDeg();
+
+    /**
+     * The meta object literal for the '<em><b>Upper</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference CHECK_GAP__BOUND_UP = eINSTANCE.getCheck_Gap_Bound_up();
+    EReference CONST_DEG__UPPER = eINSTANCE.getConstDeg_Upper();
+
+    /**
+     * The meta object literal for the '<em><b>Lower</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference CONST_DEG__LOWER = eINSTANCE.getConstDeg_Lower();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.HighTimeImpl <em>High Time</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.HighTimeImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getHighTime()
+     * @generated
+     */
+    EClass HIGH_TIME = eINSTANCE.getHighTime();
+
+    /**
+     * The meta object literal for the '<em><b>Cant</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference HIGH_TIME__CANT = eINSTANCE.getHighTime_Cant();
+
+    /**
+     * The meta object literal for the '<em><b>Time</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference HIGH_TIME__TIME = eINSTANCE.getHighTime_Time();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.HighPeakImpl <em>High Peak</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.HighPeakImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getHighPeak()
+     * @generated
+     */
+    EClass HIGH_PEAK = eINSTANCE.getHighPeak();
+
+    /**
+     * The meta object literal for the '<em><b>Cant</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference HIGH_PEAK__CANT = eINSTANCE.getHighPeak_Cant();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.ReferenceImpl <em>Reference</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.ReferenceImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getReference()
+     * @generated
+     */
+    EClass REFERENCE = eINSTANCE.getReference();
+
+    /**
+     * The meta object literal for the '<em><b>Upper</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REFERENCE__UPPER = eINSTANCE.getReference_Upper();
+
+    /**
+     * The meta object literal for the '<em><b>Lower</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REFERENCE__LOWER = eINSTANCE.getReference_Lower();
+
+    /**
+     * The meta object literal for the '<em><b>Range</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REFERENCE__RANGE = eINSTANCE.getReference_Range();
+
+    /**
+     * The meta object literal for the '<em><b>Gap</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REFERENCE__GAP = eINSTANCE.getReference_Gap();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.UpperImpl <em>Upper</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.UpperImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getUpper()
+     * @generated
+     */
+    EClass UPPER = eINSTANCE.getUpper();
+
+    /**
+     * The meta object literal for the '<em><b>Bound upp</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference UPPER__BOUND_UPP = eINSTANCE.getUpper_Bound_upp();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.LowerImpl <em>Lower</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.LowerImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getLower()
+     * @generated
+     */
+    EClass LOWER = eINSTANCE.getLower();
+
+    /**
+     * The meta object literal for the '<em><b>Bound lower</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference LOWER__BOUND_LOWER = eINSTANCE.getLower_Bound_lower();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.RangeImpl <em>Range</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.RangeImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getRange()
+     * @generated
+     */
+    EClass RANGE = eINSTANCE.getRange();
+
+    /**
+     * The meta object literal for the '<em><b>Bound lower</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference RANGE__BOUND_LOWER = eINSTANCE.getRange_Bound_lower();
+
+    /**
+     * The meta object literal for the '<em><b>Bound upp</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference RANGE__BOUND_UPP = eINSTANCE.getRange_Bound_upp();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.GapImpl <em>Gap</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.GapImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getGap()
+     * @generated
+     */
+    EClass GAP = eINSTANCE.getGap();
+
+    /**
+     * The meta object literal for the '<em><b>Bound lower</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference GAP__BOUND_LOWER = eINSTANCE.getGap_Bound_lower();
+
+    /**
+     * The meta object literal for the '<em><b>Bound upp</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference GAP__BOUND_UPP = eINSTANCE.getGap_Bound_upp();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.InclusiveBoundImpl <em>Inclusive Bound</em>}' class.
@@ -1478,14 +2030,6 @@ public interface AdeptnessPackage extends EPackage
     EClass BOUND_UP = eINSTANCE.getBound_up();
 
     /**
-     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute BOUND_UP__NAME = eINSTANCE.getBound_up_Name();
-
-    /**
      * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1502,14 +2046,6 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EClass BOUND_DOWN = eINSTANCE.getBound_Down();
-
-    /**
-     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute BOUND_DOWN__NAME = eINSTANCE.getBound_Down_Name();
 
     /**
      * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.

@@ -69,40 +69,112 @@ public interface AdeptnessFactory extends EFactory
   Signal createSignal();
 
   /**
-   * Returns a new object of class '<em>Check Static upper only</em>'.
+   * Returns a new object of class '<em>Oracle</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Check Static upper only</em>'.
+   * @return a new object of class '<em>Oracle</em>'.
    * @generated
    */
-  Check_Static_upper_only createCheck_Static_upper_only();
+  Oracle createOracle();
 
   /**
-   * Returns a new object of class '<em>Check Static lower only</em>'.
+   * Returns a new object of class '<em>Check</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Check Static lower only</em>'.
+   * @return a new object of class '<em>Check</em>'.
    * @generated
    */
-  Check_Static_lower_only createCheck_Static_lower_only();
+  Check createCheck();
 
   /**
-   * Returns a new object of class '<em>Check Range</em>'.
+   * Returns a new object of class '<em>Fail Reason</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Check Range</em>'.
+   * @return a new object of class '<em>Fail Reason</em>'.
    * @generated
    */
-  Check_Range createCheck_Range();
+  FailReason createFailReason();
 
   /**
-   * Returns a new object of class '<em>Check Gap</em>'.
+   * Returns a new object of class '<em>High Peaks</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Check Gap</em>'.
+   * @return a new object of class '<em>High Peaks</em>'.
    * @generated
    */
-  Check_Gap createCheck_Gap();
+  HighPeaks createHighPeaks();
+
+  /**
+   * Returns a new object of class '<em>Const Deg</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Const Deg</em>'.
+   * @generated
+   */
+  ConstDeg createConstDeg();
+
+  /**
+   * Returns a new object of class '<em>High Time</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>High Time</em>'.
+   * @generated
+   */
+  HighTime createHighTime();
+
+  /**
+   * Returns a new object of class '<em>High Peak</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>High Peak</em>'.
+   * @generated
+   */
+  HighPeak createHighPeak();
+
+  /**
+   * Returns a new object of class '<em>Reference</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Reference</em>'.
+   * @generated
+   */
+  Reference createReference();
+
+  /**
+   * Returns a new object of class '<em>Upper</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Upper</em>'.
+   * @generated
+   */
+  Upper createUpper();
+
+  /**
+   * Returns a new object of class '<em>Lower</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Lower</em>'.
+   * @generated
+   */
+  Lower createLower();
+
+  /**
+   * Returns a new object of class '<em>Range</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Range</em>'.
+   * @generated
+   */
+  Range createRange();
+
+  /**
+   * Returns a new object of class '<em>Gap</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Gap</em>'.
+   * @generated
+   */
+  Gap createGap();
 
   /**
    * Returns a new object of class '<em>Inclusive Bound</em>'.

@@ -28,56 +28,80 @@ Type:
 ;
 //Each signal could have more than one oracles
 Signal:
-	'signal' name=ID '{'
-		(check_static_upper+=Check_Static_upper_only)*
+	'CPS' name=ID ':'
+		(oracle+=Oracle)+';'
+		/*(check_static_upper+=Check_Static_upper_only)*
 		(check_static_lower+=Check_Static_lower_only)*
 		(check_range+=Check_Range)*
-		(check_gap+=Check_Gap)*
-	'}'
+		(check_gap+=Check_Gap)*/
 ;
 
 
+Oracle: 
+	'Oracle' name=ID ':'
+		(check+=Check)+';'
+;
+
+Check:
+	'checks:' name=STRING 'is'
+	(reference=Reference)
+	(failReason+=FailReason)+
+	(description=STRING) ','
+	
+;
+FailReason:
+	'fails' 'if' ':'
+	((highPeak=HighPeak)|(highTime=HighTime)|(constDeg=ConstDeg)|(HigPeaks=HighPeaks)) ','
+;
+
+HighPeaks:
+	'value' 'is' 'higher' 'than' (cant=DOUBLE) 'in' 'interval' 'of' (time=DOUBLE)
+;
+
+ConstDeg:
+	'constant' 'degradation' (((upper=Upper)|(lower=Lower)))
+;
+
+HighTime:
+	'higher' 'than' (cant=DOUBLE) 'in' 'a' 'time' 'of' (time=DOUBLE)
+;
+
+HighPeak:
+	'highest' 'value' 'is' 'higher' 'than' (cant=DOUBLE)
+;
+
+Reference:
+	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap))','
+;
 //Oracle for upper limit --> Below reference signal
-Check_Static_upper_only:
-	'Check_Static_Upper' name=ID '{'
-		(inclusive_bound=InclusiveBound)
-		(bound_up=Bound_up)
-	'}'
+Upper:
+	'below' 'than' (bound_upp=Bound_up)
 ;
 //Oracle for lower limit --> Above reference signal
-Check_Static_lower_only:
-	'Check_Static_Lower' name=ID '{'
-		(inclusive_bound=InclusiveBound)
-		(bound_low=Bound_Down)
-	'}'
+Lower:
+	'above' 'than' (bound_lower=Bound_Down)
 ;
 //Oracle for Above and Below limit --> In range reference signal
-Check_Range:
-	'Check_Range' name=ID '{'
-		(inclusive_bound=InclusiveBound)
-		(bound_low=Bound_Down)
-		(bound_up=Bound_up)
-	'}'
+Range:
+	'in' 'range' 'between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
 ;
 //Oracle for !Above and !Below limit --> Gap reference signal
-Check_Gap:
-	'Check_Gap' name=ID '{'
-		(inclusive_bound=InclusiveBound)
-		(bound_low=Bound_Down)
-		(bound_up=Bound_up)
-	'}'
+Gap:
+	'not' 'in' 'range' 'between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
 ;
+
 //If the limits must be included ==
 InclusiveBound:
 	'inclusiveBound' name=ID '=' value= BOOLEAN
 ;
 //Upper limit
+
 Bound_up:
-	'bound_up' name=ID '=' value=DOUBLE
+	value=DOUBLE
 ;
 //Lower limit
 Bound_Down:
-	'bound_down' name=ID '=' value=DOUBLE
+	 value=DOUBLE
 ;
 //Boolean declaration
 BOOLEAN:
@@ -90,32 +114,6 @@ DOUBLE:
 ;
 d returns ecore::EDouble : ('-')? INT('.'INT)?;
 
-/*Output:
-	'outPut' name=ID '=' value=BOOLEAN
-;
-
-StopSim:
-	'stopSim' name=ID '=' value=BOOLEAN
-;
-
-CallBack:
-	'callBack' name=ID '=' value=STRING
-;
-
-Assertion:
-	'assertion' name=ID '=' value=BOOLEAN
-;*/
-/*Bound_Up_Low:
-	'bound_up_low' name=ID '=' value=BOOLEAN
-;
-
-Bound_Lower:
-	'bound_lower' name=ID '=' value=BOOLEAN
-;
-
-Bound_Upper:
-	'bound_upper' name=ID '=' value=BOOLEAN
-;*/	
 
 //DataType declaration
 DataType:

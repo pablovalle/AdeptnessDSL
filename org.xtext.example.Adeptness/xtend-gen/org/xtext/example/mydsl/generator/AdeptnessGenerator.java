@@ -15,11 +15,13 @@ import org.eclipse.xtext.generator.IGeneratorContext;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
-import org.xtext.example.mydsl.adeptness.Check_Gap;
-import org.xtext.example.mydsl.adeptness.Check_Range;
-import org.xtext.example.mydsl.adeptness.Check_Static_lower_only;
-import org.xtext.example.mydsl.adeptness.Check_Static_upper_only;
+import org.xtext.example.mydsl.adeptness.Check;
+import org.xtext.example.mydsl.adeptness.Gap;
+import org.xtext.example.mydsl.adeptness.Lower;
+import org.xtext.example.mydsl.adeptness.Oracle;
+import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Signal;
+import org.xtext.example.mydsl.adeptness.Upper;
 
 /**
  * Generates code from your model files on save.
@@ -34,375 +36,79 @@ public class AdeptnessGenerator extends AbstractGenerator {
   
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
-    fsa.generateFile("adeptness.xml", this.createXML(Iterables.<Signal>filter(IteratorExtensions.<EObject>toIterable(resource.getAllContents()), Signal.class)));
     Iterable<Signal> _filter = Iterables.<Signal>filter(IteratorExtensions.<EObject>toIterable(resource.getAllContents()), Signal.class);
     for (final Signal e : _filter) {
-      {
-        EList<Check_Range> _check_range = e.getCheck_range();
-        for (final Check_Range f : _check_range) {
-          {
-            String _string = this._iQualifiedNameProvider.getFullyQualifiedName(f).toString("/");
-            String _plus = (_string + ".c");
-            fsa.generateFile(_plus, this.create_range_c(f));
-            String _string_1 = this._iQualifiedNameProvider.getFullyQualifiedName(f).toString("/");
-            String _plus_1 = (_string_1 + ".h");
-            fsa.generateFile(_plus_1, this.create_range_h(f));
-            String _string_2 = this._iQualifiedNameProvider.getFullyQualifiedName(f).toString("/");
-            String _plus_2 = (_string_2 + ".m");
-            fsa.generateFile(_plus_2, this.create_range_m(f));
-          }
-        }
-        EList<Check_Gap> _check_gap = e.getCheck_gap();
-        for (final Check_Gap u : _check_gap) {
-          {
-            String _string = this._iQualifiedNameProvider.getFullyQualifiedName(u).toString("/");
-            String _plus = (_string + ".c");
-            fsa.generateFile(_plus, this.create_gap_c(u));
-            String _string_1 = this._iQualifiedNameProvider.getFullyQualifiedName(u).toString("/");
-            String _plus_1 = (_string_1 + ".h");
-            fsa.generateFile(_plus_1, this.create_gap_h(u));
-            String _string_2 = this._iQualifiedNameProvider.getFullyQualifiedName(u).toString("/");
-            String _plus_2 = (_string_2 + ".m");
-            fsa.generateFile(_plus_2, this.create_gap_m(u));
-          }
-        }
-        EList<Check_Static_lower_only> _check_static_lower = e.getCheck_static_lower();
-        for (final Check_Static_lower_only l : _check_static_lower) {
-          {
-            String _string = this._iQualifiedNameProvider.getFullyQualifiedName(l).toString("/");
-            String _plus = (_string + ".c");
-            fsa.generateFile(_plus, this.create_low_c(l));
-            String _string_1 = this._iQualifiedNameProvider.getFullyQualifiedName(l).toString("/");
-            String _plus_1 = (_string_1 + ".h");
-            fsa.generateFile(_plus_1, this.create_low_h(l));
-            String _string_2 = this._iQualifiedNameProvider.getFullyQualifiedName(l).toString("/");
-            String _plus_2 = (_string_2 + ".m");
-            fsa.generateFile(_plus_2, this.create_low_m(l));
-          }
-        }
-        EList<Check_Static_upper_only> _check_static_upper = e.getCheck_static_upper();
-        for (final Check_Static_upper_only d : _check_static_upper) {
-          {
-            String _string = this._iQualifiedNameProvider.getFullyQualifiedName(d).toString("/");
-            String _plus = (_string + ".c");
-            fsa.generateFile(_plus, this.create_up_c(d));
-            String _string_1 = this._iQualifiedNameProvider.getFullyQualifiedName(d).toString("/");
-            String _plus_1 = (_string_1 + ".h");
-            fsa.generateFile(_plus_1, this.create_up_h(d));
-            String _string_2 = this._iQualifiedNameProvider.getFullyQualifiedName(d).toString("/");
-            String _plus_2 = (_string_2 + ".m");
-            fsa.generateFile(_plus_2, this.create_up_m(d));
-          }
+      EList<Oracle> _oracle = e.getOracle();
+      for (final Oracle q : _oracle) {
+        {
+          String _string = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
+          String _plus = (_string + ".c");
+          fsa.generateFile(_plus, this.create_oracle_c(q));
+          String _string_1 = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
+          String _plus_1 = (_string_1 + ".h");
+          fsa.generateFile(_plus_1, this.create_oracle_h(q));
+          String _string_2 = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
+          String _plus_2 = (_string_2 + ".m");
+          fsa.generateFile(_plus_2, this.create_oracle_m(q));
         }
       }
     }
   }
   
-  public CharSequence createXML(final Iterable<Signal> signals) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("<?xml version=\'1.0\' encoding=\"UTF-8\"?>");
-    _builder.newLine();
-    {
-      for(final Signal s : signals) {
-        _builder.append("\t");
-        _builder.append("<Signal>");
-        _builder.newLine();
-        _builder.append("\t");
-        _builder.append("\t");
-        _builder.append("<SignalDescription name=\"");
-        String _string = this._iQualifiedNameProvider.getFullyQualifiedName(s).toString("/");
-        _builder.append(_string, "\t\t");
-        _builder.append("\">");
-        _builder.newLineIfNotEmpty();
-        _builder.append("\t");
-        _builder.append("\t\t");
-        _builder.append("<TypeSignalDescription name=\"Static\">");
-        _builder.newLine();
-        {
-          EList<Check_Gap> _check_gap = s.getCheck_gap();
-          for(final Check_Gap c : _check_gap) {
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("<Type name=\"");
-            String _string_1 = c.getName().toString();
-            _builder.append(_string_1, "\t\t\t\t");
-            _builder.append("\">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t");
-            _builder.append("<Parameters>");
-            _builder.newLine();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t\t");
-            _builder.append("<");
-            String _string_2 = c.getInclusive_bound().eClass().getName().toString();
-            _builder.append(_string_2, "\t\t\t\t\t\t");
-            _builder.append(">");
-            boolean _isBool = c.getInclusive_bound().getValue().isBool();
-            _builder.append(_isBool, "\t\t\t\t\t\t");
-            _builder.append("</");
-            String _string_3 = c.getInclusive_bound().eClass().getName().toString();
-            _builder.append(_string_3, "\t\t\t\t\t\t");
-            _builder.append(">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t\t");
-            _builder.append("<");
-            String _string_4 = c.getBound_up().eClass().getName().toString();
-            _builder.append(_string_4, "\t\t\t\t\t\t");
-            _builder.append(">");
-            double _dVal = c.getBound_up().getValue().getDVal();
-            _builder.append(_dVal, "\t\t\t\t\t\t");
-            _builder.append("</");
-            String _string_5 = c.getBound_up().eClass().getName().toString();
-            _builder.append(_string_5, "\t\t\t\t\t\t");
-            _builder.append(">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t\t");
-            _builder.append("<");
-            String _string_6 = c.getBound_low().eClass().getName().toString();
-            _builder.append(_string_6, "\t\t\t\t\t\t");
-            _builder.append(">");
-            double _dVal_1 = c.getBound_low().getValue().getDVal();
-            _builder.append(_dVal_1, "\t\t\t\t\t\t");
-            _builder.append("</");
-            String _string_7 = c.getBound_low().eClass().getName().toString();
-            _builder.append(_string_7, "\t\t\t\t\t\t");
-            _builder.append(">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t");
-            _builder.append("</Parameters>");
-            _builder.newLine();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("</Type>\t\t\t\t");
-            _builder.newLine();
-          }
-        }
-        _builder.append("\t");
-        _builder.append("\t\t");
-        _builder.append("</TypeSignalDescription>");
-        _builder.newLine();
-        _builder.append("\t");
-        _builder.append("\t\t");
-        _builder.append("<TypeSignalDescription name=\"Static_Low\">");
-        _builder.newLine();
-        {
-          EList<Check_Static_lower_only> _check_static_lower = s.getCheck_static_lower();
-          for(final Check_Static_lower_only l : _check_static_lower) {
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("<Type name=\"");
-            String _string_8 = l.getName().toString();
-            _builder.append(_string_8, "\t\t\t\t");
-            _builder.append("\">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t");
-            _builder.append("<Parameters>");
-            _builder.newLine();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t\t");
-            _builder.append("<");
-            String _string_9 = l.getInclusive_bound().eClass().getName().toString();
-            _builder.append(_string_9, "\t\t\t\t\t\t");
-            _builder.append(">");
-            boolean _isBool_1 = l.getInclusive_bound().getValue().isBool();
-            _builder.append(_isBool_1, "\t\t\t\t\t\t");
-            _builder.append("</");
-            String _string_10 = l.getInclusive_bound().eClass().getName().toString();
-            _builder.append(_string_10, "\t\t\t\t\t\t");
-            _builder.append(">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t\t");
-            _builder.append("<");
-            String _string_11 = l.getBound_low().eClass().getName().toString();
-            _builder.append(_string_11, "\t\t\t\t\t\t");
-            _builder.append(">");
-            double _dVal_2 = l.getBound_low().getValue().getDVal();
-            _builder.append(_dVal_2, "\t\t\t\t\t\t");
-            _builder.append("</");
-            String _string_12 = l.getBound_low().eClass().getName().toString();
-            _builder.append(_string_12, "\t\t\t\t\t\t");
-            _builder.append(">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t");
-            _builder.append("</Parameters>");
-            _builder.newLine();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("</Type>\t\t\t\t");
-            _builder.newLine();
-          }
-        }
-        _builder.append("\t");
-        _builder.append("\t\t");
-        _builder.append("</TypeSignalDescription>");
-        _builder.newLine();
-        _builder.append("\t");
-        _builder.append("\t\t");
-        _builder.append("<TypeSignalDescription name=\"Static_Up\">");
-        _builder.newLine();
-        {
-          EList<Check_Static_upper_only> _check_static_upper = s.getCheck_static_upper();
-          for(final Check_Static_upper_only u : _check_static_upper) {
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("<Type name=\"");
-            String _string_13 = u.getName().toString();
-            _builder.append(_string_13, "\t\t\t\t");
-            _builder.append("\">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t");
-            _builder.append("<Parameters>");
-            _builder.newLine();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t\t");
-            _builder.append("<");
-            String _string_14 = u.getInclusive_bound().eClass().getName().toString();
-            _builder.append(_string_14, "\t\t\t\t\t\t");
-            _builder.append(">");
-            boolean _isBool_2 = u.getInclusive_bound().getValue().isBool();
-            _builder.append(_isBool_2, "\t\t\t\t\t\t");
-            _builder.append("</");
-            String _string_15 = u.getInclusive_bound().eClass().getName().toString();
-            _builder.append(_string_15, "\t\t\t\t\t\t");
-            _builder.append(">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t\t");
-            _builder.append("<");
-            String _string_16 = u.getBound_up().eClass().getName().toString();
-            _builder.append(_string_16, "\t\t\t\t\t\t");
-            _builder.append(">");
-            double _dVal_3 = u.getBound_up().getValue().getDVal();
-            _builder.append(_dVal_3, "\t\t\t\t\t\t");
-            _builder.append("</");
-            String _string_17 = u.getBound_up().eClass().getName().toString();
-            _builder.append(_string_17, "\t\t\t\t\t\t");
-            _builder.append(">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t");
-            _builder.append("</Parameters>");
-            _builder.newLine();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("</Type>\t\t\t\t");
-            _builder.newLine();
-          }
-        }
-        _builder.append("\t");
-        _builder.append("\t\t");
-        _builder.append("</TypeSignalDescription>");
-        _builder.newLine();
-        _builder.append("\t");
-        _builder.append("\t\t");
-        _builder.append("<TypeSignalDescription name=\"Dynamic\">");
-        _builder.newLine();
-        {
-          EList<Check_Range> _check_range = s.getCheck_range();
-          for(final Check_Range d : _check_range) {
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("<Type name=\"");
-            String _string_18 = d.getName().toString();
-            _builder.append(_string_18, "\t\t\t\t");
-            _builder.append("\">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t");
-            _builder.append("<Parameters>");
-            _builder.newLine();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t\t");
-            _builder.append("<");
-            String _string_19 = d.getInclusive_bound().eClass().getName().toString();
-            _builder.append(_string_19, "\t\t\t\t\t\t");
-            _builder.append(">");
-            boolean _isBool_3 = d.getInclusive_bound().getValue().isBool();
-            _builder.append(_isBool_3, "\t\t\t\t\t\t");
-            _builder.append("</");
-            String _string_20 = d.getInclusive_bound().eClass().getName().toString();
-            _builder.append(_string_20, "\t\t\t\t\t\t");
-            _builder.append(">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t\t");
-            _builder.append("<");
-            String _string_21 = d.getBound_up().eClass().getName().toString();
-            _builder.append(_string_21, "\t\t\t\t\t\t");
-            _builder.append(">");
-            double _dVal_4 = d.getBound_up().getValue().getDVal();
-            _builder.append(_dVal_4, "\t\t\t\t\t\t");
-            _builder.append("</");
-            String _string_22 = d.getBound_up().eClass().getName().toString();
-            _builder.append(_string_22, "\t\t\t\t\t\t");
-            _builder.append(">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t\t");
-            _builder.append("<");
-            String _string_23 = d.getBound_low().eClass().getName().toString();
-            _builder.append(_string_23, "\t\t\t\t\t\t");
-            _builder.append(">");
-            double _dVal_5 = d.getBound_low().getValue().getDVal();
-            _builder.append(_dVal_5, "\t\t\t\t\t\t");
-            _builder.append("</");
-            String _string_24 = d.getBound_low().eClass().getName().toString();
-            _builder.append(_string_24, "\t\t\t\t\t\t");
-            _builder.append(">");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("\t");
-            _builder.append("</Parameters>");
-            _builder.newLine();
-            _builder.append("\t");
-            _builder.append("\t\t\t");
-            _builder.append("</Type>\t\t");
-            _builder.newLine();
-          }
-        }
-        _builder.append("\t");
-        _builder.append("\t\t");
-        _builder.append("</TypeSignalDescription>\t\t\t\t\t\t");
-        _builder.newLine();
-        _builder.append("\t");
-        _builder.append("\t");
-        _builder.append("</SignalDescription>");
-        _builder.newLine();
-        _builder.append("\t");
-        _builder.append("</Signal>");
-        _builder.newLine();
-      }
-    }
-    return _builder;
-  }
-  
-  public CharSequence create_up_m(final Check_Static_upper_only param) {
+  /**
+   * def createXML(Iterable<Signal> signals)'''
+   * <?xml version='1.0' encoding="UTF-8"?>
+   * «FOR s : signals»
+   * <Signal>
+   * <SignalDescription name="«s.fullyQualifiedName.toString("/")»">
+   * <TypeSignalDescription name="Static">
+   * «FOR c: s.check_gap»
+   * <Type name="«c.name.toString»">
+   * <Parameters>
+   * <«c.inclusive_bound.eClass.name.toString()»>«c.inclusive_bound.value.bool»</«c.inclusive_bound.eClass.name.toString()»>
+   * <«c.bound_up.eClass.name.toString()»>«c.bound_up.value.DVal»</«c.bound_up.eClass.name.toString()»>
+   * <«c.bound_low.eClass.name.toString()»>«c.bound_low.value.DVal»</«c.bound_low.eClass.name.toString()»>
+   * </Parameters>
+   * </Type>
+   * «ENDFOR»
+   * </TypeSignalDescription>
+   * <TypeSignalDescription name="Static_Low">
+   * «FOR l: s.check_static_lower»
+   * <Type name="«l.name.toString»">
+   * <Parameters>
+   * <«l.inclusive_bound.eClass.name.toString()»>«l.inclusive_bound.value.bool»</«l.inclusive_bound.eClass.name.toString()»>
+   * <«l.bound_low.eClass.name.toString()»>«l.bound_low.value.DVal»</«l.bound_low.eClass.name.toString()»>
+   * </Parameters>
+   * </Type>
+   * «ENDFOR»
+   * </TypeSignalDescription>
+   * <TypeSignalDescription name="Static_Up">
+   * «FOR u: s.check_static_upper»
+   * <Type name="«u.name.toString»">
+   * <Parameters>
+   * <«u.inclusive_bound.eClass.name.toString()»>«u.inclusive_bound.value.bool»</«u.inclusive_bound.eClass.name.toString()»>
+   * <«u.bound_up.eClass.name.toString()»>«u.bound_up.value.DVal»</«u.bound_up.eClass.name.toString()»>
+   * </Parameters>
+   * </Type>
+   * «ENDFOR»
+   * </TypeSignalDescription>
+   * <TypeSignalDescription name="Dynamic">
+   * «FOR d: s.check_range»
+   * <Type name="«d.name.toString»">
+   * <Parameters>
+   * <«d.inclusive_bound.eClass.name.toString()»>«d.inclusive_bound.value.bool»</«d.inclusive_bound.eClass.name.toString()»>
+   * <«d.bound_up.eClass.name.toString()»>«d.bound_up.value.DVal»</«d.bound_up.eClass.name.toString()»>
+   * <«d.bound_low.eClass.name.toString()»>«d.bound_low.value.DVal»</«d.bound_low.eClass.name.toString()»>
+   * </Parameters>
+   * </Type>
+   * «ENDFOR»
+   * </TypeSignalDescription>
+   * </SignalDescription>
+   * </Signal>
+   * «ENDFOR»
+   * '''
+   */
+  public CharSequence create_oracle_m(final Oracle param) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.newLine();
     _builder.append("def= legacy_code(\'initialize\');");
@@ -436,7 +142,7 @@ public class AdeptnessGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence create_up_h(final Check_Static_upper_only param) {
+  public CharSequence create_oracle_h(final Oracle param) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("#ifndef ");
     String _upperCase = param.getName().toString().toUpperCase();
@@ -448,411 +154,318 @@ public class AdeptnessGenerator extends AbstractGenerator {
     _builder.append(_upperCase_1);
     _builder.append("_H");
     _builder.newLineIfNotEmpty();
-    _builder.append("double ");
-    String _string = param.getName().toString();
-    _builder.append(_string);
-    _builder.append("(double Input);");
-    _builder.newLineIfNotEmpty();
-    _builder.append("#endif");
-    _builder.newLine();
-    return _builder;
-  }
-  
-  public CharSequence create_up_c(final Check_Static_upper_only param) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("#include \"");
-    String _string = param.getName().toString();
-    _builder.append(_string);
-    _builder.append(".h\"");
-    _builder.newLineIfNotEmpty();
-    _builder.append("double ");
-    String _string_1 = param.getName().toString();
-    _builder.append(_string_1);
-    _builder.append("(double Input){");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\t");
-    _builder.append("double ret=0;");
-    _builder.newLine();
     {
-      boolean _isBool = param.getInclusive_bound().getValue().isBool();
-      if (_isBool) {
-        _builder.append("\t");
-        _builder.append("if(Input <=");
-        double _dVal = param.getBound_up().getValue().getDVal();
-        _builder.append(_dVal, "\t");
-        _builder.append("){");
-        _builder.newLineIfNotEmpty();
-        _builder.append("\t");
-        _builder.append("\t");
-        _builder.append("ret=1;");
-        _builder.newLine();
-        _builder.append("\t");
-        _builder.append("}\t");
-        _builder.newLine();
-      } else {
-        _builder.append("\t");
-        _builder.append("if(Input <");
-        double _dVal_1 = param.getBound_up().getValue().getDVal();
-        _builder.append(_dVal_1, "\t");
-        _builder.append("){");
-        _builder.newLineIfNotEmpty();
-        _builder.append("\t");
-        _builder.append("\t");
-        _builder.append("ret=1;");
-        _builder.newLine();
-        _builder.append("\t");
-        _builder.append("}\t");
-        _builder.newLine();
+      EList<Check> _check = param.getCheck();
+      for(final Check param1 : _check) {
+        {
+          Upper _upper = param1.getReference().getUpper();
+          boolean _tripleNotEquals = (_upper != null);
+          if (_tripleNotEquals) {
+            _builder.append("struct Ret{");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("int assert;");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("double diff;");
+            _builder.newLine();
+            _builder.append("};");
+            _builder.newLine();
+            _builder.append("struct Ret BelowReference (double ");
+            String _string = param1.getName().toString();
+            _builder.append(_string);
+            _builder.append(");");
+            _builder.newLineIfNotEmpty();
+          } else {
+            Lower _lower = param1.getReference().getLower();
+            boolean _tripleNotEquals_1 = (_lower != null);
+            if (_tripleNotEquals_1) {
+              _builder.append("struct Ret{");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("int assert;");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("double diff;");
+              _builder.newLine();
+              _builder.append("};");
+              _builder.newLine();
+              _builder.append("struct Ret AboveRefrence (double ");
+              String _string_1 = param1.getName().toString();
+              _builder.append(_string_1);
+              _builder.append(");");
+              _builder.newLineIfNotEmpty();
+            } else {
+              Range _range = param1.getReference().getRange();
+              boolean _tripleNotEquals_2 = (_range != null);
+              if (_tripleNotEquals_2) {
+                _builder.append("struct Ret{");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("int assert;");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("double diff_up;");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("double diff_down;");
+                _builder.newLine();
+                _builder.append("};");
+                _builder.newLine();
+                _builder.append("struct Ret RangeReference (double ");
+                String _string_2 = param1.getName().toString();
+                _builder.append(_string_2);
+                _builder.append(");");
+                _builder.newLineIfNotEmpty();
+              } else {
+                Gap _gap = param1.getReference().getGap();
+                boolean _tripleNotEquals_3 = (_gap != null);
+                if (_tripleNotEquals_3) {
+                  _builder.append("struct Ret{");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("int assert;");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("double diff_up;");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("double diff_down;");
+                  _builder.newLine();
+                  _builder.append("};");
+                  _builder.newLine();
+                  _builder.append("struct Ret GapReference (double ");
+                  String _string_3 = param1.getName().toString();
+                  _builder.append(_string_3);
+                  _builder.append(");");
+                  _builder.newLineIfNotEmpty();
+                }
+              }
+            }
+          }
+        }
       }
     }
-    _builder.append("\t");
-    _builder.append("return ret;");
     _builder.newLine();
-    _builder.append("}");
-    _builder.newLine();
-    return _builder;
-  }
-  
-  public CharSequence create_low_m(final Check_Static_lower_only param) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("def= legacy_code(\'initialize\');");
-    _builder.newLine();
-    _builder.append("def.OutputFcnSpec= \'double y1=");
-    String _string = param.getName().toString();
-    _builder.append(_string);
-    _builder.append("(double u1)\';");
-    _builder.newLineIfNotEmpty();
-    _builder.append("def.SourceFiles= {\'");
-    String _string_1 = param.getName().toString();
-    _builder.append(_string_1);
-    _builder.append(".c\'};");
-    _builder.newLineIfNotEmpty();
-    _builder.append("def.HeaderFiles= {\'");
-    String _string_2 = param.getName().toString();
-    _builder.append(_string_2);
-    _builder.append(".h\'};");
-    _builder.newLineIfNotEmpty();
-    _builder.append("def.SFunctionName= \'S_");
-    String _string_3 = param.getName().toString();
-    _builder.append(_string_3);
-    _builder.append("\';");
-    _builder.newLineIfNotEmpty();
-    _builder.append("legacy_code(\'sfcn_cmex_generate\' ,def)");
-    _builder.newLine();
-    _builder.append("legacy_code(\'compile\' ,def)");
-    _builder.newLine();
-    _builder.append("exit");
-    _builder.newLine();
-    return _builder;
-  }
-  
-  public CharSequence create_low_h(final Check_Static_lower_only param) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("#ifndef ");
-    String _upperCase = param.getName().toString().toUpperCase();
-    _builder.append(_upperCase);
-    _builder.append("_H");
-    _builder.newLineIfNotEmpty();
-    _builder.append("#define ");
-    String _upperCase_1 = param.getName().toString().toUpperCase();
-    _builder.append(_upperCase_1);
-    _builder.append("_H");
-    _builder.newLineIfNotEmpty();
-    _builder.append("double ");
-    String _string = param.getName().toString();
-    _builder.append(_string);
-    _builder.append("(double Input);");
-    _builder.newLineIfNotEmpty();
     _builder.append("#endif");
     _builder.newLine();
     return _builder;
   }
   
-  public CharSequence create_low_c(final Check_Static_lower_only param) {
+  public CharSequence create_oracle_c(final Oracle param) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("#include \"");
     String _string = param.getName().toString();
     _builder.append(_string);
     _builder.append(".h\"");
     _builder.newLineIfNotEmpty();
-    _builder.append("double ");
-    String _string_1 = param.getName().toString();
-    _builder.append(_string_1);
-    _builder.append("(double Input){");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\t");
-    _builder.append("double ret=0;");
-    _builder.newLine();
     {
-      boolean _isBool = param.getInclusive_bound().getValue().isBool();
-      if (_isBool) {
-        _builder.append("\t");
-        _builder.append("if(Input >= ");
-        double _dVal = param.getBound_low().getValue().getDVal();
-        _builder.append(_dVal, "\t");
-        _builder.append("){");
+      EList<Check> _check = param.getCheck();
+      for(final Check param1 : _check) {
+        _builder.append("//");
+        String _string_1 = param1.getDescription().toString();
+        _builder.append(_string_1);
         _builder.newLineIfNotEmpty();
+        {
+          Upper _upper = param1.getReference().getUpper();
+          boolean _tripleNotEquals = (_upper != null);
+          if (_tripleNotEquals) {
+            _builder.append("struct Ret BelowReference (double ");
+            String _string_2 = param1.getName().toString();
+            _builder.append(_string_2);
+            _builder.append("){");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("struct Ret ret;");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("ret.assert=0;");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("if(");
+            String _string_3 = param1.getName().toString();
+            _builder.append(_string_3, "\t");
+            _builder.append("<=");
+            double _dVal = param1.getReference().getUpper().getBound_upp().getValue().getDVal();
+            _builder.append(_dVal, "\t");
+            _builder.append("){");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t");
+            _builder.append("ret.assertret=1;");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("}");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("ret.diff=");
+            double _dVal_1 = param1.getReference().getUpper().getBound_upp().getValue().getDVal();
+            _builder.append(_dVal_1, "\t");
+            _builder.append("-");
+            String _string_4 = param1.getName().toString();
+            _builder.append(_string_4, "\t");
+            _builder.append(";");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.newLine();
+          } else {
+            Lower _lower = param1.getReference().getLower();
+            boolean _tripleNotEquals_1 = (_lower != null);
+            if (_tripleNotEquals_1) {
+              _builder.append("struct Ret AboveReference (double ");
+              String _string_5 = param1.getName().toString();
+              _builder.append(_string_5);
+              _builder.append("){");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("struct Ret ret;");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("ret.assert=0;");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("if(");
+              String _string_6 = param1.getName().toString();
+              _builder.append(_string_6, "\t");
+              _builder.append(">=");
+              double _dVal_2 = param1.getReference().getLower().getBound_lower().getValue().getDVal();
+              _builder.append(_dVal_2, "\t");
+              _builder.append("){");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t\t");
+              _builder.append("ret.assert=1;");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("}");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("ret.diff=");
+              String _string_7 = param1.getName().toString();
+              _builder.append(_string_7, "\t");
+              _builder.append("-");
+              double _dVal_3 = param1.getReference().getLower().getBound_lower().getValue().getDVal();
+              _builder.append(_dVal_3, "\t");
+              _builder.append(";");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.newLine();
+            } else {
+              Range _range = param1.getReference().getRange();
+              boolean _tripleNotEquals_2 = (_range != null);
+              if (_tripleNotEquals_2) {
+                _builder.append("struct Ret RangeReference (double ");
+                String _string_8 = param1.getName().toString();
+                _builder.append(_string_8);
+                _builder.append("){");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("struct Ret ret;");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("if(");
+                String _string_9 = param1.getName().toString();
+                _builder.append(_string_9, "\t");
+                _builder.append(">=");
+                double _dVal_4 = param1.getReference().getRange().getBound_lower().getValue().getDVal();
+                _builder.append(_dVal_4, "\t");
+                _builder.append(" && ");
+                String _string_10 = param1.getName().toString();
+                _builder.append(_string_10, "\t");
+                _builder.append("<=");
+                double _dVal_5 = param1.getReference().getRange().getBound_upp().getValue().getDVal();
+                _builder.append(_dVal_5, "\t");
+                _builder.append("){");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("ret.assert=1;");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("}");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("ret.diff_up=");
+                double _dVal_6 = param1.getReference().getRange().getBound_upp().getValue().getDVal();
+                _builder.append(_dVal_6, "\t");
+                _builder.append("-");
+                String _string_11 = param1.getName().toString();
+                _builder.append(_string_11, "\t");
+                _builder.append(";");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("ret.diff_down=");
+                String _string_12 = param1.getName().toString();
+                _builder.append(_string_12, "\t");
+                _builder.append("-");
+                double _dVal_7 = param1.getReference().getRange().getBound_lower().getValue().getDVal();
+                _builder.append(_dVal_7, "\t");
+                _builder.append(";");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.newLine();
+              } else {
+                Gap _gap = param1.getReference().getGap();
+                boolean _tripleNotEquals_3 = (_gap != null);
+                if (_tripleNotEquals_3) {
+                  _builder.append("struct Ret GapReference (double ");
+                  String _string_13 = param1.getName().toString();
+                  _builder.append(_string_13);
+                  _builder.append("){");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("struct Ret ret;");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("if(");
+                  String _string_14 = param1.getName().toString();
+                  _builder.append(_string_14, "\t");
+                  _builder.append("<=");
+                  double _dVal_8 = param1.getReference().getGap().getBound_lower().getValue().getDVal();
+                  _builder.append(_dVal_8, "\t");
+                  _builder.append(" || ");
+                  String _string_15 = param1.getName().toString();
+                  _builder.append(_string_15, "\t");
+                  _builder.append(">=");
+                  double _dVal_9 = param1.getReference().getGap().getBound_upp().getValue().getDVal();
+                  _builder.append(_dVal_9, "\t");
+                  _builder.append("){");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t\t");
+                  _builder.append("ret.assert=1;");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("}");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("ret.diff_up=");
+                  String _string_16 = param1.getName().toString();
+                  _builder.append(_string_16, "\t");
+                  _builder.append("-");
+                  double _dVal_10 = param1.getReference().getGap().getBound_upp().getValue().getDVal();
+                  _builder.append(_dVal_10, "\t");
+                  _builder.append(";");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("ret.diff_down=");
+                  double _dVal_11 = param1.getReference().getGap().getBound_lower().getValue().getDVal();
+                  _builder.append(_dVal_11, "\t");
+                  _builder.append("-");
+                  String _string_17 = param1.getName().toString();
+                  _builder.append(_string_17, "\t");
+                  _builder.append(";");
+                  _builder.newLineIfNotEmpty();
+                }
+              }
+            }
+          }
+        }
         _builder.append("\t");
-        _builder.append("\t");
-        _builder.append("ret=1;");
+        _builder.append("return ret;");
         _builder.newLine();
-        _builder.append("\t");
-        _builder.append("}\t");
-        _builder.newLine();
-      } else {
-        _builder.append("\t");
-        _builder.append("if(Input > ");
-        double _dVal_1 = param.getBound_low().getValue().getDVal();
-        _builder.append(_dVal_1, "\t");
-        _builder.append("){");
-        _builder.newLineIfNotEmpty();
-        _builder.append("\t");
-        _builder.append("\t");
-        _builder.append("ret=1;");
-        _builder.newLine();
-        _builder.append("\t");
         _builder.append("}");
         _builder.newLine();
       }
     }
     _builder.append("\t");
-    _builder.append("return ret;");
     _builder.newLine();
-    _builder.append("}");
-    _builder.newLine();
-    return _builder;
-  }
-  
-  public CharSequence create_range_m(final Check_Range param) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("def= legacy_code(\'initialize\');");
-    _builder.newLine();
-    _builder.append("def.OutputFcnSpec= \'double y1=");
-    String _string = param.getName().toString();
-    _builder.append(_string);
-    _builder.append("(double u1)\';");
-    _builder.newLineIfNotEmpty();
-    _builder.append("def.SourceFiles= {\'");
-    String _string_1 = param.getName().toString();
-    _builder.append(_string_1);
-    _builder.append(".c\'};");
-    _builder.newLineIfNotEmpty();
-    _builder.append("def.HeaderFiles= {\'");
-    String _string_2 = param.getName().toString();
-    _builder.append(_string_2);
-    _builder.append(".h\'};");
-    _builder.newLineIfNotEmpty();
-    _builder.append("def.SFunctionName= \'S_");
-    String _string_3 = param.getName().toString();
-    _builder.append(_string_3);
-    _builder.append("\';");
-    _builder.newLineIfNotEmpty();
-    _builder.append("legacy_code(\'sfcn_cmex_generate\' ,def)");
-    _builder.newLine();
-    _builder.append("legacy_code(\'compile\' ,def)");
-    _builder.newLine();
-    _builder.append("exit");
-    _builder.newLine();
-    return _builder;
-  }
-  
-  public CharSequence create_range_h(final Check_Range param) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("#ifndef ");
-    String _upperCase = param.getName().toString().toUpperCase();
-    _builder.append(_upperCase);
-    _builder.append("_H");
-    _builder.newLineIfNotEmpty();
-    _builder.append("#define ");
-    String _upperCase_1 = param.getName().toString().toUpperCase();
-    _builder.append(_upperCase_1);
-    _builder.append("_H");
-    _builder.newLineIfNotEmpty();
-    _builder.append("double ");
-    String _string = param.getName().toString();
-    _builder.append(_string);
-    _builder.append("(double Input);");
-    _builder.newLineIfNotEmpty();
-    _builder.append("#endif");
-    _builder.newLine();
-    return _builder;
-  }
-  
-  public CharSequence create_range_c(final Check_Range param) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("#include \"");
-    String _string = param.getName().toString();
-    _builder.append(_string);
-    _builder.append(".h\"");
-    _builder.newLineIfNotEmpty();
-    _builder.append("double ");
-    String _string_1 = param.getName().toString();
-    _builder.append(_string_1);
-    _builder.append("(double Input){");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\t");
-    _builder.append("double ret=0;");
-    _builder.newLine();
-    {
-      boolean _isBool = param.getInclusive_bound().getValue().isBool();
-      if (_isBool) {
-        _builder.append("\t");
-        _builder.append("if(Input >= ");
-        double _dVal = param.getBound_low().getValue().getDVal();
-        _builder.append(_dVal, "\t");
-        _builder.append(" && Input <= ");
-        double _dVal_1 = param.getBound_up().getValue().getDVal();
-        _builder.append(_dVal_1, "\t");
-        _builder.append(" ){");
-        _builder.newLineIfNotEmpty();
-        _builder.append("\t");
-        _builder.append("\t");
-        _builder.append("ret=1;");
-        _builder.newLine();
-        _builder.append("\t");
-        _builder.append("}\t");
-        _builder.newLine();
-      } else {
-        _builder.append("\t");
-        _builder.append("if(Input > ");
-        double _dVal_2 = param.getBound_low().getValue().getDVal();
-        _builder.append(_dVal_2, "\t");
-        _builder.append(" && Input < ");
-        double _dVal_3 = param.getBound_up().getValue().getDVal();
-        _builder.append(_dVal_3, "\t");
-        _builder.append(" ){");
-        _builder.newLineIfNotEmpty();
-        _builder.append("\t");
-        _builder.append("\t\t\t");
-        _builder.append("ret=1;");
-        _builder.newLine();
-        _builder.append("\t");
-        _builder.append("}\t");
-        _builder.newLine();
-      }
-    }
-    _builder.append("\t");
-    _builder.append("return ret;\t\t");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.newLine();
-    _builder.append("}");
-    _builder.newLine();
-    return _builder;
-  }
-  
-  public CharSequence create_gap_m(final Check_Gap param) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("def= legacy_code(\'initialize\');");
-    _builder.newLine();
-    _builder.append("def.OutputFcnSpec= \'double y1=");
-    String _string = param.getName().toString();
-    _builder.append(_string);
-    _builder.append("(double u1)\';");
-    _builder.newLineIfNotEmpty();
-    _builder.append("def.SourceFiles= {\'");
-    String _string_1 = param.getName().toString();
-    _builder.append(_string_1);
-    _builder.append(".c\'};");
-    _builder.newLineIfNotEmpty();
-    _builder.append("def.HeaderFiles= {\'");
-    String _string_2 = param.getName().toString();
-    _builder.append(_string_2);
-    _builder.append(".h\'};");
-    _builder.newLineIfNotEmpty();
-    _builder.append("def.SFunctionName= \'S_");
-    String _string_3 = param.getName().toString();
-    _builder.append(_string_3);
-    _builder.append("\';");
-    _builder.newLineIfNotEmpty();
-    _builder.append("legacy_code(\'sfcn_cmex_generate\' ,def)");
-    _builder.newLine();
-    _builder.append("legacy_code(\'compile\' ,def)");
-    _builder.newLine();
-    _builder.append("exit");
-    _builder.newLine();
-    return _builder;
-  }
-  
-  public CharSequence create_gap_h(final Check_Gap param) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("#ifndef ");
-    String _upperCase = param.getName().toString().toUpperCase();
-    _builder.append(_upperCase);
-    _builder.append("_H");
-    _builder.newLineIfNotEmpty();
-    _builder.append("#define ");
-    String _upperCase_1 = param.getName().toString().toUpperCase();
-    _builder.append(_upperCase_1);
-    _builder.append("_H");
-    _builder.newLineIfNotEmpty();
-    _builder.append("double ");
-    String _string = param.getName().toString();
-    _builder.append(_string);
-    _builder.append("(double Input);");
-    _builder.newLineIfNotEmpty();
-    _builder.append("#endif");
-    _builder.newLine();
-    return _builder;
-  }
-  
-  public CharSequence create_gap_c(final Check_Gap param) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("#include \"");
-    String _string = param.getName().toString();
-    _builder.append(_string);
-    _builder.append(".h\"");
-    _builder.newLineIfNotEmpty();
-    _builder.append("double ");
-    String _string_1 = param.getName().toString();
-    _builder.append(_string_1);
-    _builder.append("(double Input){");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\t");
-    _builder.append("double ret=0;");
-    _builder.newLine();
-    {
-      boolean _isBool = param.getInclusive_bound().getValue().isBool();
-      if (_isBool) {
-        _builder.append("\t");
-        _builder.append("if(Input <= ");
-        double _dVal = param.getBound_low().getValue().getDVal();
-        _builder.append(_dVal, "\t");
-        _builder.append(" || Input >= ");
-        double _dVal_1 = param.getBound_up().getValue().getDVal();
-        _builder.append(_dVal_1, "\t");
-        _builder.append(" ){");
-        _builder.newLineIfNotEmpty();
-        _builder.append("\t");
-        _builder.append("\t");
-        _builder.append("ret=1;");
-        _builder.newLine();
-        _builder.append("\t");
-        _builder.append("}\t");
-        _builder.newLine();
-      } else {
-        _builder.append("\t");
-        _builder.append("if(Input < ");
-        double _dVal_2 = param.getBound_low().getValue().getDVal();
-        _builder.append(_dVal_2, "\t");
-        _builder.append(" || Input > ");
-        double _dVal_3 = param.getBound_up().getValue().getDVal();
-        _builder.append(_dVal_3, "\t");
-        _builder.append(" ){");
-        _builder.newLineIfNotEmpty();
-        _builder.append("\t");
-        _builder.append("\t\t\t\t");
-        _builder.append("ret=1;");
-        _builder.newLine();
-        _builder.append("\t");
-        _builder.append("}\t");
-        _builder.newLine();
-      }
-    }
-    _builder.append("\t");
-    _builder.append("return ret;");
-    _builder.newLine();
-    _builder.append("}");
     _builder.newLine();
     return _builder;
   }

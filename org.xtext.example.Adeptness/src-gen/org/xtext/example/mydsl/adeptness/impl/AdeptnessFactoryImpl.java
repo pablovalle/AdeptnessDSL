@@ -70,10 +70,18 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.IMPORT: return createImport();
       case AdeptnessPackage.TYPE: return createType();
       case AdeptnessPackage.SIGNAL: return createSignal();
-      case AdeptnessPackage.CHECK_STATIC_UPPER_ONLY: return createCheck_Static_upper_only();
-      case AdeptnessPackage.CHECK_STATIC_LOWER_ONLY: return createCheck_Static_lower_only();
-      case AdeptnessPackage.CHECK_RANGE: return createCheck_Range();
-      case AdeptnessPackage.CHECK_GAP: return createCheck_Gap();
+      case AdeptnessPackage.ORACLE: return createOracle();
+      case AdeptnessPackage.CHECK: return createCheck();
+      case AdeptnessPackage.FAIL_REASON: return createFailReason();
+      case AdeptnessPackage.HIGH_PEAKS: return createHighPeaks();
+      case AdeptnessPackage.CONST_DEG: return createConstDeg();
+      case AdeptnessPackage.HIGH_TIME: return createHighTime();
+      case AdeptnessPackage.HIGH_PEAK: return createHighPeak();
+      case AdeptnessPackage.REFERENCE: return createReference();
+      case AdeptnessPackage.UPPER: return createUpper();
+      case AdeptnessPackage.LOWER: return createLower();
+      case AdeptnessPackage.RANGE: return createRange();
+      case AdeptnessPackage.GAP: return createGap();
       case AdeptnessPackage.INCLUSIVE_BOUND: return createInclusiveBound();
       case AdeptnessPackage.BOUND_UP: return createBound_up();
       case AdeptnessPackage.BOUND_DOWN: return createBound_Down();
@@ -152,10 +160,10 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
    * @generated
    */
   @Override
-  public Check_Static_upper_only createCheck_Static_upper_only()
+  public Oracle createOracle()
   {
-    Check_Static_upper_onlyImpl check_Static_upper_only = new Check_Static_upper_onlyImpl();
-    return check_Static_upper_only;
+    OracleImpl oracle = new OracleImpl();
+    return oracle;
   }
 
   /**
@@ -164,10 +172,10 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
    * @generated
    */
   @Override
-  public Check_Static_lower_only createCheck_Static_lower_only()
+  public Check createCheck()
   {
-    Check_Static_lower_onlyImpl check_Static_lower_only = new Check_Static_lower_onlyImpl();
-    return check_Static_lower_only;
+    CheckImpl check = new CheckImpl();
+    return check;
   }
 
   /**
@@ -176,10 +184,10 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
    * @generated
    */
   @Override
-  public Check_Range createCheck_Range()
+  public FailReason createFailReason()
   {
-    Check_RangeImpl check_Range = new Check_RangeImpl();
-    return check_Range;
+    FailReasonImpl failReason = new FailReasonImpl();
+    return failReason;
   }
 
   /**
@@ -188,10 +196,106 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
    * @generated
    */
   @Override
-  public Check_Gap createCheck_Gap()
+  public HighPeaks createHighPeaks()
   {
-    Check_GapImpl check_Gap = new Check_GapImpl();
-    return check_Gap;
+    HighPeaksImpl highPeaks = new HighPeaksImpl();
+    return highPeaks;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ConstDeg createConstDeg()
+  {
+    ConstDegImpl constDeg = new ConstDegImpl();
+    return constDeg;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public HighTime createHighTime()
+  {
+    HighTimeImpl highTime = new HighTimeImpl();
+    return highTime;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public HighPeak createHighPeak()
+  {
+    HighPeakImpl highPeak = new HighPeakImpl();
+    return highPeak;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Reference createReference()
+  {
+    ReferenceImpl reference = new ReferenceImpl();
+    return reference;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Upper createUpper()
+  {
+    UpperImpl upper = new UpperImpl();
+    return upper;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Lower createLower()
+  {
+    LowerImpl lower = new LowerImpl();
+    return lower;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Range createRange()
+  {
+    RangeImpl range = new RangeImpl();
+    return range;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Gap createGap()
+  {
+    GapImpl gap = new GapImpl();
+    return gap;
   }
 
   /**

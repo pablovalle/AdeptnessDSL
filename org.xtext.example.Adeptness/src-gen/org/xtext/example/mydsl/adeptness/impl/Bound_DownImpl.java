@@ -24,7 +24,6 @@ import org.xtext.example.mydsl.adeptness.DOUBLE;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl#getValue <em>Value</em>}</li>
  * </ul>
  *
@@ -32,26 +31,6 @@ import org.xtext.example.mydsl.adeptness.DOUBLE;
  */
 public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Bound_Down
 {
-  /**
-   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getName()
-   * @generated
-   * @ordered
-   */
-  protected static final String NAME_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getName()
-   * @generated
-   * @ordered
-   */
-  protected String name = NAME_EDEFAULT;
-
   /**
    * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
    * <!-- begin-user-doc -->
@@ -81,31 +60,6 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
   protected EClass eStaticClass()
   {
     return AdeptnessPackage.Literals.BOUND_DOWN;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String getName()
-  {
-    return name;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setName(String newName)
-  {
-    String oldName = name;
-    name = newName;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.BOUND_DOWN__NAME, oldName, name));
   }
 
   /**
@@ -184,8 +138,6 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
   {
     switch (featureID)
     {
-      case AdeptnessPackage.BOUND_DOWN__NAME:
-        return getName();
       case AdeptnessPackage.BOUND_DOWN__VALUE:
         return getValue();
     }
@@ -202,9 +154,6 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
   {
     switch (featureID)
     {
-      case AdeptnessPackage.BOUND_DOWN__NAME:
-        setName((String)newValue);
-        return;
       case AdeptnessPackage.BOUND_DOWN__VALUE:
         setValue((DOUBLE)newValue);
         return;
@@ -222,9 +171,6 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
   {
     switch (featureID)
     {
-      case AdeptnessPackage.BOUND_DOWN__NAME:
-        setName(NAME_EDEFAULT);
-        return;
       case AdeptnessPackage.BOUND_DOWN__VALUE:
         setValue((DOUBLE)null);
         return;
@@ -242,29 +188,10 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
   {
     switch (featureID)
     {
-      case AdeptnessPackage.BOUND_DOWN__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case AdeptnessPackage.BOUND_DOWN__VALUE:
         return value != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (name: ");
-    result.append(name);
-    result.append(')');
-    return result.toString();
   }
 
 } //Bound_DownImpl
