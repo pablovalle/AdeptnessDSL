@@ -29,6 +29,7 @@ import org.xtext.example.mydsl.adeptness.Gap;
 import org.xtext.example.mydsl.adeptness.HighPeak;
 import org.xtext.example.mydsl.adeptness.HighTime;
 import org.xtext.example.mydsl.adeptness.Import;
+import org.xtext.example.mydsl.adeptness.ImportMonitoringPlan;
 import org.xtext.example.mydsl.adeptness.InclusiveBound;
 import org.xtext.example.mydsl.adeptness.Lower;
 import org.xtext.example.mydsl.adeptness.MonitoringFile;
@@ -101,6 +102,9 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 				return; 
 			case AdeptnessPackage.IMPORT:
 				sequence_Import(context, (Import) semanticObject); 
+				return; 
+			case AdeptnessPackage.IMPORT_MONITORING_PLAN:
+				sequence_ImportMonitoringPlan(context, (ImportMonitoringPlan) semanticObject); 
 				return; 
 			case AdeptnessPackage.INCLUSIVE_BOUND:
 				sequence_InclusiveBound(context, (InclusiveBound) semanticObject); 
@@ -387,6 +391,24 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	
 	/**
 	 * Contexts:
+	 *     ImportMonitoringPlan returns ImportMonitoringPlan
+	 *
+	 * Constraint:
+	 *     importURI=STRING
+	 */
+	protected void sequence_ImportMonitoringPlan(ISerializationContext context, ImportMonitoringPlan semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.IMPORT_MONITORING_PLAN__IMPORT_URI) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.IMPORT_MONITORING_PLAN__IMPORT_URI));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getImportMonitoringPlanAccess().getImportURISTRINGTerminalRuleCall_1_0(), semanticObject.getImportURI());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     AbstractElement returns Import
 	 *     Import returns Import
 	 *
@@ -576,7 +598,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Signal returns Signal
 	 *
 	 * Constraint:
-	 *     (name=ID oracle+=Oracle+)
+	 *     (imp=ImportMonitoringPlan name=ID oracle+=Oracle+)
 	 */
 	protected void sequence_Signal(ISerializationContext context, Signal semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

@@ -216,7 +216,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	public class MonitoringVariableElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.MonitoringVariable");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cMONITORINGVARIABLEKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cMONITORKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
@@ -226,34 +226,36 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		private final RuleCall cMonitoringVariableDatatypeSig_typeParserRuleCall_5_0 = (RuleCall)cMonitoringVariableDatatypeAssignment_5.eContents().get(0);
 		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
 		private final Keyword cMaxKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
-		private final Assignment cMaxAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
-		private final RuleCall cMaxDOUBLEParserRuleCall_6_1_0 = (RuleCall)cMaxAssignment_6_1.eContents().get(0);
-		private final Keyword cMinKeyword_6_2 = (Keyword)cGroup_6.eContents().get(2);
-		private final Assignment cMinAssignment_6_3 = (Assignment)cGroup_6.eContents().get(3);
-		private final RuleCall cMinDOUBLEParserRuleCall_6_3_0 = (RuleCall)cMinAssignment_6_3.eContents().get(0);
-		private final Keyword cMONITORINGVARIABLEKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		private final Keyword cColonKeyword_6_1 = (Keyword)cGroup_6.eContents().get(1);
+		private final Assignment cMaxAssignment_6_2 = (Assignment)cGroup_6.eContents().get(2);
+		private final RuleCall cMaxDOUBLEParserRuleCall_6_2_0 = (RuleCall)cMaxAssignment_6_2.eContents().get(0);
+		private final Keyword cMinKeyword_6_3 = (Keyword)cGroup_6.eContents().get(3);
+		private final Keyword cColonKeyword_6_4 = (Keyword)cGroup_6.eContents().get(4);
+		private final Assignment cMinAssignment_6_5 = (Assignment)cGroup_6.eContents().get(5);
+		private final RuleCall cMinDOUBLEParserRuleCall_6_5_0 = (RuleCall)cMinAssignment_6_5.eContents().get(0);
+		private final Keyword cENDMONITORKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
 		///*MonitoringVariable: 
 		// *  //'MonitoringVariable' '{'
 		// * 	(monitoringVariable+=MonVar)*	
 		// //'}';	*/
 		//MonitoringVariable:
-		//	'MONITORINGVARIABLE' name=ID ':'
-		//	'type' ':' MonitoringVariableDatatype=Sig_type ('max:' max=DOUBLE
-		//	'min:' min=DOUBLE)?
+		//	'MONITOR' name=ID ':'
+		//	'type' ':' MonitoringVariableDatatype=Sig_type ('max' ':' max=DOUBLE
+		//	'min' ':' min=DOUBLE)?
 		//	// (monvar+=MonVar)+
-		//	'MONITORINGVARIABLE';
+		//	'ENDMONITOR';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'MONITORINGVARIABLE' name=ID ':'
-		//'type' ':' MonitoringVariableDatatype=Sig_type ('max:' max=DOUBLE
-		//'min:' min=DOUBLE)?
+		//'MONITOR' name=ID ':'
+		//'type' ':' MonitoringVariableDatatype=Sig_type ('max' ':' max=DOUBLE
+		//'min' ':' min=DOUBLE)?
 		//// (monvar+=MonVar)+
-		//'MONITORINGVARIABLE'
+		//'ENDMONITOR'
 		public Group getGroup() { return cGroup; }
 		
-		//'MONITORINGVARIABLE'
-		public Keyword getMONITORINGVARIABLEKeyword_0() { return cMONITORINGVARIABLEKeyword_0; }
+		//'MONITOR'
+		public Keyword getMONITORKeyword_0() { return cMONITORKeyword_0; }
 		
 		//name=ID
 		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
@@ -276,31 +278,37 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		//Sig_type
 		public RuleCall getMonitoringVariableDatatypeSig_typeParserRuleCall_5_0() { return cMonitoringVariableDatatypeSig_typeParserRuleCall_5_0; }
 		
-		//('max:' max=DOUBLE
-		//'min:' min=DOUBLE)?
+		//('max' ':' max=DOUBLE
+		//'min' ':' min=DOUBLE)?
 		public Group getGroup_6() { return cGroup_6; }
 		
-		//'max:'
+		//'max'
 		public Keyword getMaxKeyword_6_0() { return cMaxKeyword_6_0; }
 		
+		//':'
+		public Keyword getColonKeyword_6_1() { return cColonKeyword_6_1; }
+		
 		//max=DOUBLE
-		public Assignment getMaxAssignment_6_1() { return cMaxAssignment_6_1; }
+		public Assignment getMaxAssignment_6_2() { return cMaxAssignment_6_2; }
 		
 		//DOUBLE
-		public RuleCall getMaxDOUBLEParserRuleCall_6_1_0() { return cMaxDOUBLEParserRuleCall_6_1_0; }
+		public RuleCall getMaxDOUBLEParserRuleCall_6_2_0() { return cMaxDOUBLEParserRuleCall_6_2_0; }
 		
-		//'min:'
-		public Keyword getMinKeyword_6_2() { return cMinKeyword_6_2; }
+		//'min'
+		public Keyword getMinKeyword_6_3() { return cMinKeyword_6_3; }
+		
+		//':'
+		public Keyword getColonKeyword_6_4() { return cColonKeyword_6_4; }
 		
 		//min=DOUBLE
-		public Assignment getMinAssignment_6_3() { return cMinAssignment_6_3; }
+		public Assignment getMinAssignment_6_5() { return cMinAssignment_6_5; }
 		
 		//DOUBLE
-		public RuleCall getMinDOUBLEParserRuleCall_6_3_0() { return cMinDOUBLEParserRuleCall_6_3_0; }
+		public RuleCall getMinDOUBLEParserRuleCall_6_5_0() { return cMinDOUBLEParserRuleCall_6_5_0; }
 		
 		//// (monvar+=MonVar)+
-		//'MONITORINGVARIABLE'
-		public Keyword getMONITORINGVARIABLEKeyword_7() { return cMONITORINGVARIABLEKeyword_7; }
+		//'ENDMONITOR'
+		public Keyword getENDMONITORKeyword_7() { return cENDMONITORKeyword_7; }
 	}
 	public class Sig_typeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Sig_type");
@@ -342,16 +350,19 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	public class SignalElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Signal");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cCPSKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cOracleAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cOracleOracleParserRuleCall_3_0 = (RuleCall)cOracleAssignment_3.eContents().get(0);
-		private final Keyword cENDCPSKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cImpAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cImpImportMonitoringPlanParserRuleCall_0_0 = (RuleCall)cImpAssignment_0.eContents().get(0);
+		private final Keyword cCPSKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cNameIDTerminalRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Keyword cColonKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cOracleAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cOracleOracleParserRuleCall_4_0 = (RuleCall)cOracleAssignment_4.eContents().get(0);
+		private final Keyword cENDCPSKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
 		////Each signal could have more than one oracles
 		//Signal:
+		//	imp=ImportMonitoringPlan
 		//	'CPS' name=ID ':'
 		//	oracle+=Oracle+ 'ENDCPS'
 		///*(check_static_upper+=Check_Static_upper_only)*
@@ -361,30 +372,60 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
+		//imp=ImportMonitoringPlan
 		//'CPS' name=ID ':'
 		//oracle+=Oracle+ 'ENDCPS'
 		public Group getGroup() { return cGroup; }
 		
+		//imp=ImportMonitoringPlan
+		public Assignment getImpAssignment_0() { return cImpAssignment_0; }
+		
+		//ImportMonitoringPlan
+		public RuleCall getImpImportMonitoringPlanParserRuleCall_0_0() { return cImpImportMonitoringPlanParserRuleCall_0_0; }
+		
 		//'CPS'
-		public Keyword getCPSKeyword_0() { return cCPSKeyword_0; }
+		public Keyword getCPSKeyword_1() { return cCPSKeyword_1; }
 		
 		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
 		
 		//':'
-		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
+		public Keyword getColonKeyword_3() { return cColonKeyword_3; }
 		
 		//oracle+=Oracle+
-		public Assignment getOracleAssignment_3() { return cOracleAssignment_3; }
+		public Assignment getOracleAssignment_4() { return cOracleAssignment_4; }
 		
 		//Oracle
-		public RuleCall getOracleOracleParserRuleCall_3_0() { return cOracleOracleParserRuleCall_3_0; }
+		public RuleCall getOracleOracleParserRuleCall_4_0() { return cOracleOracleParserRuleCall_4_0; }
 		
 		//'ENDCPS'
-		public Keyword getENDCPSKeyword_4() { return cENDCPSKeyword_4; }
+		public Keyword getENDCPSKeyword_5() { return cENDCPSKeyword_5; }
+	}
+	public class ImportMonitoringPlanElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.ImportMonitoringPlan");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cImportKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cImportURIAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cImportURISTRINGTerminalRuleCall_1_0 = (RuleCall)cImportURIAssignment_1.eContents().get(0);
+		
+		//ImportMonitoringPlan:
+		//	'import' importURI=STRING;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'import' importURI=STRING
+		public Group getGroup() { return cGroup; }
+		
+		//'import'
+		public Keyword getImportKeyword_0() { return cImportKeyword_0; }
+		
+		//importURI=STRING
+		public Assignment getImportURIAssignment_1() { return cImportURIAssignment_1; }
+		
+		//STRING
+		public RuleCall getImportURISTRINGTerminalRuleCall_1_0() { return cImportURISTRINGTerminalRuleCall_1_0; }
 	}
 	public class OracleElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Oracle");
@@ -1167,6 +1208,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	private final MonitoringVariableElements pMonitoringVariable;
 	private final Sig_typeElements pSig_type;
 	private final SignalElements pSignal;
+	private final ImportMonitoringPlanElements pImportMonitoringPlan;
 	private final OracleElements pOracle;
 	private final ChecksElements pChecks;
 	private final DescriptionElements pDescription;
@@ -1212,6 +1254,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		this.pMonitoringVariable = new MonitoringVariableElements();
 		this.pSig_type = new Sig_typeElements();
 		this.pSignal = new SignalElements();
+		this.pImportMonitoringPlan = new ImportMonitoringPlanElements();
 		this.pOracle = new OracleElements();
 		this.pChecks = new ChecksElements();
 		this.pDescription = new DescriptionElements();
@@ -1356,11 +1399,11 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	// * 	(monitoringVariable+=MonVar)*	
 	// //'}';	*/
 	//MonitoringVariable:
-	//	'MONITORINGVARIABLE' name=ID ':'
-	//	'type' ':' MonitoringVariableDatatype=Sig_type ('max:' max=DOUBLE
-	//	'min:' min=DOUBLE)?
+	//	'MONITOR' name=ID ':'
+	//	'type' ':' MonitoringVariableDatatype=Sig_type ('max' ':' max=DOUBLE
+	//	'min' ':' min=DOUBLE)?
 	//	// (monvar+=MonVar)+
-	//	'MONITORINGVARIABLE';
+	//	'ENDMONITOR';
 	public MonitoringVariableElements getMonitoringVariableAccess() {
 		return pMonitoringVariable;
 	}
@@ -1391,6 +1434,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	
 	////Each signal could have more than one oracles
 	//Signal:
+	//	imp=ImportMonitoringPlan
 	//	'CPS' name=ID ':'
 	//	oracle+=Oracle+ 'ENDCPS'
 	///*(check_static_upper+=Check_Static_upper_only)*
@@ -1404,6 +1448,16 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	
 	public ParserRule getSignalRule() {
 		return getSignalAccess().getRule();
+	}
+	
+	//ImportMonitoringPlan:
+	//	'import' importURI=STRING;
+	public ImportMonitoringPlanElements getImportMonitoringPlanAccess() {
+		return pImportMonitoringPlan;
+	}
+	
+	public ParserRule getImportMonitoringPlanRule() {
+		return getImportMonitoringPlanAccess().getRule();
 	}
 	
 	//Oracle:

@@ -74,6 +74,7 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.MONITORING_VARIABLE: return createMonitoringVariable();
       case AdeptnessPackage.SIG_TYPE: return createSig_type();
       case AdeptnessPackage.SIGNAL: return createSignal();
+      case AdeptnessPackage.IMPORT_MONITORING_PLAN: return createImportMonitoringPlan();
       case AdeptnessPackage.ORACLE: return createOracle();
       case AdeptnessPackage.CHECKS: return createChecks();
       case AdeptnessPackage.DESCRIPTION: return createDescription();
@@ -207,6 +208,18 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
   {
     SignalImpl signal = new SignalImpl();
     return signal;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ImportMonitoringPlan createImportMonitoringPlan()
+  {
+    ImportMonitoringPlanImpl importMonitoringPlan = new ImportMonitoringPlanImpl();
+    return importMonitoringPlan;
   }
 
   /**

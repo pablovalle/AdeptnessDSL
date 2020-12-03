@@ -32,7 +32,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Sig_type/sig_type"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//Signal">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Signal/imp"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Signal/oracle"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//ImportMonitoringPlan">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//ImportMonitoringPlan/importURI"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//Oracle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Oracle/name"/>

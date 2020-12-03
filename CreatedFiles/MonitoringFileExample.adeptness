@@ -1,0 +1,13 @@
+MONITORINGPLAN HVS_MONITORINGPLAN:
+	MONITOR AWT:
+		type: int 
+		max: 500.0
+		min: 0
+	ENDMONITOR
+	MONITOR ATTD:
+	 	type: double
+	 	max: 1000
+	 	min: 0
+	ENDMONITOR
+ENDMONITORINGPLAN
+

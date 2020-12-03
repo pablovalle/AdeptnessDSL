@@ -47,12 +47,12 @@ MonitoringPlan:
 	(monitoringVariable+=MonVar)*	
   //'}';	*/
 MonitoringVariable: 
-	'MONITORINGVARIABLE' name=ID ':'
+	'MONITOR' name=ID ':'
 		'type'':' MonitoringVariableDatatype = Sig_type
-		('max:' max = DOUBLE
-		'min:' min = DOUBLE)?
+		('max'':' max = DOUBLE
+		'min'':' min = DOUBLE)?
 		//(monvar+=MonVar)+
-		'MONITORINGVARIABLE'
+		'ENDMONITOR'
 ;	
 
 
@@ -73,7 +73,7 @@ Sig_type:
 
 //Each signal could have more than one oracles
 Signal:
-	
+	imp = ImportMonitoringPlan
 	'CPS' name=ID ':'
 		(oracle+=Oracle)+'ENDCPS'
 		/*(check_static_upper+=Check_Static_upper_only)*
@@ -82,6 +82,9 @@ Signal:
 		(check_gap+=Check_Gap)*/
 ;
 
+ImportMonitoringPlan:
+	'import' importURI = STRING
+;
 
 Oracle: 
 	'ORACLE' name=ID ':'

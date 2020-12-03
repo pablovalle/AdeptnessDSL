@@ -25,6 +25,7 @@ import org.xtext.example.mydsl.adeptness.Gap;
 import org.xtext.example.mydsl.adeptness.HighPeak;
 import org.xtext.example.mydsl.adeptness.HighTime;
 import org.xtext.example.mydsl.adeptness.Import;
+import org.xtext.example.mydsl.adeptness.ImportMonitoringPlan;
 import org.xtext.example.mydsl.adeptness.InclusiveBound;
 import org.xtext.example.mydsl.adeptness.Lower;
 import org.xtext.example.mydsl.adeptness.MonitoringFile;
@@ -112,6 +113,13 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   private EClass signalEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass importMonitoringPlanEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -545,9 +553,42 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getSignal_Oracle()
+  public EReference getSignal_Imp()
   {
     return (EReference)signalEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSignal_Oracle()
+  {
+    return (EReference)signalEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getImportMonitoringPlan()
+  {
+    return importMonitoringPlanEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getImportMonitoringPlan_ImportURI()
+  {
+    return (EAttribute)importMonitoringPlanEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1290,7 +1331,11 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     createEAttribute(sig_typeEClass, SIG_TYPE__SIG_TYPE);
 
     signalEClass = createEClass(SIGNAL);
+    createEReference(signalEClass, SIGNAL__IMP);
     createEReference(signalEClass, SIGNAL__ORACLE);
+
+    importMonitoringPlanEClass = createEClass(IMPORT_MONITORING_PLAN);
+    createEAttribute(importMonitoringPlanEClass, IMPORT_MONITORING_PLAN__IMPORT_URI);
 
     oracleEClass = createEClass(ORACLE);
     createEAttribute(oracleEClass, ORACLE__NAME);
@@ -1441,7 +1486,11 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     initEAttribute(getSig_type_Sig_type(), ecorePackage.getEString(), "sig_type", null, 0, 1, Sig_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(signalEClass, Signal.class, "Signal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSignal_Imp(), this.getImportMonitoringPlan(), null, "imp", null, 0, 1, Signal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getSignal_Oracle(), this.getOracle(), null, "oracle", null, 0, -1, Signal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(importMonitoringPlanEClass, ImportMonitoringPlan.class, "ImportMonitoringPlan", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getImportMonitoringPlan_ImportURI(), ecorePackage.getEString(), "importURI", null, 0, 1, ImportMonitoringPlan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(oracleEClass, Oracle.class, "Oracle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getOracle_Name(), ecorePackage.getEString(), "name", null, 0, 1, Oracle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

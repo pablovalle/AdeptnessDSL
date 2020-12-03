@@ -121,6 +121,11 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
         return createSignalAdapter();
       }
       @Override
+      public Adapter caseImportMonitoringPlan(ImportMonitoringPlan object)
+      {
+        return createImportMonitoringPlanAdapter();
+      }
+      @Override
       public Adapter caseOracle(Oracle object)
       {
         return createOracleAdapter();
@@ -383,6 +388,21 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createSignalAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.ImportMonitoringPlan <em>Import Monitoring Plan</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.ImportMonitoringPlan
+   * @generated
+   */
+  public Adapter createImportMonitoringPlanAdapter()
   {
     return null;
   }

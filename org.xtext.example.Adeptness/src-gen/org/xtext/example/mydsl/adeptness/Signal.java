@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Signal#getImp <em>Imp</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Signal#getOracle <em>Oracle</em>}</li>
  * </ul>
  *
@@ -23,6 +24,28 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface Signal extends Type
 {
+  /**
+   * Returns the value of the '<em><b>Imp</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Imp</em>' containment reference.
+   * @see #setImp(ImportMonitoringPlan)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSignal_Imp()
+   * @model containment="true"
+   * @generated
+   */
+  ImportMonitoringPlan getImp();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Signal#getImp <em>Imp</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Imp</em>' containment reference.
+   * @see #getImp()
+   * @generated
+   */
+  void setImp(ImportMonitoringPlan value);
+
   /**
    * Returns the value of the '<em><b>Oracle</b></em>' containment reference list.
    * The list contents are of type {@link org.xtext.example.mydsl.adeptness.Oracle}.

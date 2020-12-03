@@ -46,6 +46,7 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getMonitoringVariableAccess().getGroup(), "rule__MonitoringVariable__Group__0");
 			builder.put(grammarAccess.getMonitoringVariableAccess().getGroup_6(), "rule__MonitoringVariable__Group_6__0");
 			builder.put(grammarAccess.getSignalAccess().getGroup(), "rule__Signal__Group__0");
+			builder.put(grammarAccess.getImportMonitoringPlanAccess().getGroup(), "rule__ImportMonitoringPlan__Group__0");
 			builder.put(grammarAccess.getOracleAccess().getGroup(), "rule__Oracle__Group__0");
 			builder.put(grammarAccess.getChecksAccess().getGroup(), "rule__Checks__Group__0");
 			builder.put(grammarAccess.getDescriptionAccess().getGroup(), "rule__Description__Group__0");
@@ -72,11 +73,13 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getMonitoringPlanAccess().getMonitoringVariablesAssignment(), "rule__MonitoringPlan__MonitoringVariablesAssignment");
 			builder.put(grammarAccess.getMonitoringVariableAccess().getNameAssignment_1(), "rule__MonitoringVariable__NameAssignment_1");
 			builder.put(grammarAccess.getMonitoringVariableAccess().getMonitoringVariableDatatypeAssignment_5(), "rule__MonitoringVariable__MonitoringVariableDatatypeAssignment_5");
-			builder.put(grammarAccess.getMonitoringVariableAccess().getMaxAssignment_6_1(), "rule__MonitoringVariable__MaxAssignment_6_1");
-			builder.put(grammarAccess.getMonitoringVariableAccess().getMinAssignment_6_3(), "rule__MonitoringVariable__MinAssignment_6_3");
+			builder.put(grammarAccess.getMonitoringVariableAccess().getMaxAssignment_6_2(), "rule__MonitoringVariable__MaxAssignment_6_2");
+			builder.put(grammarAccess.getMonitoringVariableAccess().getMinAssignment_6_5(), "rule__MonitoringVariable__MinAssignment_6_5");
 			builder.put(grammarAccess.getSig_typeAccess().getSig_typeAssignment(), "rule__Sig_type__Sig_typeAssignment");
-			builder.put(grammarAccess.getSignalAccess().getNameAssignment_1(), "rule__Signal__NameAssignment_1");
-			builder.put(grammarAccess.getSignalAccess().getOracleAssignment_3(), "rule__Signal__OracleAssignment_3");
+			builder.put(grammarAccess.getSignalAccess().getImpAssignment_0(), "rule__Signal__ImpAssignment_0");
+			builder.put(grammarAccess.getSignalAccess().getNameAssignment_2(), "rule__Signal__NameAssignment_2");
+			builder.put(grammarAccess.getSignalAccess().getOracleAssignment_4(), "rule__Signal__OracleAssignment_4");
+			builder.put(grammarAccess.getImportMonitoringPlanAccess().getImportURIAssignment_1(), "rule__ImportMonitoringPlan__ImportURIAssignment_1");
 			builder.put(grammarAccess.getOracleAccess().getNameAssignment_1(), "rule__Oracle__NameAssignment_1");
 			builder.put(grammarAccess.getOracleAccess().getCheckAssignment_3(), "rule__Oracle__CheckAssignment_3");
 			builder.put(grammarAccess.getChecksAccess().getNameAssignment_1(), "rule__Checks__NameAssignment_1");

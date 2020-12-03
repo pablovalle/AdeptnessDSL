@@ -1,14 +1,17 @@
+import "HVS_MONITORINGPLAN" //duda; Monitoring plan o Monitoringplanfile
+
+
 CPS Puertas:
 	ORACLE PosicionPuerta:
-		checks: "PosPuerta" is_in_range_between 0 and 1;
-		fails if:  confidence_is_below 0;
-		"explicacion oraculo"
+		checks: "PosPuerta" is in range between 0 and 1;
+		fails if :  confidence is below 0;
+		Description: "explicacion oraculo"
 	ENDORACLE
 	
 	ORACLE PPUERTA:
-	    checks: "PosPuerta" is_in_range_between 0 and 1;
-		fails if: confidence_is_below 0;
-		"EXPLICACION"
+	    checks: "PosPuerta" is in range between 0 and 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
 	ENDORACLE
 ENDCPS
 	

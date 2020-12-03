@@ -424,9 +424,9 @@ ruleMonitoringVariable returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='MONITORINGVARIABLE'
+		otherlv_0='MONITOR'
 		{
-			newLeafNode(otherlv_0, grammarAccess.getMonitoringVariableAccess().getMONITORINGVARIABLEKeyword_0());
+			newLeafNode(otherlv_0, grammarAccess.getMonitoringVariableAccess().getMONITORKeyword_0());
 		}
 		(
 			(
@@ -478,16 +478,20 @@ ruleMonitoringVariable returns [EObject current=null]
 			)
 		)
 		(
-			otherlv_6='max:'
+			otherlv_6='max'
 			{
 				newLeafNode(otherlv_6, grammarAccess.getMonitoringVariableAccess().getMaxKeyword_6_0());
+			}
+			otherlv_7=':'
+			{
+				newLeafNode(otherlv_7, grammarAccess.getMonitoringVariableAccess().getColonKeyword_6_1());
 			}
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getMonitoringVariableAccess().getMaxDOUBLEParserRuleCall_6_1_0());
+						newCompositeNode(grammarAccess.getMonitoringVariableAccess().getMaxDOUBLEParserRuleCall_6_2_0());
 					}
-					lv_max_7_0=ruleDOUBLE
+					lv_max_8_0=ruleDOUBLE
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getMonitoringVariableRule());
@@ -495,22 +499,26 @@ ruleMonitoringVariable returns [EObject current=null]
 						set(
 							$current,
 							"max",
-							lv_max_7_0,
+							lv_max_8_0,
 							"org.xtext.example.mydsl.Adeptness.DOUBLE");
 						afterParserOrEnumRuleCall();
 					}
 				)
 			)
-			otherlv_8='min:'
+			otherlv_9='min'
 			{
-				newLeafNode(otherlv_8, grammarAccess.getMonitoringVariableAccess().getMinKeyword_6_2());
+				newLeafNode(otherlv_9, grammarAccess.getMonitoringVariableAccess().getMinKeyword_6_3());
+			}
+			otherlv_10=':'
+			{
+				newLeafNode(otherlv_10, grammarAccess.getMonitoringVariableAccess().getColonKeyword_6_4());
 			}
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getMonitoringVariableAccess().getMinDOUBLEParserRuleCall_6_3_0());
+						newCompositeNode(grammarAccess.getMonitoringVariableAccess().getMinDOUBLEParserRuleCall_6_5_0());
 					}
-					lv_min_9_0=ruleDOUBLE
+					lv_min_11_0=ruleDOUBLE
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getMonitoringVariableRule());
@@ -518,16 +526,16 @@ ruleMonitoringVariable returns [EObject current=null]
 						set(
 							$current,
 							"min",
-							lv_min_9_0,
+							lv_min_11_0,
 							"org.xtext.example.mydsl.Adeptness.DOUBLE");
 						afterParserOrEnumRuleCall();
 					}
 				)
 			)
 		)?
-		otherlv_10='MONITORINGVARIABLE'
+		otherlv_12='ENDMONITOR'
 		{
-			newLeafNode(otherlv_10, grammarAccess.getMonitoringVariableAccess().getMONITORINGVARIABLEKeyword_7());
+			newLeafNode(otherlv_12, grammarAccess.getMonitoringVariableAccess().getENDMONITORKeyword_7());
 		}
 	)
 ;
@@ -603,15 +611,34 @@ ruleSignal returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='CPS'
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getSignalAccess().getImpImportMonitoringPlanParserRuleCall_0_0());
+				}
+				lv_imp_0_0=ruleImportMonitoringPlan
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getSignalRule());
+					}
+					set(
+						$current,
+						"imp",
+						lv_imp_0_0,
+						"org.xtext.example.mydsl.Adeptness.ImportMonitoringPlan");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_1='CPS'
 		{
-			newLeafNode(otherlv_0, grammarAccess.getSignalAccess().getCPSKeyword_0());
+			newLeafNode(otherlv_1, grammarAccess.getSignalAccess().getCPSKeyword_1());
 		}
 		(
 			(
-				lv_name_1_0=RULE_ID
+				lv_name_2_0=RULE_ID
 				{
-					newLeafNode(lv_name_1_0, grammarAccess.getSignalAccess().getNameIDTerminalRuleCall_1_0());
+					newLeafNode(lv_name_2_0, grammarAccess.getSignalAccess().getNameIDTerminalRuleCall_2_0());
 				}
 				{
 					if ($current==null) {
@@ -620,21 +647,21 @@ ruleSignal returns [EObject current=null]
 					setWithLastConsumed(
 						$current,
 						"name",
-						lv_name_1_0,
+						lv_name_2_0,
 						"org.eclipse.xtext.common.Terminals.ID");
 				}
 			)
 		)
-		otherlv_2=':'
+		otherlv_3=':'
 		{
-			newLeafNode(otherlv_2, grammarAccess.getSignalAccess().getColonKeyword_2());
+			newLeafNode(otherlv_3, grammarAccess.getSignalAccess().getColonKeyword_3());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getSignalAccess().getOracleOracleParserRuleCall_3_0());
+					newCompositeNode(grammarAccess.getSignalAccess().getOracleOracleParserRuleCall_4_0());
 				}
-				lv_oracle_3_0=ruleOracle
+				lv_oracle_4_0=ruleOracle
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getSignalRule());
@@ -642,16 +669,57 @@ ruleSignal returns [EObject current=null]
 					add(
 						$current,
 						"oracle",
-						lv_oracle_3_0,
+						lv_oracle_4_0,
 						"org.xtext.example.mydsl.Adeptness.Oracle");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)+
-		otherlv_4='ENDCPS'
+		otherlv_5='ENDCPS'
 		{
-			newLeafNode(otherlv_4, grammarAccess.getSignalAccess().getENDCPSKeyword_4());
+			newLeafNode(otherlv_5, grammarAccess.getSignalAccess().getENDCPSKeyword_5());
 		}
+	)
+;
+
+// Entry rule entryRuleImportMonitoringPlan
+entryRuleImportMonitoringPlan returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getImportMonitoringPlanRule()); }
+	iv_ruleImportMonitoringPlan=ruleImportMonitoringPlan
+	{ $current=$iv_ruleImportMonitoringPlan.current; }
+	EOF;
+
+// Rule ImportMonitoringPlan
+ruleImportMonitoringPlan returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='import'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getImportMonitoringPlanAccess().getImportKeyword_0());
+		}
+		(
+			(
+				lv_importURI_1_0=RULE_STRING
+				{
+					newLeafNode(lv_importURI_1_0, grammarAccess.getImportMonitoringPlanAccess().getImportURISTRINGTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getImportMonitoringPlanRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"importURI",
+						lv_importURI_1_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
 	)
 ;
 

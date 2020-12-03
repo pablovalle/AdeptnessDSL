@@ -5,6 +5,7 @@ package org.xtext.example.mydsl.adeptness.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -12,10 +13,13 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
+import org.xtext.example.mydsl.adeptness.ImportMonitoringPlan;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.Signal;
 
@@ -27,6 +31,7 @@ import org.xtext.example.mydsl.adeptness.Signal;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SignalImpl#getImp <em>Imp</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SignalImpl#getOracle <em>Oracle</em>}</li>
  * </ul>
  *
@@ -34,6 +39,16 @@ import org.xtext.example.mydsl.adeptness.Signal;
  */
 public class SignalImpl extends TypeImpl implements Signal
 {
+  /**
+   * The cached value of the '{@link #getImp() <em>Imp</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getImp()
+   * @generated
+   * @ordered
+   */
+  protected ImportMonitoringPlan imp;
+
   /**
    * The cached value of the '{@link #getOracle() <em>Oracle</em>}' containment reference list.
    * <!-- begin-user-doc -->
@@ -71,6 +86,56 @@ public class SignalImpl extends TypeImpl implements Signal
    * @generated
    */
   @Override
+  public ImportMonitoringPlan getImp()
+  {
+    return imp;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetImp(ImportMonitoringPlan newImp, NotificationChain msgs)
+  {
+    ImportMonitoringPlan oldImp = imp;
+    imp = newImp;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.SIGNAL__IMP, oldImp, newImp);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setImp(ImportMonitoringPlan newImp)
+  {
+    if (newImp != imp)
+    {
+      NotificationChain msgs = null;
+      if (imp != null)
+        msgs = ((InternalEObject)imp).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.SIGNAL__IMP, null, msgs);
+      if (newImp != null)
+        msgs = ((InternalEObject)newImp).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.SIGNAL__IMP, null, msgs);
+      msgs = basicSetImp(newImp, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.SIGNAL__IMP, newImp, newImp));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EList<Oracle> getOracle()
   {
     if (oracle == null)
@@ -90,6 +155,8 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
+      case AdeptnessPackage.SIGNAL__IMP:
+        return basicSetImp(null, msgs);
       case AdeptnessPackage.SIGNAL__ORACLE:
         return ((InternalEList<?>)getOracle()).basicRemove(otherEnd, msgs);
     }
@@ -106,6 +173,8 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
+      case AdeptnessPackage.SIGNAL__IMP:
+        return getImp();
       case AdeptnessPackage.SIGNAL__ORACLE:
         return getOracle();
     }
@@ -123,6 +192,9 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
+      case AdeptnessPackage.SIGNAL__IMP:
+        setImp((ImportMonitoringPlan)newValue);
+        return;
       case AdeptnessPackage.SIGNAL__ORACLE:
         getOracle().clear();
         getOracle().addAll((Collection<? extends Oracle>)newValue);
@@ -141,6 +213,9 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
+      case AdeptnessPackage.SIGNAL__IMP:
+        setImp((ImportMonitoringPlan)null);
+        return;
       case AdeptnessPackage.SIGNAL__ORACLE:
         getOracle().clear();
         return;
@@ -158,6 +233,8 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
+      case AdeptnessPackage.SIGNAL__IMP:
+        return imp != null;
       case AdeptnessPackage.SIGNAL__ORACLE:
         return oracle != null && !oracle.isEmpty();
     }

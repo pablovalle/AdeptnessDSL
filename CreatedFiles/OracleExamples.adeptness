@@ -1,38 +1,44 @@
+import "MonitoringFileExample.adeptness"
+ 
 CPS HVS: 
 	ORACLE AWTChecker:
-		checks: "AWT" is_below 30;
-		fails if : confidence_is_below 30 within 10 seconds;	
-		"Below reference signal"
+		checks: "AWT" is below 30;
+		fails if : confidence is below -0.5 within 10 seconds;	
+		Description: "Below reference signal"
 	ENDORACLE
-		
-		
+				
 	ORACLE EnergyChecker:
-		checks: "Energy" is_above 0;
-		fails if: confidence_is_in_constant_degradation 50;
-		fails if : confidence_is_below -0.3 more_than 10 times within 5 seconds;
-		fails if : confidence_is_below -0.5 ;
+		checks: "Energy" is above 0;
+		fails if : confidence is in constant degradation -0.2;
+		fails if : confidence is below -0.1 ;
+		fails if : confidence is below -0.3 more than 10 times within 5 seconds;
 		
-		"Above reference signal example"
-	ENDORACLE
 		
+		Description: "Above reference signal example"
+	ENDORACLE		
 		
 	ORACLE ATTDChecker: 
-		checks: "ATTD" is_in_range_between 0 and 300;
-		fails if : confidence_is_below -0.7;
-		"In rage reference signal"
+		checks: "ATTD" is in range between 0 and 300;
+		fails if : confidence is below -0.7;
+		Description: "In rage reference signal"
 	ENDORACLE
-	
-		
+			
 	ORACLE TotalMovements:
-		checks: "TotalMovements" not_in_range_between 10 and 20;
-		fails if: confidence_is_below -0.3 within 20 seconds;
-		"Gap reference signal"
-	ENDORACLE
+		checks: "TotalMovements" not in range between 10 and 20;
+		fails if : confidence is below -0.3 within 20 seconds;
+		Description: "Gap reference signal"
+	ENDORACLE 
 	
 	
 	
-	/* 
-	Oracle Example:
-		checks: "MonitoringVariable" is above than */
-
 ENDCPS  
+
+/*CPS cps2: //CPS 
+	ORACLE lehenengoa:
+		checks:"AWT" is in range between 10 and 30 ;
+		fails if : confidence is below -0.3;
+		fails if : confidence is below -0.2 within 10 miliseconds;
+		Description: "112345trffgh"
+	ENDORACLE
+ENDCPS
+*/

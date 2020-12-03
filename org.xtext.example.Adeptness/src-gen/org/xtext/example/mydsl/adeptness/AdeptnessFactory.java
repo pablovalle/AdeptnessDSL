@@ -105,6 +105,15 @@ public interface AdeptnessFactory extends EFactory
   Signal createSignal();
 
   /**
+   * Returns a new object of class '<em>Import Monitoring Plan</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Import Monitoring Plan</em>'.
+   * @generated
+   */
+  ImportMonitoringPlan createImportMonitoringPlan();
+
+  /**
    * Returns a new object of class '<em>Oracle</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
