@@ -1,0 +1,11 @@
+CPS first: //CPS 
+	ORACLE lehenengoa:
+		checks:"AWT" is in range between 10 and 30 ;
+		fails if : confidence is below -0.3;
+		fails if : confidence is below -0.2 within 10 miliseconds;
+		Description: "112345trffgh"
+	ENDORACLE
+ENDCPS
+		
+		
+		

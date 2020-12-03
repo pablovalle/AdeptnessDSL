@@ -39,55 +39,64 @@ Signal:
 
 Oracle: 
 	'ORACLE' name=ID ':'
-		(check+=Check)+'ENDORACLE'
+		(check+=Checks)+'ENDORACLE'
 ;
 
-Check:
+Checks:
 	'checks:' name=STRING //'is'
 	(reference=Reference)
 	(failReason+=FailReason)+
-	(description=STRING) //','
+	(description=Description) //','
 	
 ;
+
+Description:
+	'Description: ' value=STRING
+;
+
 FailReason:
-	'fails' 'if' ':'
+	'fails if :'
+	(reason=Reason)
+	
+;
+
+Reason:
 	((highPeak=HighPeak)|(highTime=HighTime)|(constDeg=ConstDeg)|(xPeaks=XPeaks)) ';'
 ;
 
 XPeaks:
-	'confidence_is_below' (cant=DOUBLE) 'more_than' (nPeaks=DOUBLE) 'times' 'within' (time=DOUBLE) 'seconds' //nola jarri integer-ak?
+	'confidence is below' (cant=DOUBLE) 'more than' (nPeaks=DOUBLE) 'times within' (time=INT) (unit=TimeType) //nola jarri integer-ak?
 ;
 
 ConstDeg:
-	'confidence_is_in_constant_degradation'  (cant=DOUBLE) //(((upper=Upper)|(lower=Lower)))
+	'confidence is in constant degradation'  (cant=DOUBLE) //(((upper=Upper)|(lower=Lower)))
 ;
 
 HighTime:
-	'confidence_is_below' (cant=DOUBLE) 'within' (time=DOUBLE) 'seconds'
+	'confidence is below' (cant=DOUBLE) 'within' (time=DOUBLE) (unit=TimeType)
 ;
 
 HighPeak:
-	'confidence_is_below' (cant=DOUBLE)
+	'confidence is below' (cant=DOUBLE)
 ;
-
 Reference:
 	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap))';'
 ;
 //Oracle for upper limit --> Below reference signal
 Upper:
-	'is_below' (bound_upp=Bound_up)
+	'is below' (bound_upp=Bound_up)
 ;
 //Oracle for lower limit --> Above reference signal
 Lower:
-	'is_above' (bound_lower=Bound_Down)
+	'is above' (bound_lower=Bound_Down)
 ;
 //Oracle for Above and Below limit --> In range reference signal
 Range:
-	'is_in_range_between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
+	'is in range between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
 ;
 //Oracle for !Above and !Below limit --> Gap reference signal
 Gap:
-	'not_in_range_between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
+	'not in range between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
 ;
 
 //If the limits must be included ==
@@ -114,6 +123,10 @@ DOUBLE:
 ;
 d returns ecore::EDouble : ('-')? INT('.'INT)?;
 
+
+TimeType:
+	((time='miliseconds')|(time='seconds')|(time='minutes')|(time='hours'))
+;
 
 //DataType declaration
 DataType:

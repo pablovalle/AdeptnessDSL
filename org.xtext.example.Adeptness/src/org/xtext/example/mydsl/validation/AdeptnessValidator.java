@@ -3,6 +3,16 @@
  */
 package org.xtext.example.mydsl.validation;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.xtext.validation.Check;
+import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
+import org.xtext.example.mydsl.adeptness.Checks;
+import org.xtext.example.mydsl.adeptness.ConstDeg;
+import org.xtext.example.mydsl.adeptness.HighPeak;
+import org.xtext.example.mydsl.adeptness.HighTime;
+import org.xtext.example.mydsl.adeptness.XPeaks;
 
 /**
  * This class contains custom validation rules. 
@@ -11,15 +21,75 @@ package org.xtext.example.mydsl.validation;
  */
 public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	
-//	public static final String INVALID_NAME = "invalidName";
-//
-//	@Check
-//	public void checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.getName().charAt(0))) {
-//			warning("Name should start with a capital",
-//					AdeptnessPackage.Literals.GREETING__NAME,
-//					INVALID_NAME);
-//		}
-//	}
+	double cantHigh;
+	double cantTime;
+	double cantDeg;
+	double cantXPeak;
+	
+	@Check
+	public void checkHighTimeAndHighPeak(Checks check) {
+		boolean HT=false;
+		boolean HP=false;
+		int numHT=0,numHP=0;
+		for (int i=0; i<check.getFailReason().size(); i++) {
+			if(check.getFailReason().get(i).getReason().getHighTime()!=null) {
+				HT=true;
+				numHT=i;
+			}
+			else if(check.getFailReason().get(i).getReason().getHighPeak()!=null) {
+				HP=true;
+				numHP=i;
+			}
+		}
+		if(HT && HP) {
+			HighTime Ht=check.getFailReason().get(numHT).getReason().getHighTime();
+			HighPeak Hp=check.getFailReason().get(numHP).getReason().getHighPeak();
+			if(Ht.getCant().getDVal()<= Hp.getCant().getDVal()) {
+				error("The high peak reference confidence value must be lower than high time out of bounds confidence value",AdeptnessPackage.Literals.CHECKS__FAIL_REASON );
+			}
+		}
+		
+	}
+	@Check
+	public void checkConfidenceHighPeak(HighPeak HPeak) {
+		System.out.println("Error 1 detected");
+		if(HPeak!=null) {
+			cantHigh=HPeak.getCant().getDVal();
+			if(cantHigh<-1 || cantHigh > 0 ) {
+				error("The confidence value must be between -1 and 0",AdeptnessPackage.Literals.HIGH_PEAK__CANT);
+			}
+		}
+		
+	}
+	@Check
+	public void checkConfidenceHighTime(HighTime HTime) {
+		if(HTime!=null) {
+			cantTime=HTime.getCant().getDVal();
+			if(cantTime<-1 || cantTime > 0 ) {
+				error("The confidence value must be between -1 and 0",AdeptnessPackage.Literals.HIGH_TIME__CANT);
+			}
+		}
+		
+	}
+	@Check
+	public void checkConfidenceConstDeg(ConstDeg constDeg) {
+		if(constDeg!=null) {
+			cantDeg=constDeg.getCant().getDVal();
+			if(cantDeg<-1 || cantDeg > 0 ) {
+				error("The confidence value must be between -1 and 0",AdeptnessPackage.Literals.CONST_DEG__CANT);
+			}
+		}
+		
+	}
+	@Check
+	public void checkConfidenceXPeaks(XPeaks xpeak) {
+		if(xpeak!=null) {
+			cantXPeak=xpeak.getCant().getDVal();
+			if(cantXPeak<-1 || cantXPeak > 0 ) {
+				error("The confidence value must be between -1 and 0",AdeptnessPackage.Literals.XPEAKS__CANT);
+			}
+		}
+		
+	}
 	
 }

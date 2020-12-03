@@ -15,7 +15,7 @@ import org.eclipse.xtext.generator.IGeneratorContext;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
-import org.xtext.example.mydsl.adeptness.Check;
+import org.xtext.example.mydsl.adeptness.Checks;
 import org.xtext.example.mydsl.adeptness.Gap;
 import org.xtext.example.mydsl.adeptness.Lower;
 import org.xtext.example.mydsl.adeptness.Oracle;
@@ -155,8 +155,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
     _builder.append("_H");
     _builder.newLineIfNotEmpty();
     {
-      EList<Check> _check = param.getCheck();
-      for(final Check param1 : _check) {
+      EList<Checks> _check = param.getCheck();
+      for(final Checks param1 : _check) {
         {
           Upper _upper = param1.getReference().getUpper();
           boolean _tripleNotEquals = (_upper != null);
@@ -260,10 +260,10 @@ public class AdeptnessGenerator extends AbstractGenerator {
     _builder.append(".h\"");
     _builder.newLineIfNotEmpty();
     {
-      EList<Check> _check = param.getCheck();
-      for(final Check param1 : _check) {
-        _builder.append("//");
-        String _string_1 = param1.getDescription().toString();
+      EList<Checks> _check = param.getCheck();
+      for(final Checks param1 : _check) {
+        _builder.append("//Comment: ");
+        String _string_1 = param1.getDescription().getValue().toString();
         _builder.append(_string_1);
         _builder.newLineIfNotEmpty();
         {
