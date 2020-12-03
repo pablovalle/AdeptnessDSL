@@ -1,0 +1,14 @@
+CPS Puertas:
+	ORACLE PosicionPuerta:
+		checks: "PosPuerta" is_in_range_between 0 and 1;
+		fails if:  confidence_is_below 0;
+		"explicacion oraculo"
+	ENDORACLE
+	
+	ORACLE PPUERTA:
+	    checks: "PosPuerta" is_in_range_between 0 and 1;
+		fails if: confidence_is_below 0;
+		"EXPLICACION"
+	ENDORACLE
+ENDCPS
+	

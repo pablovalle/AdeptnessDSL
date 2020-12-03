@@ -37,19 +37,19 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constDeg" eType="#//ConstDeg"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="HigPeaks" eType="#//HighPeaks"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xPeaks" eType="#//XPeaks"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="HighPeaks">
+  <eClassifiers xsi:type="ecore:EClass" name="XPeaks">
     <eStructuralFeatures xsi:type="ecore:EReference" name="cant" eType="#//DOUBLE"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nPeaks" eType="#//DOUBLE"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="time" eType="#//DOUBLE"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConstDeg">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="upper" eType="#//Upper"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="lower" eType="#//Lower"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cant" eType="#//DOUBLE"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="HighTime">

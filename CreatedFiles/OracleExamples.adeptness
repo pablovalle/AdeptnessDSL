@@ -1,0 +1,38 @@
+CPS HVS: 
+	ORACLE AWTChecker:
+		checks: "AWT" is_below 30;
+		fails if : confidence_is_below 30 within 10 seconds;	
+		"Below reference signal"
+	ENDORACLE
+		
+		
+	ORACLE EnergyChecker:
+		checks: "Energy" is_above 0;
+		fails if: confidence_is_in_constant_degradation 50;
+		fails if : confidence_is_below -0.3 more_than 10 times within 5 seconds;
+		fails if : confidence_is_below -0.5 ;
+		
+		"Above reference signal example"
+	ENDORACLE
+		
+		
+	ORACLE ATTDChecker: 
+		checks: "ATTD" is_in_range_between 0 and 300;
+		fails if : confidence_is_below -0.7;
+		"In rage reference signal"
+	ENDORACLE
+	
+		
+	ORACLE TotalMovements:
+		checks: "TotalMovements" not_in_range_between 10 and 20;
+		fails if: confidence_is_below -0.3 within 20 seconds;
+		"Gap reference signal"
+	ENDORACLE
+	
+	
+	
+	/* 
+	Oracle Example:
+		checks: "MonitoringVariable" is above than */
+
+ENDCPS  

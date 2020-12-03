@@ -29,7 +29,7 @@ Type:
 //Each signal could have more than one oracles
 Signal:
 	'CPS' name=ID ':'
-		(oracle+=Oracle)+';'
+		(oracle+=Oracle)+'ENDCPS'
 		/*(check_static_upper+=Check_Static_upper_only)*
 		(check_static_lower+=Check_Static_lower_only)*
 		(check_range+=Check_Range)*
@@ -38,56 +38,56 @@ Signal:
 
 
 Oracle: 
-	'Oracle' name=ID ':'
-		(check+=Check)+';'
+	'ORACLE' name=ID ':'
+		(check+=Check)+'ENDORACLE'
 ;
 
 Check:
-	'checks:' name=STRING 'is'
+	'checks:' name=STRING //'is'
 	(reference=Reference)
 	(failReason+=FailReason)+
-	(description=STRING) ','
+	(description=STRING) //','
 	
 ;
 FailReason:
 	'fails' 'if' ':'
-	((highPeak=HighPeak)|(highTime=HighTime)|(constDeg=ConstDeg)|(HigPeaks=HighPeaks)) ','
+	((highPeak=HighPeak)|(highTime=HighTime)|(constDeg=ConstDeg)|(xPeaks=XPeaks)) ';'
 ;
 
-HighPeaks:
-	'value' 'is' 'higher' 'than' (cant=DOUBLE) 'in' 'interval' 'of' (time=DOUBLE)
+XPeaks:
+	'confidence_is_below' (cant=DOUBLE) 'more_than' (nPeaks=DOUBLE) 'times' 'within' (time=DOUBLE) 'seconds' //nola jarri integer-ak?
 ;
 
 ConstDeg:
-	'constant' 'degradation' (((upper=Upper)|(lower=Lower)))
+	'confidence_is_in_constant_degradation'  (cant=DOUBLE) //(((upper=Upper)|(lower=Lower)))
 ;
 
 HighTime:
-	'higher' 'than' (cant=DOUBLE) 'in' 'a' 'time' 'of' (time=DOUBLE)
+	'confidence_is_below' (cant=DOUBLE) 'within' (time=DOUBLE) 'seconds'
 ;
 
 HighPeak:
-	'highest' 'value' 'is' 'higher' 'than' (cant=DOUBLE)
+	'confidence_is_below' (cant=DOUBLE)
 ;
 
 Reference:
-	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap))','
+	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap))';'
 ;
 //Oracle for upper limit --> Below reference signal
 Upper:
-	'below' 'than' (bound_upp=Bound_up)
+	'is_below' (bound_upp=Bound_up)
 ;
 //Oracle for lower limit --> Above reference signal
 Lower:
-	'above' 'than' (bound_lower=Bound_Down)
+	'is_above' (bound_lower=Bound_Down)
 ;
 //Oracle for Above and Below limit --> In range reference signal
 Range:
-	'in' 'range' 'between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
+	'is_in_range_between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
 ;
 //Oracle for !Above and !Below limit --> Gap reference signal
 Gap:
-	'not' 'in' 'range' 'between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
+	'not_in_range_between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
 ;
 
 //If the limits must be included ==
