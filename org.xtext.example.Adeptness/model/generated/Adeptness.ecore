@@ -13,6 +13,26 @@
   <eClassifiers xsi:type="ecore:EClass" name="Type" eSuperTypes="#//AbstractElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MonitoringFile" eSuperTypes="#//Type">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="monitoringPlan" upperBound="-1"
+        eType="#//MonitoringPlan" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MonitoringPlan">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="monitoringVariables" eType="#//MonitoringVariable"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MonitoringVariable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="MonitoringVariableDatatype"
+        eType="#//Sig_type" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="max" eType="#//DOUBLE"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="min" eType="#//DOUBLE"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Sig_type">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sig_type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Signal" eSuperTypes="#//Type">
     <eStructuralFeatures xsi:type="ecore:EReference" name="oracle" upperBound="-1"
         eType="#//Oracle" containment="true"/>

@@ -24,10 +24,56 @@ QualifiedName:
 ;
 
 Type:
-	DataType | Signal
+	DataType | Signal | MonitoringFile
 ;
+
+MonitoringFile:
+	'MONITORINGPLAN' name=ID ':'
+		(monitoringPlan+=MonitoringPlan)+'ENDMONITORINGPLAN'
+		/*(check_static_upper+=Check_Static_upper_only)*
+		(check_static_lower+=Check_Static_lower_only)*
+		(check_range+=Check_Range)*
+		(check_gap+=Check_Gap)*/
+;
+
+
+MonitoringPlan:
+	monitoringVariables = MonitoringVariable 
+	
+;
+
+/*MonitoringVariable: 
+ //'MonitoringVariable' '{'
+	(monitoringVariable+=MonVar)*	
+  //'}';	*/
+MonitoringVariable: 
+	'MONITORINGVARIABLE' name=ID ':'
+		'type'':' MonitoringVariableDatatype = Sig_type
+		('max:' max = DOUBLE
+		'min:' min = DOUBLE)?
+		//(monvar+=MonVar)+
+		'MONITORINGVARIABLE'
+;	
+
+
+/*MonVar:
+	//'sig:' name = ID'{'
+		'type:' MonitoringVariableDatatype = Sig_type
+		//'signalPattern:' sigPattern = SigPattern
+		//('unit:' unit = STRING)?
+		('max:' max = DOUBLE
+		'min:' min = DOUBLE)?
+		//('timePeriod:' timePeriod_down = DOUBLE 'to' timePeriod_up = DOUBLE)?
+	//'}'
+;*/
+
+Sig_type:
+	sig_type = ('boolean'|'double'|'int')
+;
+
 //Each signal could have more than one oracles
 Signal:
+	
 	'CPS' name=ID ':'
 		(oracle+=Oracle)+'ENDCPS'
 		/*(check_static_upper+=Check_Static_upper_only)*
