@@ -139,7 +139,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					j++;
 				}
 				if(j==CPS.getSuperType().getMonitoringPlan().size() && !is) {
-					error("Everything must be monitorized and it isn't", AdeptnessPackage.Literals.SIGNAL__ORACLE);
+					//error("Everything must be monitorized and it isn't", AdeptnessPackage.Literals.SIGNAL__ORACLE);
 				}
 				else if(is) {
 					j--;
