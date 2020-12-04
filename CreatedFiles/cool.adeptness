@@ -1,11 +1,19 @@
-CPS first: //CPS 
+import MonitoringFIleExample.adeptness
+CPS first: implements HVS_MONITORINGPLAN
 	ORACLE lehenengoa:
 		checks:"AWT" is in range between 10 and 30 ;
 		fails if : confidence is below -0.3;
 		fails if : confidence is below -0.2 within 10 miliseconds;
 		Description: "112345trffgh"
 	ENDORACLE
+	ORACLE bigarrena:
+		checks: "AQ" not in range between 0 and 1;
+		fails if : confidence is below -0.5;
+		Description: "1234567"
+	ENDORACLE
 ENDCPS
+
+
 		
 		
 		

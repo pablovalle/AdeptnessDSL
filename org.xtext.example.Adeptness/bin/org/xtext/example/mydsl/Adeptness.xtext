@@ -8,10 +8,10 @@ Adeptness:
 ;
 
 AbstractElement:
-	PackageDeclaration | Type | Import
+	PackageDeclaration | Type | Imports
 ;
 
-Import:
+Imports:
 	'import' importedNamespace=QualifiedNameWithWildcard
 ;
 
@@ -48,7 +48,7 @@ MonitoringPlan:
   //'}';	*/
 MonitoringVariable: 
 	'MONITOR' name=ID ':'
-		'type'':' MonitoringVariableDatatype = Sig_type
+		'type'':' (MonitoringVariableDatatype = Sig_type)
 		('max'':' max = DOUBLE
 		'min'':' min = DOUBLE)?
 		//(monvar+=MonVar)+
@@ -68,13 +68,13 @@ MonitoringVariable:
 ;*/
 
 Sig_type:
-	sig_type = ('boolean'|'double'|'int')
+	((sig_type = 'boolean')|(sig_type = 'int' )|(sig_type = 'double' ))
 ;
 
 //Each signal could have more than one oracles
 Signal:
-	imp = ImportMonitoringPlan
-	'CPS' name=ID ':'
+	//imp = ImportMonitoringPlan
+	'CPS' name=ID ':' ('implements'superType=[MonitoringFile|QualifiedName])?
 		(oracle+=Oracle)+'ENDCPS'
 		/*(check_static_upper+=Check_Static_upper_only)*
 		(check_static_lower+=Check_Static_lower_only)*

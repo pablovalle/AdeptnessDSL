@@ -7,7 +7,7 @@
         eType="#//AbstractElement" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Import" eSuperTypes="#//AbstractElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Imports" eSuperTypes="#//AbstractElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="importedNamespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Type" eSuperTypes="#//AbstractElement">
@@ -34,8 +34,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sig_type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Signal" eSuperTypes="#//Type">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="imp" eType="#//ImportMonitoringPlan"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="superType" eType="#//MonitoringFile"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="oracle" upperBound="-1"
         eType="#//Oracle" containment="true"/>
   </eClassifiers>
