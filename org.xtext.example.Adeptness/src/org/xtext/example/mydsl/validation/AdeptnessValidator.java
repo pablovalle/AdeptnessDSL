@@ -123,8 +123,72 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 	}
 	
+	
+	/*
+	@Check
+	public void checkOracleConfigValues(Oracle oracle, Signal CPS) {
+		System.out.println("check OracleConfig  Values entering");
+		boolean is=false;
+		double max, min;
+		int j=0;
+		for (int z=0; z<oracle.getCheck().size(); z++) {
+			is=false;
+			j=0;
+			while(!is && j<CPS.getSuperType().getMonitoringPlan().size()) {
+				if(oracle.getCheck().get(z).getName().toString().equals(CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getName().toString())) {
+					is=true;
+				}
+				j++;
+			}
+			if(j==CPS.getSuperType().getMonitoringPlan().size() && !is) {
+				error("There is at least one variable not included in the monitoring plan", AdeptnessPackage.Literals.SIGNAL__ORACLE);
+			}
+			else if(is) {
+				j--;
+				if(!CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMonitoringVariableDatatype().getSig_type().equals("boolean")) {
+					max=CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMax().getDVal();
+					min=CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMin().getDVal();
+				}
+				else {
+					max=1;
+					min=0;
+				}
+					if(oracle.getCheck().get(z).getReference().getUpper()!=null) {
+						Upper up=oracle.getCheck().get(z).getReference().getUpper();
+						if(up.getBound_upp().getValue().getDVal()>max ||up.getBound_upp().getValue().getDVal()>min) {
+							System.out.println("A");
+							error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
+						}
+					}
+					else if(oracle.getCheck().get(z).getReference().getLower()!=null) {
+						Lower low=oracle.getCheck().get(z).getReference().getLower();
+						if(low.getBound_lower().getValue().getDVal()>max ||low.getBound_lower().getValue().getDVal()>min) {
+							System.out.println("B");
+							error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
+						}
+					}
+					else if(oracle.getCheck().get(z).getReference().getGap()!=null) {
+						Gap gap=oracle.getCheck().get(z).getReference().getGap();
+						if(gap.getBound_upp().getValue().getDVal()>max || gap.getBound_upp().getValue().getDVal()<min || gap.getBound_lower().getValue().getDVal()>max ||gap.getBound_lower().getValue().getDVal()<min) {
+							System.out.println("C");
+							error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
+						}
+					}
+					else if(oracle.getCheck().get(z).getReference().getRange()!=null) {
+						Range range=oracle.getCheck().get(z).getReference().getRange();
+						if(range.getBound_upp().getValue().getDVal()>max || range.getBound_upp().getValue().getDVal()<min || range.getBound_lower().getValue().getDVal()>max ||range.getBound_lower().getValue().getDVal()<min) {
+							System.out.println("D");
+							error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
+						}
+					}
+			}
+		}
+		
+	}
+	*/
 	@Check
 	public void checkCPSConfigValues(Signal CPS) {
+		System.out.println("check checkCPSConfigValues entering");
 		boolean is=false;
 		double max, min;
 		int j=0;
@@ -139,7 +203,8 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					j++;
 				}
 				if(j==CPS.getSuperType().getMonitoringPlan().size() && !is) {
-					//error("Everything must be monitorized and it isn't", AdeptnessPackage.Literals.SIGNAL__ORACLE);
+					String errorString = "The variable " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " is not in the monitoring plan";
+					error(errorString, AdeptnessPackage.Literals.SIGNAL__ORACLE);
 				}
 				else if(is) {
 					j--;
@@ -151,36 +216,49 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 						max=1;
 						min=0;
 					}
-						if(CPS.getOracle().get(i).getCheck().get(z).getReference().getUpper()!=null) {
-							Upper up=CPS.getOracle().get(i).getCheck().get(z).getReference().getUpper();
-							if(up.getBound_upp().getValue().getDVal()>max ||up.getBound_upp().getValue().getDVal()>min) {
-								System.out.println("A");
-								error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
-							}
+					if(CPS.getOracle().get(i).getCheck().get(z).getReference().getUpper()!=null) {
+						Upper up=CPS.getOracle().get(i).getCheck().get(z).getReference().getUpper();
+						if(up.getBound_upp().getValue().getDVal()>max ||up.getBound_upp().getValue().getDVal()>min) {
+							System.out.println("A");
+							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max and/or min values in the check";
+							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);//SIGNAL__ORACLE
 						}
-						else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getLower()!=null) {
-							Lower low=CPS.getOracle().get(i).getCheck().get(z).getReference().getLower();
-							if(low.getBound_lower().getValue().getDVal()>max ||low.getBound_lower().getValue().getDVal()>min) {
-								System.out.println("B");
-								error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
-							}
+					}
+					else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getLower()!=null) {
+						Lower low=CPS.getOracle().get(i).getCheck().get(z).getReference().getLower();
+						if(low.getBound_lower().getValue().getDVal()>max ||low.getBound_lower().getValue().getDVal()>min) {
+							System.out.println("B");
+							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max and/or min values in the check";
+							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
 						}
-						else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getGap()!=null) {
-							Gap gap=CPS.getOracle().get(i).getCheck().get(z).getReference().getGap();
-							if(gap.getBound_upp().getValue().getDVal()>max || gap.getBound_upp().getValue().getDVal()<min || gap.getBound_lower().getValue().getDVal()>max ||gap.getBound_lower().getValue().getDVal()<min) {
-								System.out.println("C");
-								error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
-							}
+					}
+					else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getGap()!=null) {
+						Gap gap=CPS.getOracle().get(i).getCheck().get(z).getReference().getGap();
+						if(gap.getBound_upp().getValue().getDVal()>max || gap.getBound_upp().getValue().getDVal()<min || gap.getBound_lower().getValue().getDVal()>max ||gap.getBound_lower().getValue().getDVal()<min) {
+							System.out.println("C");
+							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max and/or min values in the check";
+							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
 						}
-						else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getRange()!=null) {
-							Range range=CPS.getOracle().get(i).getCheck().get(z).getReference().getRange();
-							if(range.getBound_upp().getValue().getDVal()>max || range.getBound_upp().getValue().getDVal()<min || range.getBound_lower().getValue().getDVal()>max ||range.getBound_lower().getValue().getDVal()<min) {
-								System.out.println("D");
-								error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
-							}
+					}
+					else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getRange()!=null) {
+						Range range=CPS.getOracle().get(i).getCheck().get(z).getReference().getRange();
+						if(range.getBound_upp().getValue().getDVal()>max || range.getBound_upp().getValue().getDVal()<min || range.getBound_lower().getValue().getDVal()>max ||range.getBound_lower().getValue().getDVal()<min) {
+							System.out.println("D");
+							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max and/or min values in the check";
+							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
 						}
+					}
 				}
 			}
 		}
 	}
+	
+	@Check
+	public void checkOracleAssesment(Oracle or) {
+		OracleAssesment oa = new OracleAssesment(or);
+		if(!oa.assesOracle())
+			warning("warning!", AdeptnessPackage.Literals.ORACLE__CHECK);
+		
+	}
+	
 }
