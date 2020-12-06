@@ -218,7 +218,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					}
 					if(CPS.getOracle().get(i).getCheck().get(z).getReference().getUpper()!=null) {
 						Upper up=CPS.getOracle().get(i).getCheck().get(z).getReference().getUpper();
-						if(up.getBound_upp().getValue().getDVal()>max ||up.getBound_upp().getValue().getDVal()>min) {
+						if(up.getBound_upp().getValue().getDVal()>max ||up.getBound_upp().getValue().getDVal()<min) {
 							System.out.println("A");
 							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max and/or min values in the check";
 							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);//SIGNAL__ORACLE
@@ -226,7 +226,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					}
 					else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getLower()!=null) {
 						Lower low=CPS.getOracle().get(i).getCheck().get(z).getReference().getLower();
-						if(low.getBound_lower().getValue().getDVal()>max ||low.getBound_lower().getValue().getDVal()>min) {
+						if(low.getBound_lower().getValue().getDVal()>max ||low.getBound_lower().getValue().getDVal()<min) {
 							System.out.println("B");
 							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max and/or min values in the check";
 							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
@@ -257,7 +257,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	public void checkOracleAssesment(Oracle or) {
 		OracleAssesment oa = new OracleAssesment(or);
 		if(!oa.assesOracle())
-			warning("warning!", AdeptnessPackage.Literals.ORACLE__CHECK);
+			warning("This oracle may fail if we consider operational data", AdeptnessPackage.Literals.ORACLE__CHECK);
 		
 	}
 	
