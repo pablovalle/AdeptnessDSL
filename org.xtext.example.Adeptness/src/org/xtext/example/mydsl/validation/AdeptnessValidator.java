@@ -39,7 +39,30 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	double cantTime;
 	double cantDeg;
 	double cantXPeak;
-
+	List<MonitoringVariables> monitoringVariableList;
+	//GET MONITORING VARIBALES
+	@Check
+	public void getMonitoringVariables(Signal CPS) {
+		monitoringVariableList=new ArrayList<>();
+		String type,name;
+		double min, max;
+		for(int i=0; i< CPS.getSuperType().getMonitoringPlan().size(); i++) {
+			MonitoringVariable monitor=CPS.getSuperType().getMonitoringPlan().get(i).getMonitoringVariables();
+			if(monitor.getMonitoringVariableDatatype().getSig_type().toString().equals("boolean")) {
+				name=monitor.getName().toString();
+				type=monitor.getMonitoringVariableDatatype().getSig_type().toString();
+				max=1;
+				min=0;
+			}
+			else {
+				name=monitor.getName().toString();
+				type=monitor.getMonitoringVariableDatatype().getSig_type().toString();
+				max=monitor.getMax().getDVal();
+				min=monitor.getMin().getDVal();
+			}
+			monitoringVariableList.add(new MonitoringVariables(name,type,max,min));
+		}
+	}
 	@Check
 	public void checkHighTimeAndHighPeak(Checks check) {
 		boolean HT=false;
@@ -185,7 +208,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 		
 	}
-	*/
+
 	@Check
 	public void checkCPSConfigValues(Signal CPS) {
 		System.out.println("check checkCPSConfigValues entering");
@@ -260,6 +283,82 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					}
 				}
 			}
+		}
+	}*/
+	@Check
+	public void checkMonitoringVariables(Checks check) {
+		String checkName=check.getName().toString();
+		double max, min;
+		boolean is= false;
+		for(int i=0;i<monitoringVariableList.size();i++) {
+			if(checkName.equals(monitoringVariableList.get(i).getName())) {
+				is=true;
+				max=monitoringVariableList.get(i).getMax();
+				min= monitoringVariableList.get(i).getMin();
+				if(check.getReference().getUpper()!=null) {
+					Upper up=check.getReference().getUpper();
+					if(up.getBound_upp().getValue().getDVal()>max) {
+						String errorString = "Check "+check.getName()+" with value: "+up.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if(up.getBound_upp().getValue().getDVal()<min) {
+						String errorString = "Check "+check.getName()+" with value: "+up.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+				}
+				else if(check.getReference().getLower()!=null) {
+					Lower low=check.getReference().getLower();
+					if(low.getBound_lower().getValue().getDVal()>max) {
+						String errorString = "Check "+check.getName()+" with value: "+low.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if(low.getBound_lower().getValue().getDVal()<min) {
+						String errorString = "Check "+check.getName()+" with value: "+low.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+				}
+				else if(check.getReference().getRange()!=null) {
+					Range range=check.getReference().getRange();
+					if(range.getBound_upp().getValue().getDVal()>max) {
+						String errorString = "Check "+check.getName()+" with value: "+range.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if(range.getBound_upp().getValue().getDVal()<min) {
+						String errorString = "Check "+check.getName()+" with value: "+range.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if(range.getBound_lower().getValue().getDVal()>max) {
+						String errorString = "Check "+check.getName()+" with value: "+range.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if(range.getBound_lower().getValue().getDVal()<min) {
+						String errorString = "Check "+check.getName()+" with value: "+range.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+				}
+				else if(check.getReference().getGap()!=null) {
+					Gap gap=check.getReference().getGap();
+					if(gap.getBound_upp().getValue().getDVal()>max) {
+						String errorString = "Check "+check.getName()+" with value: "+gap.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if(gap.getBound_upp().getValue().getDVal()<min) {
+						String errorString = "Check "+check.getName()+" with value: "+gap.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if(gap.getBound_lower().getValue().getDVal()>max) {
+						String errorString = "Check "+check.getName()+" with value: "+gap.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if(gap.getBound_lower().getValue().getDVal()<min) {
+						String errorString = "Check "+check.getName()+" with value: "+gap.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+				}
+			}
+		}
+		if(!is) {
+			error("This variable is not in the monitoring plan",AdeptnessPackage.Literals.CHECKS__NAME);
 		}
 	}
 	
