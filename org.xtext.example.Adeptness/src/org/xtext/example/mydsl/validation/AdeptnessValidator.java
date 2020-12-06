@@ -218,18 +218,28 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					}
 					if(CPS.getOracle().get(i).getCheck().get(z).getReference().getUpper()!=null) {
 						Upper up=CPS.getOracle().get(i).getCheck().get(z).getReference().getUpper();
-						if(up.getBound_upp().getValue().getDVal()>max ||up.getBound_upp().getValue().getDVal()<min) {
+						if(up.getBound_upp().getValue().getDVal()>max) {
 							System.out.println("A");
-							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max and/or min values in the check";
+							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max values specified in the validation plan insede the check";
 							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);//SIGNAL__ORACLE
+						}
+						if(up.getBound_upp().getValue().getDVal()<min) {
+							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply min values specified in the validation plan insede the check";
+							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);//SIGNAL__ORACLE
+	
 						}
 					}
 					else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getLower()!=null) {
 						Lower low=CPS.getOracle().get(i).getCheck().get(z).getReference().getLower();
-						if(low.getBound_lower().getValue().getDVal()>max ||low.getBound_lower().getValue().getDVal()<min) {
+						if(low.getBound_lower().getValue().getDVal()>max) {
 							System.out.println("B");
-							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max and/or min values in the check";
+							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max values specified in the validation plan in the check";
 							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
+						}
+						if(low.getBound_lower().getValue().getDVal()<min) {
+							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply min values specified in the validation plan in the check";
+							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
+				
 						}
 					}
 					else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getGap()!=null) {

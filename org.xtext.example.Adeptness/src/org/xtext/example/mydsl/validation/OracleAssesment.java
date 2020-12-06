@@ -14,8 +14,46 @@ public class OracleAssesment {
 	int oracleCheck;
 	double[] awt = {10, 20, 30, 40};
 	
+	enum PATTERNS {BELLOW_REFERENCE, ABOVE_REFERENCE, GAP, RANGE};
+	enum FAILREASONS {HIGH_PEAK, HIGH_TIME_OUT_BOUNDS, CONSTANT_DEGRADATION, X_PEAKS_XSECONDS}
+	
+	PATTERNS pat;
+	FAILREASONS fr;
+	
+	/**
+	 * Constructor
+	 * @param or
+	 */
 	public OracleAssesment(Oracle or) {
 		this.or = or;
+		findOraclePattern(or);
+		findOracleFailReason(or);
+	}
+	
+	
+	public void findOraclePattern(Oracle or) {
+		for(int i = 0; i<or.getCheck().size();i++) {
+			System.out.println("for" + i);
+			String monitoringVariableName = or.getCheck().get(i).getName().toString();
+			//getReference().getLower()!=null
+			//String pattern = getPattern(or.getCheck().get(i).getReference());
+			String pattern;
+			if(or.getCheck().get(i).getReference().getLower()!=null) {
+				this.pat = 	PATTERNS.ABOVE_REFERENCE;				
+			}else if(or.getCheck().get(i).getReference().getUpper()!=null) {
+				this.pat = PATTERNS.BELLOW_REFERENCE;
+				
+			}else if(or.getCheck().get(i).getReference().getGap()!=null) {
+				this.pat = PATTERNS.GAP;
+			}else if(or.getCheck().get(i).getReference().getRange()!=null) {
+				this.pat = PATTERNS.RANGE;
+			}
+		}
+	}
+	
+	public void findOracleFailReason(Oracle or) {
+		
+		
 	}
 	
 	
@@ -31,27 +69,29 @@ public class OracleAssesment {
 			//getReference().getLower()!=null
 			//String pattern = getPattern(or.getCheck().get(i).getReference());
 			String pattern;
-			if(or.getCheck().get(i).getReference().getLower()!=null) {
+			System.out.println("pattern = " + this.pat);
+			if(this.pat==PATTERNS.ABOVE_REFERENCE) {
 				System.out.println("lower");
 				pattern = "lower";
 				Lower low=or.getCheck().get(i).getReference().getLower();
 				double val = low.getBound_lower().getValue().getDVal();
-				return getOperationalDataVerdictUpper(val,monitoringVariableName);
+				return getOperationalDataVerdictIsAbove(val,monitoringVariableName);
 				
 				
-			}else if(or.getCheck().get(i).getReference().getUpper()!=null) {
+			}else if(this.pat==PATTERNS.BELLOW_REFERENCE) {
 				System.out.println("upper");
 				pattern = "upper";
 				Upper up=or.getCheck().get(i).getReference().getUpper();
 				double val = up.getBound_upp().getValue().getDVal();
+				return getOperationalDataVerdictIsBelow(val, monitoringVariableName);
 				
-			}else if(or.getCheck().get(i).getReference().getGap()!=null) {
+			}else if(this.pat == PATTERNS.GAP) {
 				System.out.println("gap");
 				pattern = "gap";
 				Gap gap=or.getCheck().get(i).getReference().getGap();
 				double valUp = gap.getBound_upp().getValue().getDVal();
 				double valLower = gap.getBound_lower().getValue().getDVal();
-			}else if(or.getCheck().get(i).getReference().getRange()!=null) {
+			}else if(this.pat == PATTERNS.RANGE) {
 				System.out.println("range");
 				pattern = "range";
 				Range range=or.getCheck().get(i).getReference().getRange();
@@ -68,11 +108,13 @@ public class OracleAssesment {
 	 * @param name
 	 * @return
 	 */
-	private boolean getOperationalDataVerdictUpper(double val, String name) {
-		
+	private boolean getOperationalDataVerdictIsAbove(double val, String name) {
+		System.out.println("entering getOperationalDataVerdictIsAbove");
 		if(name.contentEquals("AWT")) {
 			for(int i=0;i<this.awt.length;i++) {
-				if(val<this.awt[i])
+				System.out.println("val = " + val);
+				System.out.println("awt["+i +"] = " + awt[i]);
+				if(val>this.awt[i])
 					return false;
 			}
 		}
@@ -86,11 +128,13 @@ public class OracleAssesment {
 	 * @param name
 	 * @return
 	 */
-	private boolean getOperationalDataVerdictLower(double val, String name) {
-		
+	private boolean getOperationalDataVerdictIsBelow(double val, String name) {
+		System.out.println("entering getOperationalDataVerdictIsBelow");
 		if(name.contentEquals("AWT")) {
 			for(int i=0;i<this.awt.length;i++) {
-				if(val>this.awt[i])
+				System.out.println("val = " + val);
+				System.out.println("awt["+i +"] = " + awt[i]);
+				if(val<this.awt[i])
 					return false;
 			}
 		}
