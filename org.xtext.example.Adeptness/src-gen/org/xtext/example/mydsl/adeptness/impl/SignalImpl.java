@@ -31,6 +31,7 @@ import org.xtext.example.mydsl.adeptness.Signal;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SignalImpl#getCardinalityNumCPS <em>Cardinality Num CPS</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SignalImpl#getSuperType <em>Super Type</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SignalImpl#getOracle <em>Oracle</em>}</li>
  * </ul>
@@ -39,6 +40,26 @@ import org.xtext.example.mydsl.adeptness.Signal;
  */
 public class SignalImpl extends TypeImpl implements Signal
 {
+  /**
+   * The default value of the '{@link #getCardinalityNumCPS() <em>Cardinality Num CPS</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getCardinalityNumCPS()
+   * @generated
+   * @ordered
+   */
+  protected static final int CARDINALITY_NUM_CPS_EDEFAULT = 0;
+
+  /**
+   * The cached value of the '{@link #getCardinalityNumCPS() <em>Cardinality Num CPS</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getCardinalityNumCPS()
+   * @generated
+   * @ordered
+   */
+  protected int cardinalityNumCPS = CARDINALITY_NUM_CPS_EDEFAULT;
+
   /**
    * The cached value of the '{@link #getSuperType() <em>Super Type</em>}' reference.
    * <!-- begin-user-doc -->
@@ -78,6 +99,31 @@ public class SignalImpl extends TypeImpl implements Signal
   protected EClass eStaticClass()
   {
     return AdeptnessPackage.Literals.SIGNAL;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public int getCardinalityNumCPS()
+  {
+    return cardinalityNumCPS;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setCardinalityNumCPS(int newCardinalityNumCPS)
+  {
+    int oldCardinalityNumCPS = cardinalityNumCPS;
+    cardinalityNumCPS = newCardinalityNumCPS;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.SIGNAL__CARDINALITY_NUM_CPS, oldCardinalityNumCPS, cardinalityNumCPS));
   }
 
   /**
@@ -166,6 +212,8 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
+      case AdeptnessPackage.SIGNAL__CARDINALITY_NUM_CPS:
+        return getCardinalityNumCPS();
       case AdeptnessPackage.SIGNAL__SUPER_TYPE:
         if (resolve) return getSuperType();
         return basicGetSuperType();
@@ -186,6 +234,9 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
+      case AdeptnessPackage.SIGNAL__CARDINALITY_NUM_CPS:
+        setCardinalityNumCPS((Integer)newValue);
+        return;
       case AdeptnessPackage.SIGNAL__SUPER_TYPE:
         setSuperType((MonitoringFile)newValue);
         return;
@@ -207,6 +258,9 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
+      case AdeptnessPackage.SIGNAL__CARDINALITY_NUM_CPS:
+        setCardinalityNumCPS(CARDINALITY_NUM_CPS_EDEFAULT);
+        return;
       case AdeptnessPackage.SIGNAL__SUPER_TYPE:
         setSuperType((MonitoringFile)null);
         return;
@@ -227,12 +281,31 @@ public class SignalImpl extends TypeImpl implements Signal
   {
     switch (featureID)
     {
+      case AdeptnessPackage.SIGNAL__CARDINALITY_NUM_CPS:
+        return cardinalityNumCPS != CARDINALITY_NUM_CPS_EDEFAULT;
       case AdeptnessPackage.SIGNAL__SUPER_TYPE:
         return superType != null;
       case AdeptnessPackage.SIGNAL__ORACLE:
         return oracle != null && !oracle.isEmpty();
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (cardinalityNumCPS: ");
+    result.append(cardinalityNumCPS);
+    result.append(')');
+    return result.toString();
   }
 
 } //SignalImpl

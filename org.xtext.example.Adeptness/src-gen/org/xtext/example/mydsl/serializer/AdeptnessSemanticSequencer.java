@@ -598,7 +598,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Signal returns Signal
 	 *
 	 * Constraint:
-	 *     (name=ID superType=[MonitoringFile|QualifiedName]? oracle+=Oracle+)
+	 *     (name=ID cardinalityNumCPS=INT? superType=[MonitoringFile|QualifiedName]? oracle+=Oracle+)
 	 */
 	protected void sequence_Signal(ISerializationContext context, Signal semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

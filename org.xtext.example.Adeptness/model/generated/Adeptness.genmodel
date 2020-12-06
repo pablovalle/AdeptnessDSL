@@ -32,6 +32,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Sig_type/sig_type"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//Signal">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Signal/cardinalityNumCPS"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Signal/superType"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Signal/oracle"/>
     </genClasses>

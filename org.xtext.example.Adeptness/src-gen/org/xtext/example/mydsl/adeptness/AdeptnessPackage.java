@@ -328,13 +328,22 @@ public interface AdeptnessPackage extends EPackage
   int SIGNAL__NAME = TYPE__NAME;
 
   /**
+   * The feature id for the '<em><b>Cardinality Num CPS</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SIGNAL__CARDINALITY_NUM_CPS = TYPE_FEATURE_COUNT + 0;
+
+  /**
    * The feature id for the '<em><b>Super Type</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SIGNAL__SUPER_TYPE = TYPE_FEATURE_COUNT + 0;
+  int SIGNAL__SUPER_TYPE = TYPE_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Oracle</b></em>' containment reference list.
@@ -343,7 +352,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SIGNAL__ORACLE = TYPE_FEATURE_COUNT + 1;
+  int SIGNAL__ORACLE = TYPE_FEATURE_COUNT + 2;
 
   /**
    * The number of structural features of the '<em>Signal</em>' class.
@@ -352,7 +361,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SIGNAL_FEATURE_COUNT = TYPE_FEATURE_COUNT + 2;
+  int SIGNAL_FEATURE_COUNT = TYPE_FEATURE_COUNT + 3;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.ImportMonitoringPlanImpl <em>Import Monitoring Plan</em>}' class.
@@ -1371,6 +1380,17 @@ public interface AdeptnessPackage extends EPackage
   EClass getSignal();
 
   /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Signal#getCardinalityNumCPS <em>Cardinality Num CPS</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Cardinality Num CPS</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Signal#getCardinalityNumCPS()
+   * @see #getSignal()
+   * @generated
+   */
+  EAttribute getSignal_CardinalityNumCPS();
+
+  /**
    * Returns the meta object for the reference '{@link org.xtext.example.mydsl.adeptness.Signal#getSuperType <em>Super Type</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2265,6 +2285,14 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EClass SIGNAL = eINSTANCE.getSignal();
+
+    /**
+     * The meta object literal for the '<em><b>Cardinality Num CPS</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SIGNAL__CARDINALITY_NUM_CPS = eINSTANCE.getSignal_CardinalityNumCPS();
 
     /**
      * The meta object literal for the '<em><b>Super Type</b></em>' reference feature.

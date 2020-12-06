@@ -362,20 +362,25 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		private final Keyword cCPSKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
-		private final Keyword cImplementsKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Assignment cSuperTypeAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final CrossReference cSuperTypeMonitoringFileCrossReference_3_1_0 = (CrossReference)cSuperTypeAssignment_3_1.eContents().get(0);
-		private final RuleCall cSuperTypeMonitoringFileQualifiedNameParserRuleCall_3_1_0_1 = (RuleCall)cSuperTypeMonitoringFileCrossReference_3_1_0.eContents().get(1);
-		private final Assignment cOracleAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cOracleOracleParserRuleCall_4_0 = (RuleCall)cOracleAssignment_4.eContents().get(0);
-		private final Keyword cENDCPSKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Keyword cLeftSquareBracketKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
+		private final Assignment cCardinalityNumCPSAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cCardinalityNumCPSINTTerminalRuleCall_2_1_0 = (RuleCall)cCardinalityNumCPSAssignment_2_1.eContents().get(0);
+		private final Keyword cRightSquareBracketKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
+		private final Keyword cColonKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
+		private final Keyword cImplementsKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final Assignment cSuperTypeAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
+		private final CrossReference cSuperTypeMonitoringFileCrossReference_4_1_0 = (CrossReference)cSuperTypeAssignment_4_1.eContents().get(0);
+		private final RuleCall cSuperTypeMonitoringFileQualifiedNameParserRuleCall_4_1_0_1 = (RuleCall)cSuperTypeMonitoringFileCrossReference_4_1_0.eContents().get(1);
+		private final Assignment cOracleAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cOracleOracleParserRuleCall_5_0 = (RuleCall)cOracleAssignment_5.eContents().get(0);
+		private final Keyword cENDCPSKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		////Each signal could have more than one oracles
 		//Signal:
 		//	// imp = ImportMonitoringPlan
-		//	'CPS' name=ID ':' ('implements'superType=[MonitoringFile|QualifiedName])?
+		//	'CPS' name=ID ('[' cardinalityNumCPS=INT ']')? ':' ('implements'superType=[MonitoringFile|QualifiedName])?
 		//	oracle+=Oracle+ 'ENDCPS'
 		///*(check_static_upper+=Check_Static_upper_only)*
 		// * (check_static_lower+=Check_Static_lower_only)*
@@ -385,7 +390,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		@Override public ParserRule getRule() { return rule; }
 		
 		//// imp = ImportMonitoringPlan
-		//'CPS' name=ID ':' ('implements'superType=[MonitoringFile|QualifiedName])?
+		//'CPS' name=ID ('[' cardinalityNumCPS=INT ']')? ':' ('implements'superType=[MonitoringFile|QualifiedName])?
 		//oracle+=Oracle+ 'ENDCPS'
 		public Group getGroup() { return cGroup; }
 		
@@ -399,32 +404,47 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
 		
+		//('[' cardinalityNumCPS=INT ']')?
+		public Group getGroup_2() { return cGroup_2; }
+		
+		//'['
+		public Keyword getLeftSquareBracketKeyword_2_0() { return cLeftSquareBracketKeyword_2_0; }
+		
+		//cardinalityNumCPS=INT
+		public Assignment getCardinalityNumCPSAssignment_2_1() { return cCardinalityNumCPSAssignment_2_1; }
+		
+		//INT
+		public RuleCall getCardinalityNumCPSINTTerminalRuleCall_2_1_0() { return cCardinalityNumCPSINTTerminalRuleCall_2_1_0; }
+		
+		//']'
+		public Keyword getRightSquareBracketKeyword_2_2() { return cRightSquareBracketKeyword_2_2; }
+		
 		//':'
-		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
+		public Keyword getColonKeyword_3() { return cColonKeyword_3; }
 		
 		//('implements'superType=[MonitoringFile|QualifiedName])?
-		public Group getGroup_3() { return cGroup_3; }
+		public Group getGroup_4() { return cGroup_4; }
 		
 		//'implements'
-		public Keyword getImplementsKeyword_3_0() { return cImplementsKeyword_3_0; }
+		public Keyword getImplementsKeyword_4_0() { return cImplementsKeyword_4_0; }
 		
 		//superType=[MonitoringFile|QualifiedName]
-		public Assignment getSuperTypeAssignment_3_1() { return cSuperTypeAssignment_3_1; }
+		public Assignment getSuperTypeAssignment_4_1() { return cSuperTypeAssignment_4_1; }
 		
 		//[MonitoringFile|QualifiedName]
-		public CrossReference getSuperTypeMonitoringFileCrossReference_3_1_0() { return cSuperTypeMonitoringFileCrossReference_3_1_0; }
+		public CrossReference getSuperTypeMonitoringFileCrossReference_4_1_0() { return cSuperTypeMonitoringFileCrossReference_4_1_0; }
 		
 		//QualifiedName
-		public RuleCall getSuperTypeMonitoringFileQualifiedNameParserRuleCall_3_1_0_1() { return cSuperTypeMonitoringFileQualifiedNameParserRuleCall_3_1_0_1; }
+		public RuleCall getSuperTypeMonitoringFileQualifiedNameParserRuleCall_4_1_0_1() { return cSuperTypeMonitoringFileQualifiedNameParserRuleCall_4_1_0_1; }
 		
 		//oracle+=Oracle+
-		public Assignment getOracleAssignment_4() { return cOracleAssignment_4; }
+		public Assignment getOracleAssignment_5() { return cOracleAssignment_5; }
 		
 		//Oracle
-		public RuleCall getOracleOracleParserRuleCall_4_0() { return cOracleOracleParserRuleCall_4_0; }
+		public RuleCall getOracleOracleParserRuleCall_5_0() { return cOracleOracleParserRuleCall_5_0; }
 		
 		//'ENDCPS'
-		public Keyword getENDCPSKeyword_5() { return cENDCPSKeyword_5; }
+		public Keyword getENDCPSKeyword_6() { return cENDCPSKeyword_6; }
 	}
 	public class ImportMonitoringPlanElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.ImportMonitoringPlan");
@@ -1457,7 +1477,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	////Each signal could have more than one oracles
 	//Signal:
 	//	// imp = ImportMonitoringPlan
-	//	'CPS' name=ID ':' ('implements'superType=[MonitoringFile|QualifiedName])?
+	//	'CPS' name=ID ('[' cardinalityNumCPS=INT ']')? ':' ('implements'superType=[MonitoringFile|QualifiedName])?
 	//	oracle+=Oracle+ 'ENDCPS'
 	///*(check_static_upper+=Check_Static_upper_only)*
 	// * (check_static_lower+=Check_Static_lower_only)*

@@ -74,7 +74,7 @@ Sig_type:
 //Each signal could have more than one oracles
 Signal:
 	//imp = ImportMonitoringPlan
-	'CPS' name=ID ':' ('implements'superType=[MonitoringFile|QualifiedName])?
+	'CPS' name=ID ('[' cardinalityNumCPS = INT ']')? ':' ('implements'superType=[MonitoringFile|QualifiedName])?
 		(oracle+=Oracle)+'ENDCPS'
 		/*(check_static_upper+=Check_Static_upper_only)*
 		(check_static_lower+=Check_Static_lower_only)*

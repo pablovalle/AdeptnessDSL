@@ -641,14 +641,42 @@ ruleSignal returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_2=':'
+		(
+			otherlv_2='['
+			{
+				newLeafNode(otherlv_2, grammarAccess.getSignalAccess().getLeftSquareBracketKeyword_2_0());
+			}
+			(
+				(
+					lv_cardinalityNumCPS_3_0=RULE_INT
+					{
+						newLeafNode(lv_cardinalityNumCPS_3_0, grammarAccess.getSignalAccess().getCardinalityNumCPSINTTerminalRuleCall_2_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getSignalRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"cardinalityNumCPS",
+							lv_cardinalityNumCPS_3_0,
+							"org.eclipse.xtext.common.Terminals.INT");
+					}
+				)
+			)
+			otherlv_4=']'
+			{
+				newLeafNode(otherlv_4, grammarAccess.getSignalAccess().getRightSquareBracketKeyword_2_2());
+			}
+		)?
+		otherlv_5=':'
 		{
-			newLeafNode(otherlv_2, grammarAccess.getSignalAccess().getColonKeyword_2());
+			newLeafNode(otherlv_5, grammarAccess.getSignalAccess().getColonKeyword_3());
 		}
 		(
-			otherlv_3='implements'
+			otherlv_6='implements'
 			{
-				newLeafNode(otherlv_3, grammarAccess.getSignalAccess().getImplementsKeyword_3_0());
+				newLeafNode(otherlv_6, grammarAccess.getSignalAccess().getImplementsKeyword_4_0());
 			}
 			(
 				(
@@ -658,7 +686,7 @@ ruleSignal returns [EObject current=null]
 						}
 					}
 					{
-						newCompositeNode(grammarAccess.getSignalAccess().getSuperTypeMonitoringFileCrossReference_3_1_0());
+						newCompositeNode(grammarAccess.getSignalAccess().getSuperTypeMonitoringFileCrossReference_4_1_0());
 					}
 					ruleQualifiedName
 					{
@@ -670,9 +698,9 @@ ruleSignal returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getSignalAccess().getOracleOracleParserRuleCall_4_0());
+					newCompositeNode(grammarAccess.getSignalAccess().getOracleOracleParserRuleCall_5_0());
 				}
-				lv_oracle_5_0=ruleOracle
+				lv_oracle_8_0=ruleOracle
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getSignalRule());
@@ -680,15 +708,15 @@ ruleSignal returns [EObject current=null]
 					add(
 						$current,
 						"oracle",
-						lv_oracle_5_0,
+						lv_oracle_8_0,
 						"org.xtext.example.mydsl.Adeptness.Oracle");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)+
-		otherlv_6='ENDCPS'
+		otherlv_9='ENDCPS'
 		{
-			newLeafNode(otherlv_6, grammarAccess.getSignalAccess().getENDCPSKeyword_5());
+			newLeafNode(otherlv_9, grammarAccess.getSignalAccess().getENDCPSKeyword_6());
 		}
 	)
 ;

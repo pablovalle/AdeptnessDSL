@@ -553,9 +553,20 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
+  public EAttribute getSignal_CardinalityNumCPS()
+  {
+    return (EAttribute)signalEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EReference getSignal_SuperType()
   {
-    return (EReference)signalEClass.getEStructuralFeatures().get(0);
+    return (EReference)signalEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -566,7 +577,7 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
   @Override
   public EReference getSignal_Oracle()
   {
-    return (EReference)signalEClass.getEStructuralFeatures().get(1);
+    return (EReference)signalEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1331,6 +1342,7 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     createEAttribute(sig_typeEClass, SIG_TYPE__SIG_TYPE);
 
     signalEClass = createEClass(SIGNAL);
+    createEAttribute(signalEClass, SIGNAL__CARDINALITY_NUM_CPS);
     createEReference(signalEClass, SIGNAL__SUPER_TYPE);
     createEReference(signalEClass, SIGNAL__ORACLE);
 
@@ -1486,6 +1498,7 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     initEAttribute(getSig_type_Sig_type(), ecorePackage.getEString(), "sig_type", null, 0, 1, Sig_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(signalEClass, Signal.class, "Signal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getSignal_CardinalityNumCPS(), ecorePackage.getEInt(), "cardinalityNumCPS", null, 0, 1, Signal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getSignal_SuperType(), this.getMonitoringFile(), null, "superType", null, 0, 1, Signal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getSignal_Oracle(), this.getOracle(), null, "oracle", null, 0, -1, Signal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

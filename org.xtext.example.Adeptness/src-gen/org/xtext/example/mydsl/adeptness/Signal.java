@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Signal#getCardinalityNumCPS <em>Cardinality Num CPS</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Signal#getSuperType <em>Super Type</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Signal#getOracle <em>Oracle</em>}</li>
  * </ul>
@@ -24,6 +25,28 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface Signal extends Type
 {
+  /**
+   * Returns the value of the '<em><b>Cardinality Num CPS</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Cardinality Num CPS</em>' attribute.
+   * @see #setCardinalityNumCPS(int)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSignal_CardinalityNumCPS()
+   * @model
+   * @generated
+   */
+  int getCardinalityNumCPS();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Signal#getCardinalityNumCPS <em>Cardinality Num CPS</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Cardinality Num CPS</em>' attribute.
+   * @see #getCardinalityNumCPS()
+   * @generated
+   */
+  void setCardinalityNumCPS(int value);
+
   /**
    * Returns the value of the '<em><b>Super Type</b></em>' reference.
    * <!-- begin-user-doc -->
