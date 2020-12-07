@@ -172,37 +172,89 @@ class AdeptnessGenerator extends AbstractGenerator {
 		struct Ret BelowReference (double «param1.name.toString()»){
 			struct Ret ret;
 			ret.assert=0;
+			«IF param1.reference.upper.bound_upp.value!==null»
 			if(«param1.name.toString()»<=«param1.reference.upper.bound_upp.value.DVal»){
 				ret.assertret=1;
 			}
 			ret.diff=«param1.reference.upper.bound_upp.value.DVal»-«param1.name.toString()»;
-			
+			«ELSE»
+			if(«param1.name.toString()»<=«param1.reference.upper.bound_upp.name.toString»){
+				ret.assertret=1;
+			}
+			ret.diff=«param1.reference.upper.bound_upp.name.toString»-«param1.name.toString()»;
+			«ENDIF»
 		«ELSEIF param1.reference.lower!==null»
 		struct Ret AboveReference (double «param1.name.toString()»){
 			struct Ret ret;
 			ret.assert=0;
+			«IF param1.reference.lower.bound_lower.value!==null»
 			if(«param1.name.toString()»>=«param1.reference.lower.bound_lower.value.DVal»){
 				ret.assert=1;
 			}
 			ret.diff=«param1.name.toString()»-«param1.reference.lower.bound_lower.value.DVal»;
-			
+			«ELSE»
+			if(«param1.name.toString()»>=«param1.reference.lower.bound_lower.name.toString»){
+				ret.assert=1;
+			}
+			ret.diff=«param1.name.toString()»-«param1.reference.lower.bound_lower.name.toString»;
+			«ENDIF»
 		«ELSEIF param1.reference.range!==null»
 		struct Ret RangeReference (double «param1.name.toString()»){
 			struct Ret ret;
+			
+			«IF param1.reference.range.bound_lower.value!==null && param1.reference.range.bound_upp.value!==null»
 			if(«param1.name.toString()»>=«param1.reference.range.bound_lower.value.DVal» && «param1.name.toString()»<=«param1.reference.range.bound_upp.value.DVal»){
 				ret.assert=1;
 			}
 			ret.diff_up=«param1.reference.range.bound_upp.value.DVal»-«param1.name.toString()»;
 			ret.diff_down=«param1.name.toString()»-«param1.reference.range.bound_lower.value.DVal»;
-			
+			«ELSEIF param1.reference.range.bound_lower.value===null && param1.reference.range.bound_upp.value!==null»
+			if(«param1.name.toString()»>=«param1.reference.range.bound_lower.name.toString» && «param1.name.toString()»<=«param1.reference.range.bound_upp.value.DVal»){
+				ret.assert=1;
+			}
+			ret.diff_up=«param1.reference.range.bound_upp.value.DVal»-«param1.name.toString()»;
+			ret.diff_down=«param1.name.toString()»-«param1.reference.range.bound_lower.name.toString»;
+			«ELSEIF param1.reference.range.bound_lower.value!==null && param1.reference.range.bound_upp.value===null»
+			if(«param1.name.toString()»>=«param1.reference.range.bound_lower.value.DVal» && «param1.name.toString()»<=«param1.reference.range.bound_upp.name.toString»){
+				ret.assert=1;
+			}
+			ret.diff_up=«param1.reference.range.bound_upp.name.toString»-«param1.name.toString()»;
+			ret.diff_down=«param1.name.toString()»-«param1.reference.range.bound_lower.value.DVal»;
+			«ELSE»
+			if(«param1.name.toString()»>=«param1.reference.range.bound_lower.name.toString» && «param1.name.toString()»<=«param1.reference.range.bound_upp.name.toString»){
+				ret.assert=1;
+			}
+			ret.diff_up=«param1.reference.range.bound_upp.name.toString»-«param1.name.toString()»;
+			ret.diff_down=«param1.name.toString()»-«param1.reference.range.bound_lower.name.toString»;
+			«ENDIF»
 		«ELSEIF param1.reference.gap!==null»
 		struct Ret GapReference (double «param1.name.toString()»){
 			struct Ret ret;
+			«IF param1.reference.gap.bound_lower.value!==null && param1.reference.gap.bound_upp.value!==null»
 			if(«param1.name.toString()»<=«param1.reference.gap.bound_lower.value.DVal» || «param1.name.toString()»>=«param1.reference.gap.bound_upp.value.DVal»){
 				ret.assert=1;
 			}
 			ret.diff_up=«param1.name.toString()»-«param1.reference.gap.bound_upp.value.DVal»;
 			ret.diff_down=«param1.reference.gap.bound_lower.value.DVal»-«param1.name.toString()»;
+			«ELSEIF param1.reference.gap.bound_lower.value===null && param1.reference.gap.bound_upp.value!==null»
+			if(«param1.name.toString()»<=«param1.reference.gap.bound_lower.name.toString» || «param1.name.toString()»>=«param1.reference.gap.bound_upp.value.DVal»){
+				ret.assert=1;
+			}
+			ret.diff_up=«param1.name.toString()»-«param1.reference.gap.bound_upp.value.DVal»;
+			ret.diff_down=«param1.reference.gap.bound_lower.name.toString»-«param1.name.toString()»;
+			«ELSEIF param1.reference.gap.bound_lower.value!==null && param1.reference.gap.bound_upp.value===null»
+			if(«param1.name.toString()»<=«param1.reference.gap.bound_lower.value.DVal» || «param1.name.toString()»>=«param1.reference.gap.bound_upp.name.toString»){
+				ret.assert=1;
+			}
+			ret.diff_up=«param1.name.toString()»-«param1.reference.gap.bound_upp.name.toString»;
+			ret.diff_down=«param1.reference.gap.bound_lower.value.DVal»-«param1.name.toString()»;
+			«ELSE»
+			if(«param1.name.toString()»<=«param1.reference.gap.bound_lower.name.toString» || «param1.name.toString()»>=«param1.reference.gap.bound_upp.name.toString»){
+				ret.assert=1;
+			}
+			ret.diff_up=«param1.name.toString()»-«param1.reference.gap.bound_upp.name.toString»;
+			ret.diff_down=«param1.reference.gap.bound_lower.name.toString»-«param1.name.toString()»;
+			«ENDIF»
 		«ENDIF»
 			return ret;
 		}
