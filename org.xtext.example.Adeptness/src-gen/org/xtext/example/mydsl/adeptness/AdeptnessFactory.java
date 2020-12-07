@@ -123,6 +123,15 @@ public interface AdeptnessFactory extends EFactory
   Oracle createOracle();
 
   /**
+   * Returns a new object of class '<em>When</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>When</em>'.
+   * @generated
+   */
+  When createWhen();
+
+  /**
    * Returns a new object of class '<em>Checks</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -202,6 +211,15 @@ public interface AdeptnessFactory extends EFactory
    * @generated
    */
   Reference createReference();
+
+  /**
+   * Returns a new object of class '<em>Precond Reference</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Precond Reference</em>'.
+   * @generated
+   */
+  PrecondReference createPrecondReference();
 
   /**
    * Returns a new object of class '<em>Upper</em>'.

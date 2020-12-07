@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Oracle#getName <em>Name</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Oracle#getWhen <em>When</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Oracle#getCheck <em>Check</em>}</li>
  * </ul>
  *
@@ -47,6 +48,18 @@ public interface Oracle extends EObject
    * @generated
    */
   void setName(String value);
+
+  /**
+   * Returns the value of the '<em><b>When</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.example.mydsl.adeptness.When}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>When</em>' containment reference list.
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getOracle_When()
+   * @model containment="true"
+   * @generated
+   */
+  EList<When> getWhen();
 
   /**
    * Returns the value of the '<em><b>Check</b></em>' containment reference list.

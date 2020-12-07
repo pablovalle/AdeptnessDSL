@@ -131,6 +131,11 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
         return createOracleAdapter();
       }
       @Override
+      public Adapter caseWhen(When object)
+      {
+        return createWhenAdapter();
+      }
+      @Override
       public Adapter caseChecks(Checks object)
       {
         return createChecksAdapter();
@@ -174,6 +179,11 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
       public Adapter caseReference(Reference object)
       {
         return createReferenceAdapter();
+      }
+      @Override
+      public Adapter casePrecondReference(PrecondReference object)
+      {
+        return createPrecondReferenceAdapter();
       }
       @Override
       public Adapter caseUpper(Upper object)
@@ -423,6 +433,21 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.When <em>When</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.When
+   * @generated
+   */
+  public Adapter createWhenAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Checks <em>Checks</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -553,6 +578,21 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createReferenceAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.PrecondReference <em>Precond Reference</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.PrecondReference
+   * @generated
+   */
+  public Adapter createPrecondReferenceAdapter()
   {
     return null;
   }

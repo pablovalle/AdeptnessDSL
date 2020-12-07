@@ -37,6 +37,7 @@ import org.xtext.example.mydsl.adeptness.MonitoringPlan;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.PackageDeclaration;
+import org.xtext.example.mydsl.adeptness.PrecondReference;
 import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Reason;
 import org.xtext.example.mydsl.adeptness.Reference;
@@ -44,6 +45,7 @@ import org.xtext.example.mydsl.adeptness.Sig_type;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.TimeType;
 import org.xtext.example.mydsl.adeptness.Upper;
+import org.xtext.example.mydsl.adeptness.When;
 import org.xtext.example.mydsl.adeptness.XPeaks;
 import org.xtext.example.mydsl.services.AdeptnessGrammarAccess;
 
@@ -127,6 +129,9 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 			case AdeptnessPackage.PACKAGE_DECLARATION:
 				sequence_PackageDeclaration(context, (PackageDeclaration) semanticObject); 
 				return; 
+			case AdeptnessPackage.PRECOND_REFERENCE:
+				sequence_PrecondReference(context, (PrecondReference) semanticObject); 
+				return; 
 			case AdeptnessPackage.RANGE:
 				sequence_Range(context, (Range) semanticObject); 
 				return; 
@@ -147,6 +152,9 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 				return; 
 			case AdeptnessPackage.UPPER:
 				sequence_Upper(context, (Upper) semanticObject); 
+				return; 
+			case AdeptnessPackage.WHEN:
+				sequence_When(context, (When) semanticObject); 
 				return; 
 			case AdeptnessPackage.XPEAKS:
 				sequence_XPeaks(context, (XPeaks) semanticObject); 
@@ -514,7 +522,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Oracle returns Oracle
 	 *
 	 * Constraint:
-	 *     (name=ID check+=Checks+)
+	 *     (name=ID when+=When? check+=Checks+)
 	 */
 	protected void sequence_Oracle(ISerializationContext context, Oracle semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -530,6 +538,18 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     (name=QualifiedName elements+=AbstractElement*)
 	 */
 	protected void sequence_PackageDeclaration(ISerializationContext context, PackageDeclaration semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     PrecondReference returns PrecondReference
+	 *
+	 * Constraint:
+	 *     (upper=Upper | lower=Lower | range=Range | gap=Gap)
+	 */
+	protected void sequence_PrecondReference(ISerializationContext context, PrecondReference semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -631,6 +651,27 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getUpperAccess().getBound_uppBound_upParserRuleCall_1_0(), semanticObject.getBound_upp());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     When returns When
+	 *
+	 * Constraint:
+	 *     (name=STRING precondReference=PrecondReference)
+	 */
+	protected void sequence_When(ISerializationContext context, When semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.WHEN__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.WHEN__NAME));
+			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getWhenAccess().getNameSTRINGTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getWhenAccess().getPrecondReferencePrecondReferenceParserRuleCall_2_0(), semanticObject.getPrecondReference());
 		feeder.finish();
 	}
 	

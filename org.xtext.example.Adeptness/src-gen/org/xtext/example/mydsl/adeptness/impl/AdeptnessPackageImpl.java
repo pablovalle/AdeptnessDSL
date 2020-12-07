@@ -33,6 +33,7 @@ import org.xtext.example.mydsl.adeptness.MonitoringPlan;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.PackageDeclaration;
+import org.xtext.example.mydsl.adeptness.PrecondReference;
 import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Reason;
 import org.xtext.example.mydsl.adeptness.Reference;
@@ -41,6 +42,7 @@ import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.TimeType;
 import org.xtext.example.mydsl.adeptness.Type;
 import org.xtext.example.mydsl.adeptness.Upper;
+import org.xtext.example.mydsl.adeptness.When;
 import org.xtext.example.mydsl.adeptness.XPeaks;
 
 /**
@@ -133,6 +135,13 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass whenEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass checksEClass = null;
 
   /**
@@ -190,6 +199,13 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   private EClass referenceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass precondReferenceEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -630,9 +646,53 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getOracle_Check()
+  public EReference getOracle_When()
   {
     return (EReference)oracleEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getOracle_Check()
+  {
+    return (EReference)oracleEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getWhen()
+  {
+    return whenEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getWhen_Name()
+  {
+    return (EAttribute)whenEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getWhen_PrecondReference()
+  {
+    return (EReference)whenEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -985,6 +1045,61 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
   public EReference getReference_Gap()
   {
     return (EReference)referenceEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getPrecondReference()
+  {
+    return precondReferenceEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getPrecondReference_Upper()
+  {
+    return (EReference)precondReferenceEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getPrecondReference_Lower()
+  {
+    return (EReference)precondReferenceEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getPrecondReference_Range()
+  {
+    return (EReference)precondReferenceEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getPrecondReference_Gap()
+  {
+    return (EReference)precondReferenceEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1351,7 +1466,12 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
 
     oracleEClass = createEClass(ORACLE);
     createEAttribute(oracleEClass, ORACLE__NAME);
+    createEReference(oracleEClass, ORACLE__WHEN);
     createEReference(oracleEClass, ORACLE__CHECK);
+
+    whenEClass = createEClass(WHEN);
+    createEAttribute(whenEClass, WHEN__NAME);
+    createEReference(whenEClass, WHEN__PRECOND_REFERENCE);
 
     checksEClass = createEClass(CHECKS);
     createEAttribute(checksEClass, CHECKS__NAME);
@@ -1393,6 +1513,12 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     createEReference(referenceEClass, REFERENCE__LOWER);
     createEReference(referenceEClass, REFERENCE__RANGE);
     createEReference(referenceEClass, REFERENCE__GAP);
+
+    precondReferenceEClass = createEClass(PRECOND_REFERENCE);
+    createEReference(precondReferenceEClass, PRECOND_REFERENCE__UPPER);
+    createEReference(precondReferenceEClass, PRECOND_REFERENCE__LOWER);
+    createEReference(precondReferenceEClass, PRECOND_REFERENCE__RANGE);
+    createEReference(precondReferenceEClass, PRECOND_REFERENCE__GAP);
 
     upperEClass = createEClass(UPPER);
     createEReference(upperEClass, UPPER__BOUND_UPP);
@@ -1507,7 +1633,12 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
 
     initEClass(oracleEClass, Oracle.class, "Oracle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getOracle_Name(), ecorePackage.getEString(), "name", null, 0, 1, Oracle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getOracle_When(), this.getWhen(), null, "when", null, 0, -1, Oracle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getOracle_Check(), this.getChecks(), null, "check", null, 0, -1, Oracle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(whenEClass, When.class, "When", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getWhen_Name(), ecorePackage.getEString(), "name", null, 0, 1, When.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getWhen_PrecondReference(), this.getPrecondReference(), null, "precondReference", null, 0, 1, When.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(checksEClass, Checks.class, "Checks", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getChecks_Name(), ecorePackage.getEString(), "name", null, 0, 1, Checks.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1549,6 +1680,12 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     initEReference(getReference_Lower(), this.getLower(), null, "lower", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getReference_Range(), this.getRange(), null, "range", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getReference_Gap(), this.getGap(), null, "gap", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(precondReferenceEClass, PrecondReference.class, "PrecondReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getPrecondReference_Upper(), this.getUpper(), null, "upper", null, 0, 1, PrecondReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getPrecondReference_Lower(), this.getLower(), null, "lower", null, 0, 1, PrecondReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getPrecondReference_Range(), this.getRange(), null, "range", null, 0, 1, PrecondReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getPrecondReference_Gap(), this.getGap(), null, "gap", null, 0, 1, PrecondReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(upperEClass, Upper.class, "Upper", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getUpper_Bound_upp(), this.getBound_up(), null, "bound_upp", null, 0, 1, Upper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -411,13 +411,22 @@ public interface AdeptnessPackage extends EPackage
   int ORACLE__NAME = 0;
 
   /**
+   * The feature id for the '<em><b>When</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ORACLE__WHEN = 1;
+
+  /**
    * The feature id for the '<em><b>Check</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ORACLE__CHECK = 1;
+  int ORACLE__CHECK = 2;
 
   /**
    * The number of structural features of the '<em>Oracle</em>' class.
@@ -426,7 +435,44 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ORACLE_FEATURE_COUNT = 2;
+  int ORACLE_FEATURE_COUNT = 3;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.WhenImpl <em>When</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.WhenImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getWhen()
+   * @generated
+   */
+  int WHEN = 11;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WHEN__NAME = 0;
+
+  /**
+   * The feature id for the '<em><b>Precond Reference</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WHEN__PRECOND_REFERENCE = 1;
+
+  /**
+   * The number of structural features of the '<em>When</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WHEN_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.ChecksImpl <em>Checks</em>}' class.
@@ -436,7 +482,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getChecks()
    * @generated
    */
-  int CHECKS = 11;
+  int CHECKS = 12;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -491,7 +537,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getDescription()
    * @generated
    */
-  int DESCRIPTION = 12;
+  int DESCRIPTION = 13;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -519,7 +565,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getFailReason()
    * @generated
    */
-  int FAIL_REASON = 13;
+  int FAIL_REASON = 14;
 
   /**
    * The feature id for the '<em><b>Reason</b></em>' containment reference.
@@ -547,7 +593,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getReason()
    * @generated
    */
-  int REASON = 14;
+  int REASON = 15;
 
   /**
    * The feature id for the '<em><b>High Peak</b></em>' containment reference.
@@ -602,7 +648,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getXPeaks()
    * @generated
    */
-  int XPEAKS = 15;
+  int XPEAKS = 16;
 
   /**
    * The feature id for the '<em><b>Cant</b></em>' containment reference.
@@ -657,7 +703,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getConstDeg()
    * @generated
    */
-  int CONST_DEG = 16;
+  int CONST_DEG = 17;
 
   /**
    * The feature id for the '<em><b>Cant</b></em>' containment reference.
@@ -685,7 +731,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getHighTime()
    * @generated
    */
-  int HIGH_TIME = 17;
+  int HIGH_TIME = 18;
 
   /**
    * The feature id for the '<em><b>Cant</b></em>' containment reference.
@@ -731,7 +777,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getHighPeak()
    * @generated
    */
-  int HIGH_PEAK = 18;
+  int HIGH_PEAK = 19;
 
   /**
    * The feature id for the '<em><b>Cant</b></em>' containment reference.
@@ -759,7 +805,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getReference()
    * @generated
    */
-  int REFERENCE = 19;
+  int REFERENCE = 20;
 
   /**
    * The feature id for the '<em><b>Upper</b></em>' containment reference.
@@ -807,6 +853,61 @@ public interface AdeptnessPackage extends EPackage
   int REFERENCE_FEATURE_COUNT = 4;
 
   /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.PrecondReferenceImpl <em>Precond Reference</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.PrecondReferenceImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getPrecondReference()
+   * @generated
+   */
+  int PRECOND_REFERENCE = 21;
+
+  /**
+   * The feature id for the '<em><b>Upper</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PRECOND_REFERENCE__UPPER = 0;
+
+  /**
+   * The feature id for the '<em><b>Lower</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PRECOND_REFERENCE__LOWER = 1;
+
+  /**
+   * The feature id for the '<em><b>Range</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PRECOND_REFERENCE__RANGE = 2;
+
+  /**
+   * The feature id for the '<em><b>Gap</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PRECOND_REFERENCE__GAP = 3;
+
+  /**
+   * The number of structural features of the '<em>Precond Reference</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PRECOND_REFERENCE_FEATURE_COUNT = 4;
+
+  /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.UpperImpl <em>Upper</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -814,7 +915,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getUpper()
    * @generated
    */
-  int UPPER = 20;
+  int UPPER = 22;
 
   /**
    * The feature id for the '<em><b>Bound upp</b></em>' containment reference.
@@ -842,7 +943,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getLower()
    * @generated
    */
-  int LOWER = 21;
+  int LOWER = 23;
 
   /**
    * The feature id for the '<em><b>Bound lower</b></em>' containment reference.
@@ -870,7 +971,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getRange()
    * @generated
    */
-  int RANGE = 22;
+  int RANGE = 24;
 
   /**
    * The feature id for the '<em><b>Bound lower</b></em>' containment reference.
@@ -907,7 +1008,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getGap()
    * @generated
    */
-  int GAP = 23;
+  int GAP = 25;
 
   /**
    * The feature id for the '<em><b>Bound lower</b></em>' containment reference.
@@ -944,7 +1045,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getInclusiveBound()
    * @generated
    */
-  int INCLUSIVE_BOUND = 24;
+  int INCLUSIVE_BOUND = 26;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -981,7 +1082,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBound_up()
    * @generated
    */
-  int BOUND_UP = 25;
+  int BOUND_UP = 27;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -1009,7 +1110,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBound_Down()
    * @generated
    */
-  int BOUND_DOWN = 26;
+  int BOUND_DOWN = 28;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -1037,7 +1138,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBOOLEAN()
    * @generated
    */
-  int BOOLEAN = 27;
+  int BOOLEAN = 29;
 
   /**
    * The feature id for the '<em><b>Bool</b></em>' attribute.
@@ -1065,7 +1166,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getDOUBLE()
    * @generated
    */
-  int DOUBLE = 28;
+  int DOUBLE = 30;
 
   /**
    * The feature id for the '<em><b>DVal</b></em>' attribute.
@@ -1093,7 +1194,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getTimeType()
    * @generated
    */
-  int TIME_TYPE = 29;
+  int TIME_TYPE = 31;
 
   /**
    * The feature id for the '<em><b>Time</b></em>' attribute.
@@ -1121,7 +1222,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getDataType()
    * @generated
    */
-  int DATA_TYPE = 30;
+  int DATA_TYPE = 32;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1149,7 +1250,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getPackageDeclaration()
    * @generated
    */
-  int PACKAGE_DECLARATION = 31;
+  int PACKAGE_DECLARATION = 33;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1455,6 +1556,17 @@ public interface AdeptnessPackage extends EPackage
   EAttribute getOracle_Name();
 
   /**
+   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Oracle#getWhen <em>When</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>When</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Oracle#getWhen()
+   * @see #getOracle()
+   * @generated
+   */
+  EReference getOracle_When();
+
+  /**
    * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Oracle#getCheck <em>Check</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1464,6 +1576,38 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    */
   EReference getOracle_Check();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.When <em>When</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>When</em>'.
+   * @see org.xtext.example.mydsl.adeptness.When
+   * @generated
+   */
+  EClass getWhen();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.When#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see org.xtext.example.mydsl.adeptness.When#getName()
+   * @see #getWhen()
+   * @generated
+   */
+  EAttribute getWhen_Name();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.When#getPrecondReference <em>Precond Reference</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Precond Reference</em>'.
+   * @see org.xtext.example.mydsl.adeptness.When#getPrecondReference()
+   * @see #getWhen()
+   * @generated
+   */
+  EReference getWhen_PrecondReference();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Checks <em>Checks</em>}'.
@@ -1807,6 +1951,60 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    */
   EReference getReference_Gap();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.PrecondReference <em>Precond Reference</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Precond Reference</em>'.
+   * @see org.xtext.example.mydsl.adeptness.PrecondReference
+   * @generated
+   */
+  EClass getPrecondReference();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.PrecondReference#getUpper <em>Upper</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Upper</em>'.
+   * @see org.xtext.example.mydsl.adeptness.PrecondReference#getUpper()
+   * @see #getPrecondReference()
+   * @generated
+   */
+  EReference getPrecondReference_Upper();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.PrecondReference#getLower <em>Lower</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Lower</em>'.
+   * @see org.xtext.example.mydsl.adeptness.PrecondReference#getLower()
+   * @see #getPrecondReference()
+   * @generated
+   */
+  EReference getPrecondReference_Lower();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.PrecondReference#getRange <em>Range</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Range</em>'.
+   * @see org.xtext.example.mydsl.adeptness.PrecondReference#getRange()
+   * @see #getPrecondReference()
+   * @generated
+   */
+  EReference getPrecondReference_Range();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.PrecondReference#getGap <em>Gap</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Gap</em>'.
+   * @see org.xtext.example.mydsl.adeptness.PrecondReference#getGap()
+   * @see #getPrecondReference()
+   * @generated
+   */
+  EReference getPrecondReference_Gap();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Upper <em>Upper</em>}'.
@@ -2347,12 +2545,46 @@ public interface AdeptnessPackage extends EPackage
     EAttribute ORACLE__NAME = eINSTANCE.getOracle_Name();
 
     /**
+     * The meta object literal for the '<em><b>When</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ORACLE__WHEN = eINSTANCE.getOracle_When();
+
+    /**
      * The meta object literal for the '<em><b>Check</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EReference ORACLE__CHECK = eINSTANCE.getOracle_Check();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.WhenImpl <em>When</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.WhenImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getWhen()
+     * @generated
+     */
+    EClass WHEN = eINSTANCE.getWhen();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute WHEN__NAME = eINSTANCE.getWhen_Name();
+
+    /**
+     * The meta object literal for the '<em><b>Precond Reference</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference WHEN__PRECOND_REFERENCE = eINSTANCE.getWhen_PrecondReference();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.ChecksImpl <em>Checks</em>}' class.
@@ -2627,6 +2859,48 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EReference REFERENCE__GAP = eINSTANCE.getReference_Gap();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.PrecondReferenceImpl <em>Precond Reference</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.PrecondReferenceImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getPrecondReference()
+     * @generated
+     */
+    EClass PRECOND_REFERENCE = eINSTANCE.getPrecondReference();
+
+    /**
+     * The meta object literal for the '<em><b>Upper</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PRECOND_REFERENCE__UPPER = eINSTANCE.getPrecondReference_Upper();
+
+    /**
+     * The meta object literal for the '<em><b>Lower</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PRECOND_REFERENCE__LOWER = eINSTANCE.getPrecondReference_Lower();
+
+    /**
+     * The meta object literal for the '<em><b>Range</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PRECOND_REFERENCE__RANGE = eINSTANCE.getPrecondReference_Range();
+
+    /**
+     * The meta object literal for the '<em><b>Gap</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PRECOND_REFERENCE__GAP = eINSTANCE.getPrecondReference_Gap();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.UpperImpl <em>Upper</em>}' class.

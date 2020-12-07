@@ -476,16 +476,20 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cCheckAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cCheckChecksParserRuleCall_3_0 = (RuleCall)cCheckAssignment_3.eContents().get(0);
-		private final Keyword cENDORACLEKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cWhenAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cWhenWhenParserRuleCall_3_0 = (RuleCall)cWhenAssignment_3.eContents().get(0);
+		private final Assignment cCheckAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cCheckChecksParserRuleCall_4_0 = (RuleCall)cCheckAssignment_4.eContents().get(0);
+		private final Keyword cENDORACLEKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
 		//Oracle:
 		//	'ORACLE' name=ID ':'
+		//	when+=When?
 		//	check+=Checks+ 'ENDORACLE';
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'ORACLE' name=ID ':'
+		//when+=When?
 		//check+=Checks+ 'ENDORACLE'
 		public Group getGroup() { return cGroup; }
 		
@@ -501,14 +505,53 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		//':'
 		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
 		
+		//when+=When?
+		public Assignment getWhenAssignment_3() { return cWhenAssignment_3; }
+		
+		//When
+		public RuleCall getWhenWhenParserRuleCall_3_0() { return cWhenWhenParserRuleCall_3_0; }
+		
 		//check+=Checks+
-		public Assignment getCheckAssignment_3() { return cCheckAssignment_3; }
+		public Assignment getCheckAssignment_4() { return cCheckAssignment_4; }
 		
 		//Checks
-		public RuleCall getCheckChecksParserRuleCall_3_0() { return cCheckChecksParserRuleCall_3_0; }
+		public RuleCall getCheckChecksParserRuleCall_4_0() { return cCheckChecksParserRuleCall_4_0; }
 		
 		//'ENDORACLE'
-		public Keyword getENDORACLEKeyword_4() { return cENDORACLEKeyword_4; }
+		public Keyword getENDORACLEKeyword_5() { return cENDORACLEKeyword_5; }
+	}
+	public class WhenElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.When");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cWhenKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameSTRINGTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Assignment cPrecondReferenceAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cPrecondReferencePrecondReferenceParserRuleCall_2_0 = (RuleCall)cPrecondReferenceAssignment_2.eContents().get(0);
+		
+		//When:
+		//	'when:' name=STRING
+		//	precondReference=PrecondReference;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'when:' name=STRING
+		//precondReference=PrecondReference
+		public Group getGroup() { return cGroup; }
+		
+		//'when:'
+		public Keyword getWhenKeyword_0() { return cWhenKeyword_0; }
+		
+		//name=STRING
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//STRING
+		public RuleCall getNameSTRINGTerminalRuleCall_1_0() { return cNameSTRINGTerminalRuleCall_1_0; }
+		
+		//precondReference=PrecondReference
+		public Assignment getPrecondReferenceAssignment_2() { return cPrecondReferenceAssignment_2; }
+		
+		//PrecondReference
+		public RuleCall getPrecondReferencePrecondReferenceParserRuleCall_2_0() { return cPrecondReferencePrecondReferenceParserRuleCall_2_0; }
 	}
 	public class ChecksElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Checks");
@@ -820,6 +863,57 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		private final Keyword cSemicolonKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		
 		//Reference:
+		//	(upper=Upper | lower=Lower | range=Range | gap=Gap) ';';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//(upper=Upper | lower=Lower | range=Range | gap=Gap) ';'
+		public Group getGroup() { return cGroup; }
+		
+		//(upper=Upper | lower=Lower | range=Range | gap=Gap)
+		public Alternatives getAlternatives_0() { return cAlternatives_0; }
+		
+		//upper=Upper
+		public Assignment getUpperAssignment_0_0() { return cUpperAssignment_0_0; }
+		
+		//Upper
+		public RuleCall getUpperUpperParserRuleCall_0_0_0() { return cUpperUpperParserRuleCall_0_0_0; }
+		
+		//lower=Lower
+		public Assignment getLowerAssignment_0_1() { return cLowerAssignment_0_1; }
+		
+		//Lower
+		public RuleCall getLowerLowerParserRuleCall_0_1_0() { return cLowerLowerParserRuleCall_0_1_0; }
+		
+		//range=Range
+		public Assignment getRangeAssignment_0_2() { return cRangeAssignment_0_2; }
+		
+		//Range
+		public RuleCall getRangeRangeParserRuleCall_0_2_0() { return cRangeRangeParserRuleCall_0_2_0; }
+		
+		//gap=Gap
+		public Assignment getGapAssignment_0_3() { return cGapAssignment_0_3; }
+		
+		//Gap
+		public RuleCall getGapGapParserRuleCall_0_3_0() { return cGapGapParserRuleCall_0_3_0; }
+		
+		//';'
+		public Keyword getSemicolonKeyword_1() { return cSemicolonKeyword_1; }
+	}
+	public class PrecondReferenceElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.PrecondReference");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Alternatives cAlternatives_0 = (Alternatives)cGroup.eContents().get(0);
+		private final Assignment cUpperAssignment_0_0 = (Assignment)cAlternatives_0.eContents().get(0);
+		private final RuleCall cUpperUpperParserRuleCall_0_0_0 = (RuleCall)cUpperAssignment_0_0.eContents().get(0);
+		private final Assignment cLowerAssignment_0_1 = (Assignment)cAlternatives_0.eContents().get(1);
+		private final RuleCall cLowerLowerParserRuleCall_0_1_0 = (RuleCall)cLowerAssignment_0_1.eContents().get(0);
+		private final Assignment cRangeAssignment_0_2 = (Assignment)cAlternatives_0.eContents().get(2);
+		private final RuleCall cRangeRangeParserRuleCall_0_2_0 = (RuleCall)cRangeAssignment_0_2.eContents().get(0);
+		private final Assignment cGapAssignment_0_3 = (Assignment)cAlternatives_0.eContents().get(3);
+		private final RuleCall cGapGapParserRuleCall_0_3_0 = (RuleCall)cGapAssignment_0_3.eContents().get(0);
+		private final Keyword cSemicolonKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		
+		//PrecondReference:
 		//	(upper=Upper | lower=Lower | range=Range | gap=Gap) ';';
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1252,6 +1346,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	private final SignalElements pSignal;
 	private final ImportMonitoringPlanElements pImportMonitoringPlan;
 	private final OracleElements pOracle;
+	private final WhenElements pWhen;
 	private final ChecksElements pChecks;
 	private final DescriptionElements pDescription;
 	private final FailReasonElements pFailReason;
@@ -1261,6 +1356,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	private final HighTimeElements pHighTime;
 	private final HighPeakElements pHighPeak;
 	private final ReferenceElements pReference;
+	private final PrecondReferenceElements pPrecondReference;
 	private final UpperElements pUpper;
 	private final LowerElements pLower;
 	private final RangeElements pRange;
@@ -1298,6 +1394,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		this.pSignal = new SignalElements();
 		this.pImportMonitoringPlan = new ImportMonitoringPlanElements();
 		this.pOracle = new OracleElements();
+		this.pWhen = new WhenElements();
 		this.pChecks = new ChecksElements();
 		this.pDescription = new DescriptionElements();
 		this.pFailReason = new FailReasonElements();
@@ -1307,6 +1404,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		this.pHighTime = new HighTimeElements();
 		this.pHighPeak = new HighPeakElements();
 		this.pReference = new ReferenceElements();
+		this.pPrecondReference = new PrecondReferenceElements();
 		this.pUpper = new UpperElements();
 		this.pLower = new LowerElements();
 		this.pRange = new RangeElements();
@@ -1504,6 +1602,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	
 	//Oracle:
 	//	'ORACLE' name=ID ':'
+	//	when+=When?
 	//	check+=Checks+ 'ENDORACLE';
 	public OracleElements getOracleAccess() {
 		return pOracle;
@@ -1511,6 +1610,17 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	
 	public ParserRule getOracleRule() {
 		return getOracleAccess().getRule();
+	}
+	
+	//When:
+	//	'when:' name=STRING
+	//	precondReference=PrecondReference;
+	public WhenElements getWhenAccess() {
+		return pWhen;
+	}
+	
+	public ParserRule getWhenRule() {
+		return getWhenAccess().getRule();
 	}
 	
 	//Checks:
@@ -1604,6 +1714,16 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	
 	public ParserRule getReferenceRule() {
 		return getReferenceAccess().getRule();
+	}
+	
+	//PrecondReference:
+	//	(upper=Upper | lower=Lower | range=Range | gap=Gap) ';';
+	public PrecondReferenceElements getPrecondReferenceAccess() {
+		return pPrecondReference;
+	}
+	
+	public ParserRule getPrecondReferenceRule() {
+		return getPrecondReferenceAccess().getRule();
 	}
 	
 	////Oracle for upper limit --> Below reference signal

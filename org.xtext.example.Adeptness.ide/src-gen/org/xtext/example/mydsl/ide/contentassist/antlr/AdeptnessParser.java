@@ -36,6 +36,7 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getSig_typeAccess().getAlternatives(), "rule__Sig_type__Alternatives");
 			builder.put(grammarAccess.getReasonAccess().getAlternatives_0(), "rule__Reason__Alternatives_0");
 			builder.put(grammarAccess.getReferenceAccess().getAlternatives_0(), "rule__Reference__Alternatives_0");
+			builder.put(grammarAccess.getPrecondReferenceAccess().getAlternatives_0(), "rule__PrecondReference__Alternatives_0");
 			builder.put(grammarAccess.getBAccess().getAlternatives(), "rule__B__Alternatives");
 			builder.put(grammarAccess.getTimeTypeAccess().getAlternatives(), "rule__TimeType__Alternatives");
 			builder.put(grammarAccess.getImportsAccess().getGroup(), "rule__Imports__Group__0");
@@ -50,6 +51,7 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getSignalAccess().getGroup_4(), "rule__Signal__Group_4__0");
 			builder.put(grammarAccess.getImportMonitoringPlanAccess().getGroup(), "rule__ImportMonitoringPlan__Group__0");
 			builder.put(grammarAccess.getOracleAccess().getGroup(), "rule__Oracle__Group__0");
+			builder.put(grammarAccess.getWhenAccess().getGroup(), "rule__When__Group__0");
 			builder.put(grammarAccess.getChecksAccess().getGroup(), "rule__Checks__Group__0");
 			builder.put(grammarAccess.getDescriptionAccess().getGroup(), "rule__Description__Group__0");
 			builder.put(grammarAccess.getFailReasonAccess().getGroup(), "rule__FailReason__Group__0");
@@ -59,6 +61,7 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getHighTimeAccess().getGroup(), "rule__HighTime__Group__0");
 			builder.put(grammarAccess.getHighPeakAccess().getGroup(), "rule__HighPeak__Group__0");
 			builder.put(grammarAccess.getReferenceAccess().getGroup(), "rule__Reference__Group__0");
+			builder.put(grammarAccess.getPrecondReferenceAccess().getGroup(), "rule__PrecondReference__Group__0");
 			builder.put(grammarAccess.getUpperAccess().getGroup(), "rule__Upper__Group__0");
 			builder.put(grammarAccess.getLowerAccess().getGroup(), "rule__Lower__Group__0");
 			builder.put(grammarAccess.getRangeAccess().getGroup(), "rule__Range__Group__0");
@@ -86,7 +89,10 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getSignalAccess().getOracleAssignment_5(), "rule__Signal__OracleAssignment_5");
 			builder.put(grammarAccess.getImportMonitoringPlanAccess().getImportURIAssignment_1(), "rule__ImportMonitoringPlan__ImportURIAssignment_1");
 			builder.put(grammarAccess.getOracleAccess().getNameAssignment_1(), "rule__Oracle__NameAssignment_1");
-			builder.put(grammarAccess.getOracleAccess().getCheckAssignment_3(), "rule__Oracle__CheckAssignment_3");
+			builder.put(grammarAccess.getOracleAccess().getWhenAssignment_3(), "rule__Oracle__WhenAssignment_3");
+			builder.put(grammarAccess.getOracleAccess().getCheckAssignment_4(), "rule__Oracle__CheckAssignment_4");
+			builder.put(grammarAccess.getWhenAccess().getNameAssignment_1(), "rule__When__NameAssignment_1");
+			builder.put(grammarAccess.getWhenAccess().getPrecondReferenceAssignment_2(), "rule__When__PrecondReferenceAssignment_2");
 			builder.put(grammarAccess.getChecksAccess().getNameAssignment_1(), "rule__Checks__NameAssignment_1");
 			builder.put(grammarAccess.getChecksAccess().getReferenceAssignment_2(), "rule__Checks__ReferenceAssignment_2");
 			builder.put(grammarAccess.getChecksAccess().getFailReasonAssignment_3(), "rule__Checks__FailReasonAssignment_3");
@@ -110,6 +116,10 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getReferenceAccess().getLowerAssignment_0_1(), "rule__Reference__LowerAssignment_0_1");
 			builder.put(grammarAccess.getReferenceAccess().getRangeAssignment_0_2(), "rule__Reference__RangeAssignment_0_2");
 			builder.put(grammarAccess.getReferenceAccess().getGapAssignment_0_3(), "rule__Reference__GapAssignment_0_3");
+			builder.put(grammarAccess.getPrecondReferenceAccess().getUpperAssignment_0_0(), "rule__PrecondReference__UpperAssignment_0_0");
+			builder.put(grammarAccess.getPrecondReferenceAccess().getLowerAssignment_0_1(), "rule__PrecondReference__LowerAssignment_0_1");
+			builder.put(grammarAccess.getPrecondReferenceAccess().getRangeAssignment_0_2(), "rule__PrecondReference__RangeAssignment_0_2");
+			builder.put(grammarAccess.getPrecondReferenceAccess().getGapAssignment_0_3(), "rule__PrecondReference__GapAssignment_0_3");
 			builder.put(grammarAccess.getUpperAccess().getBound_uppAssignment_1(), "rule__Upper__Bound_uppAssignment_1");
 			builder.put(grammarAccess.getLowerAccess().getBound_lowerAssignment_1(), "rule__Lower__Bound_lowerAssignment_1");
 			builder.put(grammarAccess.getRangeAccess().getBound_lowerAssignment_1(), "rule__Range__Bound_lowerAssignment_1");

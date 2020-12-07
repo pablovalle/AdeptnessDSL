@@ -23,10 +23,12 @@ import org.xtext.example.mydsl.adeptness.MonitoringFile;
 import org.xtext.example.mydsl.adeptness.MonitoringPlan;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
 import org.xtext.example.mydsl.adeptness.Oracle;
+import org.xtext.example.mydsl.adeptness.PrecondReference;
 import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Sig_type;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.Upper;
+import org.xtext.example.mydsl.adeptness.When;
 
 /**
  * This class contains custom validation rules. 
@@ -368,6 +370,85 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		if(!oa.assesOracle())
 			warning("This oracle may fail if we consider operational data", AdeptnessPackage.Literals.ORACLE__CHECK);
 		
+	}
+	
+	
+	
+	@Check
+	public void checkMonitoringVariablesInPreconditions(When precond) {
+		String checkName=precond.getName().toString();
+		double max, min;
+		boolean is= false;
+		for(int i=0;i<monitoringVariableList.size();i++) {
+			if(checkName.equals(monitoringVariableList.get(i).getName())) {
+				is=true;
+				max=monitoringVariableList.get(i).getMax();
+				min= monitoringVariableList.get(i).getMin();
+				if(precond.getPrecondReference().getUpper()!=null) {
+					Upper up=precond.getPrecondReference().getUpper();
+					if(up.getBound_upp().getValue().getDVal()>max) {
+						String errorString = "Check "+precond.getName()+" with value: "+up.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+					}
+					if(up.getBound_upp().getValue().getDVal()<min) {
+						String errorString = "Check "+precond.getName()+" with value: "+up.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+					}
+				}
+				else if(precond.getPrecondReference().getLower()!=null) {
+					Lower low=precond.getPrecondReference().getLower();
+					if(low.getBound_lower().getValue().getDVal()>max) {
+						String errorString = "Check "+precond.getName()+" with value: "+low.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+					}
+					if(low.getBound_lower().getValue().getDVal()<min) {
+						String errorString = "Check "+precond.getName()+" with value: "+low.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+					}
+				}
+				else if(precond.getPrecondReference().getRange()!=null) {
+					Range range=precond.getPrecondReference().getRange();
+					if(range.getBound_upp().getValue().getDVal()>max) {
+						String errorString = "Check "+precond.getName()+" with value: "+range.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+					}
+					if(range.getBound_upp().getValue().getDVal()<min) {
+						String errorString = "Check "+precond.getName()+" with value: "+range.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+					}
+					if(range.getBound_lower().getValue().getDVal()>max) {
+						String errorString = "Check "+precond.getName()+" with value: "+range.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+					}
+					if(range.getBound_lower().getValue().getDVal()<min) {
+						String errorString = "Check "+precond.getName()+" with value: "+range.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+					}
+				}
+				else if(precond.getPrecondReference().getGap()!=null) {
+					Gap gap=precond.getPrecondReference().getGap();
+					if(gap.getBound_upp().getValue().getDVal()>max) {
+						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+					}
+					if(gap.getBound_upp().getValue().getDVal()<min) {
+						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+					}
+					if(gap.getBound_lower().getValue().getDVal()>max) {
+						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+					}
+					if(gap.getBound_lower().getValue().getDVal()<min) {
+						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+					}
+				}
+			}
+		}
+		if(!is) {
+			error("This variable is not in the monitoring plan",AdeptnessPackage.Literals.WHEN__NAME);
+		}
 	}
 	
 }

@@ -88,7 +88,13 @@ ImportMonitoringPlan:
 
 Oracle: 
 	'ORACLE' name=ID ':'
+		(when+=When)?
 		(check+=Checks)+'ENDORACLE'
+;
+
+When:
+	'when:' name=STRING 
+			precondReference = PrecondReference
 ;
 
 Checks:
@@ -129,6 +135,10 @@ HighPeak:
 	'confidence is below' (cant=DOUBLE)
 ;
 Reference:
+	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap))';'
+;
+
+PrecondReference:
 	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap))';'
 ;
 //Oracle for upper limit --> Below reference signal

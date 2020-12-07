@@ -156,6 +156,13 @@ public class AdeptnessSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case AdeptnessPackage.WHEN:
+      {
+        When when = (When)theEObject;
+        T result = caseWhen(when);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case AdeptnessPackage.CHECKS:
       {
         Checks checks = (Checks)theEObject;
@@ -216,6 +223,13 @@ public class AdeptnessSwitch<T> extends Switch<T>
       {
         Reference reference = (Reference)theEObject;
         T result = caseReference(reference);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case AdeptnessPackage.PRECOND_REFERENCE:
+      {
+        PrecondReference precondReference = (PrecondReference)theEObject;
+        T result = casePrecondReference(precondReference);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -487,6 +501,22 @@ public class AdeptnessSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>When</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>When</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseWhen(When object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Checks</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -626,6 +656,22 @@ public class AdeptnessSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseReference(Reference object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Precond Reference</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Precond Reference</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casePrecondReference(PrecondReference object)
   {
     return null;
   }

@@ -44,8 +44,15 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Oracle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="when" upperBound="-1" eType="#//When"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="check" upperBound="-1"
         eType="#//Checks" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="When">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="precondReference" eType="#//PrecondReference"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Checks">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -99,6 +106,15 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Reference">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="upper" eType="#//Upper"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lower" eType="#//Lower"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//Range"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="gap" eType="#//Gap" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PrecondReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="upper" eType="#//Upper"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="lower" eType="#//Lower"

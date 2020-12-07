@@ -76,6 +76,7 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.SIGNAL: return createSignal();
       case AdeptnessPackage.IMPORT_MONITORING_PLAN: return createImportMonitoringPlan();
       case AdeptnessPackage.ORACLE: return createOracle();
+      case AdeptnessPackage.WHEN: return createWhen();
       case AdeptnessPackage.CHECKS: return createChecks();
       case AdeptnessPackage.DESCRIPTION: return createDescription();
       case AdeptnessPackage.FAIL_REASON: return createFailReason();
@@ -85,6 +86,7 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.HIGH_TIME: return createHighTime();
       case AdeptnessPackage.HIGH_PEAK: return createHighPeak();
       case AdeptnessPackage.REFERENCE: return createReference();
+      case AdeptnessPackage.PRECOND_REFERENCE: return createPrecondReference();
       case AdeptnessPackage.UPPER: return createUpper();
       case AdeptnessPackage.LOWER: return createLower();
       case AdeptnessPackage.RANGE: return createRange();
@@ -240,6 +242,18 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
    * @generated
    */
   @Override
+  public When createWhen()
+  {
+    WhenImpl when = new WhenImpl();
+    return when;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Checks createChecks()
   {
     ChecksImpl checks = new ChecksImpl();
@@ -340,6 +354,18 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
   {
     ReferenceImpl reference = new ReferenceImpl();
     return reference;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public PrecondReference createPrecondReference()
+  {
+    PrecondReferenceImpl precondReference = new PrecondReferenceImpl();
+    return precondReference;
   }
 
   /**
