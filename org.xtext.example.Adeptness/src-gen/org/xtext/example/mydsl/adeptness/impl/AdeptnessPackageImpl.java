@@ -1273,6 +1273,17 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
+  public EAttribute getBound_up_Name()
+  {
+    return (EAttribute)bound_upEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getBound_Down()
   {
     return bound_DownEClass;
@@ -1287,6 +1298,17 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
   public EReference getBound_Down_Value()
   {
     return (EReference)bound_DownEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getBound_Down_Name()
+  {
+    return (EAttribute)bound_DownEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1540,9 +1562,11 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
 
     bound_upEClass = createEClass(BOUND_UP);
     createEReference(bound_upEClass, BOUND_UP__VALUE);
+    createEAttribute(bound_upEClass, BOUND_UP__NAME);
 
     bound_DownEClass = createEClass(BOUND_DOWN);
     createEReference(bound_DownEClass, BOUND_DOWN__VALUE);
+    createEAttribute(bound_DownEClass, BOUND_DOWN__NAME);
 
     booleanEClass = createEClass(BOOLEAN);
     createEAttribute(booleanEClass, BOOLEAN__BOOL);
@@ -1707,9 +1731,11 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
 
     initEClass(bound_upEClass, Bound_up.class, "Bound_up", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getBound_up_Value(), this.getDOUBLE(), null, "value", null, 0, 1, Bound_up.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getBound_up_Name(), ecorePackage.getEString(), "name", null, 0, 1, Bound_up.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(bound_DownEClass, Bound_Down.class, "Bound_Down", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getBound_Down_Value(), this.getDOUBLE(), null, "value", null, 0, 1, Bound_Down.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getBound_Down_Name(), ecorePackage.getEString(), "name", null, 0, 1, Bound_Down.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(booleanEClass, org.xtext.example.mydsl.adeptness.BOOLEAN.class, "BOOLEAN", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getBOOLEAN_Bool(), ecorePackage.getEBoolean(), "bool", null, 0, 1, org.xtext.example.mydsl.adeptness.BOOLEAN.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

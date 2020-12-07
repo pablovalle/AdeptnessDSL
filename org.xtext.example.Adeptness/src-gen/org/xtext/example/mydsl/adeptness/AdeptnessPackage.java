@@ -1094,13 +1094,22 @@ public interface AdeptnessPackage extends EPackage
   int BOUND_UP__VALUE = 0;
 
   /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOUND_UP__NAME = 1;
+
+  /**
    * The number of structural features of the '<em>Bound up</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BOUND_UP_FEATURE_COUNT = 1;
+  int BOUND_UP_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl <em>Bound Down</em>}' class.
@@ -1122,13 +1131,22 @@ public interface AdeptnessPackage extends EPackage
   int BOUND_DOWN__VALUE = 0;
 
   /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOUND_DOWN__NAME = 1;
+
+  /**
    * The number of structural features of the '<em>Bound Down</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BOUND_DOWN_FEATURE_COUNT = 1;
+  int BOUND_DOWN_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.BOOLEANImpl <em>BOOLEAN</em>}' class.
@@ -2166,6 +2184,17 @@ public interface AdeptnessPackage extends EPackage
   EReference getBound_up_Value();
 
   /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Bound_up#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Bound_up#getName()
+   * @see #getBound_up()
+   * @generated
+   */
+  EAttribute getBound_up_Name();
+
+  /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Bound_Down <em>Bound Down</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2185,6 +2214,17 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    */
   EReference getBound_Down_Value();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Bound_Down#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Bound_Down#getName()
+   * @see #getBound_Down()
+   * @generated
+   */
+  EAttribute getBound_Down_Name();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.BOOLEAN <em>BOOLEAN</em>}'.
@@ -3035,6 +3075,14 @@ public interface AdeptnessPackage extends EPackage
     EReference BOUND_UP__VALUE = eINSTANCE.getBound_up_Value();
 
     /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BOUND_UP__NAME = eINSTANCE.getBound_up_Name();
+
+    /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl <em>Bound Down</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3051,6 +3099,14 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EReference BOUND_DOWN__VALUE = eINSTANCE.getBound_Down_Value();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BOUND_DOWN__NAME = eINSTANCE.getBound_Down_Name();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.BOOLEANImpl <em>BOOLEAN</em>}' class.

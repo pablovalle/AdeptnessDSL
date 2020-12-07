@@ -1108,35 +1108,59 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	}
 	public class Bound_upElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Bound_up");
-		private final Assignment cValueAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cValueDOUBLEParserRuleCall_0 = (RuleCall)cValueAssignment.eContents().get(0);
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Assignment cValueAssignment_0 = (Assignment)cAlternatives.eContents().get(0);
+		private final RuleCall cValueDOUBLEParserRuleCall_0_0 = (RuleCall)cValueAssignment_0.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cAlternatives.eContents().get(1);
+		private final RuleCall cNameSTRINGTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		
 		////Upper limit
 		//Bound_up:
-		//	value=DOUBLE;
+		//	value=DOUBLE | name=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
+		//value=DOUBLE | name=STRING
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
 		//value=DOUBLE
-		public Assignment getValueAssignment() { return cValueAssignment; }
+		public Assignment getValueAssignment_0() { return cValueAssignment_0; }
 		
 		//DOUBLE
-		public RuleCall getValueDOUBLEParserRuleCall_0() { return cValueDOUBLEParserRuleCall_0; }
+		public RuleCall getValueDOUBLEParserRuleCall_0_0() { return cValueDOUBLEParserRuleCall_0_0; }
+		
+		//name=STRING
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//STRING
+		public RuleCall getNameSTRINGTerminalRuleCall_1_0() { return cNameSTRINGTerminalRuleCall_1_0; }
 	}
 	public class Bound_DownElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Bound_Down");
-		private final Assignment cValueAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cValueDOUBLEParserRuleCall_0 = (RuleCall)cValueAssignment.eContents().get(0);
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Assignment cValueAssignment_0 = (Assignment)cAlternatives.eContents().get(0);
+		private final RuleCall cValueDOUBLEParserRuleCall_0_0 = (RuleCall)cValueAssignment_0.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cAlternatives.eContents().get(1);
+		private final RuleCall cNameSTRINGTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		
 		////Lower limit
 		//Bound_Down:
-		//	value=DOUBLE;
+		//	value=DOUBLE | name=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
+		//value=DOUBLE | name=STRING
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
 		//value=DOUBLE
-		public Assignment getValueAssignment() { return cValueAssignment; }
+		public Assignment getValueAssignment_0() { return cValueAssignment_0; }
 		
 		//DOUBLE
-		public RuleCall getValueDOUBLEParserRuleCall_0() { return cValueDOUBLEParserRuleCall_0; }
+		public RuleCall getValueDOUBLEParserRuleCall_0_0() { return cValueDOUBLEParserRuleCall_0_0; }
+		
+		//name=STRING
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//STRING
+		public RuleCall getNameSTRINGTerminalRuleCall_1_0() { return cNameSTRINGTerminalRuleCall_1_0; }
 	}
 	public class BOOLEANElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.BOOLEAN");
@@ -1783,7 +1807,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	
 	////Upper limit
 	//Bound_up:
-	//	value=DOUBLE;
+	//	value=DOUBLE | name=STRING;
 	public Bound_upElements getBound_upAccess() {
 		return pBound_up;
 	}
@@ -1794,7 +1818,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	
 	////Lower limit
 	//Bound_Down:
-	//	value=DOUBLE;
+	//	value=DOUBLE | name=STRING;
 	public Bound_DownElements getBound_DownAccess() {
 		return pBound_Down;
 	}

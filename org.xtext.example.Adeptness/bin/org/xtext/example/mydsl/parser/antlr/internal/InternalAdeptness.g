@@ -1866,21 +1866,42 @@ ruleBound_up returns [EObject current=null]
 }:
 	(
 		(
-			{
-				newCompositeNode(grammarAccess.getBound_upAccess().getValueDOUBLEParserRuleCall_0());
-			}
-			lv_value_0_0=ruleDOUBLE
-			{
-				if ($current==null) {
-					$current = createModelElementForParent(grammarAccess.getBound_upRule());
+			(
+				{
+					newCompositeNode(grammarAccess.getBound_upAccess().getValueDOUBLEParserRuleCall_0_0());
 				}
-				set(
-					$current,
-					"value",
-					lv_value_0_0,
-					"org.xtext.example.mydsl.Adeptness.DOUBLE");
-				afterParserOrEnumRuleCall();
-			}
+				lv_value_0_0=ruleDOUBLE
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getBound_upRule());
+					}
+					set(
+						$current,
+						"value",
+						lv_value_0_0,
+						"org.xtext.example.mydsl.Adeptness.DOUBLE");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		    |
+		(
+			(
+				lv_name_1_0=RULE_STRING
+				{
+					newLeafNode(lv_name_1_0, grammarAccess.getBound_upAccess().getNameSTRINGTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getBound_upRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"name",
+						lv_name_1_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
 		)
 	)
 ;
@@ -1902,21 +1923,42 @@ ruleBound_Down returns [EObject current=null]
 }:
 	(
 		(
-			{
-				newCompositeNode(grammarAccess.getBound_DownAccess().getValueDOUBLEParserRuleCall_0());
-			}
-			lv_value_0_0=ruleDOUBLE
-			{
-				if ($current==null) {
-					$current = createModelElementForParent(grammarAccess.getBound_DownRule());
+			(
+				{
+					newCompositeNode(grammarAccess.getBound_DownAccess().getValueDOUBLEParserRuleCall_0_0());
 				}
-				set(
-					$current,
-					"value",
-					lv_value_0_0,
-					"org.xtext.example.mydsl.Adeptness.DOUBLE");
-				afterParserOrEnumRuleCall();
-			}
+				lv_value_0_0=ruleDOUBLE
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getBound_DownRule());
+					}
+					set(
+						$current,
+						"value",
+						lv_value_0_0,
+						"org.xtext.example.mydsl.Adeptness.DOUBLE");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		    |
+		(
+			(
+				lv_name_1_0=RULE_STRING
+				{
+					newLeafNode(lv_name_1_0, grammarAccess.getBound_DownAccess().getNameSTRINGTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getBound_DownRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"name",
+						lv_name_1_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
 		)
 	)
 ;

@@ -199,16 +199,10 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Bound_Down returns Bound_Down
 	 *
 	 * Constraint:
-	 *     value=DOUBLE
+	 *     (value=DOUBLE | name=STRING)
 	 */
 	protected void sequence_Bound_Down(ISerializationContext context, Bound_Down semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.BOUND_DOWN__VALUE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.BOUND_DOWN__VALUE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getBound_DownAccess().getValueDOUBLEParserRuleCall_0(), semanticObject.getValue());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -217,16 +211,10 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Bound_up returns Bound_up
 	 *
 	 * Constraint:
-	 *     value=DOUBLE
+	 *     (value=DOUBLE | name=STRING)
 	 */
 	protected void sequence_Bound_up(ISerializationContext context, Bound_up semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.BOUND_UP__VALUE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.BOUND_UP__VALUE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getBound_upAccess().getValueDOUBLEParserRuleCall_0(), semanticObject.getValue());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

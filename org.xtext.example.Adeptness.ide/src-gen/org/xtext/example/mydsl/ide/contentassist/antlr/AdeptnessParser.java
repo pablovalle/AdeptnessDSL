@@ -37,6 +37,8 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getReasonAccess().getAlternatives_0(), "rule__Reason__Alternatives_0");
 			builder.put(grammarAccess.getReferenceAccess().getAlternatives_0(), "rule__Reference__Alternatives_0");
 			builder.put(grammarAccess.getPrecondReferenceAccess().getAlternatives_0(), "rule__PrecondReference__Alternatives_0");
+			builder.put(grammarAccess.getBound_upAccess().getAlternatives(), "rule__Bound_up__Alternatives");
+			builder.put(grammarAccess.getBound_DownAccess().getAlternatives(), "rule__Bound_Down__Alternatives");
 			builder.put(grammarAccess.getBAccess().getAlternatives(), "rule__B__Alternatives");
 			builder.put(grammarAccess.getTimeTypeAccess().getAlternatives(), "rule__TimeType__Alternatives");
 			builder.put(grammarAccess.getImportsAccess().getGroup(), "rule__Imports__Group__0");
@@ -128,8 +130,10 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getGapAccess().getBound_uppAssignment_3(), "rule__Gap__Bound_uppAssignment_3");
 			builder.put(grammarAccess.getInclusiveBoundAccess().getNameAssignment_1(), "rule__InclusiveBound__NameAssignment_1");
 			builder.put(grammarAccess.getInclusiveBoundAccess().getValueAssignment_3(), "rule__InclusiveBound__ValueAssignment_3");
-			builder.put(grammarAccess.getBound_upAccess().getValueAssignment(), "rule__Bound_up__ValueAssignment");
-			builder.put(grammarAccess.getBound_DownAccess().getValueAssignment(), "rule__Bound_Down__ValueAssignment");
+			builder.put(grammarAccess.getBound_upAccess().getValueAssignment_0(), "rule__Bound_up__ValueAssignment_0");
+			builder.put(grammarAccess.getBound_upAccess().getNameAssignment_1(), "rule__Bound_up__NameAssignment_1");
+			builder.put(grammarAccess.getBound_DownAccess().getValueAssignment_0(), "rule__Bound_Down__ValueAssignment_0");
+			builder.put(grammarAccess.getBound_DownAccess().getNameAssignment_1(), "rule__Bound_Down__NameAssignment_1");
 			builder.put(grammarAccess.getBOOLEANAccess().getBoolAssignment(), "rule__BOOLEAN__BoolAssignment");
 			builder.put(grammarAccess.getDOUBLEAccess().getDValAssignment(), "rule__DOUBLE__DValAssignment");
 			builder.put(grammarAccess.getTimeTypeAccess().getTimeAssignment_0(), "rule__TimeType__TimeAssignment_0");

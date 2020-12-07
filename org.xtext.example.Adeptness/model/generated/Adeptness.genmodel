@@ -115,9 +115,11 @@
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//Bound_up">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Bound_up/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Bound_up/name"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//Bound_Down">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Bound_Down/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Bound_Down/name"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//BOOLEAN">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//BOOLEAN/bool"/>

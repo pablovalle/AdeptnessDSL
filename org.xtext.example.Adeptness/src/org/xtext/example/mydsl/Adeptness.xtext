@@ -165,11 +165,11 @@ InclusiveBound:
 //Upper limit
 
 Bound_up:
-	value=DOUBLE
+	(value=DOUBLE|name=STRING)
 ;
 //Lower limit
 Bound_Down:
-	 value=DOUBLE
+	 (value=DOUBLE|name=STRING)
 ;
 //Boolean declaration
 BOOLEAN:
