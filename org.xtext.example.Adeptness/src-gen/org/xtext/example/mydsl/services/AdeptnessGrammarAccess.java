@@ -525,28 +525,38 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.When");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cWhenKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
+		private final Assignment cNameAssignment_1_0 = (Assignment)cAlternatives_1.eContents().get(0);
+		private final RuleCall cNameIDTerminalRuleCall_1_0_0 = (RuleCall)cNameAssignment_1_0.eContents().get(0);
+		private final Assignment cEmAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
+		private final RuleCall cEmExpressionsModelParserRuleCall_1_1_0 = (RuleCall)cEmAssignment_1_1.eContents().get(0);
 		private final Assignment cPrecondReferenceAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cPrecondReferencePrecondReferenceParserRuleCall_2_0 = (RuleCall)cPrecondReferenceAssignment_2.eContents().get(0);
 		
 		//When:
-		//	'when:' name=ID
-		//	precondReference=PrecondReference;
+		//	'when:' (name=ID | em=ExpressionsModel) precondReference=PrecondReference;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'when:' name=ID
-		//precondReference=PrecondReference
+		//'when:' (name=ID | em=ExpressionsModel) precondReference=PrecondReference
 		public Group getGroup() { return cGroup; }
 		
 		//'when:'
 		public Keyword getWhenKeyword_0() { return cWhenKeyword_0; }
 		
+		//(name=ID | em=ExpressionsModel)
+		public Alternatives getAlternatives_1() { return cAlternatives_1; }
+		
 		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		public Assignment getNameAssignment_1_0() { return cNameAssignment_1_0; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getNameIDTerminalRuleCall_1_0_0() { return cNameIDTerminalRuleCall_1_0_0; }
+		
+		//em=ExpressionsModel
+		public Assignment getEmAssignment_1_1() { return cEmAssignment_1_1; }
+		
+		//ExpressionsModel
+		public RuleCall getEmExpressionsModelParserRuleCall_1_1_0() { return cEmExpressionsModelParserRuleCall_1_1_0; }
 		
 		//precondReference=PrecondReference
 		public Assignment getPrecondReferenceAssignment_2() { return cPrecondReferenceAssignment_2; }
@@ -558,8 +568,11 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Checks");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cChecksKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
+		private final Assignment cNameAssignment_1_0 = (Assignment)cAlternatives_1.eContents().get(0);
+		private final RuleCall cNameIDTerminalRuleCall_1_0_0 = (RuleCall)cNameAssignment_1_0.eContents().get(0);
+		private final Assignment cEmAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
+		private final RuleCall cEmExpressionsModelParserRuleCall_1_1_0 = (RuleCall)cEmAssignment_1_1.eContents().get(0);
 		private final Assignment cReferenceAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cReferenceReferenceParserRuleCall_2_0 = (RuleCall)cReferenceAssignment_2.eContents().get(0);
 		private final Assignment cFailReasonAssignment_3 = (Assignment)cGroup.eContents().get(3);
@@ -568,24 +581,31 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		private final RuleCall cDescriptionDescriptionParserRuleCall_4_0 = (RuleCall)cDescriptionAssignment_4.eContents().get(0);
 		
 		//Checks:
-		//	'checks:' name=ID // 'is'
-		//	reference=Reference failReason+=FailReason+
+		//	'checks:' (name=ID | em=ExpressionsModel) reference=Reference failReason+=FailReason+
 		//	description=Description;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'checks:' name=ID // 'is'
-		//reference=Reference failReason+=FailReason+
+		//'checks:' (name=ID | em=ExpressionsModel) reference=Reference failReason+=FailReason+
 		//description=Description
 		public Group getGroup() { return cGroup; }
 		
 		//'checks:'
 		public Keyword getChecksKeyword_0() { return cChecksKeyword_0; }
 		
+		//(name=ID | em=ExpressionsModel)
+		public Alternatives getAlternatives_1() { return cAlternatives_1; }
+		
 		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		public Assignment getNameAssignment_1_0() { return cNameAssignment_1_0; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getNameIDTerminalRuleCall_1_0_0() { return cNameIDTerminalRuleCall_1_0_0; }
+		
+		//em=ExpressionsModel
+		public Assignment getEmAssignment_1_1() { return cEmAssignment_1_1; }
+		
+		//ExpressionsModel
+		public RuleCall getEmExpressionsModelParserRuleCall_1_1_0() { return cEmExpressionsModelParserRuleCall_1_1_0; }
 		
 		//// 'is'
 		//reference=Reference
@@ -1412,37 +1432,53 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	public class VariableElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Variable");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cVarKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cEqualsSignKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cExpressionAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cExpressionExpressionParserRuleCall_3_0 = (RuleCall)cExpressionAssignment_3.eContents().get(0);
+		private final Assignment cNameAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cNameIDTerminalRuleCall_0_0 = (RuleCall)cNameAssignment_0.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Keyword cEqualsSignKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Assignment cExpressionAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cExpressionExpressionParserRuleCall_1_1_0 = (RuleCall)cExpressionAssignment_1_1.eContents().get(0);
 		
 		//Variable:
-		//	"var" name=ID '=' expression=Expression;
+		//	name=ID ('=' expression=Expression)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//"var" name=ID '=' expression=Expression
+		//name=ID ('=' expression=Expression)?
 		public Group getGroup() { return cGroup; }
 		
-		//"var"
-		public Keyword getVarKeyword_0() { return cVarKeyword_0; }
-		
 		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		public Assignment getNameAssignment_0() { return cNameAssignment_0; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getNameIDTerminalRuleCall_0_0() { return cNameIDTerminalRuleCall_0_0; }
+		
+		//('=' expression=Expression)?
+		public Group getGroup_1() { return cGroup_1; }
 		
 		//'='
-		public Keyword getEqualsSignKeyword_2() { return cEqualsSignKeyword_2; }
+		public Keyword getEqualsSignKeyword_1_0() { return cEqualsSignKeyword_1_0; }
 		
 		//expression=Expression
-		public Assignment getExpressionAssignment_3() { return cExpressionAssignment_3; }
+		public Assignment getExpressionAssignment_1_1() { return cExpressionAssignment_1_1; }
 		
 		//Expression
-		public RuleCall getExpressionExpressionParserRuleCall_3_0() { return cExpressionExpressionParserRuleCall_3_0; }
+		public RuleCall getExpressionExpressionParserRuleCall_1_1_0() { return cExpressionExpressionParserRuleCall_1_1_0; }
+	}
+	public class MonitoringVariableExpresionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.MonitoringVariableExpresion");
+		private final Assignment cNameAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cNameIDTerminalRuleCall_0 = (RuleCall)cNameAssignment.eContents().get(0);
+		
+		//// "var" name=ID '=' expression=Expression;
+		//MonitoringVariableExpresion:
+		//	name=ID;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//name=ID
+		public Assignment getNameAssignment() { return cNameAssignment; }
+		
+		//ID
+		public RuleCall getNameIDTerminalRuleCall_0() { return cNameIDTerminalRuleCall_0; }
 	}
 	public class EvalExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.EvalExpression");
@@ -1816,19 +1852,14 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		private final Alternatives cValueAlternatives_2_1_0 = (Alternatives)cValueAssignment_2_1.eContents().get(0);
 		private final Keyword cValueTrueKeyword_2_1_0_0 = (Keyword)cValueAlternatives_2_1_0.eContents().get(0);
 		private final Keyword cValueFalseKeyword_2_1_0_1 = (Keyword)cValueAlternatives_2_1_0.eContents().get(1);
-		private final Group cGroup_3 = (Group)cAlternatives.eContents().get(3);
-		private final Action cVariableRefAction_3_0 = (Action)cGroup_3.eContents().get(0);
-		private final Assignment cVariableAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final CrossReference cVariableVariableCrossReference_3_1_0 = (CrossReference)cVariableAssignment_3_1.eContents().get(0);
-		private final RuleCall cVariableVariableIDTerminalRuleCall_3_1_0_1 = (RuleCall)cVariableVariableCrossReference_3_1_0.eContents().get(1);
+		private final Assignment cVariableAssignment_3 = (Assignment)cAlternatives.eContents().get(3);
+		private final RuleCall cVariableVariableParserRuleCall_3_0 = (RuleCall)cVariableAssignment_3.eContents().get(0);
 		
 		//Atomic Expression:
-		//	{IntConstant} value=INT | {StringConstant} value=STRING | {BoolConstant} value=('true' | 'false') | {VariableRef}
-		//	variable=[Variable];
+		//	{IntConstant} value=INT | {StringConstant} value=STRING | {BoolConstant} value=('true' | 'false') | variable=Variable;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{IntConstant} value=INT | {StringConstant} value=STRING | {BoolConstant} value=('true' | 'false') | {VariableRef}
-		//variable=[Variable]
+		//{IntConstant} value=INT | {StringConstant} value=STRING | {BoolConstant} value=('true' | 'false') | variable=Variable
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//{IntConstant} value=INT
@@ -1873,20 +1904,11 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		//'false'
 		public Keyword getValueFalseKeyword_2_1_0_1() { return cValueFalseKeyword_2_1_0_1; }
 		
-		//{VariableRef} variable=[Variable]
-		public Group getGroup_3() { return cGroup_3; }
+		//variable=Variable
+		public Assignment getVariableAssignment_3() { return cVariableAssignment_3; }
 		
-		//{VariableRef}
-		public Action getVariableRefAction_3_0() { return cVariableRefAction_3_0; }
-		
-		//variable=[Variable]
-		public Assignment getVariableAssignment_3_1() { return cVariableAssignment_3_1; }
-		
-		//[Variable]
-		public CrossReference getVariableVariableCrossReference_3_1_0() { return cVariableVariableCrossReference_3_1_0; }
-		
-		//ID
-		public RuleCall getVariableVariableIDTerminalRuleCall_3_1_0_1() { return cVariableVariableIDTerminalRuleCall_3_1_0_1; }
+		//Variable
+		public RuleCall getVariableVariableParserRuleCall_3_0() { return cVariableVariableParserRuleCall_3_0; }
 	}
 	
 	
@@ -1931,6 +1953,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	private final ExpressionsModelElements pExpressionsModel;
 	private final AbstractElement2Elements pAbstractElement2;
 	private final VariableElements pVariable;
+	private final MonitoringVariableExpresionElements pMonitoringVariableExpresion;
 	private final EvalExpressionElements pEvalExpression;
 	private final ExpressionElements pExpression;
 	private final OrElements pOr;
@@ -1992,6 +2015,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		this.pExpressionsModel = new ExpressionsModelElements();
 		this.pAbstractElement2 = new AbstractElement2Elements();
 		this.pVariable = new VariableElements();
+		this.pMonitoringVariableExpresion = new MonitoringVariableExpresionElements();
 		this.pEvalExpression = new EvalExpressionElements();
 		this.pExpression = new ExpressionElements();
 		this.pOr = new OrElements();
@@ -2196,8 +2220,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	}
 	
 	//When:
-	//	'when:' name=ID
-	//	precondReference=PrecondReference;
+	//	'when:' (name=ID | em=ExpressionsModel) precondReference=PrecondReference;
 	public WhenElements getWhenAccess() {
 		return pWhen;
 	}
@@ -2207,8 +2230,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	}
 	
 	//Checks:
-	//	'checks:' name=ID // 'is'
-	//	reference=Reference failReason+=FailReason+
+	//	'checks:' (name=ID | em=ExpressionsModel) reference=Reference failReason+=FailReason+
 	//	description=Description;
 	public ChecksElements getChecksAccess() {
 		return pChecks;
@@ -2486,13 +2508,24 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	}
 	
 	//Variable:
-	//	"var" name=ID '=' expression=Expression;
+	//	name=ID ('=' expression=Expression)?;
 	public VariableElements getVariableAccess() {
 		return pVariable;
 	}
 	
 	public ParserRule getVariableRule() {
 		return getVariableAccess().getRule();
+	}
+	
+	//// "var" name=ID '=' expression=Expression;
+	//MonitoringVariableExpresion:
+	//	name=ID;
+	public MonitoringVariableExpresionElements getMonitoringVariableExpresionAccess() {
+		return pMonitoringVariableExpresion;
+	}
+	
+	public ParserRule getMonitoringVariableExpresionRule() {
+		return getMonitoringVariableExpresionAccess().getRule();
 	}
 	
 	//EvalExpression:
@@ -2586,8 +2619,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	}
 	
 	//Atomic Expression:
-	//	{IntConstant} value=INT | {StringConstant} value=STRING | {BoolConstant} value=('true' | 'false') | {VariableRef}
-	//	variable=[Variable];
+	//	{IntConstant} value=INT | {StringConstant} value=STRING | {BoolConstant} value=('true' | 'false') | variable=Variable;
 	public AtomicElements getAtomicAccess() {
 		return pAtomic;
 	}

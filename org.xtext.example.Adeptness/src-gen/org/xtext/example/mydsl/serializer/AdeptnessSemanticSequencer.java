@@ -29,6 +29,7 @@ import org.xtext.example.mydsl.adeptness.DataType;
 import org.xtext.example.mydsl.adeptness.Description;
 import org.xtext.example.mydsl.adeptness.Equality;
 import org.xtext.example.mydsl.adeptness.EvalExpression;
+import org.xtext.example.mydsl.adeptness.Expression;
 import org.xtext.example.mydsl.adeptness.ExpressionsModel;
 import org.xtext.example.mydsl.adeptness.FailReason;
 import org.xtext.example.mydsl.adeptness.Gap;
@@ -43,6 +44,7 @@ import org.xtext.example.mydsl.adeptness.Minus;
 import org.xtext.example.mydsl.adeptness.MonitoringFile;
 import org.xtext.example.mydsl.adeptness.MonitoringPlan;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
+import org.xtext.example.mydsl.adeptness.MonitoringVariableExpresion;
 import org.xtext.example.mydsl.adeptness.MulOrDiv;
 import org.xtext.example.mydsl.adeptness.Not;
 import org.xtext.example.mydsl.adeptness.Or;
@@ -59,7 +61,6 @@ import org.xtext.example.mydsl.adeptness.StringConstant;
 import org.xtext.example.mydsl.adeptness.TimeType;
 import org.xtext.example.mydsl.adeptness.Upper;
 import org.xtext.example.mydsl.adeptness.Variable;
-import org.xtext.example.mydsl.adeptness.VariableRef;
 import org.xtext.example.mydsl.adeptness.When;
 import org.xtext.example.mydsl.adeptness.XPeaks;
 import org.xtext.example.mydsl.services.AdeptnessGrammarAccess;
@@ -120,6 +121,9 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 			case AdeptnessPackage.EVAL_EXPRESSION:
 				sequence_EvalExpression(context, (EvalExpression) semanticObject); 
 				return; 
+			case AdeptnessPackage.EXPRESSION:
+				sequence_Atomic(context, (Expression) semanticObject); 
+				return; 
 			case AdeptnessPackage.EXPRESSIONS_MODEL:
 				sequence_ExpressionsModel(context, (ExpressionsModel) semanticObject); 
 				return; 
@@ -161,6 +165,9 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 				return; 
 			case AdeptnessPackage.MONITORING_VARIABLE:
 				sequence_MonitoringVariable(context, (MonitoringVariable) semanticObject); 
+				return; 
+			case AdeptnessPackage.MONITORING_VARIABLE_EXPRESION:
+				sequence_MonitoringVariableExpresion(context, (MonitoringVariableExpresion) semanticObject); 
 				return; 
 			case AdeptnessPackage.MUL_OR_DIV:
 				sequence_MulOrDiv(context, (MulOrDiv) semanticObject); 
@@ -209,9 +216,6 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 				return; 
 			case AdeptnessPackage.VARIABLE:
 				sequence_Variable(context, (Variable) semanticObject); 
-				return; 
-			case AdeptnessPackage.VARIABLE_REF:
-				sequence_Atomic(context, (VariableRef) semanticObject); 
 				return; 
 			case AdeptnessPackage.WHEN:
 				sequence_When(context, (When) semanticObject); 
@@ -300,6 +304,39 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	
 	/**
 	 * Contexts:
+	 *     Expression returns Expression
+	 *     Or returns Expression
+	 *     Or.Or_1_0 returns Expression
+	 *     And returns Expression
+	 *     And.And_1_0 returns Expression
+	 *     Equality returns Expression
+	 *     Equality.Equality_1_0 returns Expression
+	 *     Comparison returns Expression
+	 *     Comparison.Comparison_1_0 returns Expression
+	 *     PlusOrMinus returns Expression
+	 *     PlusOrMinus.Plus_1_0_0_0 returns Expression
+	 *     PlusOrMinus.Minus_1_0_1_0 returns Expression
+	 *     MulOrDiv returns Expression
+	 *     MulOrDiv.MulOrDiv_1_0_0 returns Expression
+	 *     Primary returns Expression
+	 *     Atomic returns Expression
+	 *
+	 * Constraint:
+	 *     variable=Variable
+	 */
+	protected void sequence_Atomic(ISerializationContext context, Expression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.EXPRESSION__VARIABLE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.EXPRESSION__VARIABLE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getAtomicAccess().getVariableVariableParserRuleCall_3_0(), semanticObject.getVariable());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     Expression returns IntConstant
 	 *     Or returns IntConstant
 	 *     Or.Or_1_0 returns IntConstant
@@ -366,39 +403,6 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	
 	/**
 	 * Contexts:
-	 *     Expression returns VariableRef
-	 *     Or returns VariableRef
-	 *     Or.Or_1_0 returns VariableRef
-	 *     And returns VariableRef
-	 *     And.And_1_0 returns VariableRef
-	 *     Equality returns VariableRef
-	 *     Equality.Equality_1_0 returns VariableRef
-	 *     Comparison returns VariableRef
-	 *     Comparison.Comparison_1_0 returns VariableRef
-	 *     PlusOrMinus returns VariableRef
-	 *     PlusOrMinus.Plus_1_0_0_0 returns VariableRef
-	 *     PlusOrMinus.Minus_1_0_1_0 returns VariableRef
-	 *     MulOrDiv returns VariableRef
-	 *     MulOrDiv.MulOrDiv_1_0_0 returns VariableRef
-	 *     Primary returns VariableRef
-	 *     Atomic returns VariableRef
-	 *
-	 * Constraint:
-	 *     variable=[Variable|ID]
-	 */
-	protected void sequence_Atomic(ISerializationContext context, VariableRef semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.VARIABLE_REF__VARIABLE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.VARIABLE_REF__VARIABLE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicAccess().getVariableVariableIDTerminalRuleCall_3_1_0_1(), semanticObject.eGet(AdeptnessPackage.Literals.VARIABLE_REF__VARIABLE, false));
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     BOOLEAN returns BOOLEAN
 	 *
 	 * Constraint:
@@ -444,7 +448,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Checks returns Checks
 	 *
 	 * Constraint:
-	 *     (name=ID reference=Reference failReason+=FailReason+ description=Description)
+	 *     ((name=ID | em=ExpressionsModel) reference=Reference failReason+=FailReason+ description=Description)
 	 */
 	protected void sequence_Checks(ISerializationContext context, Checks semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -799,6 +803,24 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	
 	/**
 	 * Contexts:
+	 *     MonitoringVariableExpresion returns MonitoringVariableExpresion
+	 *
+	 * Constraint:
+	 *     name=ID
+	 */
+	protected void sequence_MonitoringVariableExpresion(ISerializationContext context, MonitoringVariableExpresion semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.MONITORING_VARIABLE_EXPRESION__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.MONITORING_VARIABLE_EXPRESION__NAME));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getMonitoringVariableExpresionAccess().getNameIDTerminalRuleCall_0(), semanticObject.getName());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     MonitoringVariable returns MonitoringVariable
 	 *
 	 * Constraint:
@@ -1116,19 +1138,10 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Variable returns Variable
 	 *
 	 * Constraint:
-	 *     (name=ID expression=Expression)
+	 *     (name=ID expression=Expression?)
 	 */
 	protected void sequence_Variable(ISerializationContext context, Variable semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.VARIABLE__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.VARIABLE__NAME));
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.ABSTRACT_ELEMENT2__EXPRESSION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.ABSTRACT_ELEMENT2__EXPRESSION));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getVariableAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
-		feeder.accept(grammarAccess.getVariableAccess().getExpressionExpressionParserRuleCall_3_0(), semanticObject.getExpression());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -1137,19 +1150,10 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     When returns When
 	 *
 	 * Constraint:
-	 *     (name=ID precondReference=PrecondReference)
+	 *     ((name=ID | em=ExpressionsModel) precondReference=PrecondReference)
 	 */
 	protected void sequence_When(ISerializationContext context, When semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.WHEN__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.WHEN__NAME));
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getWhenAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
-		feeder.accept(grammarAccess.getWhenAccess().getPrecondReferencePrecondReferenceParserRuleCall_2_0(), semanticObject.getPrecondReference());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

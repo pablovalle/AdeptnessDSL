@@ -102,6 +102,7 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.EXPRESSIONS_MODEL: return createExpressionsModel();
       case AdeptnessPackage.ABSTRACT_ELEMENT2: return createAbstractElement2();
       case AdeptnessPackage.VARIABLE: return createVariable();
+      case AdeptnessPackage.MONITORING_VARIABLE_EXPRESION: return createMonitoringVariableExpresion();
       case AdeptnessPackage.EVAL_EXPRESSION: return createEvalExpression();
       case AdeptnessPackage.EXPRESSION: return createExpression();
       case AdeptnessPackage.OR: return createOr();
@@ -115,7 +116,6 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.INT_CONSTANT: return createIntConstant();
       case AdeptnessPackage.STRING_CONSTANT: return createStringConstant();
       case AdeptnessPackage.BOOL_CONSTANT: return createBoolConstant();
-      case AdeptnessPackage.VARIABLE_REF: return createVariableRef();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -571,6 +571,18 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
    * @generated
    */
   @Override
+  public MonitoringVariableExpresion createMonitoringVariableExpresion()
+  {
+    MonitoringVariableExpresionImpl monitoringVariableExpresion = new MonitoringVariableExpresionImpl();
+    return monitoringVariableExpresion;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EvalExpression createEvalExpression()
   {
     EvalExpressionImpl evalExpression = new EvalExpressionImpl();
@@ -719,18 +731,6 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
   {
     BoolConstantImpl boolConstant = new BoolConstantImpl();
     return boolConstant;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public VariableRef createVariableRef()
-  {
-    VariableRefImpl variableRef = new VariableRefImpl();
-    return variableRef;
   }
 
   /**

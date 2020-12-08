@@ -41,6 +41,7 @@ import org.xtext.example.mydsl.adeptness.Minus;
 import org.xtext.example.mydsl.adeptness.MonitoringFile;
 import org.xtext.example.mydsl.adeptness.MonitoringPlan;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
+import org.xtext.example.mydsl.adeptness.MonitoringVariableExpresion;
 import org.xtext.example.mydsl.adeptness.MulOrDiv;
 import org.xtext.example.mydsl.adeptness.Not;
 import org.xtext.example.mydsl.adeptness.Or;
@@ -58,7 +59,6 @@ import org.xtext.example.mydsl.adeptness.TimeType;
 import org.xtext.example.mydsl.adeptness.Type;
 import org.xtext.example.mydsl.adeptness.Upper;
 import org.xtext.example.mydsl.adeptness.Variable;
-import org.xtext.example.mydsl.adeptness.VariableRef;
 import org.xtext.example.mydsl.adeptness.When;
 import org.xtext.example.mydsl.adeptness.XPeaks;
 
@@ -334,6 +334,13 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass monitoringVariableExpresionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass evalExpressionEClass = null;
 
   /**
@@ -419,13 +426,6 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   private EClass boolConstantEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass variableRefEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -826,9 +826,20 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getWhen_PrecondReference()
+  public EReference getWhen_Em()
   {
     return (EReference)whenEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getWhen_PrecondReference()
+  {
+    return (EReference)whenEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -859,7 +870,7 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getChecks_Reference()
+  public EReference getChecks_Em()
   {
     return (EReference)checksEClass.getEStructuralFeatures().get(1);
   }
@@ -870,7 +881,7 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getChecks_FailReason()
+  public EReference getChecks_Reference()
   {
     return (EReference)checksEClass.getEStructuralFeatures().get(2);
   }
@@ -881,9 +892,20 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getChecks_Description()
+  public EReference getChecks_FailReason()
   {
     return (EReference)checksEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getChecks_Description()
+  {
+    return (EReference)checksEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -1651,6 +1673,28 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
+  public EClass getMonitoringVariableExpresion()
+  {
+    return monitoringVariableExpresionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getMonitoringVariableExpresion_Name()
+  {
+    return (EAttribute)monitoringVariableExpresionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getEvalExpression()
   {
     return evalExpressionEClass;
@@ -1665,6 +1709,17 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
   public EClass getExpression()
   {
     return expressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getExpression_Variable()
+  {
+    return (EReference)expressionEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2025,28 +2080,6 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EClass getVariableRef()
-  {
-    return variableRefEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getVariableRef_Variable()
-  {
-    return (EReference)variableRefEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public AdeptnessFactory getAdeptnessFactory()
   {
     return (AdeptnessFactory)getEFactoryInstance();
@@ -2113,10 +2146,12 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
 
     whenEClass = createEClass(WHEN);
     createEAttribute(whenEClass, WHEN__NAME);
+    createEReference(whenEClass, WHEN__EM);
     createEReference(whenEClass, WHEN__PRECOND_REFERENCE);
 
     checksEClass = createEClass(CHECKS);
     createEAttribute(checksEClass, CHECKS__NAME);
+    createEReference(checksEClass, CHECKS__EM);
     createEReference(checksEClass, CHECKS__REFERENCE);
     createEReference(checksEClass, CHECKS__FAIL_REASON);
     createEReference(checksEClass, CHECKS__DESCRIPTION);
@@ -2214,9 +2249,13 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     variableEClass = createEClass(VARIABLE);
     createEAttribute(variableEClass, VARIABLE__NAME);
 
+    monitoringVariableExpresionEClass = createEClass(MONITORING_VARIABLE_EXPRESION);
+    createEAttribute(monitoringVariableExpresionEClass, MONITORING_VARIABLE_EXPRESION__NAME);
+
     evalExpressionEClass = createEClass(EVAL_EXPRESSION);
 
     expressionEClass = createEClass(EXPRESSION);
+    createEReference(expressionEClass, EXPRESSION__VARIABLE);
 
     orEClass = createEClass(OR);
     createEReference(orEClass, OR__LEFT);
@@ -2260,9 +2299,6 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
 
     boolConstantEClass = createEClass(BOOL_CONSTANT);
     createEAttribute(boolConstantEClass, BOOL_CONSTANT__VALUE);
-
-    variableRefEClass = createEClass(VARIABLE_REF);
-    createEReference(variableRefEClass, VARIABLE_REF__VARIABLE);
   }
 
   /**
@@ -2313,7 +2349,6 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     intConstantEClass.getESuperTypes().add(this.getExpression());
     stringConstantEClass.getESuperTypes().add(this.getExpression());
     boolConstantEClass.getESuperTypes().add(this.getExpression());
-    variableRefEClass.getESuperTypes().add(this.getExpression());
 
     // Initialize classes and features; add operations and parameters
     initEClass(adeptnessEClass, Adeptness.class, "Adeptness", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2357,10 +2392,12 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
 
     initEClass(whenEClass, When.class, "When", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getWhen_Name(), ecorePackage.getEString(), "name", null, 0, 1, When.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getWhen_Em(), this.getExpressionsModel(), null, "em", null, 0, 1, When.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getWhen_PrecondReference(), this.getPrecondReference(), null, "precondReference", null, 0, 1, When.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(checksEClass, Checks.class, "Checks", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getChecks_Name(), ecorePackage.getEString(), "name", null, 0, 1, Checks.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getChecks_Em(), this.getExpressionsModel(), null, "em", null, 0, 1, Checks.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getChecks_Reference(), this.getReference(), null, "reference", null, 0, 1, Checks.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getChecks_FailReason(), this.getFailReason(), null, "failReason", null, 0, -1, Checks.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getChecks_Description(), this.getDescription(), null, "description", null, 0, 1, Checks.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2458,9 +2495,13 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     initEClass(variableEClass, Variable.class, "Variable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getVariable_Name(), ecorePackage.getEString(), "name", null, 0, 1, Variable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(monitoringVariableExpresionEClass, MonitoringVariableExpresion.class, "MonitoringVariableExpresion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getMonitoringVariableExpresion_Name(), ecorePackage.getEString(), "name", null, 0, 1, MonitoringVariableExpresion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(evalExpressionEClass, EvalExpression.class, "EvalExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(expressionEClass, Expression.class, "Expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getExpression_Variable(), this.getVariable(), null, "variable", null, 0, 1, Expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(orEClass, Or.class, "Or", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getOr_Left(), this.getExpression(), null, "left", null, 0, 1, Or.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2504,9 +2545,6 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
 
     initEClass(boolConstantEClass, BoolConstant.class, "BoolConstant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getBoolConstant_Value(), ecorePackage.getEString(), "value", null, 0, 1, BoolConstant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(variableRefEClass, VariableRef.class, "VariableRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getVariableRef_Variable(), this.getVariable(), null, "variable", null, 0, 1, VariableRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

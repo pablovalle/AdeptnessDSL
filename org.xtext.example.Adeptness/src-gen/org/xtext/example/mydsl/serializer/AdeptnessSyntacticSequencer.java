@@ -60,7 +60,7 @@ public class AdeptnessSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) value='true'
 	 *     (rule start) (ambiguity) value=INT
 	 *     (rule start) (ambiguity) value=STRING
-	 *     (rule start) (ambiguity) variable=[Variable|ID]
+	 *     (rule start) (ambiguity) variable=Variable
 	 *     (rule start) (ambiguity) {And.left=}
 	 *     (rule start) (ambiguity) {Comparison.left=}
 	 *     (rule start) (ambiguity) {Equality.left=}

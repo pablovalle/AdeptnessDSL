@@ -34,6 +34,8 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getAbstractElementAccess().getAlternatives(), "rule__AbstractElement__Alternatives");
 			builder.put(grammarAccess.getTypeAccess().getAlternatives(), "rule__Type__Alternatives");
 			builder.put(grammarAccess.getSig_typeAccess().getAlternatives(), "rule__Sig_type__Alternatives");
+			builder.put(grammarAccess.getWhenAccess().getAlternatives_1(), "rule__When__Alternatives_1");
+			builder.put(grammarAccess.getChecksAccess().getAlternatives_1(), "rule__Checks__Alternatives_1");
 			builder.put(grammarAccess.getReasonAccess().getAlternatives_0(), "rule__Reason__Alternatives_0");
 			builder.put(grammarAccess.getReferenceAccess().getAlternatives_0(), "rule__Reference__Alternatives_0");
 			builder.put(grammarAccess.getPrecondReferenceAccess().getAlternatives_0(), "rule__PrecondReference__Alternatives_0");
@@ -82,6 +84,7 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getDataTypeAccess().getGroup(), "rule__DataType__Group__0");
 			builder.put(grammarAccess.getPackageDeclarationAccess().getGroup(), "rule__PackageDeclaration__Group__0");
 			builder.put(grammarAccess.getVariableAccess().getGroup(), "rule__Variable__Group__0");
+			builder.put(grammarAccess.getVariableAccess().getGroup_1(), "rule__Variable__Group_1__0");
 			builder.put(grammarAccess.getOrAccess().getGroup(), "rule__Or__Group__0");
 			builder.put(grammarAccess.getOrAccess().getGroup_1(), "rule__Or__Group_1__0");
 			builder.put(grammarAccess.getAndAccess().getGroup(), "rule__And__Group__0");
@@ -102,7 +105,6 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getAtomicAccess().getGroup_0(), "rule__Atomic__Group_0__0");
 			builder.put(grammarAccess.getAtomicAccess().getGroup_1(), "rule__Atomic__Group_1__0");
 			builder.put(grammarAccess.getAtomicAccess().getGroup_2(), "rule__Atomic__Group_2__0");
-			builder.put(grammarAccess.getAtomicAccess().getGroup_3(), "rule__Atomic__Group_3__0");
 			builder.put(grammarAccess.getAdeptnessAccess().getElementsAssignment(), "rule__Adeptness__ElementsAssignment");
 			builder.put(grammarAccess.getImportsAccess().getImportedNamespaceAssignment_1(), "rule__Imports__ImportedNamespaceAssignment_1");
 			builder.put(grammarAccess.getMonitoringFileAccess().getNameAssignment_1(), "rule__MonitoringFile__NameAssignment_1");
@@ -123,9 +125,11 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getOracleAccess().getNameAssignment_1(), "rule__Oracle__NameAssignment_1");
 			builder.put(grammarAccess.getOracleAccess().getWhenAssignment_3(), "rule__Oracle__WhenAssignment_3");
 			builder.put(grammarAccess.getOracleAccess().getCheckAssignment_4(), "rule__Oracle__CheckAssignment_4");
-			builder.put(grammarAccess.getWhenAccess().getNameAssignment_1(), "rule__When__NameAssignment_1");
+			builder.put(grammarAccess.getWhenAccess().getNameAssignment_1_0(), "rule__When__NameAssignment_1_0");
+			builder.put(grammarAccess.getWhenAccess().getEmAssignment_1_1(), "rule__When__EmAssignment_1_1");
 			builder.put(grammarAccess.getWhenAccess().getPrecondReferenceAssignment_2(), "rule__When__PrecondReferenceAssignment_2");
-			builder.put(grammarAccess.getChecksAccess().getNameAssignment_1(), "rule__Checks__NameAssignment_1");
+			builder.put(grammarAccess.getChecksAccess().getNameAssignment_1_0(), "rule__Checks__NameAssignment_1_0");
+			builder.put(grammarAccess.getChecksAccess().getEmAssignment_1_1(), "rule__Checks__EmAssignment_1_1");
 			builder.put(grammarAccess.getChecksAccess().getReferenceAssignment_2(), "rule__Checks__ReferenceAssignment_2");
 			builder.put(grammarAccess.getChecksAccess().getFailReasonAssignment_3(), "rule__Checks__FailReasonAssignment_3");
 			builder.put(grammarAccess.getChecksAccess().getDescriptionAssignment_4(), "rule__Checks__DescriptionAssignment_4");
@@ -176,8 +180,9 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getPackageDeclarationAccess().getNameAssignment_1(), "rule__PackageDeclaration__NameAssignment_1");
 			builder.put(grammarAccess.getPackageDeclarationAccess().getElementsAssignment_3(), "rule__PackageDeclaration__ElementsAssignment_3");
 			builder.put(grammarAccess.getExpressionsModelAccess().getElementsAssignment(), "rule__ExpressionsModel__ElementsAssignment");
-			builder.put(grammarAccess.getVariableAccess().getNameAssignment_1(), "rule__Variable__NameAssignment_1");
-			builder.put(grammarAccess.getVariableAccess().getExpressionAssignment_3(), "rule__Variable__ExpressionAssignment_3");
+			builder.put(grammarAccess.getVariableAccess().getNameAssignment_0(), "rule__Variable__NameAssignment_0");
+			builder.put(grammarAccess.getVariableAccess().getExpressionAssignment_1_1(), "rule__Variable__ExpressionAssignment_1_1");
+			builder.put(grammarAccess.getMonitoringVariableExpresionAccess().getNameAssignment(), "rule__MonitoringVariableExpresion__NameAssignment");
 			builder.put(grammarAccess.getEvalExpressionAccess().getExpressionAssignment(), "rule__EvalExpression__ExpressionAssignment");
 			builder.put(grammarAccess.getOrAccess().getRightAssignment_1_2(), "rule__Or__RightAssignment_1_2");
 			builder.put(grammarAccess.getAndAccess().getRightAssignment_1_2(), "rule__And__RightAssignment_1_2");
@@ -192,7 +197,7 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getAtomicAccess().getValueAssignment_0_1(), "rule__Atomic__ValueAssignment_0_1");
 			builder.put(grammarAccess.getAtomicAccess().getValueAssignment_1_1(), "rule__Atomic__ValueAssignment_1_1");
 			builder.put(grammarAccess.getAtomicAccess().getValueAssignment_2_1(), "rule__Atomic__ValueAssignment_2_1");
-			builder.put(grammarAccess.getAtomicAccess().getVariableAssignment_3_1(), "rule__Atomic__VariableAssignment_3_1");
+			builder.put(grammarAccess.getAtomicAccess().getVariableAssignment_3(), "rule__Atomic__VariableAssignment_3");
 		}
 	}
 	

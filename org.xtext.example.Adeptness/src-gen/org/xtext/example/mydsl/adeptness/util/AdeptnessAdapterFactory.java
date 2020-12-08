@@ -261,6 +261,11 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
         return createVariableAdapter();
       }
       @Override
+      public Adapter caseMonitoringVariableExpresion(MonitoringVariableExpresion object)
+      {
+        return createMonitoringVariableExpresionAdapter();
+      }
+      @Override
       public Adapter caseEvalExpression(EvalExpression object)
       {
         return createEvalExpressionAdapter();
@@ -324,11 +329,6 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
       public Adapter caseBoolConstant(BoolConstant object)
       {
         return createBoolConstantAdapter();
-      }
-      @Override
-      public Adapter caseVariableRef(VariableRef object)
-      {
-        return createVariableRefAdapter();
       }
       @Override
       public Adapter defaultCase(EObject object)
@@ -908,6 +908,21 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.MonitoringVariableExpresion <em>Monitoring Variable Expresion</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.MonitoringVariableExpresion
+   * @generated
+   */
+  public Adapter createMonitoringVariableExpresionAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.EvalExpression <em>Eval Expression</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -1098,21 +1113,6 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createBoolConstantAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.VariableRef <em>Variable Ref</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.xtext.example.mydsl.adeptness.VariableRef
-   * @generated
-   */
-  public Adapter createVariableRefAdapter()
   {
     return null;
   }

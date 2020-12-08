@@ -830,20 +830,42 @@ ruleWhen returns [EObject current=null]
 		}
 		(
 			(
-				lv_name_1_0=RULE_ID
-				{
-					newLeafNode(lv_name_1_0, grammarAccess.getWhenAccess().getNameIDTerminalRuleCall_1_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getWhenRule());
+				(
+					lv_name_1_0=RULE_ID
+					{
+						newLeafNode(lv_name_1_0, grammarAccess.getWhenAccess().getNameIDTerminalRuleCall_1_0_0());
 					}
-					setWithLastConsumed(
-						$current,
-						"name",
-						lv_name_1_0,
-						"org.eclipse.xtext.common.Terminals.ID");
-				}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getWhenRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"name",
+							lv_name_1_0,
+							"org.eclipse.xtext.common.Terminals.ID");
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getWhenAccess().getEmExpressionsModelParserRuleCall_1_1_0());
+					}
+					lv_em_2_0=ruleExpressionsModel
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getWhenRule());
+						}
+						set(
+							$current,
+							"em",
+							lv_em_2_0,
+							"org.xtext.example.mydsl.Adeptness.ExpressionsModel");
+						afterParserOrEnumRuleCall();
+					}
+				)
 			)
 		)
 		(
@@ -851,7 +873,7 @@ ruleWhen returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getWhenAccess().getPrecondReferencePrecondReferenceParserRuleCall_2_0());
 				}
-				lv_precondReference_2_0=rulePrecondReference
+				lv_precondReference_3_0=rulePrecondReference
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getWhenRule());
@@ -859,7 +881,7 @@ ruleWhen returns [EObject current=null]
 					set(
 						$current,
 						"precondReference",
-						lv_precondReference_2_0,
+						lv_precondReference_3_0,
 						"org.xtext.example.mydsl.Adeptness.PrecondReference");
 					afterParserOrEnumRuleCall();
 				}
@@ -890,20 +912,42 @@ ruleChecks returns [EObject current=null]
 		}
 		(
 			(
-				lv_name_1_0=RULE_ID
-				{
-					newLeafNode(lv_name_1_0, grammarAccess.getChecksAccess().getNameIDTerminalRuleCall_1_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getChecksRule());
+				(
+					lv_name_1_0=RULE_ID
+					{
+						newLeafNode(lv_name_1_0, grammarAccess.getChecksAccess().getNameIDTerminalRuleCall_1_0_0());
 					}
-					setWithLastConsumed(
-						$current,
-						"name",
-						lv_name_1_0,
-						"org.eclipse.xtext.common.Terminals.ID");
-				}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getChecksRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"name",
+							lv_name_1_0,
+							"org.eclipse.xtext.common.Terminals.ID");
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getChecksAccess().getEmExpressionsModelParserRuleCall_1_1_0());
+					}
+					lv_em_2_0=ruleExpressionsModel
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getChecksRule());
+						}
+						set(
+							$current,
+							"em",
+							lv_em_2_0,
+							"org.xtext.example.mydsl.Adeptness.ExpressionsModel");
+						afterParserOrEnumRuleCall();
+					}
+				)
 			)
 		)
 		(
@@ -911,7 +955,7 @@ ruleChecks returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getChecksAccess().getReferenceReferenceParserRuleCall_2_0());
 				}
-				lv_reference_2_0=ruleReference
+				lv_reference_3_0=ruleReference
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getChecksRule());
@@ -919,7 +963,7 @@ ruleChecks returns [EObject current=null]
 					set(
 						$current,
 						"reference",
-						lv_reference_2_0,
+						lv_reference_3_0,
 						"org.xtext.example.mydsl.Adeptness.Reference");
 					afterParserOrEnumRuleCall();
 				}
@@ -930,7 +974,7 @@ ruleChecks returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getChecksAccess().getFailReasonFailReasonParserRuleCall_3_0());
 				}
-				lv_failReason_3_0=ruleFailReason
+				lv_failReason_4_0=ruleFailReason
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getChecksRule());
@@ -938,7 +982,7 @@ ruleChecks returns [EObject current=null]
 					add(
 						$current,
 						"failReason",
-						lv_failReason_3_0,
+						lv_failReason_4_0,
 						"org.xtext.example.mydsl.Adeptness.FailReason");
 					afterParserOrEnumRuleCall();
 				}
@@ -949,7 +993,7 @@ ruleChecks returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getChecksAccess().getDescriptionDescriptionParserRuleCall_4_0());
 				}
-				lv_description_4_0=ruleDescription
+				lv_description_5_0=ruleDescription
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getChecksRule());
@@ -957,7 +1001,7 @@ ruleChecks returns [EObject current=null]
 					set(
 						$current,
 						"description",
-						lv_description_4_0,
+						lv_description_5_0,
 						"org.xtext.example.mydsl.Adeptness.Description");
 					afterParserOrEnumRuleCall();
 				}
@@ -2429,15 +2473,11 @@ ruleVariable returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='var'
-		{
-			newLeafNode(otherlv_0, grammarAccess.getVariableAccess().getVarKeyword_0());
-		}
 		(
 			(
-				lv_name_1_0=RULE_ID
+				lv_name_0_0=RULE_ID
 				{
-					newLeafNode(lv_name_1_0, grammarAccess.getVariableAccess().getNameIDTerminalRuleCall_1_0());
+					newLeafNode(lv_name_0_0, grammarAccess.getVariableAccess().getNameIDTerminalRuleCall_0_0());
 				}
 				{
 					if ($current==null) {
@@ -2446,34 +2486,36 @@ ruleVariable returns [EObject current=null]
 					setWithLastConsumed(
 						$current,
 						"name",
-						lv_name_1_0,
+						lv_name_0_0,
 						"org.eclipse.xtext.common.Terminals.ID");
 				}
 			)
 		)
-		otherlv_2='='
-		{
-			newLeafNode(otherlv_2, grammarAccess.getVariableAccess().getEqualsSignKeyword_2());
-		}
 		(
+			otherlv_1='='
+			{
+				newLeafNode(otherlv_1, grammarAccess.getVariableAccess().getEqualsSignKeyword_1_0());
+			}
 			(
-				{
-					newCompositeNode(grammarAccess.getVariableAccess().getExpressionExpressionParserRuleCall_3_0());
-				}
-				lv_expression_3_0=ruleExpression
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getVariableRule());
+				(
+					{
+						newCompositeNode(grammarAccess.getVariableAccess().getExpressionExpressionParserRuleCall_1_1_0());
 					}
-					set(
-						$current,
-						"expression",
-						lv_expression_3_0,
-						"org.xtext.example.mydsl.Adeptness.Expression");
-					afterParserOrEnumRuleCall();
-				}
+					lv_expression_2_0=ruleExpression
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getVariableRule());
+						}
+						set(
+							$current,
+							"expression",
+							lv_expression_2_0,
+							"org.xtext.example.mydsl.Adeptness.Expression");
+						afterParserOrEnumRuleCall();
+					}
+				)
 			)
-		)
+		)?
 	)
 ;
 
@@ -3194,23 +3236,20 @@ ruleAtomic returns [EObject current=null]
 		(
 			(
 				{
-					$current = forceCreateModelElement(
-						grammarAccess.getAtomicAccess().getVariableRefAction_3_0(),
-						$current);
+					newCompositeNode(grammarAccess.getAtomicAccess().getVariableVariableParserRuleCall_3_0());
 				}
-			)
-			(
-				(
-					{
-						if ($current==null) {
-							$current = createModelElement(grammarAccess.getAtomicRule());
-						}
+				lv_variable_6_0=ruleVariable
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getAtomicRule());
 					}
-					otherlv_7=RULE_ID
-					{
-						newLeafNode(otherlv_7, grammarAccess.getAtomicAccess().getVariableVariableCrossReference_3_1_0());
-					}
-				)
+					set(
+						$current,
+						"variable",
+						lv_variable_6_0,
+						"org.xtext.example.mydsl.Adeptness.Variable");
+					afterParserOrEnumRuleCall();
+				}
 			)
 		)
 	)

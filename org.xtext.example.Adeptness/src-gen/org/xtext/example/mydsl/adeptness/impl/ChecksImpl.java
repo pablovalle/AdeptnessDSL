@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.Checks;
 import org.xtext.example.mydsl.adeptness.Description;
+import org.xtext.example.mydsl.adeptness.ExpressionsModel;
 import org.xtext.example.mydsl.adeptness.FailReason;
 import org.xtext.example.mydsl.adeptness.Reference;
 
@@ -34,6 +35,7 @@ import org.xtext.example.mydsl.adeptness.Reference;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.ChecksImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.ChecksImpl#getEm <em>Em</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.ChecksImpl#getReference <em>Reference</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.ChecksImpl#getFailReason <em>Fail Reason</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.ChecksImpl#getDescription <em>Description</em>}</li>
@@ -62,6 +64,16 @@ public class ChecksImpl extends MinimalEObjectImpl.Container implements Checks
    * @ordered
    */
   protected String name = NAME_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getEm() <em>Em</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEm()
+   * @generated
+   * @ordered
+   */
+  protected ExpressionsModel em;
 
   /**
    * The cached value of the '{@link #getReference() <em>Reference</em>}' containment reference.
@@ -137,6 +149,56 @@ public class ChecksImpl extends MinimalEObjectImpl.Container implements Checks
     name = newName;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.CHECKS__NAME, oldName, name));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ExpressionsModel getEm()
+  {
+    return em;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetEm(ExpressionsModel newEm, NotificationChain msgs)
+  {
+    ExpressionsModel oldEm = em;
+    em = newEm;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.CHECKS__EM, oldEm, newEm);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setEm(ExpressionsModel newEm)
+  {
+    if (newEm != em)
+    {
+      NotificationChain msgs = null;
+      if (em != null)
+        msgs = ((InternalEObject)em).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.CHECKS__EM, null, msgs);
+      if (newEm != null)
+        msgs = ((InternalEObject)newEm).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.CHECKS__EM, null, msgs);
+      msgs = basicSetEm(newEm, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.CHECKS__EM, newEm, newEm));
   }
 
   /**
@@ -264,6 +326,8 @@ public class ChecksImpl extends MinimalEObjectImpl.Container implements Checks
   {
     switch (featureID)
     {
+      case AdeptnessPackage.CHECKS__EM:
+        return basicSetEm(null, msgs);
       case AdeptnessPackage.CHECKS__REFERENCE:
         return basicSetReference(null, msgs);
       case AdeptnessPackage.CHECKS__FAIL_REASON:
@@ -286,6 +350,8 @@ public class ChecksImpl extends MinimalEObjectImpl.Container implements Checks
     {
       case AdeptnessPackage.CHECKS__NAME:
         return getName();
+      case AdeptnessPackage.CHECKS__EM:
+        return getEm();
       case AdeptnessPackage.CHECKS__REFERENCE:
         return getReference();
       case AdeptnessPackage.CHECKS__FAIL_REASON:
@@ -309,6 +375,9 @@ public class ChecksImpl extends MinimalEObjectImpl.Container implements Checks
     {
       case AdeptnessPackage.CHECKS__NAME:
         setName((String)newValue);
+        return;
+      case AdeptnessPackage.CHECKS__EM:
+        setEm((ExpressionsModel)newValue);
         return;
       case AdeptnessPackage.CHECKS__REFERENCE:
         setReference((Reference)newValue);
@@ -337,6 +406,9 @@ public class ChecksImpl extends MinimalEObjectImpl.Container implements Checks
       case AdeptnessPackage.CHECKS__NAME:
         setName(NAME_EDEFAULT);
         return;
+      case AdeptnessPackage.CHECKS__EM:
+        setEm((ExpressionsModel)null);
+        return;
       case AdeptnessPackage.CHECKS__REFERENCE:
         setReference((Reference)null);
         return;
@@ -362,6 +434,8 @@ public class ChecksImpl extends MinimalEObjectImpl.Container implements Checks
     {
       case AdeptnessPackage.CHECKS__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case AdeptnessPackage.CHECKS__EM:
+        return em != null;
       case AdeptnessPackage.CHECKS__REFERENCE:
         return reference != null;
       case AdeptnessPackage.CHECKS__FAIL_REASON:

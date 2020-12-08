@@ -457,13 +457,22 @@ public interface AdeptnessPackage extends EPackage
   int WHEN__NAME = 0;
 
   /**
+   * The feature id for the '<em><b>Em</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WHEN__EM = 1;
+
+  /**
    * The feature id for the '<em><b>Precond Reference</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int WHEN__PRECOND_REFERENCE = 1;
+  int WHEN__PRECOND_REFERENCE = 2;
 
   /**
    * The number of structural features of the '<em>When</em>' class.
@@ -472,7 +481,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int WHEN_FEATURE_COUNT = 2;
+  int WHEN_FEATURE_COUNT = 3;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.ChecksImpl <em>Checks</em>}' class.
@@ -494,13 +503,22 @@ public interface AdeptnessPackage extends EPackage
   int CHECKS__NAME = 0;
 
   /**
+   * The feature id for the '<em><b>Em</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CHECKS__EM = 1;
+
+  /**
    * The feature id for the '<em><b>Reference</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CHECKS__REFERENCE = 1;
+  int CHECKS__REFERENCE = 2;
 
   /**
    * The feature id for the '<em><b>Fail Reason</b></em>' containment reference list.
@@ -509,7 +527,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CHECKS__FAIL_REASON = 2;
+  int CHECKS__FAIL_REASON = 3;
 
   /**
    * The feature id for the '<em><b>Description</b></em>' containment reference.
@@ -518,7 +536,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CHECKS__DESCRIPTION = 3;
+  int CHECKS__DESCRIPTION = 4;
 
   /**
    * The number of structural features of the '<em>Checks</em>' class.
@@ -527,7 +545,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CHECKS_FEATURE_COUNT = 4;
+  int CHECKS_FEATURE_COUNT = 5;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.DescriptionImpl <em>Description</em>}' class.
@@ -1409,6 +1427,34 @@ public interface AdeptnessPackage extends EPackage
   int VARIABLE_FEATURE_COUNT = ABSTRACT_ELEMENT2_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.MonitoringVariableExpresionImpl <em>Monitoring Variable Expresion</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.MonitoringVariableExpresionImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMonitoringVariableExpresion()
+   * @generated
+   */
+  int MONITORING_VARIABLE_EXPRESION = 37;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MONITORING_VARIABLE_EXPRESION__NAME = 0;
+
+  /**
+   * The number of structural features of the '<em>Monitoring Variable Expresion</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MONITORING_VARIABLE_EXPRESION_FEATURE_COUNT = 1;
+
+  /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.EvalExpressionImpl <em>Eval Expression</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1416,7 +1462,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getEvalExpression()
    * @generated
    */
-  int EVAL_EXPRESSION = 37;
+  int EVAL_EXPRESSION = 38;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -1444,7 +1490,16 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getExpression()
    * @generated
    */
-  int EXPRESSION = 38;
+  int EXPRESSION = 39;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EXPRESSION__VARIABLE = 0;
 
   /**
    * The number of structural features of the '<em>Expression</em>' class.
@@ -1453,7 +1508,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int EXPRESSION_FEATURE_COUNT = 0;
+  int EXPRESSION_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.OrImpl <em>Or</em>}' class.
@@ -1463,7 +1518,16 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getOr()
    * @generated
    */
-  int OR = 39;
+  int OR = 40;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OR__VARIABLE = EXPRESSION__VARIABLE;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1500,7 +1564,16 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getAnd()
    * @generated
    */
-  int AND = 40;
+  int AND = 41;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int AND__VARIABLE = EXPRESSION__VARIABLE;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1537,7 +1610,16 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getEquality()
    * @generated
    */
-  int EQUALITY = 41;
+  int EQUALITY = 42;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EQUALITY__VARIABLE = EXPRESSION__VARIABLE;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1583,7 +1665,16 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getComparison()
    * @generated
    */
-  int COMPARISON = 42;
+  int COMPARISON = 43;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int COMPARISON__VARIABLE = EXPRESSION__VARIABLE;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1629,7 +1720,16 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getPlus()
    * @generated
    */
-  int PLUS = 43;
+  int PLUS = 44;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PLUS__VARIABLE = EXPRESSION__VARIABLE;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1666,7 +1766,16 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMinus()
    * @generated
    */
-  int MINUS = 44;
+  int MINUS = 45;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MINUS__VARIABLE = EXPRESSION__VARIABLE;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1703,7 +1812,16 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMulOrDiv()
    * @generated
    */
-  int MUL_OR_DIV = 45;
+  int MUL_OR_DIV = 46;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MUL_OR_DIV__VARIABLE = EXPRESSION__VARIABLE;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1749,7 +1867,16 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getNot()
    * @generated
    */
-  int NOT = 46;
+  int NOT = 47;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NOT__VARIABLE = EXPRESSION__VARIABLE;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -1777,7 +1904,16 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getIntConstant()
    * @generated
    */
-  int INT_CONSTANT = 47;
+  int INT_CONSTANT = 48;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int INT_CONSTANT__VARIABLE = EXPRESSION__VARIABLE;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1805,7 +1941,16 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getStringConstant()
    * @generated
    */
-  int STRING_CONSTANT = 48;
+  int STRING_CONSTANT = 49;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STRING_CONSTANT__VARIABLE = EXPRESSION__VARIABLE;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1833,7 +1978,16 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBoolConstant()
    * @generated
    */
-  int BOOL_CONSTANT = 49;
+  int BOOL_CONSTANT = 50;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOOL_CONSTANT__VARIABLE = EXPRESSION__VARIABLE;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1852,34 +2006,6 @@ public interface AdeptnessPackage extends EPackage
    * @ordered
    */
   int BOOL_CONSTANT_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 1;
-
-  /**
-   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.VariableRefImpl <em>Variable Ref</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.xtext.example.mydsl.adeptness.impl.VariableRefImpl
-   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getVariableRef()
-   * @generated
-   */
-  int VARIABLE_REF = 50;
-
-  /**
-   * The feature id for the '<em><b>Variable</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int VARIABLE_REF__VARIABLE = EXPRESSION_FEATURE_COUNT + 0;
-
-  /**
-   * The number of structural features of the '<em>Variable Ref</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int VARIABLE_REF_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 1;
 
 
   /**
@@ -2201,6 +2327,17 @@ public interface AdeptnessPackage extends EPackage
   EAttribute getWhen_Name();
 
   /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.When#getEm <em>Em</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Em</em>'.
+   * @see org.xtext.example.mydsl.adeptness.When#getEm()
+   * @see #getWhen()
+   * @generated
+   */
+  EReference getWhen_Em();
+
+  /**
    * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.When#getPrecondReference <em>Precond Reference</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2231,6 +2368,17 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    */
   EAttribute getChecks_Name();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Checks#getEm <em>Em</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Em</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Checks#getEm()
+   * @see #getChecks()
+   * @generated
+   */
+  EReference getChecks_Em();
 
   /**
    * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Checks#getReference <em>Reference</em>}'.
@@ -3001,6 +3149,27 @@ public interface AdeptnessPackage extends EPackage
   EAttribute getVariable_Name();
 
   /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.MonitoringVariableExpresion <em>Monitoring Variable Expresion</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Monitoring Variable Expresion</em>'.
+   * @see org.xtext.example.mydsl.adeptness.MonitoringVariableExpresion
+   * @generated
+   */
+  EClass getMonitoringVariableExpresion();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.MonitoringVariableExpresion#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see org.xtext.example.mydsl.adeptness.MonitoringVariableExpresion#getName()
+   * @see #getMonitoringVariableExpresion()
+   * @generated
+   */
+  EAttribute getMonitoringVariableExpresion_Name();
+
+  /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.EvalExpression <em>Eval Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3019,6 +3188,17 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    */
   EClass getExpression();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Expression#getVariable <em>Variable</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Variable</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Expression#getVariable()
+   * @see #getExpression()
+   * @generated
+   */
+  EReference getExpression_Variable();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Or <em>Or</em>}'.
@@ -3362,27 +3542,6 @@ public interface AdeptnessPackage extends EPackage
   EAttribute getBoolConstant_Value();
 
   /**
-   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.VariableRef <em>Variable Ref</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Variable Ref</em>'.
-   * @see org.xtext.example.mydsl.adeptness.VariableRef
-   * @generated
-   */
-  EClass getVariableRef();
-
-  /**
-   * Returns the meta object for the reference '{@link org.xtext.example.mydsl.adeptness.VariableRef#getVariable <em>Variable</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Variable</em>'.
-   * @see org.xtext.example.mydsl.adeptness.VariableRef#getVariable()
-   * @see #getVariableRef()
-   * @generated
-   */
-  EReference getVariableRef_Variable();
-
-  /**
    * Returns the factory that creates the instances of the model.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3670,6 +3829,14 @@ public interface AdeptnessPackage extends EPackage
     EAttribute WHEN__NAME = eINSTANCE.getWhen_Name();
 
     /**
+     * The meta object literal for the '<em><b>Em</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference WHEN__EM = eINSTANCE.getWhen_Em();
+
+    /**
      * The meta object literal for the '<em><b>Precond Reference</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3694,6 +3861,14 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EAttribute CHECKS__NAME = eINSTANCE.getChecks_Name();
+
+    /**
+     * The meta object literal for the '<em><b>Em</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference CHECKS__EM = eINSTANCE.getChecks_Em();
 
     /**
      * The meta object literal for the '<em><b>Reference</b></em>' containment reference feature.
@@ -4320,6 +4495,24 @@ public interface AdeptnessPackage extends EPackage
     EAttribute VARIABLE__NAME = eINSTANCE.getVariable_Name();
 
     /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.MonitoringVariableExpresionImpl <em>Monitoring Variable Expresion</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.MonitoringVariableExpresionImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMonitoringVariableExpresion()
+     * @generated
+     */
+    EClass MONITORING_VARIABLE_EXPRESION = eINSTANCE.getMonitoringVariableExpresion();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MONITORING_VARIABLE_EXPRESION__NAME = eINSTANCE.getMonitoringVariableExpresion_Name();
+
+    /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.EvalExpressionImpl <em>Eval Expression</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4338,6 +4531,14 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EClass EXPRESSION = eINSTANCE.getExpression();
+
+    /**
+     * The meta object literal for the '<em><b>Variable</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference EXPRESSION__VARIABLE = eINSTANCE.getExpression_Variable();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.OrImpl <em>Or</em>}' class.
@@ -4616,24 +4817,6 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EAttribute BOOL_CONSTANT__VALUE = eINSTANCE.getBoolConstant_Value();
-
-    /**
-     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.VariableRefImpl <em>Variable Ref</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.xtext.example.mydsl.adeptness.impl.VariableRefImpl
-     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getVariableRef()
-     * @generated
-     */
-    EClass VARIABLE_REF = eINSTANCE.getVariableRef();
-
-    /**
-     * The meta object literal for the '<em><b>Variable</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference VARIABLE_REF__VARIABLE = eINSTANCE.getVariableRef_Variable();
 
   }
 

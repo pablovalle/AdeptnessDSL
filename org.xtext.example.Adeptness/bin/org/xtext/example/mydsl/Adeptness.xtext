@@ -93,12 +93,12 @@ Oracle:
 ;
 
 When:
-	'when:' name=ID 
+	'when:' (name=ID |em = ExpressionsModel)
 			precondReference = PrecondReference
 ;
 
 Checks:
-	'checks:' name=ID //'is'
+	'checks:' (name=ID |em = ExpressionsModel) //'is'
 	(reference=Reference)
 	(failReason+=FailReason)+
 	(description=Description) //','
@@ -207,7 +207,14 @@ ExpressionsModel:
 AbstractElement2:
 	Variable | EvalExpression;
 Variable:
-	"var" name=ID '=' expression=Expression;
+	name = ID  ('=' expression=Expression)?
+;
+	//"var" name=ID '=' expression=Expression;
+
+MonitoringVariableExpresion:
+	name=ID
+;	
+	
 EvalExpression:
 	expression=Expression;
 Expression: Or;
@@ -249,13 +256,14 @@ MulOrDiv returns Expression:
 Primary returns Expression:
 '(' Expression ')' |
 {Not} '!' expression=Primary |
-Atomic;
+Atomic ;
 
 Atomic returns Expression:
+
 	{IntConstant} value=INT |
 	{StringConstant} value=STRING |
 	{BoolConstant} value=('true' | 'false') |
-	{VariableRef} variable=[Variable ]  ;
+	variable=Variable;
 
 /*------------------------ANOHER EXPRESIONS MATHS------------------------ */
 

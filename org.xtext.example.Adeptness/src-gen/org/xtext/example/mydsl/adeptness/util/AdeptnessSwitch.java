@@ -342,6 +342,13 @@ public class AdeptnessSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case AdeptnessPackage.MONITORING_VARIABLE_EXPRESION:
+      {
+        MonitoringVariableExpresion monitoringVariableExpresion = (MonitoringVariableExpresion)theEObject;
+        T result = caseMonitoringVariableExpresion(monitoringVariableExpresion);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case AdeptnessPackage.EVAL_EXPRESSION:
       {
         EvalExpression evalExpression = (EvalExpression)theEObject;
@@ -442,14 +449,6 @@ public class AdeptnessSwitch<T> extends Switch<T>
         BoolConstant boolConstant = (BoolConstant)theEObject;
         T result = caseBoolConstant(boolConstant);
         if (result == null) result = caseExpression(boolConstant);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.VARIABLE_REF:
-      {
-        VariableRef variableRef = (VariableRef)theEObject;
-        T result = caseVariableRef(variableRef);
-        if (result == null) result = caseExpression(variableRef);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -1050,6 +1049,22 @@ public class AdeptnessSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Monitoring Variable Expresion</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Monitoring Variable Expresion</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseMonitoringVariableExpresion(MonitoringVariableExpresion object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Eval Expression</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1253,22 +1268,6 @@ public class AdeptnessSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseBoolConstant(BoolConstant object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Variable Ref</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Variable Ref</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseVariableRef(VariableRef object)
   {
     return null;
   }

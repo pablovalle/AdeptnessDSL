@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.When#getName <em>Name</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.When#getEm <em>Em</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.When#getPrecondReference <em>Precond Reference</em>}</li>
  * </ul>
  *
@@ -45,6 +46,28 @@ public interface When extends EObject
    * @generated
    */
   void setName(String value);
+
+  /**
+   * Returns the value of the '<em><b>Em</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Em</em>' containment reference.
+   * @see #setEm(ExpressionsModel)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getWhen_Em()
+   * @model containment="true"
+   * @generated
+   */
+  ExpressionsModel getEm();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.When#getEm <em>Em</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Em</em>' containment reference.
+   * @see #getEm()
+   * @generated
+   */
+  void setEm(ExpressionsModel value);
 
   /**
    * Returns the value of the '<em><b>Precond Reference</b></em>' containment reference.
