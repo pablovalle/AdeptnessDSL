@@ -197,3 +197,18 @@ PackageDeclaration:
 		(elements+=AbstractElement)*
 	'}'	
 ;
+
+/*
+Addition returns Expression:
+  Multiplication ({Addition.left=current} '+' right=Multiplication)*;
+  
+Multiplication returns Expression:
+  Primary ({Multiplication.left=current} '*' right=Primary)*;
+  
+Primary returns Expression:
+  NumberLiteral |
+  '(' Addition ')';
+  
+NumberLiteral:
+  value=INT;
+ */
