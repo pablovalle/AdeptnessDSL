@@ -1,0 +1,19 @@
+MONITORINGPLAN MONITORING_PLAN_PUERTA:
+	MONITOR PosicionPuerta:
+		type: int 
+		max: 500
+		min: 0
+	ENDMONITOR
+	MONITOR EstadoPuerta:
+	 	type: boolean
+	ENDMONITOR
+	MONITOR AscensorEnPisoPuerta:
+	 	type: boolean
+	ENDMONITOR
+	MONITOR TotalMovements2:
+		type: int
+		max: 10000
+		min: 0
+	ENDMONITOR
+ENDMONITORINGPLAN 
+

@@ -1,0 +1,71 @@
+import MonitoringFileExample.adeptness
+  
+CPS HVS: implements HVS_MONITORINGPLAN 
+	
+	ORACLE AWTChecker2:
+		when: numLlamadasActivas is below 10;
+		checks: AWT is in range between 0 and 30;
+		fails if : confidence is below -0.9;
+		fails if : confidence is below -0.2 within 10 miliseconds;
+		fails if :confidence is below -0.2 more than 30 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+	
+	
+	ORACLE AWTChecker:
+		when: numLlamadasActivas is in range between 11 and 50;
+		checks: AWT is in range between 10 and 80;
+		fails if : confidence is below -0.9;
+		fails if : confidence is below -0.2 within 10 miliseconds;
+		fails if :confidence is below -0.2 more than 30 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are a medium amount of calls"
+	ENDORACLE 
+	
+	
+	
+	ORACLE ATTDChecker: 
+		checks: ATTD is in range between 3 and 300;
+		fails if : confidence is below -0.7;
+		Description: "In rage reference signal"
+	ENDORACLE
+		
+	
+	ORACLE TotalMovements:
+		checks: TotalMovements not in range between 10 and 200;	
+		fails if : confidence is below -0.3 within 20 seconds;
+		fails if : confidence is below -0.5;
+		Description: "Gap reference signal"
+	ENDORACLE
+	
+	ORACLE STT:
+		checks: Energy is below 5;
+		fails if : confidence is below -0.3;
+		Description: "sdf"
+	ENDORACLE
+	/*	
+	/*ORACLE EnergyChecker:
+		checks: "Energy" is above 0;
+		fails if :confidence is below -0.5;
+		Description: "description"
+	ENDORACLE*/
+	
+	/*ORACLE Energy:
+		checks: "Energy" is in range between 0 and -1000;
+		fails if :confidence is below -0.3;
+		Description: "energy"
+	ENDORACLE*/
+	
+	
+ENDCPS  
+/*
+import "MonitoringFileExample.adeptness"
+CPS cps2: //CPS 
+	ORACLE lehenengoa:
+		checks:"AWT" is in range between 10 and 30 ;
+		fails if : confidence is below -0.7;
+		fails if : confidence is below -0.5 within 10 miliseconds;
+		Description: "112345trffgh"
+	ENDORACLE
+ENDCPS
+
+ */

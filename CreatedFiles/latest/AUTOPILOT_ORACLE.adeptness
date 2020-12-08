@@ -1,0 +1,95 @@
+import AUTOPILOT_MONITORING.adeptness
+
+// 8 out of 15 requirements modeled
+
+CPS Autopilot: implements MONITORING_PLAN_AUTOPILOT
+	/*
+	 * R1.1 -> G{0,T} ( APEngPrev=0 AND APEng=1 ==> AilCmd~=0 )
+	 */
+	
+	
+	
+	/*
+	 * R1.2 -> G{0,T} ( APEng = 1 AND HDGMode = 0 AND ALTMode = 0 ==> isRoll == 1)
+	  */
+	
+	
+	
+	/*G{0,T} ( -6<Phi<6    ==> PhiRef= 0   R1_3A
+	AND  Phi>30      ==> PhiRef= 30        R1_3b
+	AND Phi < -30    ==> PhiRef= -30       R1_3c
+	AND -30<=Tk<=-3  ==> PhiRef= Tk        R1_3d
+	AND 3<=Tk<=30   ==> PhiRef= Tk )       R1_3e */
+	
+	ORACLE R1_3A:
+		when: Phi is in range between -6 and 6;
+		checks: PhiRef is in range between 0 and 0;
+		fails if :  confidence is below 0;
+		Description: "desc"
+	ENDORACLE
+
+	ORACLE R1_3B:
+		when: Phi is above 30;
+		checks: PhiRef is in range between 30 and 30;
+		fails if :  confidence is below 0;
+		Description: "desc"
+	ENDORACLE
+	
+	ORACLE R1_3C:
+		when: Phi is below 30;
+		checks: PhiRef is in range between -30 and -30;
+		fails if :  confidence is below 0;
+		Description: "desc"
+	ENDORACLE
+	
+	ORACLE R1_3D:
+		when: Tk is in range between -30 and 3;
+		checks: PhiRef is in range between Tk and Tk;
+		fails if :  confidence is below 0;
+		Description: "desc"
+	ENDORACLE
+	
+	ORACLE R1_3E:
+		when: Tk is in range between 3 and 30;
+		checks: PhiRef is in range between Tk and Tk;
+		fails if :  confidence is below 0;
+		Description: "desc"
+	ENDORACLE
+	
+	/* R1.4.1. -> F{0,T}G( |phi - phiRef|<= 0.01 ) */
+	
+	
+	 // R1.4.2 ->  G{0,T} ( |phi - phiRef|< 0.1  => G{0,T} ( |phi - phiRef|< 0.1 ) ) 
+	 
+	 
+	 //R1.5 -> G{0,T} (Tk - TkPrev >= 30) ==> G{0,T} (|P| <= 6.6)
+	 
+	 //R1.6 ->  G{0,T} (-33 <= Phi <= 33)
+	 
+	 ORACLE R1_6:
+	 	checks: Phi is in range between -33 and 33;
+	 	fails if : confidence is below 0;
+	 	Description: "desc"
+	 ENDORACLE
+	 
+	 //R1.7 ->   G{0,T} (-15 <= AilCmd <= 1)
+	 ORACLE R1_7:
+	 	checks: AilCmd is in range between -15 and 1;
+	 	fails if : confidence is below 0;
+	 	Description: "desc"
+	 ENDORACLE
+	 
+	 //  R1.8 -> G{0,T} (HDGMode=0 ==> isRoll=1)
+	 ORACLE R1_8:
+	 	when: HDGMode is in range between 0 and 0;
+	 	checks: isRoll is in range between 1 and 1;
+	 	fails if : confidence is below 0;
+	 	Description: "desc"
+	 ENDORACLE
+	 
+	 // R1.10.1  -> G{0,T} (|psi - HDGRef|<= 0.01)
+	 
+	 // R1.10.2 -> G{0,T} (|psi - HDGRef|< 0.1  => G{0,T} ( |psi - HDGRef|< 0.1 ))
+	
+ENDCPS 
+	

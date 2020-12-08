@@ -1,0 +1,48 @@
+MONITORINGPLAN MONITORING_PLAN_AUTOPILOT:
+	MONITOR APEngPrev:
+		type: boolean
+	ENDMONITOR
+	MONITOR APEng:
+	 	type: boolean
+	ENDMONITOR
+	MONITOR AilCmd:
+	 	type: double
+	 	max: 180
+	 	min: -180
+	ENDMONITOR
+	MONITOR HDGMode :
+		type: boolean
+	ENDMONITOR
+	MONITOR ALTMode :
+		type: boolean
+	ENDMONITOR
+	MONITOR isRoll :
+		type: boolean
+	ENDMONITOR
+	MONITOR Phi :
+		type: double
+		max: 180
+		min: -180
+	ENDMONITOR
+	MONITOR PhiRef :
+		type: double
+		max: 180
+		min: -180
+	ENDMONITOR
+	MONITOR Tk :
+		type: double
+		max: 180
+		min: -180
+	ENDMONITOR
+	MONITOR TkPrev :
+		type: double
+		max: 180
+		min: -180
+	ENDMONITOR
+	MONITOR P :
+		type: double
+		max: 180
+		min: -180
+	ENDMONITOR
+	
+ENDMONITORINGPLAN 

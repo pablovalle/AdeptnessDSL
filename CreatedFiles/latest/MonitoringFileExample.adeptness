@@ -1,0 +1,28 @@
+MONITORINGPLAN HVS_MONITORINGPLAN:
+	MONITOR AWT:
+		type: int 
+		max: 500
+		min: 0
+	ENDMONITOR
+	MONITOR ATTD:
+	 	type: double
+	 	max: 1000
+	 	min: 0
+	ENDMONITOR
+	MONITOR Energy:
+	 	type: double
+	 	max: 1000
+	 	min: 0
+	ENDMONITOR
+	MONITOR TotalMovements:
+		type: int
+		max: 10000
+		min: 0
+	ENDMONITOR
+	MONITOR numLlamadasActivas:
+		type: int
+		max: 800
+		min: 0
+	ENDMONITOR
+ENDMONITORINGPLAN 
+
