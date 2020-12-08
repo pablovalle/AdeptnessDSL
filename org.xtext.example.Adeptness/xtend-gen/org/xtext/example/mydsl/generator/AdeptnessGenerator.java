@@ -39,20 +39,6 @@ public class AdeptnessGenerator extends AbstractGenerator {
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
     Iterable<Signal> _filter = Iterables.<Signal>filter(IteratorExtensions.<EObject>toIterable(resource.getAllContents()), Signal.class);
     for (final Signal e : _filter) {
-      EList<Oracle> _oracle = e.getOracle();
-      for (final Oracle q : _oracle) {
-        {
-          String _string = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
-          String _plus = (_string + ".c");
-          fsa.generateFile(_plus, this.create_oracle_c(q));
-          String _string_1 = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
-          String _plus_1 = (_string_1 + ".h");
-          fsa.generateFile(_plus_1, this.create_oracle_h(q));
-          String _string_2 = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
-          String _plus_2 = (_string_2 + ".m");
-          fsa.generateFile(_plus_2, this.create_oracle_m(q));
-        }
-      }
     }
   }
   

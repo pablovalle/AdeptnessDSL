@@ -53,13 +53,13 @@ class AdeptnessGenerator extends AbstractGenerator {
 				fsa.generateFile(d.fullyQualifiedName.toString("/")+".h", d.create_up_h())
 				fsa.generateFile(d.fullyQualifiedName.toString("/")+".m", d.create_up_m())
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
-			}*/
+			}
 			for(q: e.oracle){
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".c", q.create_oracle_c())
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".h", q.create_oracle_h())
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".m", q.create_oracle_m())
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
-			}
+			}*/
 			
 		}
     }
@@ -199,7 +199,7 @@ class AdeptnessGenerator extends AbstractGenerator {
 			ret.diff=«param1.name.toString()»-«param1.reference.lower.bound_lower.name.toString»;
 			«ENDIF»
 		«ELSEIF param1.reference.range!==null»
-		struct Ret RangeReference (double «param1.name.toString()»){
+		struct Ret RangeReference (double «param1.name.toString»){
 			struct Ret ret;
 			
 			«IF param1.reference.range.bound_lower.value!==null && param1.reference.range.bound_upp.value!==null»
