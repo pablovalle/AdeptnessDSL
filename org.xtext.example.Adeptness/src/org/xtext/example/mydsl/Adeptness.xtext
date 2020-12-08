@@ -93,12 +93,12 @@ Oracle:
 ;
 
 When:
-	'when:' name=STRING 
+	'when:' name=ID 
 			precondReference = PrecondReference
 ;
 
 Checks:
-	'checks:' name=STRING //'is'
+	'checks:' name=ID //'is'
 	(reference=Reference)
 	(failReason+=FailReason)+
 	(description=Description) //','
@@ -165,11 +165,11 @@ InclusiveBound:
 //Upper limit
 
 Bound_up:
-	(value=DOUBLE|name=STRING)
+	(value=DOUBLE|name=ID)
 ;
 //Lower limit
 Bound_Down:
-	 (value=DOUBLE|name=STRING)
+	 (value=DOUBLE|name=ID)
 ;
 //Boolean declaration
 BOOLEAN:

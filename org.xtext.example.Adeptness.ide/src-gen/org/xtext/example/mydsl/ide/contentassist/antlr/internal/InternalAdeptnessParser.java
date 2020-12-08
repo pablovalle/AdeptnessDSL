@@ -3698,7 +3698,7 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
             if ( (LA8_0==RULE_INT||LA8_0==46) ) {
                 alt8=1;
             }
-            else if ( (LA8_0==RULE_STRING) ) {
+            else if ( (LA8_0==RULE_ID) ) {
                 alt8=2;
             }
             else {
@@ -3789,7 +3789,7 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
             if ( (LA9_0==RULE_INT||LA9_0==46) ) {
                 alt9=1;
             }
-            else if ( (LA9_0==RULE_STRING) ) {
+            else if ( (LA9_0==RULE_ID) ) {
                 alt9=2;
             }
             else {
@@ -7814,7 +7814,7 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
             // InternalAdeptness.g:2468:1: ( rule__When__Group__0__Impl rule__When__Group__1 )
             // InternalAdeptness.g:2469:2: rule__When__Group__0__Impl rule__When__Group__1
             {
-            pushFollow(FOLLOW_26);
+            pushFollow(FOLLOW_4);
             rule__When__Group__0__Impl();
 
             state._fsp--;
@@ -7889,7 +7889,7 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
             // InternalAdeptness.g:2495:1: ( rule__When__Group__1__Impl rule__When__Group__2 )
             // InternalAdeptness.g:2496:2: rule__When__Group__1__Impl rule__When__Group__2
             {
-            pushFollow(FOLLOW_27);
+            pushFollow(FOLLOW_26);
             rule__When__Group__1__Impl();
 
             state._fsp--;
@@ -8054,7 +8054,7 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
             // InternalAdeptness.g:2549:1: ( rule__Checks__Group__0__Impl rule__Checks__Group__1 )
             // InternalAdeptness.g:2550:2: rule__Checks__Group__0__Impl rule__Checks__Group__1
             {
-            pushFollow(FOLLOW_26);
+            pushFollow(FOLLOW_4);
             rule__Checks__Group__0__Impl();
 
             state._fsp--;
@@ -8129,7 +8129,7 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
             // InternalAdeptness.g:2576:1: ( rule__Checks__Group__1__Impl rule__Checks__Group__2 )
             // InternalAdeptness.g:2577:2: rule__Checks__Group__1__Impl rule__Checks__Group__2
             {
-            pushFollow(FOLLOW_27);
+            pushFollow(FOLLOW_26);
             rule__Checks__Group__1__Impl();
 
             state._fsp--;
@@ -8214,7 +8214,7 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
             // InternalAdeptness.g:2603:1: ( rule__Checks__Group__2__Impl rule__Checks__Group__3 )
             // InternalAdeptness.g:2604:2: rule__Checks__Group__2__Impl rule__Checks__Group__3
             {
-            pushFollow(FOLLOW_28);
+            pushFollow(FOLLOW_27);
             rule__Checks__Group__2__Impl();
 
             state._fsp--;
@@ -8299,7 +8299,7 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
             // InternalAdeptness.g:2630:1: ( rule__Checks__Group__3__Impl rule__Checks__Group__4 )
             // InternalAdeptness.g:2631:2: rule__Checks__Group__3__Impl rule__Checks__Group__4
             {
-            pushFollow(FOLLOW_29);
+            pushFollow(FOLLOW_28);
             rule__Checks__Group__3__Impl();
 
             state._fsp--;
@@ -8347,7 +8347,7 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
             // InternalAdeptness.g:2646:3: ( rule__Checks__FailReasonAssignment_3 )
             // InternalAdeptness.g:2646:4: rule__Checks__FailReasonAssignment_3
             {
-            pushFollow(FOLLOW_30);
+            pushFollow(FOLLOW_29);
             rule__Checks__FailReasonAssignment_3();
 
             state._fsp--;
@@ -8378,7 +8378,7 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
             	case 1 :
             	    // InternalAdeptness.g:2651:4: rule__Checks__FailReasonAssignment_3
             	    {
-            	    pushFollow(FOLLOW_30);
+            	    pushFollow(FOLLOW_29);
             	    rule__Checks__FailReasonAssignment_3();
 
             	    state._fsp--;
@@ -8507,7 +8507,7 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
             // InternalAdeptness.g:2691:1: ( rule__Description__Group__0__Impl rule__Description__Group__1 )
             // InternalAdeptness.g:2692:2: rule__Description__Group__0__Impl rule__Description__Group__1
             {
-            pushFollow(FOLLOW_26);
+            pushFollow(FOLLOW_30);
             rule__Description__Group__0__Impl();
 
             state._fsp--;
@@ -13228,21 +13228,21 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
 
 
     // $ANTLR start "rule__When__NameAssignment_1"
-    // InternalAdeptness.g:4338:1: rule__When__NameAssignment_1 : ( RULE_STRING ) ;
+    // InternalAdeptness.g:4338:1: rule__When__NameAssignment_1 : ( RULE_ID ) ;
     public final void rule__When__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalAdeptness.g:4342:1: ( ( RULE_STRING ) )
-            // InternalAdeptness.g:4343:2: ( RULE_STRING )
+            // InternalAdeptness.g:4342:1: ( ( RULE_ID ) )
+            // InternalAdeptness.g:4343:2: ( RULE_ID )
             {
-            // InternalAdeptness.g:4343:2: ( RULE_STRING )
-            // InternalAdeptness.g:4344:3: RULE_STRING
+            // InternalAdeptness.g:4343:2: ( RULE_ID )
+            // InternalAdeptness.g:4344:3: RULE_ID
             {
-             before(grammarAccess.getWhenAccess().getNameSTRINGTerminalRuleCall_1_0()); 
-            match(input,RULE_STRING,FOLLOW_2); 
-             after(grammarAccess.getWhenAccess().getNameSTRINGTerminalRuleCall_1_0()); 
+             before(grammarAccess.getWhenAccess().getNameIDTerminalRuleCall_1_0()); 
+            match(input,RULE_ID,FOLLOW_2); 
+             after(grammarAccess.getWhenAccess().getNameIDTerminalRuleCall_1_0()); 
 
             }
 
@@ -13306,21 +13306,21 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
 
 
     // $ANTLR start "rule__Checks__NameAssignment_1"
-    // InternalAdeptness.g:4368:1: rule__Checks__NameAssignment_1 : ( RULE_STRING ) ;
+    // InternalAdeptness.g:4368:1: rule__Checks__NameAssignment_1 : ( RULE_ID ) ;
     public final void rule__Checks__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalAdeptness.g:4372:1: ( ( RULE_STRING ) )
-            // InternalAdeptness.g:4373:2: ( RULE_STRING )
+            // InternalAdeptness.g:4372:1: ( ( RULE_ID ) )
+            // InternalAdeptness.g:4373:2: ( RULE_ID )
             {
-            // InternalAdeptness.g:4373:2: ( RULE_STRING )
-            // InternalAdeptness.g:4374:3: RULE_STRING
+            // InternalAdeptness.g:4373:2: ( RULE_ID )
+            // InternalAdeptness.g:4374:3: RULE_ID
             {
-             before(grammarAccess.getChecksAccess().getNameSTRINGTerminalRuleCall_1_0()); 
-            match(input,RULE_STRING,FOLLOW_2); 
-             after(grammarAccess.getChecksAccess().getNameSTRINGTerminalRuleCall_1_0()); 
+             before(grammarAccess.getChecksAccess().getNameIDTerminalRuleCall_1_0()); 
+            match(input,RULE_ID,FOLLOW_2); 
+             after(grammarAccess.getChecksAccess().getNameIDTerminalRuleCall_1_0()); 
 
             }
 
@@ -14688,21 +14688,21 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
 
 
     // $ANTLR start "rule__Bound_up__NameAssignment_1"
-    // InternalAdeptness.g:4878:1: rule__Bound_up__NameAssignment_1 : ( RULE_STRING ) ;
+    // InternalAdeptness.g:4878:1: rule__Bound_up__NameAssignment_1 : ( RULE_ID ) ;
     public final void rule__Bound_up__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalAdeptness.g:4882:1: ( ( RULE_STRING ) )
-            // InternalAdeptness.g:4883:2: ( RULE_STRING )
+            // InternalAdeptness.g:4882:1: ( ( RULE_ID ) )
+            // InternalAdeptness.g:4883:2: ( RULE_ID )
             {
-            // InternalAdeptness.g:4883:2: ( RULE_STRING )
-            // InternalAdeptness.g:4884:3: RULE_STRING
+            // InternalAdeptness.g:4883:2: ( RULE_ID )
+            // InternalAdeptness.g:4884:3: RULE_ID
             {
-             before(grammarAccess.getBound_upAccess().getNameSTRINGTerminalRuleCall_1_0()); 
-            match(input,RULE_STRING,FOLLOW_2); 
-             after(grammarAccess.getBound_upAccess().getNameSTRINGTerminalRuleCall_1_0()); 
+             before(grammarAccess.getBound_upAccess().getNameIDTerminalRuleCall_1_0()); 
+            match(input,RULE_ID,FOLLOW_2); 
+             after(grammarAccess.getBound_upAccess().getNameIDTerminalRuleCall_1_0()); 
 
             }
 
@@ -14766,21 +14766,21 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
 
 
     // $ANTLR start "rule__Bound_Down__NameAssignment_1"
-    // InternalAdeptness.g:4908:1: rule__Bound_Down__NameAssignment_1 : ( RULE_STRING ) ;
+    // InternalAdeptness.g:4908:1: rule__Bound_Down__NameAssignment_1 : ( RULE_ID ) ;
     public final void rule__Bound_Down__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalAdeptness.g:4912:1: ( ( RULE_STRING ) )
-            // InternalAdeptness.g:4913:2: ( RULE_STRING )
+            // InternalAdeptness.g:4912:1: ( ( RULE_ID ) )
+            // InternalAdeptness.g:4913:2: ( RULE_ID )
             {
-            // InternalAdeptness.g:4913:2: ( RULE_STRING )
-            // InternalAdeptness.g:4914:3: RULE_STRING
+            // InternalAdeptness.g:4913:2: ( RULE_ID )
+            // InternalAdeptness.g:4914:3: RULE_ID
             {
-             before(grammarAccess.getBound_DownAccess().getNameSTRINGTerminalRuleCall_1_0()); 
-            match(input,RULE_STRING,FOLLOW_2); 
-             after(grammarAccess.getBound_DownAccess().getNameSTRINGTerminalRuleCall_1_0()); 
+             before(grammarAccess.getBound_DownAccess().getNameIDTerminalRuleCall_1_0()); 
+            match(input,RULE_ID,FOLLOW_2); 
+             after(grammarAccess.getBound_DownAccess().getNameIDTerminalRuleCall_1_0()); 
 
             }
 
@@ -15255,18 +15255,18 @@ public class InternalAdeptnessParser extends AbstractInternalContentAssistParser
     public static final BitSet FOLLOW_23 = new BitSet(new long[]{0x0000000180000000L});
     public static final BitSet FOLLOW_24 = new BitSet(new long[]{0x0000000040000000L});
     public static final BitSet FOLLOW_25 = new BitSet(new long[]{0x0000000180000002L});
-    public static final BitSet FOLLOW_26 = new BitSet(new long[]{0x0000000000000040L});
-    public static final BitSet FOLLOW_27 = new BitSet(new long[]{0x00002E0000000000L});
-    public static final BitSet FOLLOW_28 = new BitSet(new long[]{0x0000000400000000L});
-    public static final BitSet FOLLOW_29 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_30 = new BitSet(new long[]{0x0000000400000002L});
+    public static final BitSet FOLLOW_26 = new BitSet(new long[]{0x00002E0000000000L});
+    public static final BitSet FOLLOW_27 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_28 = new BitSet(new long[]{0x0000000200000000L});
+    public static final BitSet FOLLOW_29 = new BitSet(new long[]{0x0000000400000002L});
+    public static final BitSet FOLLOW_30 = new BitSet(new long[]{0x0000000000000040L});
     public static final BitSet FOLLOW_31 = new BitSet(new long[]{0x0000009000000000L});
     public static final BitSet FOLLOW_32 = new BitSet(new long[]{0x0000000800000000L});
     public static final BitSet FOLLOW_33 = new BitSet(new long[]{0x0000002000000000L});
     public static final BitSet FOLLOW_34 = new BitSet(new long[]{0x0000004000000000L});
     public static final BitSet FOLLOW_35 = new BitSet(new long[]{0x03C0000000000000L});
     public static final BitSet FOLLOW_36 = new BitSet(new long[]{0x0000010000000000L});
-    public static final BitSet FOLLOW_37 = new BitSet(new long[]{0x0000400000000060L});
+    public static final BitSet FOLLOW_37 = new BitSet(new long[]{0x0000400000000030L});
     public static final BitSet FOLLOW_38 = new BitSet(new long[]{0x0000100000000000L});
     public static final BitSet FOLLOW_39 = new BitSet(new long[]{0x0002000000000000L});
     public static final BitSet FOLLOW_40 = new BitSet(new long[]{0x0005800001012000L});
