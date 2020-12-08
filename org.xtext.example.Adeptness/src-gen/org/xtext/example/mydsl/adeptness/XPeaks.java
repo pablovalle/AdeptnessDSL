@@ -71,26 +71,26 @@ public interface XPeaks extends EObject
   void setNPeaks(DOUBLE value);
 
   /**
-   * Returns the value of the '<em><b>Time</b></em>' attribute.
+   * Returns the value of the '<em><b>Time</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Time</em>' attribute.
-   * @see #setTime(int)
+   * @return the value of the '<em>Time</em>' containment reference.
+   * @see #setTime(DOUBLE)
    * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getXPeaks_Time()
-   * @model
+   * @model containment="true"
    * @generated
    */
-  int getTime();
+  DOUBLE getTime();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.XPeaks#getTime <em>Time</em>}' attribute.
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.XPeaks#getTime <em>Time</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Time</em>' attribute.
+   * @param value the new value of the '<em>Time</em>' containment reference.
    * @see #getTime()
    * @generated
    */
-  void setTime(int value);
+  void setTime(DOUBLE value);
 
   /**
    * Returns the value of the '<em><b>Unit</b></em>' containment reference.

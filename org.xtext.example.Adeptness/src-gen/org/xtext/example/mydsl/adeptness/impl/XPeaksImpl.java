@@ -56,24 +56,14 @@ public class XPeaksImpl extends MinimalEObjectImpl.Container implements XPeaks
   protected DOUBLE nPeaks;
 
   /**
-   * The default value of the '{@link #getTime() <em>Time</em>}' attribute.
+   * The cached value of the '{@link #getTime() <em>Time</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getTime()
    * @generated
    * @ordered
    */
-  protected static final int TIME_EDEFAULT = 0;
-
-  /**
-   * The cached value of the '{@link #getTime() <em>Time</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getTime()
-   * @generated
-   * @ordered
-   */
-  protected int time = TIME_EDEFAULT;
+  protected DOUBLE time;
 
   /**
    * The cached value of the '{@link #getUnit() <em>Unit</em>}' containment reference.
@@ -212,7 +202,7 @@ public class XPeaksImpl extends MinimalEObjectImpl.Container implements XPeaks
    * @generated
    */
   @Override
-  public int getTime()
+  public DOUBLE getTime()
   {
     return time;
   }
@@ -222,13 +212,38 @@ public class XPeaksImpl extends MinimalEObjectImpl.Container implements XPeaks
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public void setTime(int newTime)
+  public NotificationChain basicSetTime(DOUBLE newTime, NotificationChain msgs)
   {
-    int oldTime = time;
+    DOUBLE oldTime = time;
     time = newTime;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.XPEAKS__TIME, oldTime, time));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.XPEAKS__TIME, oldTime, newTime);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setTime(DOUBLE newTime)
+  {
+    if (newTime != time)
+    {
+      NotificationChain msgs = null;
+      if (time != null)
+        msgs = ((InternalEObject)time).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.XPEAKS__TIME, null, msgs);
+      if (newTime != null)
+        msgs = ((InternalEObject)newTime).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.XPEAKS__TIME, null, msgs);
+      msgs = basicSetTime(newTime, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.XPEAKS__TIME, newTime, newTime));
   }
 
   /**
@@ -295,6 +310,8 @@ public class XPeaksImpl extends MinimalEObjectImpl.Container implements XPeaks
         return basicSetCant(null, msgs);
       case AdeptnessPackage.XPEAKS__NPEAKS:
         return basicSetNPeaks(null, msgs);
+      case AdeptnessPackage.XPEAKS__TIME:
+        return basicSetTime(null, msgs);
       case AdeptnessPackage.XPEAKS__UNIT:
         return basicSetUnit(null, msgs);
     }
@@ -340,7 +357,7 @@ public class XPeaksImpl extends MinimalEObjectImpl.Container implements XPeaks
         setNPeaks((DOUBLE)newValue);
         return;
       case AdeptnessPackage.XPEAKS__TIME:
-        setTime((Integer)newValue);
+        setTime((DOUBLE)newValue);
         return;
       case AdeptnessPackage.XPEAKS__UNIT:
         setUnit((TimeType)newValue);
@@ -366,7 +383,7 @@ public class XPeaksImpl extends MinimalEObjectImpl.Container implements XPeaks
         setNPeaks((DOUBLE)null);
         return;
       case AdeptnessPackage.XPEAKS__TIME:
-        setTime(TIME_EDEFAULT);
+        setTime((DOUBLE)null);
         return;
       case AdeptnessPackage.XPEAKS__UNIT:
         setUnit((TimeType)null);
@@ -390,28 +407,11 @@ public class XPeaksImpl extends MinimalEObjectImpl.Container implements XPeaks
       case AdeptnessPackage.XPEAKS__NPEAKS:
         return nPeaks != null;
       case AdeptnessPackage.XPEAKS__TIME:
-        return time != TIME_EDEFAULT;
+        return time != null;
       case AdeptnessPackage.XPEAKS__UNIT:
         return unit != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (time: ");
-    result.append(time);
-    result.append(')');
-    return result.toString();
   }
 
 } //XPeaksImpl

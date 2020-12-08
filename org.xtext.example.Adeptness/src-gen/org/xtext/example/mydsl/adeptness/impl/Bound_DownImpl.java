@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.Bound_Down;
 import org.xtext.example.mydsl.adeptness.DOUBLE;
+import org.xtext.example.mydsl.adeptness.ExpressionsModel;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,6 +27,7 @@ import org.xtext.example.mydsl.adeptness.DOUBLE;
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl#getValue <em>Value</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl#getEm <em>Em</em>}</li>
  * </ul>
  *
  * @generated
@@ -61,6 +63,16 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
    * @ordered
    */
   protected String name = NAME_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getEm() <em>Em</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEm()
+   * @generated
+   * @ordered
+   */
+  protected ExpressionsModel em;
 
   /**
    * <!-- begin-user-doc -->
@@ -164,12 +176,64 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
    * @generated
    */
   @Override
+  public ExpressionsModel getEm()
+  {
+    return em;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetEm(ExpressionsModel newEm, NotificationChain msgs)
+  {
+    ExpressionsModel oldEm = em;
+    em = newEm;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.BOUND_DOWN__EM, oldEm, newEm);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setEm(ExpressionsModel newEm)
+  {
+    if (newEm != em)
+    {
+      NotificationChain msgs = null;
+      if (em != null)
+        msgs = ((InternalEObject)em).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.BOUND_DOWN__EM, null, msgs);
+      if (newEm != null)
+        msgs = ((InternalEObject)newEm).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.BOUND_DOWN__EM, null, msgs);
+      msgs = basicSetEm(newEm, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.BOUND_DOWN__EM, newEm, newEm));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
     {
       case AdeptnessPackage.BOUND_DOWN__VALUE:
         return basicSetValue(null, msgs);
+      case AdeptnessPackage.BOUND_DOWN__EM:
+        return basicSetEm(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -188,6 +252,8 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
         return getValue();
       case AdeptnessPackage.BOUND_DOWN__NAME:
         return getName();
+      case AdeptnessPackage.BOUND_DOWN__EM:
+        return getEm();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -207,6 +273,9 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
         return;
       case AdeptnessPackage.BOUND_DOWN__NAME:
         setName((String)newValue);
+        return;
+      case AdeptnessPackage.BOUND_DOWN__EM:
+        setEm((ExpressionsModel)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -228,6 +297,9 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
       case AdeptnessPackage.BOUND_DOWN__NAME:
         setName(NAME_EDEFAULT);
         return;
+      case AdeptnessPackage.BOUND_DOWN__EM:
+        setEm((ExpressionsModel)null);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -246,6 +318,8 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
         return value != null;
       case AdeptnessPackage.BOUND_DOWN__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case AdeptnessPackage.BOUND_DOWN__EM:
+        return em != null;
     }
     return super.eIsSet(featureID);
   }

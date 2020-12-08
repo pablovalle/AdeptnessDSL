@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Bound_up#getValue <em>Value</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Bound_up#getName <em>Name</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Bound_up#getEm <em>Em</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getBound_up()
@@ -67,5 +68,27 @@ public interface Bound_up extends EObject
    * @generated
    */
   void setName(String value);
+
+  /**
+   * Returns the value of the '<em><b>Em</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Em</em>' containment reference.
+   * @see #setEm(ExpressionsModel)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getBound_up_Em()
+   * @model containment="true"
+   * @generated
+   */
+  ExpressionsModel getEm();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Bound_up#getEm <em>Em</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Em</em>' containment reference.
+   * @see #getEm()
+   * @generated
+   */
+  void setEm(ExpressionsModel value);
 
 } // Bound_up

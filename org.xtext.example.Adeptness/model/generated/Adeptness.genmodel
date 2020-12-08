@@ -69,7 +69,7 @@
     <genClasses ecoreClass="Adeptness.ecore#//XPeaks">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//XPeaks/cant"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//XPeaks/nPeaks"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//XPeaks/time"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//XPeaks/time"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//XPeaks/unit"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//ConstDeg">
@@ -116,10 +116,12 @@
     <genClasses ecoreClass="Adeptness.ecore#//Bound_up">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Bound_up/value"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Bound_up/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Bound_up/em"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//Bound_Down">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Bound_Down/value"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Bound_Down/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Bound_Down/em"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//BOOLEAN">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//BOOLEAN/bool"/>
@@ -134,6 +136,63 @@
     <genClasses ecoreClass="Adeptness.ecore#//PackageDeclaration">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//PackageDeclaration/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//PackageDeclaration/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//ExpressionsModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//ExpressionsModel/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//AbstractElement2">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//AbstractElement2/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//Variable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Variable/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//EvalExpression"/>
+    <genClasses ecoreClass="Adeptness.ecore#//Expression"/>
+    <genClasses ecoreClass="Adeptness.ecore#//Or">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Or/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Or/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//And">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//And/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//And/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//Equality">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Equality/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Equality/op"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Equality/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//Comparison">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Comparison/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Comparison/op"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Comparison/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//Plus">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Plus/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Plus/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//Minus">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Minus/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Minus/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//MulOrDiv">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//MulOrDiv/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//MulOrDiv/op"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//MulOrDiv/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//Not">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Not/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//IntConstant">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//IntConstant/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//StringConstant">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//StringConstant/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//BoolConstant">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//BoolConstant/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//VariableRef">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Adeptness.ecore#//VariableRef/variable"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

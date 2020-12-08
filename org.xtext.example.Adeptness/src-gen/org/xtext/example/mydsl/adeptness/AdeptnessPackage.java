@@ -669,7 +669,7 @@ public interface AdeptnessPackage extends EPackage
   int XPEAKS__NPEAKS = 1;
 
   /**
-   * The feature id for the '<em><b>Time</b></em>' attribute.
+   * The feature id for the '<em><b>Time</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -1103,13 +1103,22 @@ public interface AdeptnessPackage extends EPackage
   int BOUND_UP__NAME = 1;
 
   /**
+   * The feature id for the '<em><b>Em</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOUND_UP__EM = 2;
+
+  /**
    * The number of structural features of the '<em>Bound up</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BOUND_UP_FEATURE_COUNT = 2;
+  int BOUND_UP_FEATURE_COUNT = 3;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl <em>Bound Down</em>}' class.
@@ -1140,13 +1149,22 @@ public interface AdeptnessPackage extends EPackage
   int BOUND_DOWN__NAME = 1;
 
   /**
+   * The feature id for the '<em><b>Em</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOUND_DOWN__EM = 2;
+
+  /**
    * The number of structural features of the '<em>Bound Down</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BOUND_DOWN_FEATURE_COUNT = 2;
+  int BOUND_DOWN_FEATURE_COUNT = 3;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.BOOLEANImpl <em>BOOLEAN</em>}' class.
@@ -1296,6 +1314,572 @@ public interface AdeptnessPackage extends EPackage
    * @ordered
    */
   int PACKAGE_DECLARATION_FEATURE_COUNT = ABSTRACT_ELEMENT_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.ExpressionsModelImpl <em>Expressions Model</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.ExpressionsModelImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getExpressionsModel()
+   * @generated
+   */
+  int EXPRESSIONS_MODEL = 34;
+
+  /**
+   * The feature id for the '<em><b>Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EXPRESSIONS_MODEL__ELEMENTS = 0;
+
+  /**
+   * The number of structural features of the '<em>Expressions Model</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EXPRESSIONS_MODEL_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl <em>Abstract Element2</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getAbstractElement2()
+   * @generated
+   */
+  int ABSTRACT_ELEMENT2 = 35;
+
+  /**
+   * The feature id for the '<em><b>Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ABSTRACT_ELEMENT2__EXPRESSION = 0;
+
+  /**
+   * The number of structural features of the '<em>Abstract Element2</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ABSTRACT_ELEMENT2_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.VariableImpl <em>Variable</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.VariableImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getVariable()
+   * @generated
+   */
+  int VARIABLE = 36;
+
+  /**
+   * The feature id for the '<em><b>Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VARIABLE__EXPRESSION = ABSTRACT_ELEMENT2__EXPRESSION;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VARIABLE__NAME = ABSTRACT_ELEMENT2_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Variable</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VARIABLE_FEATURE_COUNT = ABSTRACT_ELEMENT2_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.EvalExpressionImpl <em>Eval Expression</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.EvalExpressionImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getEvalExpression()
+   * @generated
+   */
+  int EVAL_EXPRESSION = 37;
+
+  /**
+   * The feature id for the '<em><b>Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EVAL_EXPRESSION__EXPRESSION = ABSTRACT_ELEMENT2__EXPRESSION;
+
+  /**
+   * The number of structural features of the '<em>Eval Expression</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EVAL_EXPRESSION_FEATURE_COUNT = ABSTRACT_ELEMENT2_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.ExpressionImpl <em>Expression</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.ExpressionImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getExpression()
+   * @generated
+   */
+  int EXPRESSION = 38;
+
+  /**
+   * The number of structural features of the '<em>Expression</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EXPRESSION_FEATURE_COUNT = 0;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.OrImpl <em>Or</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.OrImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getOr()
+   * @generated
+   */
+  int OR = 39;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OR__LEFT = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OR__RIGHT = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Or</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OR_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.AndImpl <em>And</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.AndImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getAnd()
+   * @generated
+   */
+  int AND = 40;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int AND__LEFT = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int AND__RIGHT = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>And</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int AND_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.EqualityImpl <em>Equality</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.EqualityImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getEquality()
+   * @generated
+   */
+  int EQUALITY = 41;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EQUALITY__LEFT = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Op</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EQUALITY__OP = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EQUALITY__RIGHT = EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Equality</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EQUALITY_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.ComparisonImpl <em>Comparison</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.ComparisonImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getComparison()
+   * @generated
+   */
+  int COMPARISON = 42;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int COMPARISON__LEFT = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Op</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int COMPARISON__OP = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int COMPARISON__RIGHT = EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Comparison</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int COMPARISON_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.PlusImpl <em>Plus</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.PlusImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getPlus()
+   * @generated
+   */
+  int PLUS = 43;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PLUS__LEFT = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PLUS__RIGHT = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Plus</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PLUS_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.MinusImpl <em>Minus</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.MinusImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMinus()
+   * @generated
+   */
+  int MINUS = 44;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MINUS__LEFT = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MINUS__RIGHT = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Minus</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MINUS_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.MulOrDivImpl <em>Mul Or Div</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.MulOrDivImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMulOrDiv()
+   * @generated
+   */
+  int MUL_OR_DIV = 45;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MUL_OR_DIV__LEFT = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Op</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MUL_OR_DIV__OP = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MUL_OR_DIV__RIGHT = EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Mul Or Div</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MUL_OR_DIV_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.NotImpl <em>Not</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.NotImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getNot()
+   * @generated
+   */
+  int NOT = 46;
+
+  /**
+   * The feature id for the '<em><b>Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NOT__EXPRESSION = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Not</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NOT_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.IntConstantImpl <em>Int Constant</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.IntConstantImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getIntConstant()
+   * @generated
+   */
+  int INT_CONSTANT = 47;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int INT_CONSTANT__VALUE = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Int Constant</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int INT_CONSTANT_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.StringConstantImpl <em>String Constant</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.StringConstantImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getStringConstant()
+   * @generated
+   */
+  int STRING_CONSTANT = 48;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STRING_CONSTANT__VALUE = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>String Constant</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STRING_CONSTANT_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.BoolConstantImpl <em>Bool Constant</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.BoolConstantImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBoolConstant()
+   * @generated
+   */
+  int BOOL_CONSTANT = 49;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOOL_CONSTANT__VALUE = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Bool Constant</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOOL_CONSTANT_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.VariableRefImpl <em>Variable Ref</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.VariableRefImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getVariableRef()
+   * @generated
+   */
+  int VARIABLE_REF = 50;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VARIABLE_REF__VARIABLE = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Variable Ref</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VARIABLE_REF_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 1;
 
 
   /**
@@ -1810,15 +2394,15 @@ public interface AdeptnessPackage extends EPackage
   EReference getXPeaks_NPeaks();
 
   /**
-   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.XPeaks#getTime <em>Time</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.XPeaks#getTime <em>Time</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Time</em>'.
+   * @return the meta object for the containment reference '<em>Time</em>'.
    * @see org.xtext.example.mydsl.adeptness.XPeaks#getTime()
    * @see #getXPeaks()
    * @generated
    */
-  EAttribute getXPeaks_Time();
+  EReference getXPeaks_Time();
 
   /**
    * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.XPeaks#getUnit <em>Unit</em>}'.
@@ -2195,6 +2779,17 @@ public interface AdeptnessPackage extends EPackage
   EAttribute getBound_up_Name();
 
   /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Bound_up#getEm <em>Em</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Em</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Bound_up#getEm()
+   * @see #getBound_up()
+   * @generated
+   */
+  EReference getBound_up_Em();
+
+  /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Bound_Down <em>Bound Down</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2225,6 +2820,17 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    */
   EAttribute getBound_Down_Name();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Bound_Down#getEm <em>Em</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Em</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Bound_Down#getEm()
+   * @see #getBound_Down()
+   * @generated
+   */
+  EReference getBound_Down_Em();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.BOOLEAN <em>BOOLEAN</em>}'.
@@ -2330,6 +2936,451 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    */
   EReference getPackageDeclaration_Elements();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.ExpressionsModel <em>Expressions Model</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Expressions Model</em>'.
+   * @see org.xtext.example.mydsl.adeptness.ExpressionsModel
+   * @generated
+   */
+  EClass getExpressionsModel();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.ExpressionsModel#getElements <em>Elements</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Elements</em>'.
+   * @see org.xtext.example.mydsl.adeptness.ExpressionsModel#getElements()
+   * @see #getExpressionsModel()
+   * @generated
+   */
+  EReference getExpressionsModel_Elements();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.AbstractElement2 <em>Abstract Element2</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Abstract Element2</em>'.
+   * @see org.xtext.example.mydsl.adeptness.AbstractElement2
+   * @generated
+   */
+  EClass getAbstractElement2();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getExpression <em>Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Expression</em>'.
+   * @see org.xtext.example.mydsl.adeptness.AbstractElement2#getExpression()
+   * @see #getAbstractElement2()
+   * @generated
+   */
+  EReference getAbstractElement2_Expression();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Variable <em>Variable</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Variable</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Variable
+   * @generated
+   */
+  EClass getVariable();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Variable#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Variable#getName()
+   * @see #getVariable()
+   * @generated
+   */
+  EAttribute getVariable_Name();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.EvalExpression <em>Eval Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Eval Expression</em>'.
+   * @see org.xtext.example.mydsl.adeptness.EvalExpression
+   * @generated
+   */
+  EClass getEvalExpression();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Expression <em>Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Expression</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Expression
+   * @generated
+   */
+  EClass getExpression();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Or <em>Or</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Or</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Or
+   * @generated
+   */
+  EClass getOr();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Or#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Or#getLeft()
+   * @see #getOr()
+   * @generated
+   */
+  EReference getOr_Left();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Or#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Or#getRight()
+   * @see #getOr()
+   * @generated
+   */
+  EReference getOr_Right();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.And <em>And</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>And</em>'.
+   * @see org.xtext.example.mydsl.adeptness.And
+   * @generated
+   */
+  EClass getAnd();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.And#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see org.xtext.example.mydsl.adeptness.And#getLeft()
+   * @see #getAnd()
+   * @generated
+   */
+  EReference getAnd_Left();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.And#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see org.xtext.example.mydsl.adeptness.And#getRight()
+   * @see #getAnd()
+   * @generated
+   */
+  EReference getAnd_Right();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Equality <em>Equality</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Equality</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Equality
+   * @generated
+   */
+  EClass getEquality();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Equality#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Equality#getLeft()
+   * @see #getEquality()
+   * @generated
+   */
+  EReference getEquality_Left();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Equality#getOp <em>Op</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Op</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Equality#getOp()
+   * @see #getEquality()
+   * @generated
+   */
+  EAttribute getEquality_Op();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Equality#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Equality#getRight()
+   * @see #getEquality()
+   * @generated
+   */
+  EReference getEquality_Right();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Comparison <em>Comparison</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Comparison</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Comparison
+   * @generated
+   */
+  EClass getComparison();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Comparison#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Comparison#getLeft()
+   * @see #getComparison()
+   * @generated
+   */
+  EReference getComparison_Left();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Comparison#getOp <em>Op</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Op</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Comparison#getOp()
+   * @see #getComparison()
+   * @generated
+   */
+  EAttribute getComparison_Op();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Comparison#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Comparison#getRight()
+   * @see #getComparison()
+   * @generated
+   */
+  EReference getComparison_Right();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Plus <em>Plus</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Plus</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Plus
+   * @generated
+   */
+  EClass getPlus();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Plus#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Plus#getLeft()
+   * @see #getPlus()
+   * @generated
+   */
+  EReference getPlus_Left();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Plus#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Plus#getRight()
+   * @see #getPlus()
+   * @generated
+   */
+  EReference getPlus_Right();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Minus <em>Minus</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Minus</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Minus
+   * @generated
+   */
+  EClass getMinus();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Minus#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Minus#getLeft()
+   * @see #getMinus()
+   * @generated
+   */
+  EReference getMinus_Left();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Minus#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Minus#getRight()
+   * @see #getMinus()
+   * @generated
+   */
+  EReference getMinus_Right();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.MulOrDiv <em>Mul Or Div</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Mul Or Div</em>'.
+   * @see org.xtext.example.mydsl.adeptness.MulOrDiv
+   * @generated
+   */
+  EClass getMulOrDiv();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.MulOrDiv#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see org.xtext.example.mydsl.adeptness.MulOrDiv#getLeft()
+   * @see #getMulOrDiv()
+   * @generated
+   */
+  EReference getMulOrDiv_Left();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.MulOrDiv#getOp <em>Op</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Op</em>'.
+   * @see org.xtext.example.mydsl.adeptness.MulOrDiv#getOp()
+   * @see #getMulOrDiv()
+   * @generated
+   */
+  EAttribute getMulOrDiv_Op();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.MulOrDiv#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see org.xtext.example.mydsl.adeptness.MulOrDiv#getRight()
+   * @see #getMulOrDiv()
+   * @generated
+   */
+  EReference getMulOrDiv_Right();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Not <em>Not</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Not</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Not
+   * @generated
+   */
+  EClass getNot();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Not#getExpression <em>Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Expression</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Not#getExpression()
+   * @see #getNot()
+   * @generated
+   */
+  EReference getNot_Expression();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.IntConstant <em>Int Constant</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Int Constant</em>'.
+   * @see org.xtext.example.mydsl.adeptness.IntConstant
+   * @generated
+   */
+  EClass getIntConstant();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.IntConstant#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see org.xtext.example.mydsl.adeptness.IntConstant#getValue()
+   * @see #getIntConstant()
+   * @generated
+   */
+  EAttribute getIntConstant_Value();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.StringConstant <em>String Constant</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>String Constant</em>'.
+   * @see org.xtext.example.mydsl.adeptness.StringConstant
+   * @generated
+   */
+  EClass getStringConstant();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.StringConstant#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see org.xtext.example.mydsl.adeptness.StringConstant#getValue()
+   * @see #getStringConstant()
+   * @generated
+   */
+  EAttribute getStringConstant_Value();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.BoolConstant <em>Bool Constant</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Bool Constant</em>'.
+   * @see org.xtext.example.mydsl.adeptness.BoolConstant
+   * @generated
+   */
+  EClass getBoolConstant();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.BoolConstant#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see org.xtext.example.mydsl.adeptness.BoolConstant#getValue()
+   * @see #getBoolConstant()
+   * @generated
+   */
+  EAttribute getBoolConstant_Value();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.VariableRef <em>Variable Ref</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Variable Ref</em>'.
+   * @see org.xtext.example.mydsl.adeptness.VariableRef
+   * @generated
+   */
+  EClass getVariableRef();
+
+  /**
+   * Returns the meta object for the reference '{@link org.xtext.example.mydsl.adeptness.VariableRef#getVariable <em>Variable</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Variable</em>'.
+   * @see org.xtext.example.mydsl.adeptness.VariableRef#getVariable()
+   * @see #getVariableRef()
+   * @generated
+   */
+  EReference getVariableRef_Variable();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -2773,12 +3824,12 @@ public interface AdeptnessPackage extends EPackage
     EReference XPEAKS__NPEAKS = eINSTANCE.getXPeaks_NPeaks();
 
     /**
-     * The meta object literal for the '<em><b>Time</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Time</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute XPEAKS__TIME = eINSTANCE.getXPeaks_Time();
+    EReference XPEAKS__TIME = eINSTANCE.getXPeaks_Time();
 
     /**
      * The meta object literal for the '<em><b>Unit</b></em>' containment reference feature.
@@ -3083,6 +4134,14 @@ public interface AdeptnessPackage extends EPackage
     EAttribute BOUND_UP__NAME = eINSTANCE.getBound_up_Name();
 
     /**
+     * The meta object literal for the '<em><b>Em</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BOUND_UP__EM = eINSTANCE.getBound_up_Em();
+
+    /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl <em>Bound Down</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3107,6 +4166,14 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EAttribute BOUND_DOWN__NAME = eINSTANCE.getBound_Down_Name();
+
+    /**
+     * The meta object literal for the '<em><b>Em</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BOUND_DOWN__EM = eINSTANCE.getBound_Down_Em();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.BOOLEANImpl <em>BOOLEAN</em>}' class.
@@ -3197,6 +4264,376 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EReference PACKAGE_DECLARATION__ELEMENTS = eINSTANCE.getPackageDeclaration_Elements();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.ExpressionsModelImpl <em>Expressions Model</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.ExpressionsModelImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getExpressionsModel()
+     * @generated
+     */
+    EClass EXPRESSIONS_MODEL = eINSTANCE.getExpressionsModel();
+
+    /**
+     * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference EXPRESSIONS_MODEL__ELEMENTS = eINSTANCE.getExpressionsModel_Elements();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl <em>Abstract Element2</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getAbstractElement2()
+     * @generated
+     */
+    EClass ABSTRACT_ELEMENT2 = eINSTANCE.getAbstractElement2();
+
+    /**
+     * The meta object literal for the '<em><b>Expression</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ABSTRACT_ELEMENT2__EXPRESSION = eINSTANCE.getAbstractElement2_Expression();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.VariableImpl <em>Variable</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.VariableImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getVariable()
+     * @generated
+     */
+    EClass VARIABLE = eINSTANCE.getVariable();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute VARIABLE__NAME = eINSTANCE.getVariable_Name();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.EvalExpressionImpl <em>Eval Expression</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.EvalExpressionImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getEvalExpression()
+     * @generated
+     */
+    EClass EVAL_EXPRESSION = eINSTANCE.getEvalExpression();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.ExpressionImpl <em>Expression</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.ExpressionImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getExpression()
+     * @generated
+     */
+    EClass EXPRESSION = eINSTANCE.getExpression();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.OrImpl <em>Or</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.OrImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getOr()
+     * @generated
+     */
+    EClass OR = eINSTANCE.getOr();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference OR__LEFT = eINSTANCE.getOr_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference OR__RIGHT = eINSTANCE.getOr_Right();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.AndImpl <em>And</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.AndImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getAnd()
+     * @generated
+     */
+    EClass AND = eINSTANCE.getAnd();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference AND__LEFT = eINSTANCE.getAnd_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference AND__RIGHT = eINSTANCE.getAnd_Right();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.EqualityImpl <em>Equality</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.EqualityImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getEquality()
+     * @generated
+     */
+    EClass EQUALITY = eINSTANCE.getEquality();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference EQUALITY__LEFT = eINSTANCE.getEquality_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Op</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute EQUALITY__OP = eINSTANCE.getEquality_Op();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference EQUALITY__RIGHT = eINSTANCE.getEquality_Right();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.ComparisonImpl <em>Comparison</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.ComparisonImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getComparison()
+     * @generated
+     */
+    EClass COMPARISON = eINSTANCE.getComparison();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference COMPARISON__LEFT = eINSTANCE.getComparison_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Op</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute COMPARISON__OP = eINSTANCE.getComparison_Op();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference COMPARISON__RIGHT = eINSTANCE.getComparison_Right();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.PlusImpl <em>Plus</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.PlusImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getPlus()
+     * @generated
+     */
+    EClass PLUS = eINSTANCE.getPlus();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PLUS__LEFT = eINSTANCE.getPlus_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PLUS__RIGHT = eINSTANCE.getPlus_Right();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.MinusImpl <em>Minus</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.MinusImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMinus()
+     * @generated
+     */
+    EClass MINUS = eINSTANCE.getMinus();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MINUS__LEFT = eINSTANCE.getMinus_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MINUS__RIGHT = eINSTANCE.getMinus_Right();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.MulOrDivImpl <em>Mul Or Div</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.MulOrDivImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMulOrDiv()
+     * @generated
+     */
+    EClass MUL_OR_DIV = eINSTANCE.getMulOrDiv();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MUL_OR_DIV__LEFT = eINSTANCE.getMulOrDiv_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Op</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MUL_OR_DIV__OP = eINSTANCE.getMulOrDiv_Op();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MUL_OR_DIV__RIGHT = eINSTANCE.getMulOrDiv_Right();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.NotImpl <em>Not</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.NotImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getNot()
+     * @generated
+     */
+    EClass NOT = eINSTANCE.getNot();
+
+    /**
+     * The meta object literal for the '<em><b>Expression</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference NOT__EXPRESSION = eINSTANCE.getNot_Expression();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.IntConstantImpl <em>Int Constant</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.IntConstantImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getIntConstant()
+     * @generated
+     */
+    EClass INT_CONSTANT = eINSTANCE.getIntConstant();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute INT_CONSTANT__VALUE = eINSTANCE.getIntConstant_Value();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.StringConstantImpl <em>String Constant</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.StringConstantImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getStringConstant()
+     * @generated
+     */
+    EClass STRING_CONSTANT = eINSTANCE.getStringConstant();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute STRING_CONSTANT__VALUE = eINSTANCE.getStringConstant_Value();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.BoolConstantImpl <em>Bool Constant</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.BoolConstantImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBoolConstant()
+     * @generated
+     */
+    EClass BOOL_CONSTANT = eINSTANCE.getBoolConstant();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BOOL_CONSTANT__VALUE = eINSTANCE.getBoolConstant_Value();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.VariableRefImpl <em>Variable Ref</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.VariableRefImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getVariableRef()
+     * @generated
+     */
+    EClass VARIABLE_REF = eINSTANCE.getVariableRef();
+
+    /**
+     * The meta object literal for the '<em><b>Variable</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference VARIABLE_REF__VARIABLE = eINSTANCE.getVariableRef_Variable();
 
   }
 

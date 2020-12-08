@@ -99,6 +99,23 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.TIME_TYPE: return createTimeType();
       case AdeptnessPackage.DATA_TYPE: return createDataType();
       case AdeptnessPackage.PACKAGE_DECLARATION: return createPackageDeclaration();
+      case AdeptnessPackage.EXPRESSIONS_MODEL: return createExpressionsModel();
+      case AdeptnessPackage.ABSTRACT_ELEMENT2: return createAbstractElement2();
+      case AdeptnessPackage.VARIABLE: return createVariable();
+      case AdeptnessPackage.EVAL_EXPRESSION: return createEvalExpression();
+      case AdeptnessPackage.EXPRESSION: return createExpression();
+      case AdeptnessPackage.OR: return createOr();
+      case AdeptnessPackage.AND: return createAnd();
+      case AdeptnessPackage.EQUALITY: return createEquality();
+      case AdeptnessPackage.COMPARISON: return createComparison();
+      case AdeptnessPackage.PLUS: return createPlus();
+      case AdeptnessPackage.MINUS: return createMinus();
+      case AdeptnessPackage.MUL_OR_DIV: return createMulOrDiv();
+      case AdeptnessPackage.NOT: return createNot();
+      case AdeptnessPackage.INT_CONSTANT: return createIntConstant();
+      case AdeptnessPackage.STRING_CONSTANT: return createStringConstant();
+      case AdeptnessPackage.BOOL_CONSTANT: return createBoolConstant();
+      case AdeptnessPackage.VARIABLE_REF: return createVariableRef();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -510,6 +527,210 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
   {
     PackageDeclarationImpl packageDeclaration = new PackageDeclarationImpl();
     return packageDeclaration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ExpressionsModel createExpressionsModel()
+  {
+    ExpressionsModelImpl expressionsModel = new ExpressionsModelImpl();
+    return expressionsModel;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public AbstractElement2 createAbstractElement2()
+  {
+    AbstractElement2Impl abstractElement2 = new AbstractElement2Impl();
+    return abstractElement2;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Variable createVariable()
+  {
+    VariableImpl variable = new VariableImpl();
+    return variable;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EvalExpression createEvalExpression()
+  {
+    EvalExpressionImpl evalExpression = new EvalExpressionImpl();
+    return evalExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Expression createExpression()
+  {
+    ExpressionImpl expression = new ExpressionImpl();
+    return expression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Or createOr()
+  {
+    OrImpl or = new OrImpl();
+    return or;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public And createAnd()
+  {
+    AndImpl and = new AndImpl();
+    return and;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Equality createEquality()
+  {
+    EqualityImpl equality = new EqualityImpl();
+    return equality;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Comparison createComparison()
+  {
+    ComparisonImpl comparison = new ComparisonImpl();
+    return comparison;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Plus createPlus()
+  {
+    PlusImpl plus = new PlusImpl();
+    return plus;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Minus createMinus()
+  {
+    MinusImpl minus = new MinusImpl();
+    return minus;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public MulOrDiv createMulOrDiv()
+  {
+    MulOrDivImpl mulOrDiv = new MulOrDivImpl();
+    return mulOrDiv;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Not createNot()
+  {
+    NotImpl not = new NotImpl();
+    return not;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public IntConstant createIntConstant()
+  {
+    IntConstantImpl intConstant = new IntConstantImpl();
+    return intConstant;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public StringConstant createStringConstant()
+  {
+    StringConstantImpl stringConstant = new StringConstantImpl();
+    return stringConstant;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public BoolConstant createBoolConstant()
+  {
+    BoolConstantImpl boolConstant = new BoolConstantImpl();
+    return boolConstant;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public VariableRef createVariableRef()
+  {
+    VariableRefImpl variableRef = new VariableRefImpl();
+    return variableRef;
   }
 
   /**
