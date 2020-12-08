@@ -3,17 +3,17 @@ import MonitoringFileExample.adeptness
 CPS HVS: implements HVS_MONITORINGPLAN 
 	
 	ORACLE AWTChecker2:
-		when: numLlamadasActivas is below 10;
-		checks: AWT is in range between 0 and 30;
+		when: ((numLlamadasActivas-AWT) < 10) 
+		checks: (AWT-ATTD) is in range between 5 and 30;
 		fails if : confidence is below -0.9;
 		fails if : confidence is below -0.2 within 10 miliseconds;
 		fails if :confidence is below -0.2 more than 30 times within 20 minutes;
 		Description: "Checks the AWT is relatively low when there are few calls"
 	ENDORACLE 
 	
-	
+
 	ORACLE AWTChecker:
-		when: numLlamadasActivas is in range between 11 and 50;
+		when: (numLlamadasActivas > 11 && numLlamadasActivas <50)
 		checks: AWT is in range between 10 and 80;
 		fails if : confidence is below -0.9;
 		fails if : confidence is below -0.2 within 10 miliseconds;

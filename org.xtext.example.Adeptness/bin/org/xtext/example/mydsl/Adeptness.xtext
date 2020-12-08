@@ -93,8 +93,8 @@ Oracle:
 ;
 
 When:
-	'when:' (name=ID |em = ExpressionsModel)
-			precondReference = PrecondReference
+	'when:' em = ExpressionsModel
+			//precondReference = PrecondReference
 ;
 
 Checks:
@@ -165,11 +165,11 @@ InclusiveBound:
 //Upper limit
 
 Bound_up:
-	(value=DOUBLE|name=ID|em = ExpressionsModel)
+	(value=DOUBLE|variable=Variable|em = ExpressionsModel)
 ;
 //Lower limit
 Bound_Down:
-	 (value=DOUBLE|name=ID|em = ExpressionsModel)
+	 (value=DOUBLE|variable=Variable|em = ExpressionsModel)
 ;
 //Boolean declaration
 BOOLEAN:
@@ -207,7 +207,7 @@ ExpressionsModel:
 AbstractElement2:
 	Variable | EvalExpression;
 Variable:
-	name = ID  ('=' expression=Expression)?
+	name = ID  ('=' expression=Expression)? // TODO:  ('=' expression=Expression)? jarrita, bestela ez doa
 ;
 	//"var" name=ID '=' expression=Expression;
 

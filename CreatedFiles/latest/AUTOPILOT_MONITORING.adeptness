@@ -44,5 +44,15 @@ MONITORINGPLAN MONITORING_PLAN_AUTOPILOT:
 		max: 180
 		min: -180
 	ENDMONITOR
+	MONITOR Psi :
+		type: double
+		max: 180
+		min: -180
+	ENDMONITOR
+	MONITOR HDGRef :
+		type: double
+		max: 180
+		min: 180
+	ENDMONITOR
 	
 ENDMONITORINGPLAN 

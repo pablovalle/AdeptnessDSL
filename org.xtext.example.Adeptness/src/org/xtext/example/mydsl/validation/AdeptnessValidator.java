@@ -28,6 +28,7 @@ import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Sig_type;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.Upper;
+import org.xtext.example.mydsl.adeptness.Variable;
 import org.xtext.example.mydsl.adeptness.When;
 
 /**
@@ -375,14 +376,14 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	
 	
 	@Check
-	public void checkMonitoringVariablesInPreconditions(When precond) {
+	public void checkMonitoringVariablesInPreconditions(Variable precond) {
 		String checkName=precond.getName().toString();
 		double max, min;
 		boolean is= false;
 		for(int i=0;i<monitoringVariableList.size();i++) {
 			if(checkName.equals(monitoringVariableList.get(i).getName())) {
 				is=true;
-				max=monitoringVariableList.get(i).getMax();
+				/*max=monitoringVariableList.get(i).getMax();
 				min= monitoringVariableList.get(i).getMin();
 				if(precond.getPrecondReference().getUpper()!=null) {
 					Upper up=precond.getPrecondReference().getUpper();
@@ -443,11 +444,11 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
 						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
 					}
-				}
+				}*/
 			}
 		}
 		if(!is) {
-			error("This variable is not in the monitoring plan",AdeptnessPackage.Literals.WHEN__NAME);
+			error("This variable is not in the monitoring plan",AdeptnessPackage.Literals.VARIABLE__NAME);
 		}
 	}
 	

@@ -3,7 +3,7 @@ import MonitoringFileExample.adeptness
 
 CPS PuertasPiso[60]: implements MONITORING_PLAN_PUERTA
 	ORACLE PosicionPuertaChecker:
-		when: AscensorEnPisoPuerta is in range between 1 and 1;
+		when: (AscensorEnPisoPuerta == true)
 		checks: PosicionPuerta is in range between 0 and 1;
 		fails if :  confidence is below 0;
 		Description: "La puerta puede estar cerrada, abierta, cerrándose o abríendose si el ascensor esta en el piso de la puerta"
@@ -11,7 +11,7 @@ CPS PuertasPiso[60]: implements MONITORING_PLAN_PUERTA
 	
 		
 	ORACLE PosicionPuertaChecker2:
-		when: AscensorEnPisoPuerta is in range between 0 and 1;
+		when: (AscensorEnPisoPuerta==false)
 		checks: PosicionPuerta is in range between 0 and 0;
 		fails if : confidence is below 0;
 		Description: "La puerta esta cerrada si el ascensor no esta en la puerta"
