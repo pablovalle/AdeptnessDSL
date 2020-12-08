@@ -44,6 +44,7 @@ import org.xtext.example.mydsl.adeptness.MonitoringVariable;
 import org.xtext.example.mydsl.adeptness.MonitoringVariableExpresion;
 import org.xtext.example.mydsl.adeptness.MulOrDiv;
 import org.xtext.example.mydsl.adeptness.Not;
+import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.Or;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.PackageDeclaration;
@@ -52,6 +53,7 @@ import org.xtext.example.mydsl.adeptness.PrecondReference;
 import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Reason;
 import org.xtext.example.mydsl.adeptness.Reference;
+import org.xtext.example.mydsl.adeptness.Same;
 import org.xtext.example.mydsl.adeptness.Sig_type;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.StringConstant;
@@ -223,6 +225,20 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   private EClass precondReferenceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass sameEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass notSameEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1189,6 +1205,28 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
+  public EReference getReference_Same()
+  {
+    return (EReference)referenceEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getReference_Notsame()
+  {
+    return (EReference)referenceEClass.getEStructuralFeatures().get(5);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getPrecondReference()
   {
     return precondReferenceEClass;
@@ -1236,6 +1274,72 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
   public EReference getPrecondReference_Gap()
   {
     return (EReference)precondReferenceEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getPrecondReference_Same()
+  {
+    return (EReference)precondReferenceEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getPrecondReference_Notsame()
+  {
+    return (EReference)precondReferenceEClass.getEStructuralFeatures().get(5);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getSame()
+  {
+    return sameEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSame_Bound_upp()
+  {
+    return (EReference)sameEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getNotSame()
+  {
+    return notSameEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getNotSame_Bound_upp()
+  {
+    return (EReference)notSameEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2166,12 +2270,22 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     createEReference(referenceEClass, REFERENCE__LOWER);
     createEReference(referenceEClass, REFERENCE__RANGE);
     createEReference(referenceEClass, REFERENCE__GAP);
+    createEReference(referenceEClass, REFERENCE__SAME);
+    createEReference(referenceEClass, REFERENCE__NOTSAME);
 
     precondReferenceEClass = createEClass(PRECOND_REFERENCE);
     createEReference(precondReferenceEClass, PRECOND_REFERENCE__UPPER);
     createEReference(precondReferenceEClass, PRECOND_REFERENCE__LOWER);
     createEReference(precondReferenceEClass, PRECOND_REFERENCE__RANGE);
     createEReference(precondReferenceEClass, PRECOND_REFERENCE__GAP);
+    createEReference(precondReferenceEClass, PRECOND_REFERENCE__SAME);
+    createEReference(precondReferenceEClass, PRECOND_REFERENCE__NOTSAME);
+
+    sameEClass = createEClass(SAME);
+    createEReference(sameEClass, SAME__BOUND_UPP);
+
+    notSameEClass = createEClass(NOT_SAME);
+    createEReference(notSameEClass, NOT_SAME__BOUND_UPP);
 
     upperEClass = createEClass(UPPER);
     createEReference(upperEClass, UPPER__BOUND_UPP);
@@ -2410,12 +2524,22 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     initEReference(getReference_Lower(), this.getLower(), null, "lower", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getReference_Range(), this.getRange(), null, "range", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getReference_Gap(), this.getGap(), null, "gap", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getReference_Same(), this.getSame(), null, "same", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getReference_Notsame(), this.getNotSame(), null, "notsame", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(precondReferenceEClass, PrecondReference.class, "PrecondReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getPrecondReference_Upper(), this.getUpper(), null, "upper", null, 0, 1, PrecondReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPrecondReference_Lower(), this.getLower(), null, "lower", null, 0, 1, PrecondReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPrecondReference_Range(), this.getRange(), null, "range", null, 0, 1, PrecondReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPrecondReference_Gap(), this.getGap(), null, "gap", null, 0, 1, PrecondReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getPrecondReference_Same(), this.getSame(), null, "same", null, 0, 1, PrecondReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getPrecondReference_Notsame(), this.getNotSame(), null, "notsame", null, 0, 1, PrecondReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(sameEClass, Same.class, "Same", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSame_Bound_upp(), this.getBound_up(), null, "bound_upp", null, 0, 1, Same.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(notSameEClass, NotSame.class, "NotSame", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNotSame_Bound_upp(), this.getBound_up(), null, "bound_upp", null, 0, 1, NotSame.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(upperEClass, Upper.class, "Upper", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getUpper_Bound_upp(), this.getBound_up(), null, "bound_upp", null, 0, 1, Upper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

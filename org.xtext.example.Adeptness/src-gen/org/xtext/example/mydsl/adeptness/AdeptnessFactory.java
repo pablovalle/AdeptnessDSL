@@ -222,6 +222,24 @@ public interface AdeptnessFactory extends EFactory
   PrecondReference createPrecondReference();
 
   /**
+   * Returns a new object of class '<em>Same</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Same</em>'.
+   * @generated
+   */
+  Same createSame();
+
+  /**
+   * Returns a new object of class '<em>Not Same</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Not Same</em>'.
+   * @generated
+   */
+  NotSame createNotSame();
+
+  /**
    * Returns a new object of class '<em>Upper</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

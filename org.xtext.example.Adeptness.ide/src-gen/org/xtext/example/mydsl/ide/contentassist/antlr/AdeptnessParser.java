@@ -73,6 +73,8 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getHighPeakAccess().getGroup(), "rule__HighPeak__Group__0");
 			builder.put(grammarAccess.getReferenceAccess().getGroup(), "rule__Reference__Group__0");
 			builder.put(grammarAccess.getPrecondReferenceAccess().getGroup(), "rule__PrecondReference__Group__0");
+			builder.put(grammarAccess.getSameAccess().getGroup(), "rule__Same__Group__0");
+			builder.put(grammarAccess.getNotSameAccess().getGroup(), "rule__NotSame__Group__0");
 			builder.put(grammarAccess.getUpperAccess().getGroup(), "rule__Upper__Group__0");
 			builder.put(grammarAccess.getLowerAccess().getGroup(), "rule__Lower__Group__0");
 			builder.put(grammarAccess.getRangeAccess().getGroup(), "rule__Range__Group__0");
@@ -149,10 +151,16 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getReferenceAccess().getLowerAssignment_0_1(), "rule__Reference__LowerAssignment_0_1");
 			builder.put(grammarAccess.getReferenceAccess().getRangeAssignment_0_2(), "rule__Reference__RangeAssignment_0_2");
 			builder.put(grammarAccess.getReferenceAccess().getGapAssignment_0_3(), "rule__Reference__GapAssignment_0_3");
+			builder.put(grammarAccess.getReferenceAccess().getSameAssignment_0_4(), "rule__Reference__SameAssignment_0_4");
+			builder.put(grammarAccess.getReferenceAccess().getNotsameAssignment_0_5(), "rule__Reference__NotsameAssignment_0_5");
 			builder.put(grammarAccess.getPrecondReferenceAccess().getUpperAssignment_0_0(), "rule__PrecondReference__UpperAssignment_0_0");
 			builder.put(grammarAccess.getPrecondReferenceAccess().getLowerAssignment_0_1(), "rule__PrecondReference__LowerAssignment_0_1");
 			builder.put(grammarAccess.getPrecondReferenceAccess().getRangeAssignment_0_2(), "rule__PrecondReference__RangeAssignment_0_2");
 			builder.put(grammarAccess.getPrecondReferenceAccess().getGapAssignment_0_3(), "rule__PrecondReference__GapAssignment_0_3");
+			builder.put(grammarAccess.getPrecondReferenceAccess().getSameAssignment_0_4(), "rule__PrecondReference__SameAssignment_0_4");
+			builder.put(grammarAccess.getPrecondReferenceAccess().getNotsameAssignment_0_5(), "rule__PrecondReference__NotsameAssignment_0_5");
+			builder.put(grammarAccess.getSameAccess().getBound_uppAssignment_1(), "rule__Same__Bound_uppAssignment_1");
+			builder.put(grammarAccess.getNotSameAccess().getBound_uppAssignment_1(), "rule__NotSame__Bound_uppAssignment_1");
 			builder.put(grammarAccess.getUpperAccess().getBound_uppAssignment_1(), "rule__Upper__Bound_uppAssignment_1");
 			builder.put(grammarAccess.getLowerAccess().getBound_lowerAssignment_1(), "rule__Lower__Bound_lowerAssignment_1");
 			builder.put(grammarAccess.getRangeAccess().getBound_lowerAssignment_1(), "rule__Range__Bound_lowerAssignment_1");

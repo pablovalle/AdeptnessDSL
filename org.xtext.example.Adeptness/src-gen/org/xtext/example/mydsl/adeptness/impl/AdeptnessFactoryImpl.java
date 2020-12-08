@@ -87,6 +87,8 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.HIGH_PEAK: return createHighPeak();
       case AdeptnessPackage.REFERENCE: return createReference();
       case AdeptnessPackage.PRECOND_REFERENCE: return createPrecondReference();
+      case AdeptnessPackage.SAME: return createSame();
+      case AdeptnessPackage.NOT_SAME: return createNotSame();
       case AdeptnessPackage.UPPER: return createUpper();
       case AdeptnessPackage.LOWER: return createLower();
       case AdeptnessPackage.RANGE: return createRange();
@@ -383,6 +385,30 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
   {
     PrecondReferenceImpl precondReference = new PrecondReferenceImpl();
     return precondReference;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Same createSame()
+  {
+    SameImpl same = new SameImpl();
+    return same;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotSame createNotSame()
+  {
+    NotSameImpl notSame = new NotSameImpl();
+    return notSame;
   }
 
   /**

@@ -1,11 +1,11 @@
-'!'=66
+'!'=68
 '!='=14
-'&&'=62
-'('=64
-')'=65
+'&&'=64
+'('=66
+')'=67
 '*'=19
-'+'=63
-'-'=55
+'+'=65
+'-'=57
 '.'=24
 '.*'=23
 '/'=20
@@ -13,7 +13,7 @@
 ';'=44
 '<'=18
 '<='=16
-'='=60
+'='=62
 '=='=13
 '>'=17
 '>='=15
@@ -29,38 +29,40 @@
 '['=35
 ']'=36
 '^'=21
-'and'=53
-'boolean'=67
+'and'=55
+'boolean'=69
 'checks:'=41
 'confidence is below'=45
 'confidence is in constant degradation'=48
-'datatype'=56
-'double'=69
+'datatype'=58
+'double'=71
 'fails if :'=43
 'false'=12
-'hours'=73
+'hours'=75
 'implements'=37
 'import'=22
-'int'=68
-'is above'=51
-'is below'=50
-'is in range between'=52
+'int'=70
+'is above'=53
+'is below'=52
+'is in range between'=54
 'max'=31
-'miliseconds'=70
+'miliseconds'=72
 'min'=32
-'minutes'=72
+'minutes'=74
 'more than'=46
-'not in range between'=54
-'package'=57
-'seconds'=71
+'not in range between'=56
+'package'=59
+'seconds'=73
+'should be'=50
+'should not be'=51
 'times within'=47
 'true'=11
 'type'=29
 'when:'=40
 'within'=49
-'{'=58
-'||'=61
-'}'=59
+'{'=60
+'||'=63
+'}'=61
 RULE_ANY_OTHER=10
 RULE_ID=4
 RULE_INT=5
@@ -131,3 +133,5 @@ T__70=70
 T__71=71
 T__72=72
 T__73=73
+T__74=74
+T__75=75

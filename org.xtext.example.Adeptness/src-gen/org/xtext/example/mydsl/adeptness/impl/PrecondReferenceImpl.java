@@ -15,8 +15,10 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.Gap;
 import org.xtext.example.mydsl.adeptness.Lower;
+import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.PrecondReference;
 import org.xtext.example.mydsl.adeptness.Range;
+import org.xtext.example.mydsl.adeptness.Same;
 import org.xtext.example.mydsl.adeptness.Upper;
 
 /**
@@ -31,6 +33,8 @@ import org.xtext.example.mydsl.adeptness.Upper;
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.PrecondReferenceImpl#getLower <em>Lower</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.PrecondReferenceImpl#getRange <em>Range</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.PrecondReferenceImpl#getGap <em>Gap</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.PrecondReferenceImpl#getSame <em>Same</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.PrecondReferenceImpl#getNotsame <em>Notsame</em>}</li>
  * </ul>
  *
  * @generated
@@ -76,6 +80,26 @@ public class PrecondReferenceImpl extends MinimalEObjectImpl.Container implement
    * @ordered
    */
   protected Gap gap;
+
+  /**
+   * The cached value of the '{@link #getSame() <em>Same</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSame()
+   * @generated
+   * @ordered
+   */
+  protected Same same;
+
+  /**
+   * The cached value of the '{@link #getNotsame() <em>Notsame</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getNotsame()
+   * @generated
+   * @ordered
+   */
+  protected NotSame notsame;
 
   /**
    * <!-- begin-user-doc -->
@@ -304,6 +328,106 @@ public class PrecondReferenceImpl extends MinimalEObjectImpl.Container implement
    * @generated
    */
   @Override
+  public Same getSame()
+  {
+    return same;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetSame(Same newSame, NotificationChain msgs)
+  {
+    Same oldSame = same;
+    same = newSame;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.PRECOND_REFERENCE__SAME, oldSame, newSame);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setSame(Same newSame)
+  {
+    if (newSame != same)
+    {
+      NotificationChain msgs = null;
+      if (same != null)
+        msgs = ((InternalEObject)same).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.PRECOND_REFERENCE__SAME, null, msgs);
+      if (newSame != null)
+        msgs = ((InternalEObject)newSame).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.PRECOND_REFERENCE__SAME, null, msgs);
+      msgs = basicSetSame(newSame, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.PRECOND_REFERENCE__SAME, newSame, newSame));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotSame getNotsame()
+  {
+    return notsame;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetNotsame(NotSame newNotsame, NotificationChain msgs)
+  {
+    NotSame oldNotsame = notsame;
+    notsame = newNotsame;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.PRECOND_REFERENCE__NOTSAME, oldNotsame, newNotsame);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setNotsame(NotSame newNotsame)
+  {
+    if (newNotsame != notsame)
+    {
+      NotificationChain msgs = null;
+      if (notsame != null)
+        msgs = ((InternalEObject)notsame).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.PRECOND_REFERENCE__NOTSAME, null, msgs);
+      if (newNotsame != null)
+        msgs = ((InternalEObject)newNotsame).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.PRECOND_REFERENCE__NOTSAME, null, msgs);
+      msgs = basicSetNotsame(newNotsame, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.PRECOND_REFERENCE__NOTSAME, newNotsame, newNotsame));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
@@ -316,6 +440,10 @@ public class PrecondReferenceImpl extends MinimalEObjectImpl.Container implement
         return basicSetRange(null, msgs);
       case AdeptnessPackage.PRECOND_REFERENCE__GAP:
         return basicSetGap(null, msgs);
+      case AdeptnessPackage.PRECOND_REFERENCE__SAME:
+        return basicSetSame(null, msgs);
+      case AdeptnessPackage.PRECOND_REFERENCE__NOTSAME:
+        return basicSetNotsame(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -338,6 +466,10 @@ public class PrecondReferenceImpl extends MinimalEObjectImpl.Container implement
         return getRange();
       case AdeptnessPackage.PRECOND_REFERENCE__GAP:
         return getGap();
+      case AdeptnessPackage.PRECOND_REFERENCE__SAME:
+        return getSame();
+      case AdeptnessPackage.PRECOND_REFERENCE__NOTSAME:
+        return getNotsame();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -363,6 +495,12 @@ public class PrecondReferenceImpl extends MinimalEObjectImpl.Container implement
         return;
       case AdeptnessPackage.PRECOND_REFERENCE__GAP:
         setGap((Gap)newValue);
+        return;
+      case AdeptnessPackage.PRECOND_REFERENCE__SAME:
+        setSame((Same)newValue);
+        return;
+      case AdeptnessPackage.PRECOND_REFERENCE__NOTSAME:
+        setNotsame((NotSame)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -390,6 +528,12 @@ public class PrecondReferenceImpl extends MinimalEObjectImpl.Container implement
       case AdeptnessPackage.PRECOND_REFERENCE__GAP:
         setGap((Gap)null);
         return;
+      case AdeptnessPackage.PRECOND_REFERENCE__SAME:
+        setSame((Same)null);
+        return;
+      case AdeptnessPackage.PRECOND_REFERENCE__NOTSAME:
+        setNotsame((NotSame)null);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -412,6 +556,10 @@ public class PrecondReferenceImpl extends MinimalEObjectImpl.Container implement
         return range != null;
       case AdeptnessPackage.PRECOND_REFERENCE__GAP:
         return gap != null;
+      case AdeptnessPackage.PRECOND_REFERENCE__SAME:
+        return same != null;
+      case AdeptnessPackage.PRECOND_REFERENCE__NOTSAME:
+        return notsame != null;
     }
     return super.eIsSet(featureID);
   }

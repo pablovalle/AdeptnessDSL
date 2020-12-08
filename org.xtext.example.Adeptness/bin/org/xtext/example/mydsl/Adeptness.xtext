@@ -135,12 +135,21 @@ HighPeak:
 	'confidence is below' (cant=DOUBLE)
 ;
 Reference:
-	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap))';'
+	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap)|(same=Same)|(notsame=NotSame))';'
 ;
 
 PrecondReference:
-	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap))';'
+	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap)|(same=Same)|(notsame=NotSame))';'
 ;
+
+Same:
+	'should be' (bound_upp=Bound_up)
+;
+
+NotSame:
+	'should not be' (bound_upp=Bound_up)
+;
+
 //Oracle for upper limit --> Below reference signal
 Upper:
 	'is below' (bound_upp=Bound_up)

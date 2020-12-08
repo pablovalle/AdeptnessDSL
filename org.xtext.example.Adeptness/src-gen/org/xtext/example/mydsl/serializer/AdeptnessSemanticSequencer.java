@@ -47,6 +47,7 @@ import org.xtext.example.mydsl.adeptness.MonitoringVariable;
 import org.xtext.example.mydsl.adeptness.MonitoringVariableExpresion;
 import org.xtext.example.mydsl.adeptness.MulOrDiv;
 import org.xtext.example.mydsl.adeptness.Not;
+import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.Or;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.PackageDeclaration;
@@ -55,6 +56,7 @@ import org.xtext.example.mydsl.adeptness.PrecondReference;
 import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Reason;
 import org.xtext.example.mydsl.adeptness.Reference;
+import org.xtext.example.mydsl.adeptness.Same;
 import org.xtext.example.mydsl.adeptness.Sig_type;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.StringConstant;
@@ -175,6 +177,9 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 			case AdeptnessPackage.NOT:
 				sequence_Primary(context, (Not) semanticObject); 
 				return; 
+			case AdeptnessPackage.NOT_SAME:
+				sequence_NotSame(context, (NotSame) semanticObject); 
+				return; 
 			case AdeptnessPackage.OR:
 				sequence_Or(context, (Or) semanticObject); 
 				return; 
@@ -198,6 +203,9 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 				return; 
 			case AdeptnessPackage.REFERENCE:
 				sequence_Reference(context, (Reference) semanticObject); 
+				return; 
+			case AdeptnessPackage.SAME:
+				sequence_Same(context, (Same) semanticObject); 
 				return; 
 			case AdeptnessPackage.SIG_TYPE:
 				sequence_Sig_type(context, (Sig_type) semanticObject); 
@@ -859,6 +867,24 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	
 	/**
 	 * Contexts:
+	 *     NotSame returns NotSame
+	 *
+	 * Constraint:
+	 *     bound_upp=Bound_up
+	 */
+	protected void sequence_NotSame(ISerializationContext context, NotSame semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.NOT_SAME__BOUND_UPP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.NOT_SAME__BOUND_UPP));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getNotSameAccess().getBound_uppBound_upParserRuleCall_1_0(), semanticObject.getBound_upp());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     Expression returns Or
 	 *     Or returns Or
 	 *     Or.Or_1_0 returns Or
@@ -992,7 +1018,14 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     PrecondReference returns PrecondReference
 	 *
 	 * Constraint:
-	 *     (upper=Upper | lower=Lower | range=Range | gap=Gap)
+	 *     (
+	 *         upper=Upper | 
+	 *         lower=Lower | 
+	 *         range=Range | 
+	 *         gap=Gap | 
+	 *         same=Same | 
+	 *         notsame=NotSame
+	 *     )
 	 */
 	protected void sequence_PrecondReference(ISerializationContext context, PrecondReference semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1069,10 +1102,35 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Reference returns Reference
 	 *
 	 * Constraint:
-	 *     (upper=Upper | lower=Lower | range=Range | gap=Gap)
+	 *     (
+	 *         upper=Upper | 
+	 *         lower=Lower | 
+	 *         range=Range | 
+	 *         gap=Gap | 
+	 *         same=Same | 
+	 *         notsame=NotSame
+	 *     )
 	 */
 	protected void sequence_Reference(ISerializationContext context, Reference semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Same returns Same
+	 *
+	 * Constraint:
+	 *     bound_upp=Bound_up
+	 */
+	protected void sequence_Same(ISerializationContext context, Same semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.SAME__BOUND_UPP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.SAME__BOUND_UPP));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getSameAccess().getBound_uppBound_upParserRuleCall_1_0(), semanticObject.getBound_upp());
+		feeder.finish();
 	}
 	
 	

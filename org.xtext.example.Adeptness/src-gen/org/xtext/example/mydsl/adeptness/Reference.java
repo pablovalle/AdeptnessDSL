@@ -18,6 +18,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.xtext.example.mydsl.adeptness.Reference#getLower <em>Lower</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Reference#getRange <em>Range</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Reference#getGap <em>Gap</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Reference#getSame <em>Same</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Reference#getNotsame <em>Notsame</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getReference()
@@ -113,5 +115,49 @@ public interface Reference extends EObject
    * @generated
    */
   void setGap(Gap value);
+
+  /**
+   * Returns the value of the '<em><b>Same</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Same</em>' containment reference.
+   * @see #setSame(Same)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getReference_Same()
+   * @model containment="true"
+   * @generated
+   */
+  Same getSame();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Reference#getSame <em>Same</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Same</em>' containment reference.
+   * @see #getSame()
+   * @generated
+   */
+  void setSame(Same value);
+
+  /**
+   * Returns the value of the '<em><b>Notsame</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Notsame</em>' containment reference.
+   * @see #setNotsame(NotSame)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getReference_Notsame()
+   * @model containment="true"
+   * @generated
+   */
+  NotSame getNotsame();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Reference#getNotsame <em>Notsame</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Notsame</em>' containment reference.
+   * @see #getNotsame()
+   * @generated
+   */
+  void setNotsame(NotSame value);
 
 } // Reference

@@ -186,6 +186,16 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
         return createPrecondReferenceAdapter();
       }
       @Override
+      public Adapter caseSame(Same object)
+      {
+        return createSameAdapter();
+      }
+      @Override
+      public Adapter caseNotSame(NotSame object)
+      {
+        return createNotSameAdapter();
+      }
+      @Override
       public Adapter caseUpper(Upper object)
       {
         return createUpperAdapter();
@@ -678,6 +688,36 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createPrecondReferenceAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Same <em>Same</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.Same
+   * @generated
+   */
+  public Adapter createSameAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.NotSame <em>Not Same</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.NotSame
+   * @generated
+   */
+  public Adapter createNotSameAdapter()
   {
     return null;
   }

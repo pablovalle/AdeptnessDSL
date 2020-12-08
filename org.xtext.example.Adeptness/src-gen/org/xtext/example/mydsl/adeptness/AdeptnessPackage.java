@@ -844,13 +844,31 @@ public interface AdeptnessPackage extends EPackage
   int REFERENCE__GAP = 3;
 
   /**
+   * The feature id for the '<em><b>Same</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REFERENCE__SAME = 4;
+
+  /**
+   * The feature id for the '<em><b>Notsame</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REFERENCE__NOTSAME = 5;
+
+  /**
    * The number of structural features of the '<em>Reference</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int REFERENCE_FEATURE_COUNT = 4;
+  int REFERENCE_FEATURE_COUNT = 6;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.PrecondReferenceImpl <em>Precond Reference</em>}' class.
@@ -899,13 +917,87 @@ public interface AdeptnessPackage extends EPackage
   int PRECOND_REFERENCE__GAP = 3;
 
   /**
+   * The feature id for the '<em><b>Same</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PRECOND_REFERENCE__SAME = 4;
+
+  /**
+   * The feature id for the '<em><b>Notsame</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PRECOND_REFERENCE__NOTSAME = 5;
+
+  /**
    * The number of structural features of the '<em>Precond Reference</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PRECOND_REFERENCE_FEATURE_COUNT = 4;
+  int PRECOND_REFERENCE_FEATURE_COUNT = 6;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.SameImpl <em>Same</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.SameImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getSame()
+   * @generated
+   */
+  int SAME = 22;
+
+  /**
+   * The feature id for the '<em><b>Bound upp</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SAME__BOUND_UPP = 0;
+
+  /**
+   * The number of structural features of the '<em>Same</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SAME_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.NotSameImpl <em>Not Same</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.NotSameImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getNotSame()
+   * @generated
+   */
+  int NOT_SAME = 23;
+
+  /**
+   * The feature id for the '<em><b>Bound upp</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NOT_SAME__BOUND_UPP = 0;
+
+  /**
+   * The number of structural features of the '<em>Not Same</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NOT_SAME_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.UpperImpl <em>Upper</em>}' class.
@@ -915,7 +1007,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getUpper()
    * @generated
    */
-  int UPPER = 22;
+  int UPPER = 24;
 
   /**
    * The feature id for the '<em><b>Bound upp</b></em>' containment reference.
@@ -943,7 +1035,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getLower()
    * @generated
    */
-  int LOWER = 23;
+  int LOWER = 25;
 
   /**
    * The feature id for the '<em><b>Bound lower</b></em>' containment reference.
@@ -971,7 +1063,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getRange()
    * @generated
    */
-  int RANGE = 24;
+  int RANGE = 26;
 
   /**
    * The feature id for the '<em><b>Bound lower</b></em>' containment reference.
@@ -1008,7 +1100,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getGap()
    * @generated
    */
-  int GAP = 25;
+  int GAP = 27;
 
   /**
    * The feature id for the '<em><b>Bound lower</b></em>' containment reference.
@@ -1045,7 +1137,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getInclusiveBound()
    * @generated
    */
-  int INCLUSIVE_BOUND = 26;
+  int INCLUSIVE_BOUND = 28;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1082,7 +1174,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBound_up()
    * @generated
    */
-  int BOUND_UP = 27;
+  int BOUND_UP = 29;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -1128,7 +1220,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBound_Down()
    * @generated
    */
-  int BOUND_DOWN = 28;
+  int BOUND_DOWN = 30;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -1174,7 +1266,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBOOLEAN()
    * @generated
    */
-  int BOOLEAN = 29;
+  int BOOLEAN = 31;
 
   /**
    * The feature id for the '<em><b>Bool</b></em>' attribute.
@@ -1202,7 +1294,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getDOUBLE()
    * @generated
    */
-  int DOUBLE = 30;
+  int DOUBLE = 32;
 
   /**
    * The feature id for the '<em><b>DVal</b></em>' attribute.
@@ -1230,7 +1322,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getTimeType()
    * @generated
    */
-  int TIME_TYPE = 31;
+  int TIME_TYPE = 33;
 
   /**
    * The feature id for the '<em><b>Time</b></em>' attribute.
@@ -1258,7 +1350,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getDataType()
    * @generated
    */
-  int DATA_TYPE = 32;
+  int DATA_TYPE = 34;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1286,7 +1378,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getPackageDeclaration()
    * @generated
    */
-  int PACKAGE_DECLARATION = 33;
+  int PACKAGE_DECLARATION = 35;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1323,7 +1415,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getExpressionsModel()
    * @generated
    */
-  int EXPRESSIONS_MODEL = 34;
+  int EXPRESSIONS_MODEL = 36;
 
   /**
    * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -1351,7 +1443,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getAbstractElement2()
    * @generated
    */
-  int ABSTRACT_ELEMENT2 = 35;
+  int ABSTRACT_ELEMENT2 = 37;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -1379,7 +1471,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getVariable()
    * @generated
    */
-  int VARIABLE = 36;
+  int VARIABLE = 38;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -1416,7 +1508,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMonitoringVariableExpresion()
    * @generated
    */
-  int MONITORING_VARIABLE_EXPRESION = 37;
+  int MONITORING_VARIABLE_EXPRESION = 39;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1444,7 +1536,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getEvalExpression()
    * @generated
    */
-  int EVAL_EXPRESSION = 38;
+  int EVAL_EXPRESSION = 40;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -1472,7 +1564,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getExpression()
    * @generated
    */
-  int EXPRESSION = 39;
+  int EXPRESSION = 41;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1500,7 +1592,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getOr()
    * @generated
    */
-  int OR = 40;
+  int OR = 42;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1546,7 +1638,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getAnd()
    * @generated
    */
-  int AND = 41;
+  int AND = 43;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1592,7 +1684,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getEquality()
    * @generated
    */
-  int EQUALITY = 42;
+  int EQUALITY = 44;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1647,7 +1739,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getComparison()
    * @generated
    */
-  int COMPARISON = 43;
+  int COMPARISON = 45;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1702,7 +1794,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getPlus()
    * @generated
    */
-  int PLUS = 44;
+  int PLUS = 46;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1748,7 +1840,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMinus()
    * @generated
    */
-  int MINUS = 45;
+  int MINUS = 47;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1794,7 +1886,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMulOrDiv()
    * @generated
    */
-  int MUL_OR_DIV = 46;
+  int MUL_OR_DIV = 48;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1849,7 +1941,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getNot()
    * @generated
    */
-  int NOT = 47;
+  int NOT = 49;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1886,7 +1978,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getIntConstant()
    * @generated
    */
-  int INT_CONSTANT = 48;
+  int INT_CONSTANT = 50;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1923,7 +2015,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getStringConstant()
    * @generated
    */
-  int STRING_CONSTANT = 49;
+  int STRING_CONSTANT = 51;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1960,7 +2052,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBoolConstant()
    * @generated
    */
-  int BOOL_CONSTANT = 50;
+  int BOOL_CONSTANT = 52;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -2663,6 +2755,28 @@ public interface AdeptnessPackage extends EPackage
   EReference getReference_Gap();
 
   /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Reference#getSame <em>Same</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Same</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Reference#getSame()
+   * @see #getReference()
+   * @generated
+   */
+  EReference getReference_Same();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Reference#getNotsame <em>Notsame</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Notsame</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Reference#getNotsame()
+   * @see #getReference()
+   * @generated
+   */
+  EReference getReference_Notsame();
+
+  /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.PrecondReference <em>Precond Reference</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2715,6 +2829,70 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    */
   EReference getPrecondReference_Gap();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.PrecondReference#getSame <em>Same</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Same</em>'.
+   * @see org.xtext.example.mydsl.adeptness.PrecondReference#getSame()
+   * @see #getPrecondReference()
+   * @generated
+   */
+  EReference getPrecondReference_Same();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.PrecondReference#getNotsame <em>Notsame</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Notsame</em>'.
+   * @see org.xtext.example.mydsl.adeptness.PrecondReference#getNotsame()
+   * @see #getPrecondReference()
+   * @generated
+   */
+  EReference getPrecondReference_Notsame();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Same <em>Same</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Same</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Same
+   * @generated
+   */
+  EClass getSame();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Same#getBound_upp <em>Bound upp</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Bound upp</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Same#getBound_upp()
+   * @see #getSame()
+   * @generated
+   */
+  EReference getSame_Bound_upp();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.NotSame <em>Not Same</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Not Same</em>'.
+   * @see org.xtext.example.mydsl.adeptness.NotSame
+   * @generated
+   */
+  EClass getNotSame();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.NotSame#getBound_upp <em>Bound upp</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Bound upp</em>'.
+   * @see org.xtext.example.mydsl.adeptness.NotSame#getBound_upp()
+   * @see #getNotSame()
+   * @generated
+   */
+  EReference getNotSame_Bound_upp();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Upper <em>Upper</em>}'.
@@ -4071,6 +4249,22 @@ public interface AdeptnessPackage extends EPackage
     EReference REFERENCE__GAP = eINSTANCE.getReference_Gap();
 
     /**
+     * The meta object literal for the '<em><b>Same</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REFERENCE__SAME = eINSTANCE.getReference_Same();
+
+    /**
+     * The meta object literal for the '<em><b>Notsame</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REFERENCE__NOTSAME = eINSTANCE.getReference_Notsame();
+
+    /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.PrecondReferenceImpl <em>Precond Reference</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4111,6 +4305,58 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EReference PRECOND_REFERENCE__GAP = eINSTANCE.getPrecondReference_Gap();
+
+    /**
+     * The meta object literal for the '<em><b>Same</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PRECOND_REFERENCE__SAME = eINSTANCE.getPrecondReference_Same();
+
+    /**
+     * The meta object literal for the '<em><b>Notsame</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PRECOND_REFERENCE__NOTSAME = eINSTANCE.getPrecondReference_Notsame();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.SameImpl <em>Same</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.SameImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getSame()
+     * @generated
+     */
+    EClass SAME = eINSTANCE.getSame();
+
+    /**
+     * The meta object literal for the '<em><b>Bound upp</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference SAME__BOUND_UPP = eINSTANCE.getSame_Bound_upp();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.NotSameImpl <em>Not Same</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.NotSameImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getNotSame()
+     * @generated
+     */
+    EClass NOT_SAME = eINSTANCE.getNotSame();
+
+    /**
+     * The meta object literal for the '<em><b>Bound upp</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference NOT_SAME__BOUND_UPP = eINSTANCE.getNotSame_Bound_upp();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.UpperImpl <em>Upper</em>}' class.

@@ -115,6 +115,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//Range"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="gap" eType="#//Gap" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="same" eType="#//Same" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="notsame" eType="#//NotSame"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PrecondReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="upper" eType="#//Upper"
@@ -124,6 +127,17 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//Range"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="gap" eType="#//Gap" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="same" eType="#//Same" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="notsame" eType="#//NotSame"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Same">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NotSame">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Upper">
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"

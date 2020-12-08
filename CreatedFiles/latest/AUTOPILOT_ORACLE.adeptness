@@ -9,7 +9,7 @@ CPS Autopilot: implements MONITORING_PLAN_AUTOPILOT
 	
 	ORACLE R1_1:
 		when: (APEngPrev=0 && APEng==1) 
-		checks: AilCmd not in range between 0 and 0;
+		checks: AilCmd should not be 0;
 		fails if :  confidence is below 0;
 		Description: "desc"
 	ENDORACLE
@@ -20,7 +20,7 @@ CPS Autopilot: implements MONITORING_PLAN_AUTOPILOT
 	
 	ORACLE R1_2:
 		when: (APEng==1 && HDGMode==0 && ALTMode==0) //TODO: negativos
-		checks: isRoll is in range between 1 and 1;
+		checks: isRoll should be 1;
 		fails if :  confidence is below 0;
 		Description: "desc"
 	ENDORACLE
@@ -33,35 +33,35 @@ CPS Autopilot: implements MONITORING_PLAN_AUTOPILOT
 	
 	ORACLE R1_3A:
 		when: (Phi> 0-6 && Phi< 6) //TODO: negativos
-		checks: PhiRef is in range between 0 and 0;
+		checks: PhiRef should be 0;
 		fails if :  confidence is below 0;
 		Description: "desc"
 	ENDORACLE
 
 	ORACLE R1_3B:
 		when: (Phi > 30)
-		checks: PhiRef is in range between 30 and 30;
+		checks: PhiRef should be 30;
 		fails if :  confidence is below 0;
 		Description: "desc"
 	ENDORACLE
 	
 	ORACLE R1_3C:
 		when: (Phi < 30)
-		checks: PhiRef is in range between -30 and -30;
+		checks: PhiRef should be -30;
 		fails if :  confidence is below 0;
 		Description: "desc"
 	ENDORACLE
 	
 	ORACLE R1_3D:
 		when: (Tk > 0-30 && Tk< 3)
-		checks: PhiRef is in range between Tk and Tk;
+		checks: PhiRef should be Tk;
 		fails if :  confidence is below 0;
 		Description: "desc"
 	ENDORACLE
 	
 	ORACLE R1_3E:
 		when: (Tk>3 && Tk<30)
-		checks: PhiRef is in range between Tk and Tk;
+		checks: PhiRef should be Tk;
 		fails if :  confidence is below 0;
 		Description: "desc"
 	ENDORACLE
@@ -109,7 +109,7 @@ CPS Autopilot: implements MONITORING_PLAN_AUTOPILOT
 	 //  R1.8 -> G{0,T} (HDGMode=0 ==> isRoll=1)
 	 ORACLE R1_8:
 	 	when: (HDGMode==0)
-	 	checks: isRoll is in range between 1 and 1;
+	 	checks: isRoll should be 1;
 	 	fails if : confidence is below 0;
 	 	Description: "desc"
 	 ENDORACLE

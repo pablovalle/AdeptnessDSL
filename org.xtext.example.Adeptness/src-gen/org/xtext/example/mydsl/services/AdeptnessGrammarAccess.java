@@ -862,16 +862,20 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		private final RuleCall cRangeRangeParserRuleCall_0_2_0 = (RuleCall)cRangeAssignment_0_2.eContents().get(0);
 		private final Assignment cGapAssignment_0_3 = (Assignment)cAlternatives_0.eContents().get(3);
 		private final RuleCall cGapGapParserRuleCall_0_3_0 = (RuleCall)cGapAssignment_0_3.eContents().get(0);
+		private final Assignment cSameAssignment_0_4 = (Assignment)cAlternatives_0.eContents().get(4);
+		private final RuleCall cSameSameParserRuleCall_0_4_0 = (RuleCall)cSameAssignment_0_4.eContents().get(0);
+		private final Assignment cNotsameAssignment_0_5 = (Assignment)cAlternatives_0.eContents().get(5);
+		private final RuleCall cNotsameNotSameParserRuleCall_0_5_0 = (RuleCall)cNotsameAssignment_0_5.eContents().get(0);
 		private final Keyword cSemicolonKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		
 		//Reference:
-		//	(upper=Upper | lower=Lower | range=Range | gap=Gap) ';';
+		//	(upper=Upper | lower=Lower | range=Range | gap=Gap | same=Same | notsame=NotSame) ';';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//(upper=Upper | lower=Lower | range=Range | gap=Gap) ';'
+		//(upper=Upper | lower=Lower | range=Range | gap=Gap | same=Same | notsame=NotSame) ';'
 		public Group getGroup() { return cGroup; }
 		
-		//(upper=Upper | lower=Lower | range=Range | gap=Gap)
+		//(upper=Upper | lower=Lower | range=Range | gap=Gap | same=Same | notsame=NotSame)
 		public Alternatives getAlternatives_0() { return cAlternatives_0; }
 		
 		//upper=Upper
@@ -897,6 +901,18 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		
 		//Gap
 		public RuleCall getGapGapParserRuleCall_0_3_0() { return cGapGapParserRuleCall_0_3_0; }
+		
+		//same=Same
+		public Assignment getSameAssignment_0_4() { return cSameAssignment_0_4; }
+		
+		//Same
+		public RuleCall getSameSameParserRuleCall_0_4_0() { return cSameSameParserRuleCall_0_4_0; }
+		
+		//notsame=NotSame
+		public Assignment getNotsameAssignment_0_5() { return cNotsameAssignment_0_5; }
+		
+		//NotSame
+		public RuleCall getNotsameNotSameParserRuleCall_0_5_0() { return cNotsameNotSameParserRuleCall_0_5_0; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_1() { return cSemicolonKeyword_1; }
@@ -913,16 +929,20 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		private final RuleCall cRangeRangeParserRuleCall_0_2_0 = (RuleCall)cRangeAssignment_0_2.eContents().get(0);
 		private final Assignment cGapAssignment_0_3 = (Assignment)cAlternatives_0.eContents().get(3);
 		private final RuleCall cGapGapParserRuleCall_0_3_0 = (RuleCall)cGapAssignment_0_3.eContents().get(0);
+		private final Assignment cSameAssignment_0_4 = (Assignment)cAlternatives_0.eContents().get(4);
+		private final RuleCall cSameSameParserRuleCall_0_4_0 = (RuleCall)cSameAssignment_0_4.eContents().get(0);
+		private final Assignment cNotsameAssignment_0_5 = (Assignment)cAlternatives_0.eContents().get(5);
+		private final RuleCall cNotsameNotSameParserRuleCall_0_5_0 = (RuleCall)cNotsameAssignment_0_5.eContents().get(0);
 		private final Keyword cSemicolonKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		
 		//PrecondReference:
-		//	(upper=Upper | lower=Lower | range=Range | gap=Gap) ';';
+		//	(upper=Upper | lower=Lower | range=Range | gap=Gap | same=Same | notsame=NotSame) ';';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//(upper=Upper | lower=Lower | range=Range | gap=Gap) ';'
+		//(upper=Upper | lower=Lower | range=Range | gap=Gap | same=Same | notsame=NotSame) ';'
 		public Group getGroup() { return cGroup; }
 		
-		//(upper=Upper | lower=Lower | range=Range | gap=Gap)
+		//(upper=Upper | lower=Lower | range=Range | gap=Gap | same=Same | notsame=NotSame)
 		public Alternatives getAlternatives_0() { return cAlternatives_0; }
 		
 		//upper=Upper
@@ -949,8 +969,66 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		//Gap
 		public RuleCall getGapGapParserRuleCall_0_3_0() { return cGapGapParserRuleCall_0_3_0; }
 		
+		//same=Same
+		public Assignment getSameAssignment_0_4() { return cSameAssignment_0_4; }
+		
+		//Same
+		public RuleCall getSameSameParserRuleCall_0_4_0() { return cSameSameParserRuleCall_0_4_0; }
+		
+		//notsame=NotSame
+		public Assignment getNotsameAssignment_0_5() { return cNotsameAssignment_0_5; }
+		
+		//NotSame
+		public RuleCall getNotsameNotSameParserRuleCall_0_5_0() { return cNotsameNotSameParserRuleCall_0_5_0; }
+		
 		//';'
 		public Keyword getSemicolonKeyword_1() { return cSemicolonKeyword_1; }
+	}
+	public class SameElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Same");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cShouldBeKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cBound_uppAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cBound_uppBound_upParserRuleCall_1_0 = (RuleCall)cBound_uppAssignment_1.eContents().get(0);
+		
+		//Same:
+		//	'should be' bound_upp=Bound_up;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'should be' bound_upp=Bound_up
+		public Group getGroup() { return cGroup; }
+		
+		//'should be'
+		public Keyword getShouldBeKeyword_0() { return cShouldBeKeyword_0; }
+		
+		//bound_upp=Bound_up
+		public Assignment getBound_uppAssignment_1() { return cBound_uppAssignment_1; }
+		
+		//Bound_up
+		public RuleCall getBound_uppBound_upParserRuleCall_1_0() { return cBound_uppBound_upParserRuleCall_1_0; }
+	}
+	public class NotSameElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.NotSame");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cShouldNotBeKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cBound_uppAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cBound_uppBound_upParserRuleCall_1_0 = (RuleCall)cBound_uppAssignment_1.eContents().get(0);
+		
+		//NotSame:
+		//	'should not be' bound_upp=Bound_up;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'should not be' bound_upp=Bound_up
+		public Group getGroup() { return cGroup; }
+		
+		//'should not be'
+		public Keyword getShouldNotBeKeyword_0() { return cShouldNotBeKeyword_0; }
+		
+		//bound_upp=Bound_up
+		public Assignment getBound_uppAssignment_1() { return cBound_uppAssignment_1; }
+		
+		//Bound_up
+		public RuleCall getBound_uppBound_upParserRuleCall_1_0() { return cBound_uppBound_upParserRuleCall_1_0; }
 	}
 	public class UpperElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Upper");
@@ -1922,6 +2000,8 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	private final HighPeakElements pHighPeak;
 	private final ReferenceElements pReference;
 	private final PrecondReferenceElements pPrecondReference;
+	private final SameElements pSame;
+	private final NotSameElements pNotSame;
 	private final UpperElements pUpper;
 	private final LowerElements pLower;
 	private final RangeElements pRange;
@@ -1984,6 +2064,8 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		this.pHighPeak = new HighPeakElements();
 		this.pReference = new ReferenceElements();
 		this.pPrecondReference = new PrecondReferenceElements();
+		this.pSame = new SameElements();
+		this.pNotSame = new NotSameElements();
 		this.pUpper = new UpperElements();
 		this.pLower = new LowerElements();
 		this.pRange = new RangeElements();
@@ -2299,7 +2381,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	}
 	
 	//Reference:
-	//	(upper=Upper | lower=Lower | range=Range | gap=Gap) ';';
+	//	(upper=Upper | lower=Lower | range=Range | gap=Gap | same=Same | notsame=NotSame) ';';
 	public ReferenceElements getReferenceAccess() {
 		return pReference;
 	}
@@ -2309,13 +2391,33 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	}
 	
 	//PrecondReference:
-	//	(upper=Upper | lower=Lower | range=Range | gap=Gap) ';';
+	//	(upper=Upper | lower=Lower | range=Range | gap=Gap | same=Same | notsame=NotSame) ';';
 	public PrecondReferenceElements getPrecondReferenceAccess() {
 		return pPrecondReference;
 	}
 	
 	public ParserRule getPrecondReferenceRule() {
 		return getPrecondReferenceAccess().getRule();
+	}
+	
+	//Same:
+	//	'should be' bound_upp=Bound_up;
+	public SameElements getSameAccess() {
+		return pSame;
+	}
+	
+	public ParserRule getSameRule() {
+		return getSameAccess().getRule();
+	}
+	
+	//NotSame:
+	//	'should not be' bound_upp=Bound_up;
+	public NotSameElements getNotSameAccess() {
+		return pNotSame;
+	}
+	
+	public ParserRule getNotSameRule() {
+		return getNotSameAccess().getRule();
 	}
 	
 	////Oracle for upper limit --> Below reference signal

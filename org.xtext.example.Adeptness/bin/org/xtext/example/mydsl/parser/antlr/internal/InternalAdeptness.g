@@ -1528,11 +1528,135 @@ ruleReference returns [EObject current=null]
 					}
 				)
 			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getReferenceAccess().getSameSameParserRuleCall_0_4_0());
+					}
+					lv_same_4_0=ruleSame
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getReferenceRule());
+						}
+						set(
+							$current,
+							"same",
+							lv_same_4_0,
+							"org.xtext.example.mydsl.Adeptness.Same");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getReferenceAccess().getNotsameNotSameParserRuleCall_0_5_0());
+					}
+					lv_notsame_5_0=ruleNotSame
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getReferenceRule());
+						}
+						set(
+							$current,
+							"notsame",
+							lv_notsame_5_0,
+							"org.xtext.example.mydsl.Adeptness.NotSame");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
 		)
-		otherlv_4=';'
+		otherlv_6=';'
 		{
-			newLeafNode(otherlv_4, grammarAccess.getReferenceAccess().getSemicolonKeyword_1());
+			newLeafNode(otherlv_6, grammarAccess.getReferenceAccess().getSemicolonKeyword_1());
 		}
+	)
+;
+
+// Entry rule entryRuleSame
+entryRuleSame returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getSameRule()); }
+	iv_ruleSame=ruleSame
+	{ $current=$iv_ruleSame.current; }
+	EOF;
+
+// Rule Same
+ruleSame returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='should be'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getSameAccess().getShouldBeKeyword_0());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getSameAccess().getBound_uppBound_upParserRuleCall_1_0());
+				}
+				lv_bound_upp_1_0=ruleBound_up
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getSameRule());
+					}
+					set(
+						$current,
+						"bound_upp",
+						lv_bound_upp_1_0,
+						"org.xtext.example.mydsl.Adeptness.Bound_up");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleNotSame
+entryRuleNotSame returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getNotSameRule()); }
+	iv_ruleNotSame=ruleNotSame
+	{ $current=$iv_ruleNotSame.current; }
+	EOF;
+
+// Rule NotSame
+ruleNotSame returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='should not be'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getNotSameAccess().getShouldNotBeKeyword_0());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getNotSameAccess().getBound_uppBound_upParserRuleCall_1_0());
+				}
+				lv_bound_upp_1_0=ruleBound_up
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getNotSameRule());
+					}
+					set(
+						$current,
+						"bound_upp",
+						lv_bound_upp_1_0,
+						"org.xtext.example.mydsl.Adeptness.Bound_up");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
 	)
 ;
 

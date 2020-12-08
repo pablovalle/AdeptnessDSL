@@ -25,70 +25,70 @@ CPS PuertasPiso: implements MONITORING_PLAN_TWOTANKS
 	
 	ORACLE R1_5:
 		when: (Tank1Height >= Tank1SensorHHeight )
-	    checks: Tank1SensorHValue  is in range between 1 and 1;
+	    checks: Tank1SensorHValue  should be 1;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_6:
 		when: (Tank1Height < Tank1SensorHHeight )
-	    checks: Tank1SensorHValue   is in range between 0 and 0;
+	    checks: Tank1SensorHValue   should be 0;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_7:
 		when: (Tank1Height >= Tank1SensorLHeight)
-	    checks: Tank1SensorLValue is in range between 1 and 1;
+	    checks: Tank1SensorLValue should be 1;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_8:
 		when: (Tank1Height < Tank1SensorLHeight)
-	    checks: Tank1SensorLValue  is in range between 0 and 0;
+	    checks: Tank1SensorLValue  should be 0;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_9:
 		when: (Tank2Height >= Tank2SensorHHeight)
-	    checks: Tank2SensorHValue is in range between 1 and 1;
+	    checks: Tank2SensorHValue should be 1;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_10:
 		when: (Tank2Height < Tank2SensorHHeight)
-	    checks: Tank2SensorHValue  is in range between 0 and 0;
+	    checks: Tank2SensorHValue  should be 0;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_11:
 		when: (Tank2Height >= Tank2SensorMHeight)
-	    checks: Tank2SensorMValue   is in range between 1 and 1;
+	    checks: Tank2SensorMValue  should be 1;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_12:
 		when: (Tank2Height < Tank2SensorMHeight)
-	    checks: Tank2SensorMValue is in range between 0 and 0;
+	    checks: Tank2SensorMValue should be 0;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_13:
 		when: (Tank2Height >= Tank2SensorLHeight)
-	    checks: Tank2SensorMValue is in range between 1 and 1;
+	    checks: Tank2SensorMValue should be 1;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_14:
 		when: (Tank2Height < Tank2SensorLHeight)
-	    checks: Tank2SensorLValue  is in range between 0 and 0;
+	    checks: Tank2SensorLValue  should be 0;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
@@ -107,28 +107,28 @@ CPS PuertasPiso: implements MONITORING_PLAN_TWOTANKS
 	
 	ORACLE R1_17_a:
 		when: (Pump_State == 1  &&  Valve_State == 1) 
-	    checks: Tank1Height is in range between (Tank1HeightPrev + ( Tank1PumpFlow - ( Tank1ValveFlow * TimeIncrement / Tank1CrossSec ))) and (Tank1HeightPrev + ( Tank1PumpFlow - ( Tank1ValveFlow * TimeIncrement / Tank1CrossSec)));
+	    checks: Tank1Height should be (Tank1HeightPrev + ( Tank1PumpFlow - ( Tank1ValveFlow * TimeIncrement / Tank1CrossSec)));
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_17_b:
 		when: (Pump_State == 1  &&  Valve_State == 0) 
-	    checks: Tank1Height is in range between (Tank1HeightPrev + (Tank1PumpFlow  * TimeIncrement / Tank1CrossSec )) and (Tank1HeightPrev + (Tank1PumpFlow  * TimeIncrement / Tank1CrossSec ));
+	    checks: Tank1Height should be (Tank1HeightPrev + (Tank1PumpFlow  * TimeIncrement / Tank1CrossSec ));
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_17_c:
 		when:  (Pump_State == 0  &&  Valve_State == 1) 
-	    checks: Tank1Height is in range between (Tank1HeightPrev - ( Tank1ValveFlow * TimeIncrement / Tank1CrossSec )) and (Tank1HeightPrev - ( Tank1ValveFlow * TimeIncrement / Tank1CrossSec ));
+	    checks: Tank1Height should be (Tank1HeightPrev - ( Tank1ValveFlow * TimeIncrement / Tank1CrossSec ));
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_17_d:
 		when:  (Pump_State == 0  &&  Valve_State == 0) 
-	    checks: Tank1Height is in range between Tank1HeightPrev  and Tank1HeightPrev ;
+	    checks: Tank1Height should be Tank1HeightPrev ;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
@@ -149,13 +149,13 @@ CPS PuertasPiso: implements MONITORING_PLAN_TWOTANKS
 	
 	ORACLE R1_20:
 		when:  (Pump_State == 0  &&  Valve_State == 0) 
-	    checks: Tank1Height is in range between Tank1HeightPrev and Tank1HeightPrev;
+	    checks: Tank1Height should be Tank1HeightPrev;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_26_a:
-	    checks: Tank1Height is in range between Tank1HeightPrev and Tank1HeightPrev;
+	    checks: Tank1Height should be Tank1HeightPrev;
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
@@ -174,35 +174,35 @@ CPS PuertasPiso: implements MONITORING_PLAN_TWOTANKS
 	
 	ORACLE R1_27_a:
 		when: (Valve_State == 1  &&  PValveState == 1  &&  EValveState == 1   )
-	    checks:  Tank2Height is in range between (Tank2HeightPrev + (  ( (Tank1ValveFlow - Tank2PValveFlow) - Tank2EValveFlow) * TimeIncrement ) / Tank2CrossSec ) and (Tank2HeightPrev + (  ( (Tank1ValveFlow - Tank2PValveFlow) - Tank2EValveFlow) * TimeIncrement ) / Tank2CrossSec);
+	    checks:  Tank2Height should be (Tank2HeightPrev + (  ( (Tank1ValveFlow - Tank2PValveFlow) - Tank2EValveFlow) * TimeIncrement ) / Tank2CrossSec);
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_27_b:
 		when: (  Valve_State == 1  &&  PValveState == 1  &&  EValveState == 0  ) 
-		checks: Tank2Height is in range between (Tank2HeightPrev + ( ( ( Tank1ValveFlow - Tank2PValveFlow ) * TimeIncrement ) / Tank2CrossSec ) ) and (Tank2HeightPrev + ( ( ( Tank1ValveFlow - Tank2PValveFlow ) * TimeIncrement ) / Tank2CrossSec)); 
+		checks: Tank2Height should be (Tank2HeightPrev + ( ( ( Tank1ValveFlow - Tank2PValveFlow ) * TimeIncrement ) / Tank2CrossSec)); 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_27_c:
 		when: (  Valve_State == 1  &&  PValveState == 0  &&  EValveState == 1  ) 
-		checks: Tank2Height is in range between (Tank2HeightPrev + ( ( ( Tank1ValveFlow - Tank2EValveFlow ) * TimeIncrement ) / Tank2CrossSec )  )  and (Tank2HeightPrev + ( ( ( Tank1ValveFlow - Tank2EValveFlow ) * TimeIncrement ) / Tank2CrossSec )); 
+		checks: Tank2Height should be (Tank2HeightPrev + ( ( ( Tank1ValveFlow - Tank2EValveFlow ) * TimeIncrement ) / Tank2CrossSec )); 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_27_d:
 		when: (  Valve_State == 1  &&  PValveState == 0  &&  EValveState == 0 ) 
-		checks: Tank2Height is in range between (Tank2HeightPrev + ( ( Tank1ValveFlow * TimeIncrement ) / Tank2CrossSec )  ) and(Tank2HeightPrev + ( ( Tank1ValveFlow * TimeIncrement ) / Tank2CrossSec )  ) ; 
+		checks: Tank2Height should be (Tank2HeightPrev + ( ( Tank1ValveFlow * TimeIncrement ) / Tank2CrossSec )  ) ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_27_e:
 		when: (  Valve_State == 0 &&  PValveState == 1  &&  EValveState == 1 ) 
-		checks: Tank2Height is in range between (Tank2HeightPrev + ( ( ( (0-1 * Tank2PValveFlow) - Tank2EValveFlow ) * TimeIncrement ) / Tank2CrossSec ) ) and (Tank2HeightPrev + ( ( ( (0-1 * Tank2PValveFlow) - Tank2EValveFlow ) * TimeIncrement ) / Tank2CrossSec ) ) ; 
+		checks: Tank2Height should be (Tank2HeightPrev + ( ( ( (0-1 * Tank2PValveFlow) - Tank2EValveFlow ) * TimeIncrement ) / Tank2CrossSec ) ) ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
@@ -210,21 +210,21 @@ CPS PuertasPiso: implements MONITORING_PLAN_TWOTANKS
 	
 	ORACLE R1_27_e:
 		when: (  Valve_State == 0 &&  PValveState == 1  &&  EValveState == 0 ) 
-		checks: Tank2Height is in range between (Tank2HeightPrev + ( ( (0-1 * Tank2PValveFlow) * TimeIncrement ) / Tank2CrossSec )) and (Tank2HeightPrev + ( ( (0-1 * Tank2PValveFlow) * TimeIncrement ) / Tank2CrossSec )) ; 
+		checks: Tank2Height should be (Tank2HeightPrev + ( ( (0-1 * Tank2PValveFlow) * TimeIncrement ) / Tank2CrossSec )) ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_27_f:
 		when: (  Valve_State == 0 &&  PValveState == 0  &&  EValveState == 1) 
-		checks: Tank2Height is in range between (Tank2HeightPrev + ( ( ( (0-1 * Tank2EValveFlow) ) * TimeIncrement ) / Tank2CrossSec )) and (Tank2HeightPrev + ( ( ( (0-1 * Tank2EValveFlow) ) * TimeIncrement ) / Tank2CrossSec )); 
+		checks: Tank2Height should be (Tank2HeightPrev + ( ( ( (0-1 * Tank2EValveFlow) ) * TimeIncrement ) / Tank2CrossSec )); 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R1_27_g:
 		when: (  Valve_State == 0 &&  PValveState == 0  &&  EValveState == 0) 
-		checks: Tank2Height is in range between Tank2HeightPrev  and Tank2HeightPrev  ; 
+		checks: Tank2Height should be Tank2HeightPrev  ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
@@ -252,88 +252,88 @@ CPS PuertasPiso: implements MONITORING_PLAN_TWOTANKS
 	
 	ORACLE R1_31:
 		when: ( Valve_State == 0  &&  PValveState == 0  &&  EValveState == 0) 
-		checks: Tank2Height is in range between Tank2HeightPrev and Tank2HeightPrev; 
+		checks: Tank2Height should be Tank2HeightPrev; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R2_1_a:
 		when: ( Tank1SensorLValue == 0 ) 
-		checks: Pump_State  is in range between 1 and 1; 
+		checks: Pump_State  should be 1; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R2_1_b:
 		when: ( Tank1SensorLValue == 0 ) 
-		checks: Valve_State   is in range between 0 and 0; 
+		checks: Valve_State should be 0; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R2_2_a:
 		when: ( Tank1SensorHValue == 1 ) 
-		checks: Pump_State    is in range between 0 and 0; 
+		checks: Pump_State  should be 0; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R2_2_b:
 		when: ( Tank1SensorHValue == 1 ) 
-		checks: Valve_State  is in range between 1 and 1; 
+		checks: Valve_State  should be 1; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R2_3_a:
 		when: ( Tank1SensorHValue == 1 && Tank1SensorLValue == 1 ) 
-		checks: Pump_State  is in range between Pump_StatePrev   and Pump_StatePrev  ; 
+		checks: Pump_State  should be Pump_StatePrev  ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	ORACLE R2_3_b:
 		when: ( Tank1SensorHValue == 1 && Tank1SensorLValue == 1 ) 
-		checks: Valve_State  is in range between Pump_StatePrev   and Valve_StatePrev   ; 
+		checks: Valve_State  should be Valve_StatePrev   ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R2_7_a:
 		when: ( Tank2SensorLValue == 0 ) 
-		checks: PValveState is in range between 0 and 0; 
+		checks: PValveState should be 0; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	ORACLE R2_7_b:
 		when: (Tank2SensorLValue == 0 ) 
-		checks: EValveState   is in range between 0 and 0 ; 
+		checks: EValveState should be 0 ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R2_8_a:
 		when: ( Tank2SensorLValue == 1  &&  Tank2SensorMValue == 0  ) 
-		checks: PValveState is in range between 0 and 0; 
+		checks: PValveState should be 0; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	ORACLE R2_8_b:
 		when: ( Tank2SensorLValue == 1  &&  Tank2SensorMValue == 0  ) 
-		checks: EValveState   is in range between 1 and 1 ; 
+		checks: EValveState  should be 1 ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R2_9_a:
 		when: (Tank2SensorHValue  == 1 ) 
-		checks: PValveState    is in range between 1 and 1 ; 
+		checks: PValveState  should be 1 ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R2_9_b:
 		when: (Tank2SensorHValue  == 1 ) 
-		checks: EValveState    is in range between 1 and 1 ; 
+		checks: EValveState  should be 1 ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
@@ -341,14 +341,14 @@ CPS PuertasPiso: implements MONITORING_PLAN_TWOTANKS
 	
 	ORACLE R2_10_a:
 		when: (Tank2SensorHValue == 0  &&  Tank2SensorMValue == 1  &&  EValveStatePrev == 1  ) 
-		checks: PValveState    is in range between 1 and 1 ; 
+		checks: PValveState  should be 1 ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R2_10_b:
 		when: (Tank2SensorHValue == 0  &&  Tank2SensorMValue == 1  &&  EValveStatePrev == 1  ) 
-		checks: EValveState    is in range between 1 and 1 ; 
+		checks: EValveState  should be 1 ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
@@ -356,14 +356,14 @@ CPS PuertasPiso: implements MONITORING_PLAN_TWOTANKS
 	
 	ORACLE R2_11_a:
 		when: (Tank2SensorHValue == 0  &&  Tank2SensorMValue == 1  &&  EValveStatePrev == 0  ) 
-		checks: PValveState    is in range between 1 and 1 ; 
+		checks: PValveState  should be 1 ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
 	
 	ORACLE R2_11_b:
 		when: (Tank2SensorHValue == 0  &&  Tank2SensorMValue == 1  &&  EValveStatePrev == 0  ) 
-		checks: EValveState    is in range between 0 and 0 ; 
+		checks: EValveState should be 0 ; 
 		fails if : confidence is below 0;
 		Description: "EXPLICACION"
 	ENDORACLE
