@@ -2876,6 +2876,17 @@ ruleMulOrDiv returns [EObject current=null]
 								}
 								setWithLastConsumed($current, "op", lv_op_2_2, null);
 							}
+							    |
+							lv_op_2_3='^'
+							{
+								newLeafNode(lv_op_2_3, grammarAccess.getMulOrDivAccess().getOpCircumflexAccentKeyword_1_0_1_0_2());
+							}
+							{
+								if ($current==null) {
+									$current = createModelElement(grammarAccess.getMulOrDivRule());
+								}
+								setWithLastConsumed($current, "op", lv_op_2_3, null);
+							}
 						)
 					)
 				)

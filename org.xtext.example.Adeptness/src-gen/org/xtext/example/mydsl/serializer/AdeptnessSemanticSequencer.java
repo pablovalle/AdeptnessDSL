@@ -850,7 +850,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Primary returns MulOrDiv
 	 *
 	 * Constraint:
-	 *     (left=MulOrDiv_MulOrDiv_1_0_0 (op='*' | op='/') right=Primary)
+	 *     (left=MulOrDiv_MulOrDiv_1_0_0 (op='*' | op='/' | op='^') right=Primary)
 	 */
 	protected void sequence_MulOrDiv(ISerializationContext context, MulOrDiv semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

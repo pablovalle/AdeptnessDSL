@@ -1,0 +1,184 @@
+MONITORINGPLAN MONITORING_PLAN_TWOTANKS:
+	MONITOR Tank2Height:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR SafeLevel:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank1Height:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank1MaxHeight:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank1CrossSec:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank2Height:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank2MaxHeight:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank2CrossSec:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank1SensorHHeight:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank1SensorHValue :
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank1SensorLHeight:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank1SensorLValue :
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank2SensorHHeight:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank2SensorHValue :
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank2SensorLHeight:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank2SensorLValue:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank2Height:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank2SensorMHeight:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank2SensorMValue:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank2SensorLValue:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR TimeIncrement:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank1ValveFlow:
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank1CrossSec :
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank1Height  :
+	 	type: double
+	 	max: 100
+	 	min: 0
+	ENDMONITOR
+	MONITOR Tank1HeightPrev:
+		type: double
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR Tank1PumpFlow:
+		type: double
+		max: 100
+		min:  0
+	ENDMONITOR
+	MONITOR Pump_State:
+		type: int
+		max: 100
+		min:  0
+	ENDMONITOR
+	MONITOR Valve_State:
+		type: int
+		max: 100
+		min:  0
+	ENDMONITOR
+	MONITOR Tank2PValveFlow:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR Tank2EValveFlow:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR Tank2HeightPrev:
+		type: int
+		max: 0
+		min: 0
+	ENDMONITOR
+	MONITOR EValveState:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR PValveState:
+		type: int
+		max: 1
+		min:0
+	ENDMONITOR
+	MONITOR Pump_StatePrev:
+		type: int
+		max: 1
+		min:0
+	ENDMONITOR
+	MONITOR Valve_StatePrev:
+		type: int
+		max: 1
+		min:0
+	ENDMONITOR
+	MONITOR EValveStatePrev:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	
+	
+ENDMONITORINGPLAN 

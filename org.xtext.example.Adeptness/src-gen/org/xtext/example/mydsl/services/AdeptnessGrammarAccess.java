@@ -1726,32 +1726,33 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		private final Alternatives cOpAlternatives_1_0_1_0 = (Alternatives)cOpAssignment_1_0_1.eContents().get(0);
 		private final Keyword cOpAsteriskKeyword_1_0_1_0_0 = (Keyword)cOpAlternatives_1_0_1_0.eContents().get(0);
 		private final Keyword cOpSolidusKeyword_1_0_1_0_1 = (Keyword)cOpAlternatives_1_0_1_0.eContents().get(1);
+		private final Keyword cOpCircumflexAccentKeyword_1_0_1_0_2 = (Keyword)cOpAlternatives_1_0_1_0.eContents().get(2);
 		private final Assignment cRightAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
 		private final RuleCall cRightPrimaryParserRuleCall_1_1_0 = (RuleCall)cRightAssignment_1_1.eContents().get(0);
 		
 		//MulOrDiv Expression:
-		//	Primary (({MulOrDiv.left=current} op=('*' | '/')) right=Primary)*;
+		//	Primary (({MulOrDiv.left=current} op=('*' | '/' | '^')) right=Primary)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//Primary (({MulOrDiv.left=current} op=('*' | '/')) right=Primary)*
+		//Primary (({MulOrDiv.left=current} op=('*' | '/' | '^')) right=Primary)*
 		public Group getGroup() { return cGroup; }
 		
 		//Primary
 		public RuleCall getPrimaryParserRuleCall_0() { return cPrimaryParserRuleCall_0; }
 		
-		//(({MulOrDiv.left=current} op=('*' | '/')) right=Primary)*
+		//(({MulOrDiv.left=current} op=('*' | '/' | '^')) right=Primary)*
 		public Group getGroup_1() { return cGroup_1; }
 		
-		//({MulOrDiv.left=current} op=('*' | '/'))
+		//({MulOrDiv.left=current} op=('*' | '/' | '^'))
 		public Group getGroup_1_0() { return cGroup_1_0; }
 		
 		//{MulOrDiv.left=current}
 		public Action getMulOrDivLeftAction_1_0_0() { return cMulOrDivLeftAction_1_0_0; }
 		
-		//op=('*' | '/')
+		//op=('*' | '/' | '^')
 		public Assignment getOpAssignment_1_0_1() { return cOpAssignment_1_0_1; }
 		
-		//('*' | '/')
+		//('*' | '/' | '^')
 		public Alternatives getOpAlternatives_1_0_1_0() { return cOpAlternatives_1_0_1_0; }
 		
 		//'*'
@@ -1759,6 +1760,9 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		
 		//'/'
 		public Keyword getOpSolidusKeyword_1_0_1_0_1() { return cOpSolidusKeyword_1_0_1_0_1; }
+		
+		//'^'
+		public Keyword getOpCircumflexAccentKeyword_1_0_1_0_2() { return cOpCircumflexAccentKeyword_1_0_1_0_2; }
 		
 		//right=Primary
 		public Assignment getRightAssignment_1_1() { return cRightAssignment_1_1; }
@@ -2583,7 +2587,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	}
 	
 	//MulOrDiv Expression:
-	//	Primary (({MulOrDiv.left=current} op=('*' | '/')) right=Primary)*;
+	//	Primary (({MulOrDiv.left=current} op=('*' | '/' | '^')) right=Primary)*;
 	public MulOrDivElements getMulOrDivAccess() {
 		return pMulOrDiv;
 	}

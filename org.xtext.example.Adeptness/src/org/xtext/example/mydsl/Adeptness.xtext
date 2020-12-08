@@ -250,7 +250,7 @@ PlusOrMinus returns Expression:
 
 MulOrDiv returns Expression:
 	Primary (
-	({MulOrDiv.left=current} op=('*' | '/'))
+	({MulOrDiv.left=current} op=('*' | '/' | '^'))
 	right=Primary
 	)*;
 Primary returns Expression:
@@ -258,12 +258,11 @@ Primary returns Expression:
 {Not} '!' expression=Primary |
 Atomic ;
 
-Atomic returns Expression:
-
+Atomic returns Expression: //TODO: Support for doubles and negative values (negatives can be handled with 0-1)
 	{IntConstant} value=INT |
 	{StringConstant} value=STRING |
 	{BoolConstant} value=('true' | 'false') |
-	variable=Variable;
+	variable=Variable ;
 
 /*------------------------ANOHER EXPRESIONS MATHS------------------------ */
 

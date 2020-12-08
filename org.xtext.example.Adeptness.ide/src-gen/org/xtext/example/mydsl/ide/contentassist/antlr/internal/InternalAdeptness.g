@@ -1637,6 +1637,12 @@ rule__MulOrDiv__OpAlternatives_1_0_1_0
 		'/'
 		{ after(grammarAccess.getMulOrDivAccess().getOpSolidusKeyword_1_0_1_0_1()); }
 	)
+	|
+	(
+		{ before(grammarAccess.getMulOrDivAccess().getOpCircumflexAccentKeyword_1_0_1_0_2()); }
+		'^'
+		{ after(grammarAccess.getMulOrDivAccess().getOpCircumflexAccentKeyword_1_0_1_0_2()); }
+	)
 ;
 finally {
 	restoreStackSize(stackSize);
