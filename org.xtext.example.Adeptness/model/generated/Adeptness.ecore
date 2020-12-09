@@ -46,8 +46,14 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="when" upperBound="-1" eType="#//When"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="while" upperBound="-1"
+        eType="#//While" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="check" upperBound="-1"
         eType="#//Checks" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="While">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="em" eType="#//ExpressionsModel"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="When">
     <eStructuralFeatures xsi:type="ecore:EReference" name="em" eType="#//ExpressionsModel"

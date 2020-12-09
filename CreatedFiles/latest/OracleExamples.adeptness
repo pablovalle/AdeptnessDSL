@@ -2,8 +2,17 @@ import MonitoringFileExample.adeptness
   
 CPS HVS: implements HVS_MONITORINGPLAN 
 	
+		ORACLE AWTChecker2:
+		while: ((numLlamadasActivas-AWT) < 10) 
+		checks: AWT is below 5 ;
+		fails if : confidence is below -0.9;
+		fails if : confidence is below -0.2 within 10 miliseconds;
+		fails if :confidence is below -0.2 more than 30 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+	
 	ORACLE AWTChecker2:
-		when: ((numLlamadasActivas-AWT) < 10) 
+		while: ((numLlamadasActivas-AWT) < 10) 
 		checks: (AWT-ATTD) is in range between 5 and 30;
 		fails if : confidence is below -0.9;
 		fails if : confidence is below -0.2 within 10 miliseconds;
@@ -13,7 +22,7 @@ CPS HVS: implements HVS_MONITORINGPLAN
 	
 
 	ORACLE AWTChecker:
-		when: (numLlamadasActivas > 11 && numLlamadasActivas <50)
+		while: (numLlamadasActivas > 11 && numLlamadasActivas <50)
 		checks: AWT is in range between 10 and 80;
 		fails if : confidence is below -0.9;
 		fails if : confidence is below -0.2 within 10 miliseconds;
@@ -42,6 +51,8 @@ CPS HVS: implements HVS_MONITORINGPLAN
 		fails if : confidence is below -0.3;
 		Description: "sdf"
 	ENDORACLE
+	
+	
 	/*	
 	/*ORACLE EnergyChecker:
 		checks: "Energy" is above 0;

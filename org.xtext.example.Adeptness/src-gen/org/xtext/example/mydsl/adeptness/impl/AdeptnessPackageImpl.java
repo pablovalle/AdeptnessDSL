@@ -62,6 +62,7 @@ import org.xtext.example.mydsl.adeptness.Type;
 import org.xtext.example.mydsl.adeptness.Upper;
 import org.xtext.example.mydsl.adeptness.Variable;
 import org.xtext.example.mydsl.adeptness.When;
+import org.xtext.example.mydsl.adeptness.While;
 import org.xtext.example.mydsl.adeptness.XPeaks;
 
 /**
@@ -148,6 +149,13 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   private EClass oracleEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass whileEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -809,9 +817,42 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getOracle_Check()
+  public EReference getOracle_While()
   {
     return (EReference)oracleEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getOracle_Check()
+  {
+    return (EReference)oracleEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getWhile()
+  {
+    return whileEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getWhile_Em()
+  {
+    return (EReference)whileEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2224,7 +2265,11 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     oracleEClass = createEClass(ORACLE);
     createEAttribute(oracleEClass, ORACLE__NAME);
     createEReference(oracleEClass, ORACLE__WHEN);
+    createEReference(oracleEClass, ORACLE__WHILE);
     createEReference(oracleEClass, ORACLE__CHECK);
+
+    whileEClass = createEClass(WHILE);
+    createEReference(whileEClass, WHILE__EM);
 
     whenEClass = createEClass(WHEN);
     createEReference(whenEClass, WHEN__EM);
@@ -2478,7 +2523,11 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     initEClass(oracleEClass, Oracle.class, "Oracle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getOracle_Name(), ecorePackage.getEString(), "name", null, 0, 1, Oracle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getOracle_When(), this.getWhen(), null, "when", null, 0, -1, Oracle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getOracle_While(), this.getWhile(), null, "while", null, 0, -1, Oracle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getOracle_Check(), this.getChecks(), null, "check", null, 0, -1, Oracle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(whileEClass, While.class, "While", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getWhile_Em(), this.getExpressionsModel(), null, "em", null, 0, 1, While.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(whenEClass, When.class, "When", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getWhen_Em(), this.getExpressionsModel(), null, "em", null, 0, 1, When.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

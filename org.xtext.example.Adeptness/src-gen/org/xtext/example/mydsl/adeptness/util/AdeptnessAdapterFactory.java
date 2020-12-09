@@ -131,6 +131,11 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
         return createOracleAdapter();
       }
       @Override
+      public Adapter caseWhile(While object)
+      {
+        return createWhileAdapter();
+      }
+      @Override
       public Adapter caseWhen(When object)
       {
         return createWhenAdapter();
@@ -523,6 +528,21 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createOracleAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.While <em>While</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.While
+   * @generated
+   */
+  public Adapter createWhileAdapter()
   {
     return null;
   }

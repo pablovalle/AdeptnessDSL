@@ -23,6 +23,7 @@ import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.Checks;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.When;
+import org.xtext.example.mydsl.adeptness.While;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,6 +35,7 @@ import org.xtext.example.mydsl.adeptness.When;
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.OracleImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.OracleImpl#getWhen <em>When</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.OracleImpl#getWhile <em>While</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.OracleImpl#getCheck <em>Check</em>}</li>
  * </ul>
  *
@@ -70,6 +72,16 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
    * @ordered
    */
   protected EList<When> when;
+
+  /**
+   * The cached value of the '{@link #getWhile() <em>While</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getWhile()
+   * @generated
+   * @ordered
+   */
+  protected EList<While> while_;
 
   /**
    * The cached value of the '{@link #getCheck() <em>Check</em>}' containment reference list.
@@ -148,6 +160,21 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
    * @generated
    */
   @Override
+  public EList<While> getWhile()
+  {
+    if (while_ == null)
+    {
+      while_ = new EObjectContainmentEList<While>(While.class, this, AdeptnessPackage.ORACLE__WHILE);
+    }
+    return while_;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EList<Checks> getCheck()
   {
     if (check == null)
@@ -169,6 +196,8 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
     {
       case AdeptnessPackage.ORACLE__WHEN:
         return ((InternalEList<?>)getWhen()).basicRemove(otherEnd, msgs);
+      case AdeptnessPackage.ORACLE__WHILE:
+        return ((InternalEList<?>)getWhile()).basicRemove(otherEnd, msgs);
       case AdeptnessPackage.ORACLE__CHECK:
         return ((InternalEList<?>)getCheck()).basicRemove(otherEnd, msgs);
     }
@@ -189,6 +218,8 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
         return getName();
       case AdeptnessPackage.ORACLE__WHEN:
         return getWhen();
+      case AdeptnessPackage.ORACLE__WHILE:
+        return getWhile();
       case AdeptnessPackage.ORACLE__CHECK:
         return getCheck();
     }
@@ -212,6 +243,10 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
       case AdeptnessPackage.ORACLE__WHEN:
         getWhen().clear();
         getWhen().addAll((Collection<? extends When>)newValue);
+        return;
+      case AdeptnessPackage.ORACLE__WHILE:
+        getWhile().clear();
+        getWhile().addAll((Collection<? extends While>)newValue);
         return;
       case AdeptnessPackage.ORACLE__CHECK:
         getCheck().clear();
@@ -237,6 +272,9 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
       case AdeptnessPackage.ORACLE__WHEN:
         getWhen().clear();
         return;
+      case AdeptnessPackage.ORACLE__WHILE:
+        getWhile().clear();
+        return;
       case AdeptnessPackage.ORACLE__CHECK:
         getCheck().clear();
         return;
@@ -258,6 +296,8 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case AdeptnessPackage.ORACLE__WHEN:
         return when != null && !when.isEmpty();
+      case AdeptnessPackage.ORACLE__WHILE:
+        return while_ != null && !while_.isEmpty();
       case AdeptnessPackage.ORACLE__CHECK:
         return check != null && !check.isEmpty();
     }

@@ -765,21 +765,43 @@ ruleOracle returns [EObject current=null]
 		}
 		(
 			(
-				{
-					newCompositeNode(grammarAccess.getOracleAccess().getWhenWhenParserRuleCall_3_0());
-				}
-				lv_when_3_0=ruleWhen
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getOracleRule());
+				(
+					{
+						newCompositeNode(grammarAccess.getOracleAccess().getWhenWhenParserRuleCall_3_0_0());
 					}
-					add(
-						$current,
-						"when",
-						lv_when_3_0,
-						"org.xtext.example.mydsl.Adeptness.When");
-					afterParserOrEnumRuleCall();
-				}
+					lv_when_3_0=ruleWhen
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getOracleRule());
+						}
+						add(
+							$current,
+							"when",
+							lv_when_3_0,
+							"org.xtext.example.mydsl.Adeptness.When");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getOracleAccess().getWhileWhileParserRuleCall_3_1_0());
+					}
+					lv_while_4_0=ruleWhile
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getOracleRule());
+						}
+						add(
+							$current,
+							"while",
+							lv_while_4_0,
+							"org.xtext.example.mydsl.Adeptness.While");
+						afterParserOrEnumRuleCall();
+					}
+				)
 			)
 		)?
 		(
@@ -787,7 +809,7 @@ ruleOracle returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getOracleAccess().getCheckChecksParserRuleCall_4_0());
 				}
-				lv_check_4_0=ruleChecks
+				lv_check_5_0=ruleChecks
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getOracleRule());
@@ -795,16 +817,58 @@ ruleOracle returns [EObject current=null]
 					add(
 						$current,
 						"check",
-						lv_check_4_0,
+						lv_check_5_0,
 						"org.xtext.example.mydsl.Adeptness.Checks");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)+
-		otherlv_5='ENDORACLE'
+		otherlv_6='ENDORACLE'
 		{
-			newLeafNode(otherlv_5, grammarAccess.getOracleAccess().getENDORACLEKeyword_5());
+			newLeafNode(otherlv_6, grammarAccess.getOracleAccess().getENDORACLEKeyword_5());
 		}
+	)
+;
+
+// Entry rule entryRuleWhile
+entryRuleWhile returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getWhileRule()); }
+	iv_ruleWhile=ruleWhile
+	{ $current=$iv_ruleWhile.current; }
+	EOF;
+
+// Rule While
+ruleWhile returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='while:'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getWhileAccess().getWhileKeyword_0());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getWhileAccess().getEmExpressionsModelParserRuleCall_1_0());
+				}
+				lv_em_1_0=ruleExpressionsModel
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getWhileRule());
+					}
+					set(
+						$current,
+						"em",
+						lv_em_1_0,
+						"org.xtext.example.mydsl.Adeptness.ExpressionsModel");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
 	)
 ;
 

@@ -477,20 +477,21 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cWhenAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cWhenWhenParserRuleCall_3_0 = (RuleCall)cWhenAssignment_3.eContents().get(0);
+		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
+		private final Assignment cWhenAssignment_3_0 = (Assignment)cAlternatives_3.eContents().get(0);
+		private final RuleCall cWhenWhenParserRuleCall_3_0_0 = (RuleCall)cWhenAssignment_3_0.eContents().get(0);
+		private final Assignment cWhileAssignment_3_1 = (Assignment)cAlternatives_3.eContents().get(1);
+		private final RuleCall cWhileWhileParserRuleCall_3_1_0 = (RuleCall)cWhileAssignment_3_1.eContents().get(0);
 		private final Assignment cCheckAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cCheckChecksParserRuleCall_4_0 = (RuleCall)cCheckAssignment_4.eContents().get(0);
 		private final Keyword cENDORACLEKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
 		//Oracle:
-		//	'ORACLE' name=ID ':'
-		//	when+=When?
+		//	'ORACLE' name=ID ':' (when+=When | while+=While)?
 		//	check+=Checks+ 'ENDORACLE';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'ORACLE' name=ID ':'
-		//when+=When?
+		//'ORACLE' name=ID ':' (when+=When | while+=While)?
 		//check+=Checks+ 'ENDORACLE'
 		public Group getGroup() { return cGroup; }
 		
@@ -506,11 +507,20 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		//':'
 		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
 		
-		//when+=When?
-		public Assignment getWhenAssignment_3() { return cWhenAssignment_3; }
+		//(when+=When | while+=While)?
+		public Alternatives getAlternatives_3() { return cAlternatives_3; }
+		
+		//when+=When
+		public Assignment getWhenAssignment_3_0() { return cWhenAssignment_3_0; }
 		
 		//When
-		public RuleCall getWhenWhenParserRuleCall_3_0() { return cWhenWhenParserRuleCall_3_0; }
+		public RuleCall getWhenWhenParserRuleCall_3_0_0() { return cWhenWhenParserRuleCall_3_0_0; }
+		
+		//while+=While
+		public Assignment getWhileAssignment_3_1() { return cWhileAssignment_3_1; }
+		
+		//While
+		public RuleCall getWhileWhileParserRuleCall_3_1_0() { return cWhileWhileParserRuleCall_3_1_0; }
 		
 		//check+=Checks+
 		public Assignment getCheckAssignment_4() { return cCheckAssignment_4; }
@@ -520,6 +530,30 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		
 		//'ENDORACLE'
 		public Keyword getENDORACLEKeyword_5() { return cENDORACLEKeyword_5; }
+	}
+	public class WhileElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.While");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cWhileKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cEmAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cEmExpressionsModelParserRuleCall_1_0 = (RuleCall)cEmAssignment_1.eContents().get(0);
+		
+		//While:
+		//	'while:' em=ExpressionsModel// precondReference = PrecondReference
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'while:' em=ExpressionsModel
+		public Group getGroup() { return cGroup; }
+		
+		//'while:'
+		public Keyword getWhileKeyword_0() { return cWhileKeyword_0; }
+		
+		//em=ExpressionsModel
+		public Assignment getEmAssignment_1() { return cEmAssignment_1; }
+		
+		//ExpressionsModel
+		public RuleCall getEmExpressionsModelParserRuleCall_1_0() { return cEmExpressionsModelParserRuleCall_1_0; }
 	}
 	public class WhenElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.When");
@@ -1989,6 +2023,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	private final SignalElements pSignal;
 	private final ImportMonitoringPlanElements pImportMonitoringPlan;
 	private final OracleElements pOracle;
+	private final WhileElements pWhile;
 	private final WhenElements pWhen;
 	private final ChecksElements pChecks;
 	private final DescriptionElements pDescription;
@@ -2053,6 +2088,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 		this.pSignal = new SignalElements();
 		this.pImportMonitoringPlan = new ImportMonitoringPlanElements();
 		this.pOracle = new OracleElements();
+		this.pWhile = new WhileElements();
 		this.pWhen = new WhenElements();
 		this.pChecks = new ChecksElements();
 		this.pDescription = new DescriptionElements();
@@ -2276,8 +2312,7 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	}
 	
 	//Oracle:
-	//	'ORACLE' name=ID ':'
-	//	when+=When?
+	//	'ORACLE' name=ID ':' (when+=When | while+=While)?
 	//	check+=Checks+ 'ENDORACLE';
 	public OracleElements getOracleAccess() {
 		return pOracle;
@@ -2285,6 +2320,17 @@ public class AdeptnessGrammarAccess extends AbstractElementFinder.AbstractGramma
 	
 	public ParserRule getOracleRule() {
 		return getOracleAccess().getRule();
+	}
+	
+	//While:
+	//	'while:' em=ExpressionsModel// precondReference = PrecondReference
+	//;
+	public WhileElements getWhileAccess() {
+		return pWhile;
+	}
+	
+	public ParserRule getWhileRule() {
+		return getWhileAccess().getRule();
 	}
 	
 	//When:

@@ -8,7 +8,7 @@ CPS Autopilot: implements MONITORING_PLAN_AUTOPILOT
 	 */
 	
 	ORACLE R1_1:
-		when: (APEngPrev=0 && APEng==1) 
+		while: (APEngPrev=0 && APEng==1) 
 		checks: AilCmd should not be 0;
 		fails if :  confidence is below 0;
 		Description: "desc"
@@ -19,7 +19,7 @@ CPS Autopilot: implements MONITORING_PLAN_AUTOPILOT
 	  */
 	
 	ORACLE R1_2:
-		when: (APEng==1 && HDGMode==0 && ALTMode==0) //TODO: negativos
+		while: (APEng==1 && HDGMode==0 && ALTMode==0) //TODO: negativos
 		checks: isRoll should be 1;
 		fails if :  confidence is below 0;
 		Description: "desc"
@@ -32,35 +32,35 @@ CPS Autopilot: implements MONITORING_PLAN_AUTOPILOT
 	AND 3<=Tk<=30   ==> PhiRef= Tk )       R1_3e */
 	
 	ORACLE R1_3A:
-		when: (Phi> 0-6 && Phi< 6) //TODO: negativos
+		while: (Phi> 0-6 && Phi< 6) //TODO: negativos
 		checks: PhiRef should be 0;
 		fails if :  confidence is below 0;
 		Description: "desc"
 	ENDORACLE
 
 	ORACLE R1_3B:
-		when: (Phi > 30)
+		while: (Phi > 30)
 		checks: PhiRef should be 30;
 		fails if :  confidence is below 0;
 		Description: "desc"
 	ENDORACLE
 	
 	ORACLE R1_3C:
-		when: (Phi < 30)
+		while: (Phi < 30)
 		checks: PhiRef should be -30;
 		fails if :  confidence is below 0;
 		Description: "desc"
 	ENDORACLE
 	
 	ORACLE R1_3D:
-		when: (Tk > 0-30 && Tk< 3)
+		while: (Tk > 0-30 && Tk< 3)
 		checks: PhiRef should be Tk;
 		fails if :  confidence is below 0;
 		Description: "desc"
 	ENDORACLE
 	
 	ORACLE R1_3E:
-		when: (Tk>3 && Tk<30)
+		while: (Tk>3 && Tk<30)
 		checks: PhiRef should be Tk;
 		fails if :  confidence is below 0;
 		Description: "desc"
@@ -84,7 +84,7 @@ CPS Autopilot: implements MONITORING_PLAN_AUTOPILOT
 	 //R1.5 -> G{0,T} (Tk - TkPrev >= 30) ==> G{0,T} (|P| <= 6.6)
 	 
 	ORACLE R1_5:
-	  	when: (Tk-TkPrev>=30)
+	  	while: (Tk-TkPrev>=30)
 		checks: P is in range between -6.6 and 6.6;
 		fails if :  confidence is below 0;
 		Description: "desc"
@@ -108,7 +108,7 @@ CPS Autopilot: implements MONITORING_PLAN_AUTOPILOT
 	 
 	 //  R1.8 -> G{0,T} (HDGMode=0 ==> isRoll=1)
 	 ORACLE R1_8:
-	 	when: (HDGMode==0)
+	 	while: (HDGMode==0)
 	 	checks: isRoll should be 1;
 	 	fails if : confidence is below 0;
 	 	Description: "desc"

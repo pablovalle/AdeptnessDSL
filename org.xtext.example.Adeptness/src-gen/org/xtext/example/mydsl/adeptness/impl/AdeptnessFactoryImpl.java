@@ -76,6 +76,7 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.SIGNAL: return createSignal();
       case AdeptnessPackage.IMPORT_MONITORING_PLAN: return createImportMonitoringPlan();
       case AdeptnessPackage.ORACLE: return createOracle();
+      case AdeptnessPackage.WHILE: return createWhile();
       case AdeptnessPackage.WHEN: return createWhen();
       case AdeptnessPackage.CHECKS: return createChecks();
       case AdeptnessPackage.DESCRIPTION: return createDescription();
@@ -253,6 +254,18 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
   {
     OracleImpl oracle = new OracleImpl();
     return oracle;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public While createWhile()
+  {
+    WhileImpl while_ = new WhileImpl();
+    return while_;
   }
 
   /**

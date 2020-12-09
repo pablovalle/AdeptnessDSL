@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Oracle#getName <em>Name</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Oracle#getWhen <em>When</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Oracle#getWhile <em>While</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Oracle#getCheck <em>Check</em>}</li>
  * </ul>
  *
@@ -60,6 +61,18 @@ public interface Oracle extends EObject
    * @generated
    */
   EList<When> getWhen();
+
+  /**
+   * Returns the value of the '<em><b>While</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.example.mydsl.adeptness.While}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>While</em>' containment reference list.
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getOracle_While()
+   * @model containment="true"
+   * @generated
+   */
+  EList<While> getWhile();
 
   /**
    * Returns the value of the '<em><b>Check</b></em>' containment reference list.

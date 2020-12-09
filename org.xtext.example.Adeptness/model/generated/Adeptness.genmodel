@@ -42,7 +42,11 @@
     <genClasses ecoreClass="Adeptness.ecore#//Oracle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Oracle/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Oracle/when"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Oracle/while"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Oracle/check"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//While">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//While/em"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//When">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//When/em"/>

@@ -420,13 +420,22 @@ public interface AdeptnessPackage extends EPackage
   int ORACLE__WHEN = 1;
 
   /**
+   * The feature id for the '<em><b>While</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ORACLE__WHILE = 2;
+
+  /**
    * The feature id for the '<em><b>Check</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ORACLE__CHECK = 2;
+  int ORACLE__CHECK = 3;
 
   /**
    * The number of structural features of the '<em>Oracle</em>' class.
@@ -435,7 +444,35 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ORACLE_FEATURE_COUNT = 3;
+  int ORACLE_FEATURE_COUNT = 4;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.WhileImpl <em>While</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.WhileImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getWhile()
+   * @generated
+   */
+  int WHILE = 11;
+
+  /**
+   * The feature id for the '<em><b>Em</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WHILE__EM = 0;
+
+  /**
+   * The number of structural features of the '<em>While</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WHILE_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.WhenImpl <em>When</em>}' class.
@@ -445,7 +482,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getWhen()
    * @generated
    */
-  int WHEN = 11;
+  int WHEN = 12;
 
   /**
    * The feature id for the '<em><b>Em</b></em>' containment reference.
@@ -473,7 +510,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getChecks()
    * @generated
    */
-  int CHECKS = 12;
+  int CHECKS = 13;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -537,7 +574,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getDescription()
    * @generated
    */
-  int DESCRIPTION = 13;
+  int DESCRIPTION = 14;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -565,7 +602,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getFailReason()
    * @generated
    */
-  int FAIL_REASON = 14;
+  int FAIL_REASON = 15;
 
   /**
    * The feature id for the '<em><b>Reason</b></em>' containment reference.
@@ -593,7 +630,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getReason()
    * @generated
    */
-  int REASON = 15;
+  int REASON = 16;
 
   /**
    * The feature id for the '<em><b>High Peak</b></em>' containment reference.
@@ -648,7 +685,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getXPeaks()
    * @generated
    */
-  int XPEAKS = 16;
+  int XPEAKS = 17;
 
   /**
    * The feature id for the '<em><b>Cant</b></em>' containment reference.
@@ -703,7 +740,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getConstDeg()
    * @generated
    */
-  int CONST_DEG = 17;
+  int CONST_DEG = 18;
 
   /**
    * The feature id for the '<em><b>Cant</b></em>' containment reference.
@@ -731,7 +768,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getHighTime()
    * @generated
    */
-  int HIGH_TIME = 18;
+  int HIGH_TIME = 19;
 
   /**
    * The feature id for the '<em><b>Cant</b></em>' containment reference.
@@ -777,7 +814,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getHighPeak()
    * @generated
    */
-  int HIGH_PEAK = 19;
+  int HIGH_PEAK = 20;
 
   /**
    * The feature id for the '<em><b>Cant</b></em>' containment reference.
@@ -805,7 +842,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getReference()
    * @generated
    */
-  int REFERENCE = 20;
+  int REFERENCE = 21;
 
   /**
    * The feature id for the '<em><b>Upper</b></em>' containment reference.
@@ -878,7 +915,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getPrecondReference()
    * @generated
    */
-  int PRECOND_REFERENCE = 21;
+  int PRECOND_REFERENCE = 22;
 
   /**
    * The feature id for the '<em><b>Upper</b></em>' containment reference.
@@ -951,7 +988,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getSame()
    * @generated
    */
-  int SAME = 22;
+  int SAME = 23;
 
   /**
    * The feature id for the '<em><b>Bound upp</b></em>' containment reference.
@@ -979,7 +1016,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getNotSame()
    * @generated
    */
-  int NOT_SAME = 23;
+  int NOT_SAME = 24;
 
   /**
    * The feature id for the '<em><b>Bound upp</b></em>' containment reference.
@@ -1007,7 +1044,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getUpper()
    * @generated
    */
-  int UPPER = 24;
+  int UPPER = 25;
 
   /**
    * The feature id for the '<em><b>Bound upp</b></em>' containment reference.
@@ -1035,7 +1072,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getLower()
    * @generated
    */
-  int LOWER = 25;
+  int LOWER = 26;
 
   /**
    * The feature id for the '<em><b>Bound lower</b></em>' containment reference.
@@ -1063,7 +1100,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getRange()
    * @generated
    */
-  int RANGE = 26;
+  int RANGE = 27;
 
   /**
    * The feature id for the '<em><b>Bound lower</b></em>' containment reference.
@@ -1100,7 +1137,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getGap()
    * @generated
    */
-  int GAP = 27;
+  int GAP = 28;
 
   /**
    * The feature id for the '<em><b>Bound lower</b></em>' containment reference.
@@ -1137,7 +1174,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getInclusiveBound()
    * @generated
    */
-  int INCLUSIVE_BOUND = 28;
+  int INCLUSIVE_BOUND = 29;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1174,7 +1211,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBound_up()
    * @generated
    */
-  int BOUND_UP = 29;
+  int BOUND_UP = 30;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -1220,7 +1257,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBound_Down()
    * @generated
    */
-  int BOUND_DOWN = 30;
+  int BOUND_DOWN = 31;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -1266,7 +1303,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBOOLEAN()
    * @generated
    */
-  int BOOLEAN = 31;
+  int BOOLEAN = 32;
 
   /**
    * The feature id for the '<em><b>Bool</b></em>' attribute.
@@ -1294,7 +1331,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getDOUBLE()
    * @generated
    */
-  int DOUBLE = 32;
+  int DOUBLE = 33;
 
   /**
    * The feature id for the '<em><b>DVal</b></em>' attribute.
@@ -1322,7 +1359,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getTimeType()
    * @generated
    */
-  int TIME_TYPE = 33;
+  int TIME_TYPE = 34;
 
   /**
    * The feature id for the '<em><b>Time</b></em>' attribute.
@@ -1350,7 +1387,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getDataType()
    * @generated
    */
-  int DATA_TYPE = 34;
+  int DATA_TYPE = 35;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1378,7 +1415,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getPackageDeclaration()
    * @generated
    */
-  int PACKAGE_DECLARATION = 35;
+  int PACKAGE_DECLARATION = 36;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1415,7 +1452,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getExpressionsModel()
    * @generated
    */
-  int EXPRESSIONS_MODEL = 36;
+  int EXPRESSIONS_MODEL = 37;
 
   /**
    * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -1443,7 +1480,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getAbstractElement2()
    * @generated
    */
-  int ABSTRACT_ELEMENT2 = 37;
+  int ABSTRACT_ELEMENT2 = 38;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -1471,7 +1508,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getVariable()
    * @generated
    */
-  int VARIABLE = 38;
+  int VARIABLE = 39;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -1508,7 +1545,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMonitoringVariableExpresion()
    * @generated
    */
-  int MONITORING_VARIABLE_EXPRESION = 39;
+  int MONITORING_VARIABLE_EXPRESION = 40;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1536,7 +1573,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getEvalExpression()
    * @generated
    */
-  int EVAL_EXPRESSION = 40;
+  int EVAL_EXPRESSION = 41;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -1564,7 +1601,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getExpression()
    * @generated
    */
-  int EXPRESSION = 41;
+  int EXPRESSION = 42;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1592,7 +1629,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getOr()
    * @generated
    */
-  int OR = 42;
+  int OR = 43;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1638,7 +1675,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getAnd()
    * @generated
    */
-  int AND = 43;
+  int AND = 44;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1684,7 +1721,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getEquality()
    * @generated
    */
-  int EQUALITY = 44;
+  int EQUALITY = 45;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1739,7 +1776,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getComparison()
    * @generated
    */
-  int COMPARISON = 45;
+  int COMPARISON = 46;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1794,7 +1831,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getPlus()
    * @generated
    */
-  int PLUS = 46;
+  int PLUS = 47;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1840,7 +1877,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMinus()
    * @generated
    */
-  int MINUS = 47;
+  int MINUS = 48;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1886,7 +1923,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getMulOrDiv()
    * @generated
    */
-  int MUL_OR_DIV = 48;
+  int MUL_OR_DIV = 49;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1941,7 +1978,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getNot()
    * @generated
    */
-  int NOT = 49;
+  int NOT = 50;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1978,7 +2015,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getIntConstant()
    * @generated
    */
-  int INT_CONSTANT = 50;
+  int INT_CONSTANT = 51;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -2015,7 +2052,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getStringConstant()
    * @generated
    */
-  int STRING_CONSTANT = 51;
+  int STRING_CONSTANT = 52;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -2052,7 +2089,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getBoolConstant()
    * @generated
    */
-  int BOOL_CONSTANT = 52;
+  int BOOL_CONSTANT = 53;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -2369,6 +2406,17 @@ public interface AdeptnessPackage extends EPackage
   EReference getOracle_When();
 
   /**
+   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Oracle#getWhile <em>While</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>While</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Oracle#getWhile()
+   * @see #getOracle()
+   * @generated
+   */
+  EReference getOracle_While();
+
+  /**
    * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Oracle#getCheck <em>Check</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2378,6 +2426,27 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    */
   EReference getOracle_Check();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.While <em>While</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>While</em>'.
+   * @see org.xtext.example.mydsl.adeptness.While
+   * @generated
+   */
+  EClass getWhile();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.While#getEm <em>Em</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Em</em>'.
+   * @see org.xtext.example.mydsl.adeptness.While#getEm()
+   * @see #getWhile()
+   * @generated
+   */
+  EReference getWhile_Em();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.When <em>When</em>}'.
@@ -3941,12 +4010,38 @@ public interface AdeptnessPackage extends EPackage
     EReference ORACLE__WHEN = eINSTANCE.getOracle_When();
 
     /**
+     * The meta object literal for the '<em><b>While</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ORACLE__WHILE = eINSTANCE.getOracle_While();
+
+    /**
      * The meta object literal for the '<em><b>Check</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EReference ORACLE__CHECK = eINSTANCE.getOracle_Check();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.WhileImpl <em>While</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.WhileImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getWhile()
+     * @generated
+     */
+    EClass WHILE = eINSTANCE.getWhile();
+
+    /**
+     * The meta object literal for the '<em><b>Em</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference WHILE__EM = eINSTANCE.getWhile_Em();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.WhenImpl <em>When</em>}' class.

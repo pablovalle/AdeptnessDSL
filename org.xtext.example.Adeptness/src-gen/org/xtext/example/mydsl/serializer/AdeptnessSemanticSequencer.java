@@ -64,6 +64,7 @@ import org.xtext.example.mydsl.adeptness.TimeType;
 import org.xtext.example.mydsl.adeptness.Upper;
 import org.xtext.example.mydsl.adeptness.Variable;
 import org.xtext.example.mydsl.adeptness.When;
+import org.xtext.example.mydsl.adeptness.While;
 import org.xtext.example.mydsl.adeptness.XPeaks;
 import org.xtext.example.mydsl.services.AdeptnessGrammarAccess;
 
@@ -227,6 +228,9 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 				return; 
 			case AdeptnessPackage.WHEN:
 				sequence_When(context, (When) semanticObject); 
+				return; 
+			case AdeptnessPackage.WHILE:
+				sequence_While(context, (While) semanticObject); 
 				return; 
 			case AdeptnessPackage.XPEAKS:
 				sequence_XPeaks(context, (XPeaks) semanticObject); 
@@ -923,7 +927,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Oracle returns Oracle
 	 *
 	 * Constraint:
-	 *     (name=ID when+=When? check+=Checks+)
+	 *     (name=ID (when+=When | while+=While)? check+=Checks+)
 	 */
 	protected void sequence_Oracle(ISerializationContext context, Oracle semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1217,6 +1221,24 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getWhenAccess().getEmExpressionsModelParserRuleCall_1_0(), semanticObject.getEm());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     While returns While
+	 *
+	 * Constraint:
+	 *     em=ExpressionsModel
+	 */
+	protected void sequence_While(ISerializationContext context, While semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.WHILE__EM) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.WHILE__EM));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getWhileAccess().getEmExpressionsModelParserRuleCall_1_0(), semanticObject.getEm());
 		feeder.finish();
 	}
 	

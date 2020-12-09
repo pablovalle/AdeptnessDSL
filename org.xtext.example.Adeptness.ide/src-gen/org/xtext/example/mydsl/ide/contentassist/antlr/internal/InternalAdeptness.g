@@ -349,6 +349,31 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+// Entry rule entryRuleWhile
+entryRuleWhile
+:
+{ before(grammarAccess.getWhileRule()); }
+	 ruleWhile
+{ after(grammarAccess.getWhileRule()); } 
+	 EOF 
+;
+
+// Rule While
+ruleWhile 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getWhileAccess().getGroup()); }
+		(rule__While__Group__0)
+		{ after(grammarAccess.getWhileAccess().getGroup()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 // Entry rule entryRuleWhen
 entryRuleWhen
 :
@@ -1374,6 +1399,27 @@ rule__Sig_type__Alternatives
 		{ before(grammarAccess.getSig_typeAccess().getSig_typeAssignment_2()); }
 		(rule__Sig_type__Sig_typeAssignment_2)
 		{ after(grammarAccess.getSig_typeAccess().getSig_typeAssignment_2()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Oracle__Alternatives_3
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getOracleAccess().getWhenAssignment_3_0()); }
+		(rule__Oracle__WhenAssignment_3_0)
+		{ after(grammarAccess.getOracleAccess().getWhenAssignment_3_0()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getOracleAccess().getWhileAssignment_3_1()); }
+		(rule__Oracle__WhileAssignment_3_1)
+		{ after(grammarAccess.getOracleAccess().getWhileAssignment_3_1()); }
 	)
 ;
 finally {
@@ -2957,9 +3003,9 @@ rule__Oracle__Group__3__Impl
 	}
 :
 (
-	{ before(grammarAccess.getOracleAccess().getWhenAssignment_3()); }
-	(rule__Oracle__WhenAssignment_3)?
-	{ after(grammarAccess.getOracleAccess().getWhenAssignment_3()); }
+	{ before(grammarAccess.getOracleAccess().getAlternatives_3()); }
+	(rule__Oracle__Alternatives_3)?
+	{ after(grammarAccess.getOracleAccess().getAlternatives_3()); }
 )
 ;
 finally {
@@ -3020,6 +3066,60 @@ rule__Oracle__Group__5__Impl
 	{ before(grammarAccess.getOracleAccess().getENDORACLEKeyword_5()); }
 	'ENDORACLE'
 	{ after(grammarAccess.getOracleAccess().getENDORACLEKeyword_5()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__While__Group__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__While__Group__0__Impl
+	rule__While__Group__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__While__Group__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getWhileAccess().getWhileKeyword_0()); }
+	'while:'
+	{ after(grammarAccess.getWhileAccess().getWhileKeyword_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__While__Group__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__While__Group__1__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__While__Group__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getWhileAccess().getEmAssignment_1()); }
+	(rule__While__EmAssignment_1)
+	{ after(grammarAccess.getWhileAccess().getEmAssignment_1()); }
 )
 ;
 finally {
@@ -6248,15 +6348,30 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Oracle__WhenAssignment_3
+rule__Oracle__WhenAssignment_3_0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getOracleAccess().getWhenWhenParserRuleCall_3_0()); }
+		{ before(grammarAccess.getOracleAccess().getWhenWhenParserRuleCall_3_0_0()); }
 		ruleWhen
-		{ after(grammarAccess.getOracleAccess().getWhenWhenParserRuleCall_3_0()); }
+		{ after(grammarAccess.getOracleAccess().getWhenWhenParserRuleCall_3_0_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Oracle__WhileAssignment_3_1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getOracleAccess().getWhileWhileParserRuleCall_3_1_0()); }
+		ruleWhile
+		{ after(grammarAccess.getOracleAccess().getWhileWhileParserRuleCall_3_1_0()); }
 	)
 ;
 finally {
@@ -6272,6 +6387,21 @@ rule__Oracle__CheckAssignment_4
 		{ before(grammarAccess.getOracleAccess().getCheckChecksParserRuleCall_4_0()); }
 		ruleChecks
 		{ after(grammarAccess.getOracleAccess().getCheckChecksParserRuleCall_4_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__While__EmAssignment_1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getWhileAccess().getEmExpressionsModelParserRuleCall_1_0()); }
+		ruleExpressionsModel
+		{ after(grammarAccess.getWhileAccess().getEmExpressionsModelParserRuleCall_1_0()); }
 	)
 ;
 finally {

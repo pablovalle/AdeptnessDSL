@@ -34,6 +34,7 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getAbstractElementAccess().getAlternatives(), "rule__AbstractElement__Alternatives");
 			builder.put(grammarAccess.getTypeAccess().getAlternatives(), "rule__Type__Alternatives");
 			builder.put(grammarAccess.getSig_typeAccess().getAlternatives(), "rule__Sig_type__Alternatives");
+			builder.put(grammarAccess.getOracleAccess().getAlternatives_3(), "rule__Oracle__Alternatives_3");
 			builder.put(grammarAccess.getChecksAccess().getAlternatives_1(), "rule__Checks__Alternatives_1");
 			builder.put(grammarAccess.getReasonAccess().getAlternatives_0(), "rule__Reason__Alternatives_0");
 			builder.put(grammarAccess.getReferenceAccess().getAlternatives_0(), "rule__Reference__Alternatives_0");
@@ -62,6 +63,7 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getSignalAccess().getGroup_4(), "rule__Signal__Group_4__0");
 			builder.put(grammarAccess.getImportMonitoringPlanAccess().getGroup(), "rule__ImportMonitoringPlan__Group__0");
 			builder.put(grammarAccess.getOracleAccess().getGroup(), "rule__Oracle__Group__0");
+			builder.put(grammarAccess.getWhileAccess().getGroup(), "rule__While__Group__0");
 			builder.put(grammarAccess.getWhenAccess().getGroup(), "rule__When__Group__0");
 			builder.put(grammarAccess.getChecksAccess().getGroup(), "rule__Checks__Group__0");
 			builder.put(grammarAccess.getDescriptionAccess().getGroup(), "rule__Description__Group__0");
@@ -124,8 +126,10 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getSignalAccess().getOracleAssignment_5(), "rule__Signal__OracleAssignment_5");
 			builder.put(grammarAccess.getImportMonitoringPlanAccess().getImportURIAssignment_1(), "rule__ImportMonitoringPlan__ImportURIAssignment_1");
 			builder.put(grammarAccess.getOracleAccess().getNameAssignment_1(), "rule__Oracle__NameAssignment_1");
-			builder.put(grammarAccess.getOracleAccess().getWhenAssignment_3(), "rule__Oracle__WhenAssignment_3");
+			builder.put(grammarAccess.getOracleAccess().getWhenAssignment_3_0(), "rule__Oracle__WhenAssignment_3_0");
+			builder.put(grammarAccess.getOracleAccess().getWhileAssignment_3_1(), "rule__Oracle__WhileAssignment_3_1");
 			builder.put(grammarAccess.getOracleAccess().getCheckAssignment_4(), "rule__Oracle__CheckAssignment_4");
+			builder.put(grammarAccess.getWhileAccess().getEmAssignment_1(), "rule__While__EmAssignment_1");
 			builder.put(grammarAccess.getWhenAccess().getEmAssignment_1(), "rule__When__EmAssignment_1");
 			builder.put(grammarAccess.getChecksAccess().getNameAssignment_1_0(), "rule__Checks__NameAssignment_1_0");
 			builder.put(grammarAccess.getChecksAccess().getEmAssignment_1_1(), "rule__Checks__EmAssignment_1_1");
