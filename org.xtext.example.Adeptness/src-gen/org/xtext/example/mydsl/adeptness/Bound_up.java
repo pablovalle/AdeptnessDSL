@@ -52,12 +52,12 @@ public interface Bound_up extends EObject
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Variable</em>' containment reference.
-   * @see #setVariable(Variable)
+   * @see #setVariable(AbstractElement2)
    * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getBound_up_Variable()
    * @model containment="true"
    * @generated
    */
-  Variable getVariable();
+  AbstractElement2 getVariable();
 
   /**
    * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Bound_up#getVariable <em>Variable</em>}' containment reference.
@@ -67,7 +67,7 @@ public interface Bound_up extends EObject
    * @see #getVariable()
    * @generated
    */
-  void setVariable(Variable value);
+  void setVariable(AbstractElement2 value);
 
   /**
    * Returns the value of the '<em><b>Em</b></em>' containment reference.

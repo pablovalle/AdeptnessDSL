@@ -104,21 +104,9 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.PACKAGE_DECLARATION: return createPackageDeclaration();
       case AdeptnessPackage.EXPRESSIONS_MODEL: return createExpressionsModel();
       case AdeptnessPackage.ABSTRACT_ELEMENT2: return createAbstractElement2();
-      case AdeptnessPackage.VARIABLE: return createVariable();
-      case AdeptnessPackage.MONITORING_VARIABLE_EXPRESION: return createMonitoringVariableExpresion();
-      case AdeptnessPackage.EVAL_EXPRESSION: return createEvalExpression();
-      case AdeptnessPackage.EXPRESSION: return createExpression();
-      case AdeptnessPackage.OR: return createOr();
-      case AdeptnessPackage.AND: return createAnd();
-      case AdeptnessPackage.EQUALITY: return createEquality();
-      case AdeptnessPackage.COMPARISON: return createComparison();
-      case AdeptnessPackage.PLUS: return createPlus();
-      case AdeptnessPackage.MINUS: return createMinus();
-      case AdeptnessPackage.MUL_OR_DIV: return createMulOrDiv();
-      case AdeptnessPackage.NOT: return createNot();
-      case AdeptnessPackage.INT_CONSTANT: return createIntConstant();
-      case AdeptnessPackage.STRING_CONSTANT: return createStringConstant();
-      case AdeptnessPackage.BOOL_CONSTANT: return createBoolConstant();
+      case AdeptnessPackage.COMP_OP: return createCompOp();
+      case AdeptnessPackage.LOGIC_OP: return createLogicOp();
+      case AdeptnessPackage.OP: return createOp();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -598,10 +586,10 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
    * @generated
    */
   @Override
-  public Variable createVariable()
+  public CompOp createCompOp()
   {
-    VariableImpl variable = new VariableImpl();
-    return variable;
+    CompOpImpl compOp = new CompOpImpl();
+    return compOp;
   }
 
   /**
@@ -610,10 +598,10 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
    * @generated
    */
   @Override
-  public MonitoringVariableExpresion createMonitoringVariableExpresion()
+  public LogicOp createLogicOp()
   {
-    MonitoringVariableExpresionImpl monitoringVariableExpresion = new MonitoringVariableExpresionImpl();
-    return monitoringVariableExpresion;
+    LogicOpImpl logicOp = new LogicOpImpl();
+    return logicOp;
   }
 
   /**
@@ -622,154 +610,10 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
    * @generated
    */
   @Override
-  public EvalExpression createEvalExpression()
+  public Op createOp()
   {
-    EvalExpressionImpl evalExpression = new EvalExpressionImpl();
-    return evalExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Expression createExpression()
-  {
-    ExpressionImpl expression = new ExpressionImpl();
-    return expression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Or createOr()
-  {
-    OrImpl or = new OrImpl();
-    return or;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public And createAnd()
-  {
-    AndImpl and = new AndImpl();
-    return and;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Equality createEquality()
-  {
-    EqualityImpl equality = new EqualityImpl();
-    return equality;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Comparison createComparison()
-  {
-    ComparisonImpl comparison = new ComparisonImpl();
-    return comparison;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Plus createPlus()
-  {
-    PlusImpl plus = new PlusImpl();
-    return plus;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Minus createMinus()
-  {
-    MinusImpl minus = new MinusImpl();
-    return minus;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public MulOrDiv createMulOrDiv()
-  {
-    MulOrDivImpl mulOrDiv = new MulOrDivImpl();
-    return mulOrDiv;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Not createNot()
-  {
-    NotImpl not = new NotImpl();
-    return not;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public IntConstant createIntConstant()
-  {
-    IntConstantImpl intConstant = new IntConstantImpl();
-    return intConstant;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public StringConstant createStringConstant()
-  {
-    StringConstantImpl stringConstant = new StringConstantImpl();
-    return stringConstant;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public BoolConstant createBoolConstant()
-  {
-    BoolConstantImpl boolConstant = new BoolConstantImpl();
-    return boolConstant;
+    OpImpl op = new OpImpl();
+    return op;
   }
 
   /**

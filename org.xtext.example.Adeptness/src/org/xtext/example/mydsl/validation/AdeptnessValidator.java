@@ -9,10 +9,12 @@ import java.util.List;
 
 import org.eclipse.xtext.validation.Check;
 import org.xtext.example.mydsl.adeptness.AbstractElement;
+import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.Adeptness;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.Checks;
 import org.xtext.example.mydsl.adeptness.ConstDeg;
+import org.xtext.example.mydsl.adeptness.ExpressionsModel;
 import org.xtext.example.mydsl.adeptness.Gap;
 import org.xtext.example.mydsl.adeptness.HighPeak;
 import org.xtext.example.mydsl.adeptness.HighTime;
@@ -28,7 +30,6 @@ import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Sig_type;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.Upper;
-import org.xtext.example.mydsl.adeptness.Variable;
 import org.xtext.example.mydsl.adeptness.When;
 
 /**
@@ -419,7 +420,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	
 	
 	@Check
-	public void checkMonitoringVariablesInPreconditions(Variable precond) {
+	public void checkMonitoringVariablesInPreconditions(AbstractElement2 precond) {
 		String checkName=precond.getName().toString();
 		double max, min;
 		boolean is= false;
@@ -491,9 +492,23 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			}
 		}
 		if(!is) {
-			error("This variable is not in the monitoring plan",AdeptnessPackage.Literals.VARIABLE__NAME);
+			error("This variable is not in the monitoring plan",AdeptnessPackage.Literals.ABSTRACT_ELEMENT2__NAME);
 		}
 	}
+	@Check
+	public void aaaa(ExpressionsModel el) {
+		System.out.println(el.getElements().size());
+	}
+	/*@Check
+	public void chekcWhen(When when) {
+		System.out.println("A");
+		for(int i=0; i<when.getEm().getElements().size(); i++) {
+			System.out.println(when.getEm().getElements().get(i).getExpression().getVariable().getName().toString());
+			System.out.println(when.getEm().getElements().get(i).getExpression().getVariable().getExpression().getVariable().getName().toString());
+		}
+		
+	}*/
+	
 	
 	
 	

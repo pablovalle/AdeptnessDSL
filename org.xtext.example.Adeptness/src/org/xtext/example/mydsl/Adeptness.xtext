@@ -179,11 +179,12 @@ InclusiveBound:
 //Upper limit
 
 Bound_up:
-	(value=DOUBLE|variable=Variable|em = ExpressionsModel)
+	(value=DOUBLE|variable=AbstractElement2|em = ExpressionsModel)
 ;
+
 //Lower limit
 Bound_Down:
-	 (value=DOUBLE|variable=Variable|em = ExpressionsModel)
+	 (value=DOUBLE|variable=AbstractElement2|em = ExpressionsModel)
 ;
 //Boolean declaration
 BOOLEAN:
@@ -215,13 +216,35 @@ PackageDeclaration:
 /*
  * MATH ELEMENTS
  */
+ ExpressionsModel:
+ 	("(")?
+ 	(elements+=AbstractElement2|")")*
+;
 
+ AbstractElement2:
+ 	("(")?
+	(name=ID | value=DOUBLE)
+	(operator=Op|comparation=CompOp|logicOperator=LogicOp| ")")?
+;
+
+CompOp:
+	op=("=="|"!="|">="|"<="|"<"|">")
+;
+
+LogicOp:
+	op=("&&"|"||")
+;
+
+Op:
+	op=("+"|"-"|"*"|"/")
+;
+/*
 ExpressionsModel:
-	elements+=AbstractElement2*;
+	 (elements+=AbstractElement2)*;
 AbstractElement2:
 	Variable | EvalExpression;
 Variable:
-	name = ID  ('=' expression=Expression)? // TODO:  ('=' expression=Expression)? jarrita, bestela ez doa
+	name = ID   ('=' expression=Expression)? // TODO:  ('=' expression=Expression)? jarrita, bestela ez doa
 ;
 	//"var" name=ID '=' expression=Expression;
 
@@ -277,7 +300,7 @@ Atomic returns Expression: //TODO: Support for doubles and negative values (nega
 	{StringConstant} value=STRING |
 	{BoolConstant} value=('true' | 'false') |
 	variable=Variable ;
-
+*/
 /*------------------------ANOHER EXPRESIONS MATHS------------------------ */
 
 /*Math:

@@ -355,121 +355,24 @@ public class AdeptnessSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case AdeptnessPackage.VARIABLE:
+      case AdeptnessPackage.COMP_OP:
       {
-        Variable variable = (Variable)theEObject;
-        T result = caseVariable(variable);
-        if (result == null) result = caseAbstractElement2(variable);
+        CompOp compOp = (CompOp)theEObject;
+        T result = caseCompOp(compOp);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case AdeptnessPackage.MONITORING_VARIABLE_EXPRESION:
+      case AdeptnessPackage.LOGIC_OP:
       {
-        MonitoringVariableExpresion monitoringVariableExpresion = (MonitoringVariableExpresion)theEObject;
-        T result = caseMonitoringVariableExpresion(monitoringVariableExpresion);
+        LogicOp logicOp = (LogicOp)theEObject;
+        T result = caseLogicOp(logicOp);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case AdeptnessPackage.EVAL_EXPRESSION:
+      case AdeptnessPackage.OP:
       {
-        EvalExpression evalExpression = (EvalExpression)theEObject;
-        T result = caseEvalExpression(evalExpression);
-        if (result == null) result = caseAbstractElement2(evalExpression);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.EXPRESSION:
-      {
-        Expression expression = (Expression)theEObject;
-        T result = caseExpression(expression);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.OR:
-      {
-        Or or = (Or)theEObject;
-        T result = caseOr(or);
-        if (result == null) result = caseExpression(or);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.AND:
-      {
-        And and = (And)theEObject;
-        T result = caseAnd(and);
-        if (result == null) result = caseExpression(and);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.EQUALITY:
-      {
-        Equality equality = (Equality)theEObject;
-        T result = caseEquality(equality);
-        if (result == null) result = caseExpression(equality);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.COMPARISON:
-      {
-        Comparison comparison = (Comparison)theEObject;
-        T result = caseComparison(comparison);
-        if (result == null) result = caseExpression(comparison);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.PLUS:
-      {
-        Plus plus = (Plus)theEObject;
-        T result = casePlus(plus);
-        if (result == null) result = caseExpression(plus);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.MINUS:
-      {
-        Minus minus = (Minus)theEObject;
-        T result = caseMinus(minus);
-        if (result == null) result = caseExpression(minus);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.MUL_OR_DIV:
-      {
-        MulOrDiv mulOrDiv = (MulOrDiv)theEObject;
-        T result = caseMulOrDiv(mulOrDiv);
-        if (result == null) result = caseExpression(mulOrDiv);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.NOT:
-      {
-        Not not = (Not)theEObject;
-        T result = caseNot(not);
-        if (result == null) result = caseExpression(not);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.INT_CONSTANT:
-      {
-        IntConstant intConstant = (IntConstant)theEObject;
-        T result = caseIntConstant(intConstant);
-        if (result == null) result = caseExpression(intConstant);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.STRING_CONSTANT:
-      {
-        StringConstant stringConstant = (StringConstant)theEObject;
-        T result = caseStringConstant(stringConstant);
-        if (result == null) result = caseExpression(stringConstant);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case AdeptnessPackage.BOOL_CONSTANT:
-      {
-        BoolConstant boolConstant = (BoolConstant)theEObject;
-        T result = caseBoolConstant(boolConstant);
-        if (result == null) result = caseExpression(boolConstant);
+        Op op = (Op)theEObject;
+        T result = caseOp(op);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -1102,241 +1005,49 @@ public class AdeptnessSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Variable</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Comp Op</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Variable</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Comp Op</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseVariable(Variable object)
+  public T caseCompOp(CompOp object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Monitoring Variable Expresion</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Logic Op</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Monitoring Variable Expresion</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Logic Op</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseMonitoringVariableExpresion(MonitoringVariableExpresion object)
+  public T caseLogicOp(LogicOp object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Eval Expression</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Op</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Eval Expression</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Op</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseEvalExpression(EvalExpression object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Expression</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Expression</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseExpression(Expression object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Or</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Or</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseOr(Or object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>And</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>And</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseAnd(And object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Equality</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Equality</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseEquality(Equality object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Comparison</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Comparison</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseComparison(Comparison object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Plus</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Plus</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T casePlus(Plus object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Minus</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Minus</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseMinus(Minus object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Mul Or Div</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Mul Or Div</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseMulOrDiv(MulOrDiv object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Not</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Not</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseNot(Not object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Int Constant</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Int Constant</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseIntConstant(IntConstant object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>String Constant</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>String Constant</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseStringConstant(StringConstant object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Bool Constant</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Bool Constant</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseBoolConstant(BoolConstant object)
+  public T caseOp(Op object)
   {
     return null;
   }

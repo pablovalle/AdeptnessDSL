@@ -15,18 +15,13 @@ import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.Adeptness;
 import org.xtext.example.mydsl.adeptness.AdeptnessFactory;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
-import org.xtext.example.mydsl.adeptness.And;
-import org.xtext.example.mydsl.adeptness.BoolConstant;
 import org.xtext.example.mydsl.adeptness.Bound_Down;
 import org.xtext.example.mydsl.adeptness.Bound_up;
 import org.xtext.example.mydsl.adeptness.Checks;
-import org.xtext.example.mydsl.adeptness.Comparison;
+import org.xtext.example.mydsl.adeptness.CompOp;
 import org.xtext.example.mydsl.adeptness.ConstDeg;
 import org.xtext.example.mydsl.adeptness.DataType;
 import org.xtext.example.mydsl.adeptness.Description;
-import org.xtext.example.mydsl.adeptness.Equality;
-import org.xtext.example.mydsl.adeptness.EvalExpression;
-import org.xtext.example.mydsl.adeptness.Expression;
 import org.xtext.example.mydsl.adeptness.ExpressionsModel;
 import org.xtext.example.mydsl.adeptness.FailReason;
 import org.xtext.example.mydsl.adeptness.Gap;
@@ -35,20 +30,15 @@ import org.xtext.example.mydsl.adeptness.HighTime;
 import org.xtext.example.mydsl.adeptness.ImportMonitoringPlan;
 import org.xtext.example.mydsl.adeptness.Imports;
 import org.xtext.example.mydsl.adeptness.InclusiveBound;
-import org.xtext.example.mydsl.adeptness.IntConstant;
+import org.xtext.example.mydsl.adeptness.LogicOp;
 import org.xtext.example.mydsl.adeptness.Lower;
-import org.xtext.example.mydsl.adeptness.Minus;
 import org.xtext.example.mydsl.adeptness.MonitoringFile;
 import org.xtext.example.mydsl.adeptness.MonitoringPlan;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
-import org.xtext.example.mydsl.adeptness.MonitoringVariableExpresion;
-import org.xtext.example.mydsl.adeptness.MulOrDiv;
-import org.xtext.example.mydsl.adeptness.Not;
 import org.xtext.example.mydsl.adeptness.NotSame;
-import org.xtext.example.mydsl.adeptness.Or;
+import org.xtext.example.mydsl.adeptness.Op;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.PackageDeclaration;
-import org.xtext.example.mydsl.adeptness.Plus;
 import org.xtext.example.mydsl.adeptness.PrecondReference;
 import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Reason;
@@ -56,11 +46,9 @@ import org.xtext.example.mydsl.adeptness.Reference;
 import org.xtext.example.mydsl.adeptness.Same;
 import org.xtext.example.mydsl.adeptness.Sig_type;
 import org.xtext.example.mydsl.adeptness.Signal;
-import org.xtext.example.mydsl.adeptness.StringConstant;
 import org.xtext.example.mydsl.adeptness.TimeType;
 import org.xtext.example.mydsl.adeptness.Type;
 import org.xtext.example.mydsl.adeptness.Upper;
-import org.xtext.example.mydsl.adeptness.Variable;
 import org.xtext.example.mydsl.adeptness.When;
 import org.xtext.example.mydsl.adeptness.While;
 import org.xtext.example.mydsl.adeptness.XPeaks;
@@ -351,105 +339,21 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass variableEClass = null;
+  private EClass compOpEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass monitoringVariableExpresionEClass = null;
+  private EClass logicOpEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass evalExpressionEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass expressionEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass orEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass andEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass equalityEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass comparisonEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass plusEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass minusEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass mulOrDivEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass notEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass intConstantEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass stringConstantEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass boolConstantEClass = null;
+  private EClass opEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -1763,9 +1667,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getAbstractElement2_Expression()
+  public EAttribute getAbstractElement2_Name()
   {
-    return (EReference)abstractElement2EClass.getEStructuralFeatures().get(0);
+    return (EAttribute)abstractElement2EClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1774,9 +1678,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EClass getVariable()
+  public EReference getAbstractElement2_Value()
   {
-    return variableEClass;
+    return (EReference)abstractElement2EClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1785,9 +1689,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EAttribute getVariable_Name()
+  public EReference getAbstractElement2_Operator()
   {
-    return (EAttribute)variableEClass.getEStructuralFeatures().get(0);
+    return (EReference)abstractElement2EClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1796,9 +1700,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EClass getMonitoringVariableExpresion()
+  public EReference getAbstractElement2_Comparation()
   {
-    return monitoringVariableExpresionEClass;
+    return (EReference)abstractElement2EClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1807,9 +1711,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EAttribute getMonitoringVariableExpresion_Name()
+  public EReference getAbstractElement2_LogicOperator()
   {
-    return (EAttribute)monitoringVariableExpresionEClass.getEStructuralFeatures().get(0);
+    return (EReference)abstractElement2EClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -1818,9 +1722,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EClass getEvalExpression()
+  public EClass getCompOp()
   {
-    return evalExpressionEClass;
+    return compOpEClass;
   }
 
   /**
@@ -1829,9 +1733,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EClass getExpression()
+  public EAttribute getCompOp_Op()
   {
-    return expressionEClass;
+    return (EAttribute)compOpEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1840,9 +1744,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getExpression_Variable()
+  public EClass getLogicOp()
   {
-    return (EReference)expressionEClass.getEStructuralFeatures().get(0);
+    return logicOpEClass;
   }
 
   /**
@@ -1851,9 +1755,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EClass getOr()
+  public EAttribute getLogicOp_Op()
   {
-    return orEClass;
+    return (EAttribute)logicOpEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1862,9 +1766,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getOr_Left()
+  public EClass getOp()
   {
-    return (EReference)orEClass.getEStructuralFeatures().get(0);
+    return opEClass;
   }
 
   /**
@@ -1873,328 +1777,9 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getOr_Right()
+  public EAttribute getOp_Op()
   {
-    return (EReference)orEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getAnd()
-  {
-    return andEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getAnd_Left()
-  {
-    return (EReference)andEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getAnd_Right()
-  {
-    return (EReference)andEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getEquality()
-  {
-    return equalityEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getEquality_Left()
-  {
-    return (EReference)equalityEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getEquality_Op()
-  {
-    return (EAttribute)equalityEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getEquality_Right()
-  {
-    return (EReference)equalityEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getComparison()
-  {
-    return comparisonEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getComparison_Left()
-  {
-    return (EReference)comparisonEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getComparison_Op()
-  {
-    return (EAttribute)comparisonEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getComparison_Right()
-  {
-    return (EReference)comparisonEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getPlus()
-  {
-    return plusEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getPlus_Left()
-  {
-    return (EReference)plusEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getPlus_Right()
-  {
-    return (EReference)plusEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getMinus()
-  {
-    return minusEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getMinus_Left()
-  {
-    return (EReference)minusEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getMinus_Right()
-  {
-    return (EReference)minusEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getMulOrDiv()
-  {
-    return mulOrDivEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getMulOrDiv_Left()
-  {
-    return (EReference)mulOrDivEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getMulOrDiv_Op()
-  {
-    return (EAttribute)mulOrDivEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getMulOrDiv_Right()
-  {
-    return (EReference)mulOrDivEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getNot()
-  {
-    return notEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getNot_Expression()
-  {
-    return (EReference)notEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getIntConstant()
-  {
-    return intConstantEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getIntConstant_Value()
-  {
-    return (EAttribute)intConstantEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getStringConstant()
-  {
-    return stringConstantEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getStringConstant_Value()
-  {
-    return (EAttribute)stringConstantEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getBoolConstant()
-  {
-    return boolConstantEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getBoolConstant_Value()
-  {
-    return (EAttribute)boolConstantEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)opEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2379,61 +1964,20 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     createEReference(expressionsModelEClass, EXPRESSIONS_MODEL__ELEMENTS);
 
     abstractElement2EClass = createEClass(ABSTRACT_ELEMENT2);
-    createEReference(abstractElement2EClass, ABSTRACT_ELEMENT2__EXPRESSION);
+    createEAttribute(abstractElement2EClass, ABSTRACT_ELEMENT2__NAME);
+    createEReference(abstractElement2EClass, ABSTRACT_ELEMENT2__VALUE);
+    createEReference(abstractElement2EClass, ABSTRACT_ELEMENT2__OPERATOR);
+    createEReference(abstractElement2EClass, ABSTRACT_ELEMENT2__COMPARATION);
+    createEReference(abstractElement2EClass, ABSTRACT_ELEMENT2__LOGIC_OPERATOR);
 
-    variableEClass = createEClass(VARIABLE);
-    createEAttribute(variableEClass, VARIABLE__NAME);
+    compOpEClass = createEClass(COMP_OP);
+    createEAttribute(compOpEClass, COMP_OP__OP);
 
-    monitoringVariableExpresionEClass = createEClass(MONITORING_VARIABLE_EXPRESION);
-    createEAttribute(monitoringVariableExpresionEClass, MONITORING_VARIABLE_EXPRESION__NAME);
+    logicOpEClass = createEClass(LOGIC_OP);
+    createEAttribute(logicOpEClass, LOGIC_OP__OP);
 
-    evalExpressionEClass = createEClass(EVAL_EXPRESSION);
-
-    expressionEClass = createEClass(EXPRESSION);
-    createEReference(expressionEClass, EXPRESSION__VARIABLE);
-
-    orEClass = createEClass(OR);
-    createEReference(orEClass, OR__LEFT);
-    createEReference(orEClass, OR__RIGHT);
-
-    andEClass = createEClass(AND);
-    createEReference(andEClass, AND__LEFT);
-    createEReference(andEClass, AND__RIGHT);
-
-    equalityEClass = createEClass(EQUALITY);
-    createEReference(equalityEClass, EQUALITY__LEFT);
-    createEAttribute(equalityEClass, EQUALITY__OP);
-    createEReference(equalityEClass, EQUALITY__RIGHT);
-
-    comparisonEClass = createEClass(COMPARISON);
-    createEReference(comparisonEClass, COMPARISON__LEFT);
-    createEAttribute(comparisonEClass, COMPARISON__OP);
-    createEReference(comparisonEClass, COMPARISON__RIGHT);
-
-    plusEClass = createEClass(PLUS);
-    createEReference(plusEClass, PLUS__LEFT);
-    createEReference(plusEClass, PLUS__RIGHT);
-
-    minusEClass = createEClass(MINUS);
-    createEReference(minusEClass, MINUS__LEFT);
-    createEReference(minusEClass, MINUS__RIGHT);
-
-    mulOrDivEClass = createEClass(MUL_OR_DIV);
-    createEReference(mulOrDivEClass, MUL_OR_DIV__LEFT);
-    createEAttribute(mulOrDivEClass, MUL_OR_DIV__OP);
-    createEReference(mulOrDivEClass, MUL_OR_DIV__RIGHT);
-
-    notEClass = createEClass(NOT);
-    createEReference(notEClass, NOT__EXPRESSION);
-
-    intConstantEClass = createEClass(INT_CONSTANT);
-    createEAttribute(intConstantEClass, INT_CONSTANT__VALUE);
-
-    stringConstantEClass = createEClass(STRING_CONSTANT);
-    createEAttribute(stringConstantEClass, STRING_CONSTANT__VALUE);
-
-    boolConstantEClass = createEClass(BOOL_CONSTANT);
-    createEAttribute(boolConstantEClass, BOOL_CONSTANT__VALUE);
+    opEClass = createEClass(OP);
+    createEAttribute(opEClass, OP__OP);
   }
 
   /**
@@ -2471,19 +2015,6 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     signalEClass.getESuperTypes().add(this.getType());
     dataTypeEClass.getESuperTypes().add(this.getType());
     packageDeclarationEClass.getESuperTypes().add(this.getAbstractElement());
-    variableEClass.getESuperTypes().add(this.getAbstractElement2());
-    evalExpressionEClass.getESuperTypes().add(this.getAbstractElement2());
-    orEClass.getESuperTypes().add(this.getExpression());
-    andEClass.getESuperTypes().add(this.getExpression());
-    equalityEClass.getESuperTypes().add(this.getExpression());
-    comparisonEClass.getESuperTypes().add(this.getExpression());
-    plusEClass.getESuperTypes().add(this.getExpression());
-    minusEClass.getESuperTypes().add(this.getExpression());
-    mulOrDivEClass.getESuperTypes().add(this.getExpression());
-    notEClass.getESuperTypes().add(this.getExpression());
-    intConstantEClass.getESuperTypes().add(this.getExpression());
-    stringConstantEClass.getESuperTypes().add(this.getExpression());
-    boolConstantEClass.getESuperTypes().add(this.getExpression());
 
     // Initialize classes and features; add operations and parameters
     initEClass(adeptnessEClass, Adeptness.class, "Adeptness", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2610,12 +2141,12 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
 
     initEClass(bound_upEClass, Bound_up.class, "Bound_up", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getBound_up_Value(), this.getDOUBLE(), null, "value", null, 0, 1, Bound_up.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBound_up_Variable(), this.getVariable(), null, "variable", null, 0, 1, Bound_up.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getBound_up_Variable(), this.getAbstractElement2(), null, "variable", null, 0, 1, Bound_up.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getBound_up_Em(), this.getExpressionsModel(), null, "em", null, 0, 1, Bound_up.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(bound_DownEClass, Bound_Down.class, "Bound_Down", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getBound_Down_Value(), this.getDOUBLE(), null, "value", null, 0, 1, Bound_Down.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBound_Down_Variable(), this.getVariable(), null, "variable", null, 0, 1, Bound_Down.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getBound_Down_Variable(), this.getAbstractElement2(), null, "variable", null, 0, 1, Bound_Down.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getBound_Down_Em(), this.getExpressionsModel(), null, "em", null, 0, 1, Bound_Down.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(booleanEClass, org.xtext.example.mydsl.adeptness.BOOLEAN.class, "BOOLEAN", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2637,61 +2168,20 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     initEReference(getExpressionsModel_Elements(), this.getAbstractElement2(), null, "elements", null, 0, -1, ExpressionsModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(abstractElement2EClass, AbstractElement2.class, "AbstractElement2", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAbstractElement2_Expression(), this.getExpression(), null, "expression", null, 0, 1, AbstractElement2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getAbstractElement2_Name(), ecorePackage.getEString(), "name", null, 0, 1, AbstractElement2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAbstractElement2_Value(), this.getDOUBLE(), null, "value", null, 0, 1, AbstractElement2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAbstractElement2_Operator(), this.getOp(), null, "operator", null, 0, 1, AbstractElement2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAbstractElement2_Comparation(), this.getCompOp(), null, "comparation", null, 0, 1, AbstractElement2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAbstractElement2_LogicOperator(), this.getLogicOp(), null, "logicOperator", null, 0, 1, AbstractElement2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(variableEClass, Variable.class, "Variable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getVariable_Name(), ecorePackage.getEString(), "name", null, 0, 1, Variable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(compOpEClass, CompOp.class, "CompOp", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getCompOp_Op(), ecorePackage.getEString(), "op", null, 0, 1, CompOp.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(monitoringVariableExpresionEClass, MonitoringVariableExpresion.class, "MonitoringVariableExpresion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getMonitoringVariableExpresion_Name(), ecorePackage.getEString(), "name", null, 0, 1, MonitoringVariableExpresion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(logicOpEClass, LogicOp.class, "LogicOp", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getLogicOp_Op(), ecorePackage.getEString(), "op", null, 0, 1, LogicOp.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(evalExpressionEClass, EvalExpression.class, "EvalExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(expressionEClass, Expression.class, "Expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getExpression_Variable(), this.getVariable(), null, "variable", null, 0, 1, Expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(orEClass, Or.class, "Or", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getOr_Left(), this.getExpression(), null, "left", null, 0, 1, Or.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getOr_Right(), this.getExpression(), null, "right", null, 0, 1, Or.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(andEClass, And.class, "And", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAnd_Left(), this.getExpression(), null, "left", null, 0, 1, And.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getAnd_Right(), this.getExpression(), null, "right", null, 0, 1, And.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(equalityEClass, Equality.class, "Equality", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getEquality_Left(), this.getExpression(), null, "left", null, 0, 1, Equality.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getEquality_Op(), ecorePackage.getEString(), "op", null, 0, 1, Equality.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getEquality_Right(), this.getExpression(), null, "right", null, 0, 1, Equality.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(comparisonEClass, Comparison.class, "Comparison", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getComparison_Left(), this.getExpression(), null, "left", null, 0, 1, Comparison.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getComparison_Op(), ecorePackage.getEString(), "op", null, 0, 1, Comparison.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getComparison_Right(), this.getExpression(), null, "right", null, 0, 1, Comparison.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(plusEClass, Plus.class, "Plus", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getPlus_Left(), this.getExpression(), null, "left", null, 0, 1, Plus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getPlus_Right(), this.getExpression(), null, "right", null, 0, 1, Plus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(minusEClass, Minus.class, "Minus", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getMinus_Left(), this.getExpression(), null, "left", null, 0, 1, Minus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMinus_Right(), this.getExpression(), null, "right", null, 0, 1, Minus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(mulOrDivEClass, MulOrDiv.class, "MulOrDiv", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getMulOrDiv_Left(), this.getExpression(), null, "left", null, 0, 1, MulOrDiv.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getMulOrDiv_Op(), ecorePackage.getEString(), "op", null, 0, 1, MulOrDiv.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMulOrDiv_Right(), this.getExpression(), null, "right", null, 0, 1, MulOrDiv.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(notEClass, Not.class, "Not", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getNot_Expression(), this.getExpression(), null, "expression", null, 0, 1, Not.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(intConstantEClass, IntConstant.class, "IntConstant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getIntConstant_Value(), ecorePackage.getEInt(), "value", null, 0, 1, IntConstant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(stringConstantEClass, StringConstant.class, "StringConstant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getStringConstant_Value(), ecorePackage.getEString(), "value", null, 0, 1, StringConstant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(boolConstantEClass, BoolConstant.class, "BoolConstant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getBoolConstant_Value(), ecorePackage.getEString(), "value", null, 0, 1, BoolConstant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(opEClass, Op.class, "Op", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getOp_Op(), ecorePackage.getEString(), "op", null, 0, 1, Op.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

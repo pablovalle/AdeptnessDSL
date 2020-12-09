@@ -12,11 +12,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.Bound_up;
 import org.xtext.example.mydsl.adeptness.DOUBLE;
 import org.xtext.example.mydsl.adeptness.ExpressionsModel;
-import org.xtext.example.mydsl.adeptness.Variable;
 
 /**
  * <!-- begin-user-doc -->
@@ -53,7 +53,7 @@ public class Bound_upImpl extends MinimalEObjectImpl.Container implements Bound_
    * @generated
    * @ordered
    */
-  protected Variable variable;
+  protected AbstractElement2 variable;
 
   /**
    * The cached value of the '{@link #getEm() <em>Em</em>}' containment reference.
@@ -142,7 +142,7 @@ public class Bound_upImpl extends MinimalEObjectImpl.Container implements Bound_
    * @generated
    */
   @Override
-  public Variable getVariable()
+  public AbstractElement2 getVariable()
   {
     return variable;
   }
@@ -152,9 +152,9 @@ public class Bound_upImpl extends MinimalEObjectImpl.Container implements Bound_
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetVariable(Variable newVariable, NotificationChain msgs)
+  public NotificationChain basicSetVariable(AbstractElement2 newVariable, NotificationChain msgs)
   {
-    Variable oldVariable = variable;
+    AbstractElement2 oldVariable = variable;
     variable = newVariable;
     if (eNotificationRequired())
     {
@@ -170,7 +170,7 @@ public class Bound_upImpl extends MinimalEObjectImpl.Container implements Bound_
    * @generated
    */
   @Override
-  public void setVariable(Variable newVariable)
+  public void setVariable(AbstractElement2 newVariable)
   {
     if (newVariable != variable)
     {
@@ -290,7 +290,7 @@ public class Bound_upImpl extends MinimalEObjectImpl.Container implements Bound_
         setValue((DOUBLE)newValue);
         return;
       case AdeptnessPackage.BOUND_UP__VARIABLE:
-        setVariable((Variable)newValue);
+        setVariable((AbstractElement2)newValue);
         return;
       case AdeptnessPackage.BOUND_UP__EM:
         setEm((ExpressionsModel)newValue);
@@ -313,7 +313,7 @@ public class Bound_upImpl extends MinimalEObjectImpl.Container implements Bound_
         setValue((DOUBLE)null);
         return;
       case AdeptnessPackage.BOUND_UP__VARIABLE:
-        setVariable((Variable)null);
+        setVariable((AbstractElement2)null);
         return;
       case AdeptnessPackage.BOUND_UP__EM:
         setEm((ExpressionsModel)null);

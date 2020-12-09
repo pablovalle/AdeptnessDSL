@@ -33,7 +33,7 @@ public class OracleAssesment {
 	
 	public void findOraclePattern(Oracle or) {
 		for(int i = 0; i<or.getCheck().size();i++) {
-			System.out.println("for" + i);
+			//System.out.println("for" + i);
 			String monitoringVariableName = or.getCheck().get(i).getName().toString();
 			//getReference().getLower()!=null
 			//String pattern = getPattern(or.getCheck().get(i).getReference());
@@ -62,16 +62,16 @@ public class OracleAssesment {
 	 * @return false if there is risk that the oracle fails, true if there isn't
 	 */
 	public boolean assesOracle() {
-		System.out.println("oracle assessment entering");
+		//System.out.println("oracle assessment entering");
 		for(int i = 0; i<or.getCheck().size();i++) {
-			System.out.println("for" + i);
+			//System.out.println("for" + i);
 			String monitoringVariableName = or.getCheck().get(i).getName().toString();
 			//getReference().getLower()!=null
 			//String pattern = getPattern(or.getCheck().get(i).getReference());
 			String pattern;
-			System.out.println("pattern = " + this.pat);
+			//System.out.println("pattern = " + this.pat);
 			if(this.pat==PATTERNS.ABOVE_REFERENCE) {
-				System.out.println("lower");
+				//System.out.println("lower");
 				pattern = "lower";
 				Lower low=or.getCheck().get(i).getReference().getLower();
 				double val = low.getBound_lower().getValue().getDVal();
@@ -79,20 +79,20 @@ public class OracleAssesment {
 				
 				
 			}else if(this.pat==PATTERNS.BELLOW_REFERENCE) {
-				System.out.println("upper");
+				//System.out.println("upper");
 				pattern = "upper";
 				Upper up=or.getCheck().get(i).getReference().getUpper();
 				double val = up.getBound_upp().getValue().getDVal();
 				return getOperationalDataVerdictIsBelow(val, monitoringVariableName);
 				
 			}else if(this.pat == PATTERNS.GAP) {
-				System.out.println("gap");
+				//System.out.println("gap");
 				pattern = "gap";
 				Gap gap=or.getCheck().get(i).getReference().getGap();
 				double valUp = gap.getBound_upp().getValue().getDVal();
 				double valLower = gap.getBound_lower().getValue().getDVal();
 			}else if(this.pat == PATTERNS.RANGE) {
-				System.out.println("range");
+				//System.out.println("range");
 				pattern = "range";
 				Range range=or.getCheck().get(i).getReference().getRange();
 				double valUp = range.getBound_upp().getValue().getDVal();
@@ -109,11 +109,11 @@ public class OracleAssesment {
 	 * @return
 	 */
 	private boolean getOperationalDataVerdictIsAbove(double val, String name) {
-		System.out.println("entering getOperationalDataVerdictIsAbove");
+		//System.out.println("entering getOperationalDataVerdictIsAbove");
 		if(name.contentEquals("AWT")) {
 			for(int i=0;i<this.awt.length;i++) {
-				System.out.println("val = " + val);
-				System.out.println("awt["+i +"] = " + awt[i]);
+				//System.out.println("val = " + val);
+				//System.out.println("awt["+i +"] = " + awt[i]);
 				if(val>this.awt[i])
 					return false;
 			}
@@ -129,11 +129,11 @@ public class OracleAssesment {
 	 * @return
 	 */
 	private boolean getOperationalDataVerdictIsBelow(double val, String name) {
-		System.out.println("entering getOperationalDataVerdictIsBelow");
+		//System.out.println("entering getOperationalDataVerdictIsBelow");
 		if(name.contentEquals("AWT")) {
 			for(int i=0;i<this.awt.length;i++) {
-				System.out.println("val = " + val);
-				System.out.println("awt["+i +"] = " + awt[i]);
+				//System.out.println("val = " + val);
+				//System.out.println("awt["+i +"] = " + awt[i]);
 				if(val<this.awt[i])
 					return false;
 			}
