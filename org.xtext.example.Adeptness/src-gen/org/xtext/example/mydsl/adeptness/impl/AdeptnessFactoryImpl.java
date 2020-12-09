@@ -104,6 +104,7 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.PACKAGE_DECLARATION: return createPackageDeclaration();
       case AdeptnessPackage.EXPRESSIONS_MODEL: return createExpressionsModel();
       case AdeptnessPackage.ABSTRACT_ELEMENT2: return createAbstractElement2();
+      case AdeptnessPackage.OPERATORS: return createOperators();
       case AdeptnessPackage.COMP_OP: return createCompOp();
       case AdeptnessPackage.LOGIC_OP: return createLogicOp();
       case AdeptnessPackage.OP: return createOp();
@@ -578,6 +579,18 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
   {
     AbstractElement2Impl abstractElement2 = new AbstractElement2Impl();
     return abstractElement2;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Operators createOperators()
+  {
+    OperatorsImpl operators = new OperatorsImpl();
+    return operators;
   }
 
   /**

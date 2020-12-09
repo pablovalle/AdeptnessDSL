@@ -1977,29 +1977,9 @@ ruleBound_up returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getBound_upAccess().getVariableAbstractElement2ParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getBound_upAccess().getEmExpressionsModelParserRuleCall_1_0());
 				}
-				lv_variable_1_0=ruleAbstractElement2
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getBound_upRule());
-					}
-					set(
-						$current,
-						"variable",
-						lv_variable_1_0,
-						"org.xtext.example.mydsl.Adeptness.AbstractElement2");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)
-		    |
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getBound_upAccess().getEmExpressionsModelParserRuleCall_2_0());
-				}
-				lv_em_2_0=ruleExpressionsModel
+				lv_em_1_0=ruleExpressionsModel
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getBound_upRule());
@@ -2007,7 +1987,7 @@ ruleBound_up returns [EObject current=null]
 					set(
 						$current,
 						"em",
-						lv_em_2_0,
+						lv_em_1_0,
 						"org.xtext.example.mydsl.Adeptness.ExpressionsModel");
 					afterParserOrEnumRuleCall();
 				}
@@ -2055,29 +2035,9 @@ ruleBound_Down returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getBound_DownAccess().getVariableAbstractElement2ParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getBound_DownAccess().getEmExpressionsModelParserRuleCall_1_0());
 				}
-				lv_variable_1_0=ruleAbstractElement2
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getBound_DownRule());
-					}
-					set(
-						$current,
-						"variable",
-						lv_variable_1_0,
-						"org.xtext.example.mydsl.Adeptness.AbstractElement2");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)
-		    |
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getBound_DownAccess().getEmExpressionsModelParserRuleCall_2_0());
-				}
-				lv_em_2_0=ruleExpressionsModel
+				lv_em_1_0=ruleExpressionsModel
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getBound_DownRule());
@@ -2085,7 +2045,7 @@ ruleBound_Down returns [EObject current=null]
 					set(
 						$current,
 						"em",
-						lv_em_2_0,
+						lv_em_1_0,
 						"org.xtext.example.mydsl.Adeptness.ExpressionsModel");
 					afterParserOrEnumRuleCall();
 				}
@@ -2455,30 +2415,29 @@ ruleExpressionsModel returns [EObject current=null]
 		)?
 		(
 			(
-				(
-					{
-						newCompositeNode(grammarAccess.getExpressionsModelAccess().getElementsAbstractElement2ParserRuleCall_1_0_0());
+				{
+					newCompositeNode(grammarAccess.getExpressionsModelAccess().getElementsAbstractElement2ParserRuleCall_1_0());
+				}
+				lv_elements_1_0=ruleAbstractElement2
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getExpressionsModelRule());
 					}
-					lv_elements_1_0=ruleAbstractElement2
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getExpressionsModelRule());
-						}
-						add(
-							$current,
-							"elements",
-							lv_elements_1_0,
-							"org.xtext.example.mydsl.Adeptness.AbstractElement2");
-						afterParserOrEnumRuleCall();
-					}
-				)
+					add(
+						$current,
+						"elements",
+						lv_elements_1_0,
+						"org.xtext.example.mydsl.Adeptness.AbstractElement2");
+					afterParserOrEnumRuleCall();
+				}
 			)
-			    |
+		)*
+		(
 			otherlv_2=')'
 			{
-				newLeafNode(otherlv_2, grammarAccess.getExpressionsModelAccess().getRightParenthesisKeyword_1_1());
+				newLeafNode(otherlv_2, grammarAccess.getExpressionsModelAccess().getRightParenthesisKeyword_2());
 			}
-		)*
+		)?
 	)
 ;
 
@@ -2503,7 +2462,7 @@ ruleAbstractElement2 returns [EObject current=null]
 			{
 				newLeafNode(otherlv_0, grammarAccess.getAbstractElement2Access().getLeftParenthesisKeyword_0());
 			}
-		)?
+		)*
 		(
 			(
 				(
@@ -2546,70 +2505,112 @@ ruleAbstractElement2 returns [EObject current=null]
 		)
 		(
 			(
-				(
-					{
-						newCompositeNode(grammarAccess.getAbstractElement2Access().getOperatorOpParserRuleCall_2_0_0());
+				{
+					newCompositeNode(grammarAccess.getAbstractElement2Access().getOpOperatorsParserRuleCall_2_0());
+				}
+				lv_op_3_0=ruleOperators
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getAbstractElement2Rule());
 					}
-					lv_operator_3_0=ruleOp
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getAbstractElement2Rule());
-						}
-						set(
-							$current,
-							"operator",
-							lv_operator_3_0,
-							"org.xtext.example.mydsl.Adeptness.Op");
-						afterParserOrEnumRuleCall();
-					}
-				)
+					add(
+						$current,
+						"op",
+						lv_op_3_0,
+						"org.xtext.example.mydsl.Adeptness.Operators");
+					afterParserOrEnumRuleCall();
+				}
 			)
-			    |
-			(
-				(
-					{
-						newCompositeNode(grammarAccess.getAbstractElement2Access().getComparationCompOpParserRuleCall_2_1_0());
-					}
-					lv_comparation_4_0=ruleCompOp
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getAbstractElement2Rule());
-						}
-						set(
-							$current,
-							"comparation",
-							lv_comparation_4_0,
-							"org.xtext.example.mydsl.Adeptness.CompOp");
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-			    |
-			(
-				(
-					{
-						newCompositeNode(grammarAccess.getAbstractElement2Access().getLogicOperatorLogicOpParserRuleCall_2_2_0());
-					}
-					lv_logicOperator_5_0=ruleLogicOp
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getAbstractElement2Rule());
-						}
-						set(
-							$current,
-							"logicOperator",
-							lv_logicOperator_5_0,
-							"org.xtext.example.mydsl.Adeptness.LogicOp");
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-			    |
-			otherlv_6=')'
+		)*
+		(
+			otherlv_4=')'
 			{
-				newLeafNode(otherlv_6, grammarAccess.getAbstractElement2Access().getRightParenthesisKeyword_2_3());
+				newLeafNode(otherlv_4, grammarAccess.getAbstractElement2Access().getRightParenthesisKeyword_3());
 			}
-		)?
+		)*
+	)
+;
+
+// Entry rule entryRuleOperators
+entryRuleOperators returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getOperatorsRule()); }
+	iv_ruleOperators=ruleOperators
+	{ $current=$iv_ruleOperators.current; }
+	EOF;
+
+// Rule Operators
+ruleOperators returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getOperatorsAccess().getOperatorOpParserRuleCall_0_0());
+				}
+				lv_operator_0_0=ruleOp
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getOperatorsRule());
+					}
+					set(
+						$current,
+						"operator",
+						lv_operator_0_0,
+						"org.xtext.example.mydsl.Adeptness.Op");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		    |
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getOperatorsAccess().getComparationCompOpParserRuleCall_1_0());
+				}
+				lv_comparation_1_0=ruleCompOp
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getOperatorsRule());
+					}
+					set(
+						$current,
+						"comparation",
+						lv_comparation_1_0,
+						"org.xtext.example.mydsl.Adeptness.CompOp");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		    |
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getOperatorsAccess().getLogicOperatorLogicOpParserRuleCall_2_0());
+				}
+				lv_logicOperator_2_0=ruleLogicOp
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getOperatorsRule());
+					}
+					set(
+						$current,
+						"logicOperator",
+						lv_logicOperator_2_0,
+						"org.xtext.example.mydsl.Adeptness.LogicOp");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		    |
+		otherlv_3=')'
+		{
+			newLeafNode(otherlv_3, grammarAccess.getOperatorsAccess().getRightParenthesisKeyword_3());
+		}
 	)
 ;
 

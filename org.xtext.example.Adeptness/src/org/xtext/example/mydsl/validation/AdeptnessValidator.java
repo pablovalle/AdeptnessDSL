@@ -495,10 +495,14 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			error("This variable is not in the monitoring plan",AdeptnessPackage.Literals.ABSTRACT_ELEMENT2__NAME);
 		}
 	}
-	@Check
+	/*@Check
 	public void aaaa(ExpressionsModel el) {
-		System.out.println(el.getElements().size());
-	}
+		for (int i=0; i<el.getElements().size(); i++) {
+			if(el.getElements().get(i).getOp().get(0).getOperator()!=null) {
+				error("This must be a boolean expression", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+			}
+		}
+	}*/
 	/*@Check
 	public void chekcWhen(When when) {
 		System.out.println("A");

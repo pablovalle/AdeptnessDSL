@@ -41,6 +41,7 @@ import org.xtext.example.mydsl.adeptness.MonitoringPlan;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
 import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.Op;
+import org.xtext.example.mydsl.adeptness.Operators;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.PackageDeclaration;
 import org.xtext.example.mydsl.adeptness.PrecondReference;
@@ -149,6 +150,9 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 			case AdeptnessPackage.OP:
 				sequence_Op(context, (Op) semanticObject); 
 				return; 
+			case AdeptnessPackage.OPERATORS:
+				sequence_Operators(context, (Operators) semanticObject); 
+				return; 
 			case AdeptnessPackage.ORACLE:
 				sequence_Oracle(context, (Oracle) semanticObject); 
 				return; 
@@ -201,7 +205,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     AbstractElement2 returns AbstractElement2
 	 *
 	 * Constraint:
-	 *     ((name=ID | value=DOUBLE) (operator=Op | comparation=CompOp | logicOperator=LogicOp)?)
+	 *     ((name=ID | value=DOUBLE) op+=Operators*)
 	 */
 	protected void sequence_AbstractElement2(ISerializationContext context, AbstractElement2 semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -243,7 +247,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Bound_Down returns Bound_Down
 	 *
 	 * Constraint:
-	 *     (value=DOUBLE | variable=AbstractElement2 | em=ExpressionsModel)
+	 *     (value=DOUBLE | em=ExpressionsModel)
 	 */
 	protected void sequence_Bound_Down(ISerializationContext context, Bound_Down semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -255,7 +259,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Bound_up returns Bound_up
 	 *
 	 * Constraint:
-	 *     (value=DOUBLE | variable=AbstractElement2 | em=ExpressionsModel)
+	 *     (value=DOUBLE | em=ExpressionsModel)
 	 */
 	protected void sequence_Bound_up(ISerializationContext context, Bound_up semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -372,7 +376,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     ExpressionsModel returns ExpressionsModel
 	 *
 	 * Constraint:
-	 *     elements+=AbstractElement2*
+	 *     elements+=AbstractElement2+
 	 */
 	protected void sequence_ExpressionsModel(ISerializationContext context, ExpressionsModel semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -618,6 +622,18 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     (op='+' | op='-' | op='*' | op='/')
 	 */
 	protected void sequence_Op(ISerializationContext context, Op semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Operators returns Operators
+	 *
+	 * Constraint:
+	 *     (operator=Op | comparation=CompOp | logicOperator=LogicOp)
+	 */
+	protected void sequence_Operators(ISerializationContext context, Operators semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

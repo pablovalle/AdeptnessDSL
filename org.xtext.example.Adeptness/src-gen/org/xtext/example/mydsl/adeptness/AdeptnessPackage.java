@@ -1223,22 +1223,13 @@ public interface AdeptnessPackage extends EPackage
   int BOUND_UP__VALUE = 0;
 
   /**
-   * The feature id for the '<em><b>Variable</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BOUND_UP__VARIABLE = 1;
-
-  /**
    * The feature id for the '<em><b>Em</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BOUND_UP__EM = 2;
+  int BOUND_UP__EM = 1;
 
   /**
    * The number of structural features of the '<em>Bound up</em>' class.
@@ -1247,7 +1238,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int BOUND_UP_FEATURE_COUNT = 3;
+  int BOUND_UP_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl <em>Bound Down</em>}' class.
@@ -1269,22 +1260,13 @@ public interface AdeptnessPackage extends EPackage
   int BOUND_DOWN__VALUE = 0;
 
   /**
-   * The feature id for the '<em><b>Variable</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BOUND_DOWN__VARIABLE = 1;
-
-  /**
    * The feature id for the '<em><b>Em</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BOUND_DOWN__EM = 2;
+  int BOUND_DOWN__EM = 1;
 
   /**
    * The number of structural features of the '<em>Bound Down</em>' class.
@@ -1293,7 +1275,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int BOUND_DOWN_FEATURE_COUNT = 3;
+  int BOUND_DOWN_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.BOOLEANImpl <em>BOOLEAN</em>}' class.
@@ -1501,31 +1483,13 @@ public interface AdeptnessPackage extends EPackage
   int ABSTRACT_ELEMENT2__VALUE = 1;
 
   /**
-   * The feature id for the '<em><b>Operator</b></em>' containment reference.
+   * The feature id for the '<em><b>Op</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ABSTRACT_ELEMENT2__OPERATOR = 2;
-
-  /**
-   * The feature id for the '<em><b>Comparation</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ABSTRACT_ELEMENT2__COMPARATION = 3;
-
-  /**
-   * The feature id for the '<em><b>Logic Operator</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ABSTRACT_ELEMENT2__LOGIC_OPERATOR = 4;
+  int ABSTRACT_ELEMENT2__OP = 2;
 
   /**
    * The number of structural features of the '<em>Abstract Element2</em>' class.
@@ -1534,7 +1498,53 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ABSTRACT_ELEMENT2_FEATURE_COUNT = 5;
+  int ABSTRACT_ELEMENT2_FEATURE_COUNT = 3;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.OperatorsImpl <em>Operators</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.OperatorsImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getOperators()
+   * @generated
+   */
+  int OPERATORS = 39;
+
+  /**
+   * The feature id for the '<em><b>Operator</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATORS__OPERATOR = 0;
+
+  /**
+   * The feature id for the '<em><b>Comparation</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATORS__COMPARATION = 1;
+
+  /**
+   * The feature id for the '<em><b>Logic Operator</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATORS__LOGIC_OPERATOR = 2;
+
+  /**
+   * The number of structural features of the '<em>Operators</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATORS_FEATURE_COUNT = 3;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.CompOpImpl <em>Comp Op</em>}' class.
@@ -1544,7 +1554,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getCompOp()
    * @generated
    */
-  int COMP_OP = 39;
+  int COMP_OP = 40;
 
   /**
    * The feature id for the '<em><b>Op</b></em>' attribute.
@@ -1572,7 +1582,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getLogicOp()
    * @generated
    */
-  int LOGIC_OP = 40;
+  int LOGIC_OP = 41;
 
   /**
    * The feature id for the '<em><b>Op</b></em>' attribute.
@@ -1600,7 +1610,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getOp()
    * @generated
    */
-  int OP = 41;
+  int OP = 42;
 
   /**
    * The feature id for the '<em><b>Op</b></em>' attribute.
@@ -2625,17 +2635,6 @@ public interface AdeptnessPackage extends EPackage
   EReference getBound_up_Value();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Bound_up#getVariable <em>Variable</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Variable</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Bound_up#getVariable()
-   * @see #getBound_up()
-   * @generated
-   */
-  EReference getBound_up_Variable();
-
-  /**
    * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Bound_up#getEm <em>Em</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2666,17 +2665,6 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    */
   EReference getBound_Down_Value();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Bound_Down#getVariable <em>Variable</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Variable</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Bound_Down#getVariable()
-   * @see #getBound_Down()
-   * @generated
-   */
-  EReference getBound_Down_Variable();
 
   /**
    * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Bound_Down#getEm <em>Em</em>}'.
@@ -2848,37 +2836,58 @@ public interface AdeptnessPackage extends EPackage
   EReference getAbstractElement2_Value();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getOperator <em>Operator</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getOp <em>Op</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Op</em>'.
+   * @see org.xtext.example.mydsl.adeptness.AbstractElement2#getOp()
+   * @see #getAbstractElement2()
+   * @generated
+   */
+  EReference getAbstractElement2_Op();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Operators <em>Operators</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Operators</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Operators
+   * @generated
+   */
+  EClass getOperators();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Operators#getOperator <em>Operator</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Operator</em>'.
-   * @see org.xtext.example.mydsl.adeptness.AbstractElement2#getOperator()
-   * @see #getAbstractElement2()
+   * @see org.xtext.example.mydsl.adeptness.Operators#getOperator()
+   * @see #getOperators()
    * @generated
    */
-  EReference getAbstractElement2_Operator();
+  EReference getOperators_Operator();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getComparation <em>Comparation</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Operators#getComparation <em>Comparation</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Comparation</em>'.
-   * @see org.xtext.example.mydsl.adeptness.AbstractElement2#getComparation()
-   * @see #getAbstractElement2()
+   * @see org.xtext.example.mydsl.adeptness.Operators#getComparation()
+   * @see #getOperators()
    * @generated
    */
-  EReference getAbstractElement2_Comparation();
+  EReference getOperators_Comparation();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getLogicOperator <em>Logic Operator</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Operators#getLogicOperator <em>Logic Operator</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Logic Operator</em>'.
-   * @see org.xtext.example.mydsl.adeptness.AbstractElement2#getLogicOperator()
-   * @see #getAbstractElement2()
+   * @see org.xtext.example.mydsl.adeptness.Operators#getLogicOperator()
+   * @see #getOperators()
    * @generated
    */
-  EReference getAbstractElement2_LogicOperator();
+  EReference getOperators_LogicOperator();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.CompOp <em>Comp Op</em>}'.
@@ -3781,14 +3790,6 @@ public interface AdeptnessPackage extends EPackage
     EReference BOUND_UP__VALUE = eINSTANCE.getBound_up_Value();
 
     /**
-     * The meta object literal for the '<em><b>Variable</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference BOUND_UP__VARIABLE = eINSTANCE.getBound_up_Variable();
-
-    /**
      * The meta object literal for the '<em><b>Em</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3813,14 +3814,6 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EReference BOUND_DOWN__VALUE = eINSTANCE.getBound_Down_Value();
-
-    /**
-     * The meta object literal for the '<em><b>Variable</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference BOUND_DOWN__VARIABLE = eINSTANCE.getBound_Down_Variable();
 
     /**
      * The meta object literal for the '<em><b>Em</b></em>' containment reference feature.
@@ -3965,12 +3958,30 @@ public interface AdeptnessPackage extends EPackage
     EReference ABSTRACT_ELEMENT2__VALUE = eINSTANCE.getAbstractElement2_Value();
 
     /**
+     * The meta object literal for the '<em><b>Op</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ABSTRACT_ELEMENT2__OP = eINSTANCE.getAbstractElement2_Op();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.OperatorsImpl <em>Operators</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.OperatorsImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getOperators()
+     * @generated
+     */
+    EClass OPERATORS = eINSTANCE.getOperators();
+
+    /**
      * The meta object literal for the '<em><b>Operator</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference ABSTRACT_ELEMENT2__OPERATOR = eINSTANCE.getAbstractElement2_Operator();
+    EReference OPERATORS__OPERATOR = eINSTANCE.getOperators_Operator();
 
     /**
      * The meta object literal for the '<em><b>Comparation</b></em>' containment reference feature.
@@ -3978,7 +3989,7 @@ public interface AdeptnessPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference ABSTRACT_ELEMENT2__COMPARATION = eINSTANCE.getAbstractElement2_Comparation();
+    EReference OPERATORS__COMPARATION = eINSTANCE.getOperators_Comparation();
 
     /**
      * The meta object literal for the '<em><b>Logic Operator</b></em>' containment reference feature.
@@ -3986,7 +3997,7 @@ public interface AdeptnessPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference ABSTRACT_ELEMENT2__LOGIC_OPERATOR = eINSTANCE.getAbstractElement2_LogicOperator();
+    EReference OPERATORS__LOGIC_OPERATOR = eINSTANCE.getOperators_LogicOperator();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.CompOpImpl <em>Comp Op</em>}' class.

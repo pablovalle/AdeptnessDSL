@@ -179,12 +179,12 @@ InclusiveBound:
 //Upper limit
 
 Bound_up:
-	(value=DOUBLE|variable=AbstractElement2|em = ExpressionsModel)
+	(value=DOUBLE|/*variable=AbstractElement2|*/em = ExpressionsModel)
 ;
 
 //Lower limit
 Bound_Down:
-	 (value=DOUBLE|variable=AbstractElement2|em = ExpressionsModel)
+	 (value=DOUBLE|/*variable=AbstractElement2|*/em = ExpressionsModel)
 ;
 //Boolean declaration
 BOOLEAN:
@@ -218,13 +218,20 @@ PackageDeclaration:
  */
  ExpressionsModel:
  	("(")?
- 	(elements+=AbstractElement2|")")*
+ 	(elements+=AbstractElement2)*
+	(")")?
 ;
 
  AbstractElement2:
- 	("(")?
+ 	("(")*
 	(name=ID | value=DOUBLE)
-	(operator=Op|comparation=CompOp|logicOperator=LogicOp| ")")?
+	(op+=Operators)*
+	(")")*
+	
+;
+
+Operators:
+	(operator=Op|comparation=CompOp|logicOperator=LogicOp|")")
 ;
 
 CompOp:

@@ -173,15 +173,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="Bound_up">
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//DOUBLE"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" eType="#//AbstractElement2"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="em" eType="#//ExpressionsModel"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Bound_Down">
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//DOUBLE"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" eType="#//AbstractElement2"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="em" eType="#//ExpressionsModel"
         containment="true"/>
@@ -209,6 +205,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//DOUBLE"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op" upperBound="-1" eType="#//Operators"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Operators">
     <eStructuralFeatures xsi:type="ecore:EReference" name="operator" eType="#//Op"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="comparation" eType="#//CompOp"

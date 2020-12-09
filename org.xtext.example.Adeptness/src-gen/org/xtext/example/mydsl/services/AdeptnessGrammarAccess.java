@@ -1212,17 +1212,15 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Assignment cValueAssignment_0 = (Assignment)cAlternatives.eContents().get(0);
 		private final RuleCall cValueDOUBLEParserRuleCall_0_0 = (RuleCall)cValueAssignment_0.eContents().get(0);
-		private final Assignment cVariableAssignment_1 = (Assignment)cAlternatives.eContents().get(1);
-		private final RuleCall cVariableAbstractElement2ParserRuleCall_1_0 = (RuleCall)cVariableAssignment_1.eContents().get(0);
-		private final Assignment cEmAssignment_2 = (Assignment)cAlternatives.eContents().get(2);
-		private final RuleCall cEmExpressionsModelParserRuleCall_2_0 = (RuleCall)cEmAssignment_2.eContents().get(0);
+		private final Assignment cEmAssignment_1 = (Assignment)cAlternatives.eContents().get(1);
+		private final RuleCall cEmExpressionsModelParserRuleCall_1_0 = (RuleCall)cEmAssignment_1.eContents().get(0);
 		
 		////Upper limit
 		//Bound_up:
-		//	value=DOUBLE | variable=AbstractElement2 | em=ExpressionsModel;
+		//	value=DOUBLE | em=ExpressionsModel;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//value=DOUBLE | variable=AbstractElement2 | em=ExpressionsModel
+		//value=DOUBLE | em=ExpressionsModel
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//value=DOUBLE
@@ -1231,34 +1229,26 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		//DOUBLE
 		public RuleCall getValueDOUBLEParserRuleCall_0_0() { return cValueDOUBLEParserRuleCall_0_0; }
 		
-		//variable=AbstractElement2
-		public Assignment getVariableAssignment_1() { return cVariableAssignment_1; }
-		
-		//AbstractElement2
-		public RuleCall getVariableAbstractElement2ParserRuleCall_1_0() { return cVariableAbstractElement2ParserRuleCall_1_0; }
-		
-		//em=ExpressionsModel
-		public Assignment getEmAssignment_2() { return cEmAssignment_2; }
+		///*variable=AbstractElement2|*/ em=ExpressionsModel
+		public Assignment getEmAssignment_1() { return cEmAssignment_1; }
 		
 		//ExpressionsModel
-		public RuleCall getEmExpressionsModelParserRuleCall_2_0() { return cEmExpressionsModelParserRuleCall_2_0; }
+		public RuleCall getEmExpressionsModelParserRuleCall_1_0() { return cEmExpressionsModelParserRuleCall_1_0; }
 	}
 	public class Bound_DownElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Bound_Down");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Assignment cValueAssignment_0 = (Assignment)cAlternatives.eContents().get(0);
 		private final RuleCall cValueDOUBLEParserRuleCall_0_0 = (RuleCall)cValueAssignment_0.eContents().get(0);
-		private final Assignment cVariableAssignment_1 = (Assignment)cAlternatives.eContents().get(1);
-		private final RuleCall cVariableAbstractElement2ParserRuleCall_1_0 = (RuleCall)cVariableAssignment_1.eContents().get(0);
-		private final Assignment cEmAssignment_2 = (Assignment)cAlternatives.eContents().get(2);
-		private final RuleCall cEmExpressionsModelParserRuleCall_2_0 = (RuleCall)cEmAssignment_2.eContents().get(0);
+		private final Assignment cEmAssignment_1 = (Assignment)cAlternatives.eContents().get(1);
+		private final RuleCall cEmExpressionsModelParserRuleCall_1_0 = (RuleCall)cEmAssignment_1.eContents().get(0);
 		
 		////Lower limit
 		//Bound_Down:
-		//	value=DOUBLE | variable=AbstractElement2 | em=ExpressionsModel;
+		//	value=DOUBLE | em=ExpressionsModel;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//value=DOUBLE | variable=AbstractElement2 | em=ExpressionsModel
+		//value=DOUBLE | em=ExpressionsModel
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//value=DOUBLE
@@ -1267,17 +1257,11 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		//DOUBLE
 		public RuleCall getValueDOUBLEParserRuleCall_0_0() { return cValueDOUBLEParserRuleCall_0_0; }
 		
-		//variable=AbstractElement2
-		public Assignment getVariableAssignment_1() { return cVariableAssignment_1; }
-		
-		//AbstractElement2
-		public RuleCall getVariableAbstractElement2ParserRuleCall_1_0() { return cVariableAbstractElement2ParserRuleCall_1_0; }
-		
-		//em=ExpressionsModel
-		public Assignment getEmAssignment_2() { return cEmAssignment_2; }
+		///*variable=AbstractElement2|*/ em=ExpressionsModel
+		public Assignment getEmAssignment_1() { return cEmAssignment_1; }
 		
 		//ExpressionsModel
-		public RuleCall getEmExpressionsModelParserRuleCall_2_0() { return cEmExpressionsModelParserRuleCall_2_0; }
+		public RuleCall getEmExpressionsModelParserRuleCall_1_0() { return cEmExpressionsModelParserRuleCall_1_0; }
 	}
 	public class BOOLEANElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.BOOLEAN");
@@ -1474,34 +1458,32 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.ExpressionsModel");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cLeftParenthesisKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
-		private final Assignment cElementsAssignment_1_0 = (Assignment)cAlternatives_1.eContents().get(0);
-		private final RuleCall cElementsAbstractElement2ParserRuleCall_1_0_0 = (RuleCall)cElementsAssignment_1_0.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_1_1 = (Keyword)cAlternatives_1.eContents().get(1);
+		private final Assignment cElementsAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cElementsAbstractElement2ParserRuleCall_1_0 = (RuleCall)cElementsAssignment_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		
 		///*
 		// * MATH ELEMENTS
 		// */ ExpressionsModel:
-		//	"("? (elements+=AbstractElement2 | ")")*;
+		//	"("?
+		//	elements+=AbstractElement2*
+		//	")"?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//"("? (elements+=AbstractElement2 | ")")*
+		//"("? elements+=AbstractElement2* ")"?
 		public Group getGroup() { return cGroup; }
 		
 		//"("?
 		public Keyword getLeftParenthesisKeyword_0() { return cLeftParenthesisKeyword_0; }
 		
-		//(elements+=AbstractElement2 | ")")*
-		public Alternatives getAlternatives_1() { return cAlternatives_1; }
-		
-		//elements+=AbstractElement2
-		public Assignment getElementsAssignment_1_0() { return cElementsAssignment_1_0; }
+		//elements+=AbstractElement2*
+		public Assignment getElementsAssignment_1() { return cElementsAssignment_1; }
 		
 		//AbstractElement2
-		public RuleCall getElementsAbstractElement2ParserRuleCall_1_0_0() { return cElementsAbstractElement2ParserRuleCall_1_0_0; }
+		public RuleCall getElementsAbstractElement2ParserRuleCall_1_0() { return cElementsAbstractElement2ParserRuleCall_1_0; }
 		
-		//")"
-		public Keyword getRightParenthesisKeyword_1_1() { return cRightParenthesisKeyword_1_1; }
+		//")"?
+		public Keyword getRightParenthesisKeyword_2() { return cRightParenthesisKeyword_2; }
 	}
 	public class AbstractElement2Elements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.AbstractElement2");
@@ -1512,23 +1494,19 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cNameIDTerminalRuleCall_1_0_0 = (RuleCall)cNameAssignment_1_0.eContents().get(0);
 		private final Assignment cValueAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
 		private final RuleCall cValueDOUBLEParserRuleCall_1_1_0 = (RuleCall)cValueAssignment_1_1.eContents().get(0);
-		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
-		private final Assignment cOperatorAssignment_2_0 = (Assignment)cAlternatives_2.eContents().get(0);
-		private final RuleCall cOperatorOpParserRuleCall_2_0_0 = (RuleCall)cOperatorAssignment_2_0.eContents().get(0);
-		private final Assignment cComparationAssignment_2_1 = (Assignment)cAlternatives_2.eContents().get(1);
-		private final RuleCall cComparationCompOpParserRuleCall_2_1_0 = (RuleCall)cComparationAssignment_2_1.eContents().get(0);
-		private final Assignment cLogicOperatorAssignment_2_2 = (Assignment)cAlternatives_2.eContents().get(2);
-		private final RuleCall cLogicOperatorLogicOpParserRuleCall_2_2_0 = (RuleCall)cLogicOperatorAssignment_2_2.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_2_3 = (Keyword)cAlternatives_2.eContents().get(3);
+		private final Assignment cOpAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cOpOperatorsParserRuleCall_2_0 = (RuleCall)cOpAssignment_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
 		//AbstractElement2:
-		//	"("? (name=ID | value=DOUBLE) (operator=Op | comparation=CompOp | logicOperator=LogicOp | ")")?;
+		//	"("* (name=ID | value=DOUBLE) op+=Operators*
+		//	")"*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//"("? (name=ID | value=DOUBLE) (operator=Op | comparation=CompOp | logicOperator=LogicOp | ")")?
+		//"("* (name=ID | value=DOUBLE) op+=Operators* ")"*
 		public Group getGroup() { return cGroup; }
 		
-		//"("?
+		//"("*
 		public Keyword getLeftParenthesisKeyword_0() { return cLeftParenthesisKeyword_0; }
 		
 		//(name=ID | value=DOUBLE)
@@ -1546,29 +1524,53 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		//DOUBLE
 		public RuleCall getValueDOUBLEParserRuleCall_1_1_0() { return cValueDOUBLEParserRuleCall_1_1_0; }
 		
-		//(operator=Op | comparation=CompOp | logicOperator=LogicOp | ")")?
-		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+		//op+=Operators*
+		public Assignment getOpAssignment_2() { return cOpAssignment_2; }
+		
+		//Operators
+		public RuleCall getOpOperatorsParserRuleCall_2_0() { return cOpOperatorsParserRuleCall_2_0; }
+		
+		//")"*
+		public Keyword getRightParenthesisKeyword_3() { return cRightParenthesisKeyword_3; }
+	}
+	public class OperatorsElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Operators");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Assignment cOperatorAssignment_0 = (Assignment)cAlternatives.eContents().get(0);
+		private final RuleCall cOperatorOpParserRuleCall_0_0 = (RuleCall)cOperatorAssignment_0.eContents().get(0);
+		private final Assignment cComparationAssignment_1 = (Assignment)cAlternatives.eContents().get(1);
+		private final RuleCall cComparationCompOpParserRuleCall_1_0 = (RuleCall)cComparationAssignment_1.eContents().get(0);
+		private final Assignment cLogicOperatorAssignment_2 = (Assignment)cAlternatives.eContents().get(2);
+		private final RuleCall cLogicOperatorLogicOpParserRuleCall_2_0 = (RuleCall)cLogicOperatorAssignment_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_3 = (Keyword)cAlternatives.eContents().get(3);
+		
+		//Operators:
+		//	operator=Op | comparation=CompOp | logicOperator=LogicOp | ")";
+		@Override public ParserRule getRule() { return rule; }
+		
+		//operator=Op | comparation=CompOp | logicOperator=LogicOp | ")"
+		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//operator=Op
-		public Assignment getOperatorAssignment_2_0() { return cOperatorAssignment_2_0; }
+		public Assignment getOperatorAssignment_0() { return cOperatorAssignment_0; }
 		
 		//Op
-		public RuleCall getOperatorOpParserRuleCall_2_0_0() { return cOperatorOpParserRuleCall_2_0_0; }
+		public RuleCall getOperatorOpParserRuleCall_0_0() { return cOperatorOpParserRuleCall_0_0; }
 		
 		//comparation=CompOp
-		public Assignment getComparationAssignment_2_1() { return cComparationAssignment_2_1; }
+		public Assignment getComparationAssignment_1() { return cComparationAssignment_1; }
 		
 		//CompOp
-		public RuleCall getComparationCompOpParserRuleCall_2_1_0() { return cComparationCompOpParserRuleCall_2_1_0; }
+		public RuleCall getComparationCompOpParserRuleCall_1_0() { return cComparationCompOpParserRuleCall_1_0; }
 		
 		//logicOperator=LogicOp
-		public Assignment getLogicOperatorAssignment_2_2() { return cLogicOperatorAssignment_2_2; }
+		public Assignment getLogicOperatorAssignment_2() { return cLogicOperatorAssignment_2; }
 		
 		//LogicOp
-		public RuleCall getLogicOperatorLogicOpParserRuleCall_2_2_0() { return cLogicOperatorLogicOpParserRuleCall_2_2_0; }
+		public RuleCall getLogicOperatorLogicOpParserRuleCall_2_0() { return cLogicOperatorLogicOpParserRuleCall_2_0; }
 		
 		//")"
-		public Keyword getRightParenthesisKeyword_2_3() { return cRightParenthesisKeyword_2_3; }
+		public Keyword getRightParenthesisKeyword_3() { return cRightParenthesisKeyword_3; }
 	}
 	public class CompOpElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.CompOp");
@@ -1708,6 +1710,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	private final PackageDeclarationElements pPackageDeclaration;
 	private final ExpressionsModelElements pExpressionsModel;
 	private final AbstractElement2Elements pAbstractElement2;
+	private final OperatorsElements pOperators;
 	private final CompOpElements pCompOp;
 	private final LogicOpElements pLogicOp;
 	private final OpElements pOp;
@@ -1764,6 +1767,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		this.pPackageDeclaration = new PackageDeclarationElements();
 		this.pExpressionsModel = new ExpressionsModelElements();
 		this.pAbstractElement2 = new AbstractElement2Elements();
+		this.pOperators = new OperatorsElements();
 		this.pCompOp = new CompOpElements();
 		this.pLogicOp = new LogicOpElements();
 		this.pOp = new OpElements();
@@ -2156,7 +2160,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	
 	////Upper limit
 	//Bound_up:
-	//	value=DOUBLE | variable=AbstractElement2 | em=ExpressionsModel;
+	//	value=DOUBLE | em=ExpressionsModel;
 	public Bound_upElements getBound_upAccess() {
 		return pBound_up;
 	}
@@ -2167,7 +2171,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	
 	////Lower limit
 	//Bound_Down:
-	//	value=DOUBLE | variable=AbstractElement2 | em=ExpressionsModel;
+	//	value=DOUBLE | em=ExpressionsModel;
 	public Bound_DownElements getBound_DownAccess() {
 		return pBound_Down;
 	}
@@ -2255,7 +2259,9 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	///*
 	// * MATH ELEMENTS
 	// */ ExpressionsModel:
-	//	"("? (elements+=AbstractElement2 | ")")*;
+	//	"("?
+	//	elements+=AbstractElement2*
+	//	")"?;
 	public ExpressionsModelElements getExpressionsModelAccess() {
 		return pExpressionsModel;
 	}
@@ -2265,13 +2271,24 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//AbstractElement2:
-	//	"("? (name=ID | value=DOUBLE) (operator=Op | comparation=CompOp | logicOperator=LogicOp | ")")?;
+	//	"("* (name=ID | value=DOUBLE) op+=Operators*
+	//	")"*;
 	public AbstractElement2Elements getAbstractElement2Access() {
 		return pAbstractElement2;
 	}
 	
 	public ParserRule getAbstractElement2Rule() {
 		return getAbstractElement2Access().getRule();
+	}
+	
+	//Operators:
+	//	operator=Op | comparation=CompOp | logicOperator=LogicOp | ")";
+	public OperatorsElements getOperatorsAccess() {
+		return pOperators;
+	}
+	
+	public ParserRule getOperatorsRule() {
+		return getOperatorsAccess().getRule();
 	}
 	
 	//CompOp:

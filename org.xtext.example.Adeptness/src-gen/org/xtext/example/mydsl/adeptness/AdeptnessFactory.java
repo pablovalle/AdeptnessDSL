@@ -375,6 +375,15 @@ public interface AdeptnessFactory extends EFactory
   AbstractElement2 createAbstractElement2();
 
   /**
+   * Returns a new object of class '<em>Operators</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Operators</em>'.
+   * @generated
+   */
+  Operators createOperators();
+
+  /**
    * Returns a new object of class '<em>Comp Op</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

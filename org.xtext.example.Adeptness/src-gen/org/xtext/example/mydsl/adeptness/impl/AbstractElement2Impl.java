@@ -3,8 +3,12 @@
  */
 package org.xtext.example.mydsl.adeptness.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -12,12 +16,13 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
 import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
-import org.xtext.example.mydsl.adeptness.CompOp;
 import org.xtext.example.mydsl.adeptness.DOUBLE;
-import org.xtext.example.mydsl.adeptness.LogicOp;
-import org.xtext.example.mydsl.adeptness.Op;
+import org.xtext.example.mydsl.adeptness.Operators;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,9 +34,7 @@ import org.xtext.example.mydsl.adeptness.Op;
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl#getName <em>Name</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl#getValue <em>Value</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl#getOperator <em>Operator</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl#getComparation <em>Comparation</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl#getLogicOperator <em>Logic Operator</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl#getOp <em>Op</em>}</li>
  * </ul>
  *
  * @generated
@@ -69,34 +72,14 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
   protected DOUBLE value;
 
   /**
-   * The cached value of the '{@link #getOperator() <em>Operator</em>}' containment reference.
+   * The cached value of the '{@link #getOp() <em>Op</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getOperator()
+   * @see #getOp()
    * @generated
    * @ordered
    */
-  protected Op operator;
-
-  /**
-   * The cached value of the '{@link #getComparation() <em>Comparation</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getComparation()
-   * @generated
-   * @ordered
-   */
-  protected CompOp comparation;
-
-  /**
-   * The cached value of the '{@link #getLogicOperator() <em>Logic Operator</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getLogicOperator()
-   * @generated
-   * @ordered
-   */
-  protected LogicOp logicOperator;
+  protected EList<Operators> op;
 
   /**
    * <!-- begin-user-doc -->
@@ -200,148 +183,13 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
    * @generated
    */
   @Override
-  public Op getOperator()
+  public EList<Operators> getOp()
   {
-    return operator;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetOperator(Op newOperator, NotificationChain msgs)
-  {
-    Op oldOperator = operator;
-    operator = newOperator;
-    if (eNotificationRequired())
+    if (op == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.ABSTRACT_ELEMENT2__OPERATOR, oldOperator, newOperator);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      op = new EObjectContainmentEList<Operators>(Operators.class, this, AdeptnessPackage.ABSTRACT_ELEMENT2__OP);
     }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setOperator(Op newOperator)
-  {
-    if (newOperator != operator)
-    {
-      NotificationChain msgs = null;
-      if (operator != null)
-        msgs = ((InternalEObject)operator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.ABSTRACT_ELEMENT2__OPERATOR, null, msgs);
-      if (newOperator != null)
-        msgs = ((InternalEObject)newOperator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.ABSTRACT_ELEMENT2__OPERATOR, null, msgs);
-      msgs = basicSetOperator(newOperator, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.ABSTRACT_ELEMENT2__OPERATOR, newOperator, newOperator));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public CompOp getComparation()
-  {
-    return comparation;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetComparation(CompOp newComparation, NotificationChain msgs)
-  {
-    CompOp oldComparation = comparation;
-    comparation = newComparation;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.ABSTRACT_ELEMENT2__COMPARATION, oldComparation, newComparation);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setComparation(CompOp newComparation)
-  {
-    if (newComparation != comparation)
-    {
-      NotificationChain msgs = null;
-      if (comparation != null)
-        msgs = ((InternalEObject)comparation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.ABSTRACT_ELEMENT2__COMPARATION, null, msgs);
-      if (newComparation != null)
-        msgs = ((InternalEObject)newComparation).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.ABSTRACT_ELEMENT2__COMPARATION, null, msgs);
-      msgs = basicSetComparation(newComparation, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.ABSTRACT_ELEMENT2__COMPARATION, newComparation, newComparation));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public LogicOp getLogicOperator()
-  {
-    return logicOperator;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetLogicOperator(LogicOp newLogicOperator, NotificationChain msgs)
-  {
-    LogicOp oldLogicOperator = logicOperator;
-    logicOperator = newLogicOperator;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.ABSTRACT_ELEMENT2__LOGIC_OPERATOR, oldLogicOperator, newLogicOperator);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setLogicOperator(LogicOp newLogicOperator)
-  {
-    if (newLogicOperator != logicOperator)
-    {
-      NotificationChain msgs = null;
-      if (logicOperator != null)
-        msgs = ((InternalEObject)logicOperator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.ABSTRACT_ELEMENT2__LOGIC_OPERATOR, null, msgs);
-      if (newLogicOperator != null)
-        msgs = ((InternalEObject)newLogicOperator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.ABSTRACT_ELEMENT2__LOGIC_OPERATOR, null, msgs);
-      msgs = basicSetLogicOperator(newLogicOperator, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.ABSTRACT_ELEMENT2__LOGIC_OPERATOR, newLogicOperator, newLogicOperator));
+    return op;
   }
 
   /**
@@ -356,12 +204,8 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
     {
       case AdeptnessPackage.ABSTRACT_ELEMENT2__VALUE:
         return basicSetValue(null, msgs);
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__OPERATOR:
-        return basicSetOperator(null, msgs);
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__COMPARATION:
-        return basicSetComparation(null, msgs);
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__LOGIC_OPERATOR:
-        return basicSetLogicOperator(null, msgs);
+      case AdeptnessPackage.ABSTRACT_ELEMENT2__OP:
+        return ((InternalEList<?>)getOp()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -380,12 +224,8 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
         return getName();
       case AdeptnessPackage.ABSTRACT_ELEMENT2__VALUE:
         return getValue();
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__OPERATOR:
-        return getOperator();
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__COMPARATION:
-        return getComparation();
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__LOGIC_OPERATOR:
-        return getLogicOperator();
+      case AdeptnessPackage.ABSTRACT_ELEMENT2__OP:
+        return getOp();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -395,6 +235,7 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -406,14 +247,9 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
       case AdeptnessPackage.ABSTRACT_ELEMENT2__VALUE:
         setValue((DOUBLE)newValue);
         return;
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__OPERATOR:
-        setOperator((Op)newValue);
-        return;
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__COMPARATION:
-        setComparation((CompOp)newValue);
-        return;
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__LOGIC_OPERATOR:
-        setLogicOperator((LogicOp)newValue);
+      case AdeptnessPackage.ABSTRACT_ELEMENT2__OP:
+        getOp().clear();
+        getOp().addAll((Collection<? extends Operators>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -435,14 +271,8 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
       case AdeptnessPackage.ABSTRACT_ELEMENT2__VALUE:
         setValue((DOUBLE)null);
         return;
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__OPERATOR:
-        setOperator((Op)null);
-        return;
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__COMPARATION:
-        setComparation((CompOp)null);
-        return;
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__LOGIC_OPERATOR:
-        setLogicOperator((LogicOp)null);
+      case AdeptnessPackage.ABSTRACT_ELEMENT2__OP:
+        getOp().clear();
         return;
     }
     super.eUnset(featureID);
@@ -462,12 +292,8 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case AdeptnessPackage.ABSTRACT_ELEMENT2__VALUE:
         return value != null;
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__OPERATOR:
-        return operator != null;
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__COMPARATION:
-        return comparation != null;
-      case AdeptnessPackage.ABSTRACT_ELEMENT2__LOGIC_OPERATOR:
-        return logicOperator != null;
+      case AdeptnessPackage.ABSTRACT_ELEMENT2__OP:
+        return op != null && !op.isEmpty();
     }
     return super.eIsSet(featureID);
   }

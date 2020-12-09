@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.Bound_Down;
 import org.xtext.example.mydsl.adeptness.DOUBLE;
@@ -27,7 +26,6 @@ import org.xtext.example.mydsl.adeptness.ExpressionsModel;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl#getValue <em>Value</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl#getVariable <em>Variable</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.Bound_DownImpl#getEm <em>Em</em>}</li>
  * </ul>
  *
@@ -44,16 +42,6 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
    * @ordered
    */
   protected DOUBLE value;
-
-  /**
-   * The cached value of the '{@link #getVariable() <em>Variable</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getVariable()
-   * @generated
-   * @ordered
-   */
-  protected AbstractElement2 variable;
 
   /**
    * The cached value of the '{@link #getEm() <em>Em</em>}' containment reference.
@@ -142,56 +130,6 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
    * @generated
    */
   @Override
-  public AbstractElement2 getVariable()
-  {
-    return variable;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetVariable(AbstractElement2 newVariable, NotificationChain msgs)
-  {
-    AbstractElement2 oldVariable = variable;
-    variable = newVariable;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.BOUND_DOWN__VARIABLE, oldVariable, newVariable);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setVariable(AbstractElement2 newVariable)
-  {
-    if (newVariable != variable)
-    {
-      NotificationChain msgs = null;
-      if (variable != null)
-        msgs = ((InternalEObject)variable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.BOUND_DOWN__VARIABLE, null, msgs);
-      if (newVariable != null)
-        msgs = ((InternalEObject)newVariable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.BOUND_DOWN__VARIABLE, null, msgs);
-      msgs = basicSetVariable(newVariable, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.BOUND_DOWN__VARIABLE, newVariable, newVariable));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public ExpressionsModel getEm()
   {
     return em;
@@ -248,8 +186,6 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
     {
       case AdeptnessPackage.BOUND_DOWN__VALUE:
         return basicSetValue(null, msgs);
-      case AdeptnessPackage.BOUND_DOWN__VARIABLE:
-        return basicSetVariable(null, msgs);
       case AdeptnessPackage.BOUND_DOWN__EM:
         return basicSetEm(null, msgs);
     }
@@ -268,8 +204,6 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
     {
       case AdeptnessPackage.BOUND_DOWN__VALUE:
         return getValue();
-      case AdeptnessPackage.BOUND_DOWN__VARIABLE:
-        return getVariable();
       case AdeptnessPackage.BOUND_DOWN__EM:
         return getEm();
     }
@@ -288,9 +222,6 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
     {
       case AdeptnessPackage.BOUND_DOWN__VALUE:
         setValue((DOUBLE)newValue);
-        return;
-      case AdeptnessPackage.BOUND_DOWN__VARIABLE:
-        setVariable((AbstractElement2)newValue);
         return;
       case AdeptnessPackage.BOUND_DOWN__EM:
         setEm((ExpressionsModel)newValue);
@@ -312,9 +243,6 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
       case AdeptnessPackage.BOUND_DOWN__VALUE:
         setValue((DOUBLE)null);
         return;
-      case AdeptnessPackage.BOUND_DOWN__VARIABLE:
-        setVariable((AbstractElement2)null);
-        return;
       case AdeptnessPackage.BOUND_DOWN__EM:
         setEm((ExpressionsModel)null);
         return;
@@ -334,8 +262,6 @@ public class Bound_DownImpl extends MinimalEObjectImpl.Container implements Boun
     {
       case AdeptnessPackage.BOUND_DOWN__VALUE:
         return value != null;
-      case AdeptnessPackage.BOUND_DOWN__VARIABLE:
-        return variable != null;
       case AdeptnessPackage.BOUND_DOWN__EM:
         return em != null;
     }

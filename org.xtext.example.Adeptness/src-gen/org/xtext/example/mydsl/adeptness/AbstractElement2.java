@@ -3,6 +3,8 @@
  */
 package org.xtext.example.mydsl.adeptness;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -16,9 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getName <em>Name</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getValue <em>Value</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getOperator <em>Operator</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getComparation <em>Comparation</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getLogicOperator <em>Logic Operator</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getOp <em>Op</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getAbstractElement2()
@@ -72,69 +72,15 @@ public interface AbstractElement2 extends EObject
   void setValue(DOUBLE value);
 
   /**
-   * Returns the value of the '<em><b>Operator</b></em>' containment reference.
+   * Returns the value of the '<em><b>Op</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.example.mydsl.adeptness.Operators}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Operator</em>' containment reference.
-   * @see #setOperator(Op)
-   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getAbstractElement2_Operator()
+   * @return the value of the '<em>Op</em>' containment reference list.
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getAbstractElement2_Op()
    * @model containment="true"
    * @generated
    */
-  Op getOperator();
-
-  /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getOperator <em>Operator</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Operator</em>' containment reference.
-   * @see #getOperator()
-   * @generated
-   */
-  void setOperator(Op value);
-
-  /**
-   * Returns the value of the '<em><b>Comparation</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Comparation</em>' containment reference.
-   * @see #setComparation(CompOp)
-   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getAbstractElement2_Comparation()
-   * @model containment="true"
-   * @generated
-   */
-  CompOp getComparation();
-
-  /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getComparation <em>Comparation</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Comparation</em>' containment reference.
-   * @see #getComparation()
-   * @generated
-   */
-  void setComparation(CompOp value);
-
-  /**
-   * Returns the value of the '<em><b>Logic Operator</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Logic Operator</em>' containment reference.
-   * @see #setLogicOperator(LogicOp)
-   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getAbstractElement2_LogicOperator()
-   * @model containment="true"
-   * @generated
-   */
-  LogicOp getLogicOperator();
-
-  /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getLogicOperator <em>Logic Operator</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Logic Operator</em>' containment reference.
-   * @see #getLogicOperator()
-   * @generated
-   */
-  void setLogicOperator(LogicOp value);
+  EList<Operators> getOp();
 
 } // AbstractElement2

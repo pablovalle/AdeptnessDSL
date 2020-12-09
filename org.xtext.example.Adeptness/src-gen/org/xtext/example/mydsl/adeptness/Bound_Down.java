@@ -15,7 +15,6 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Bound_Down#getValue <em>Value</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.Bound_Down#getVariable <em>Variable</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Bound_Down#getEm <em>Em</em>}</li>
  * </ul>
  *
@@ -46,28 +45,6 @@ public interface Bound_Down extends EObject
    * @generated
    */
   void setValue(DOUBLE value);
-
-  /**
-   * Returns the value of the '<em><b>Variable</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Variable</em>' containment reference.
-   * @see #setVariable(AbstractElement2)
-   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getBound_Down_Variable()
-   * @model containment="true"
-   * @generated
-   */
-  AbstractElement2 getVariable();
-
-  /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Bound_Down#getVariable <em>Variable</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Variable</em>' containment reference.
-   * @see #getVariable()
-   * @generated
-   */
-  void setVariable(AbstractElement2 value);
 
   /**
    * Returns the value of the '<em><b>Em</b></em>' containment reference.

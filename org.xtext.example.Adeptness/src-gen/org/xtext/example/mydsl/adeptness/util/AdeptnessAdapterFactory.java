@@ -271,6 +271,11 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
         return createAbstractElement2Adapter();
       }
       @Override
+      public Adapter caseOperators(Operators object)
+      {
+        return createOperatorsAdapter();
+      }
+      @Override
       public Adapter caseCompOp(CompOp object)
       {
         return createCompOpAdapter();
@@ -888,6 +893,21 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createAbstractElement2Adapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Operators <em>Operators</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.Operators
+   * @generated
+   */
+  public Adapter createOperatorsAdapter()
   {
     return null;
   }
