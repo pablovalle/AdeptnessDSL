@@ -117,7 +117,7 @@ class AdeptnessGenerator extends AbstractGenerator {
 	'''*/
 	
 	
-	def create_oracle_m(Oracle param)'''
+	/*def create_oracle_m(Oracle param)'''
 	
 	def= legacy_code('initialize');
 	def.OutputFcnSpec= 'double y1=«param.name.toString()»(double u1)';
@@ -261,7 +261,7 @@ class AdeptnessGenerator extends AbstractGenerator {
 	«ENDFOR»
 		
 
-	'''
+	'''*/
 	
 
 	

@@ -43,9 +43,11 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	double cantDeg;
 	double cantXPeak;
 	List<MonitoringVariables> monitoringVariableList;
+	List<String>oracleNames;
+	List<String>monitoringVariableNames;
 	//GET MONITORING VARIBALES
 	@Check
-	public void getMonitoringVariables(Signal CPS) {
+	public void getImportedMonitoringVariables(Signal CPS) {
 		monitoringVariableList=new ArrayList<>();
 		String type,name;
 		double min, max;
@@ -64,6 +66,47 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				min=monitor.getMin().getDVal();
 			}
 			monitoringVariableList.add(new MonitoringVariables(name,type,max,min));
+		}
+	}
+	@Check
+	public void getMonitoringVariablesName(MonitoringFile file) {
+		monitoringVariableNames= new ArrayList<>();
+		for (int i=0; i< file.getMonitoringPlan().size(); i++) {
+			monitoringVariableNames.add(file.getMonitoringPlan().get(i).getMonitoringVariables().getName().toString());
+		}
+		
+	}
+	@Check
+	public void checkDuplicatedMonitoringVariableNames(MonitoringVariable variable) {
+		String name= variable.getName().toString();
+		int cont=0;
+		for(int i=0; i<monitoringVariableNames.size(); i++) {
+			if(monitoringVariableNames.get(i).toString().equals(name)) {
+				cont++;
+			}
+		}
+		if(cont>1) {
+			error("Monitoring Variables' name must be unique", AdeptnessPackage.Literals.MONITORING_VARIABLE__NAME);
+		}
+	}
+	@Check
+	public void getOraclesNames(Signal CPS) {
+		oracleNames=new ArrayList<>();
+		for(int i=0; i< CPS.getOracle().size(); i++) {
+			oracleNames.add(CPS.getOracle().get(i).getName().toString());
+		}
+	}
+	@Check
+	public void checkDuplicatedOracleNames(Oracle oracle) {
+		String name=oracle.getName().toString();
+		int cont=0;
+		for(int i=0; i<oracleNames.size(); i++) {
+			if(oracleNames.get(i).toString().equals(name)) {
+				cont++;
+			}
+		}
+		if(cont>1) {
+			error("Oracle's name must be unique", AdeptnessPackage.Literals.ORACLE__NAME);
 		}
 	}
 	@Check
