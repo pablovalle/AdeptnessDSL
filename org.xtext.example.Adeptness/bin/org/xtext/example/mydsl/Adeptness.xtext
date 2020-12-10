@@ -99,7 +99,7 @@ While:
 
 When:
 	'when:' em = ExpressionsModel
-			aw = AfterWhen
+			(aw = AfterWhen)?
 			//precondReference = PrecondReference
 ;
 
@@ -108,11 +108,11 @@ AfterWhen:
 ;
 
 Wait:
-	'after(' + time = DOUBLE + ',' + unit=TimeType+ ')'
+	'after('  time = DOUBLE ',' unit=TimeType ')'
 ;
 
 During:
-	'during('+ time = DOUBLE + ',' + unit=TimeType+ ')'
+	'during(' time = DOUBLE  ','  unit=TimeType ')'
 ;
 
 Checks:

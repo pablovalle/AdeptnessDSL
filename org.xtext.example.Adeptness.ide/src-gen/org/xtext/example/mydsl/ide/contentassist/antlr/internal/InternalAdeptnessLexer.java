@@ -1475,10 +1475,10 @@ public class InternalAdeptnessLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalAdeptness.g:6452:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // InternalAdeptness.g:6452:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // InternalAdeptness.g:6396:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+            // InternalAdeptness.g:6396:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             {
-            // InternalAdeptness.g:6452:11: ( '^' )?
+            // InternalAdeptness.g:6396:11: ( '^' )?
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -1487,7 +1487,7 @@ public class InternalAdeptnessLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // InternalAdeptness.g:6452:11: '^'
+                    // InternalAdeptness.g:6396:11: '^'
                     {
                     match('^'); 
 
@@ -1505,7 +1505,7 @@ public class InternalAdeptnessLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // InternalAdeptness.g:6452:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // InternalAdeptness.g:6396:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             loop2:
             do {
                 int alt2=2;
@@ -1554,10 +1554,10 @@ public class InternalAdeptnessLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalAdeptness.g:6454:10: ( ( '0' .. '9' )+ )
-            // InternalAdeptness.g:6454:12: ( '0' .. '9' )+
+            // InternalAdeptness.g:6398:10: ( ( '0' .. '9' )+ )
+            // InternalAdeptness.g:6398:12: ( '0' .. '9' )+
             {
-            // InternalAdeptness.g:6454:12: ( '0' .. '9' )+
+            // InternalAdeptness.g:6398:12: ( '0' .. '9' )+
             int cnt3=0;
             loop3:
             do {
@@ -1571,7 +1571,7 @@ public class InternalAdeptnessLexer extends Lexer {
 
                 switch (alt3) {
             	case 1 :
-            	    // InternalAdeptness.g:6454:13: '0' .. '9'
+            	    // InternalAdeptness.g:6398:13: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -1603,10 +1603,10 @@ public class InternalAdeptnessLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalAdeptness.g:6456:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
-            // InternalAdeptness.g:6456:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // InternalAdeptness.g:6400:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
+            // InternalAdeptness.g:6400:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             {
-            // InternalAdeptness.g:6456:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // InternalAdeptness.g:6400:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             int alt6=2;
             int LA6_0 = input.LA(1);
 
@@ -1624,10 +1624,10 @@ public class InternalAdeptnessLexer extends Lexer {
             }
             switch (alt6) {
                 case 1 :
-                    // InternalAdeptness.g:6456:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
+                    // InternalAdeptness.g:6400:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
                     {
                     match('\"'); 
-                    // InternalAdeptness.g:6456:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // InternalAdeptness.g:6400:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop4:
                     do {
                         int alt4=3;
@@ -1643,7 +1643,7 @@ public class InternalAdeptnessLexer extends Lexer {
 
                         switch (alt4) {
                     	case 1 :
-                    	    // InternalAdeptness.g:6456:21: '\\\\' .
+                    	    // InternalAdeptness.g:6400:21: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -1651,7 +1651,7 @@ public class InternalAdeptnessLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalAdeptness.g:6456:28: ~ ( ( '\\\\' | '\"' ) )
+                    	    // InternalAdeptness.g:6400:28: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -1676,10 +1676,10 @@ public class InternalAdeptnessLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalAdeptness.g:6456:48: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
+                    // InternalAdeptness.g:6400:48: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
                     {
                     match('\''); 
-                    // InternalAdeptness.g:6456:53: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    // InternalAdeptness.g:6400:53: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop5:
                     do {
                         int alt5=3;
@@ -1695,7 +1695,7 @@ public class InternalAdeptnessLexer extends Lexer {
 
                         switch (alt5) {
                     	case 1 :
-                    	    // InternalAdeptness.g:6456:54: '\\\\' .
+                    	    // InternalAdeptness.g:6400:54: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -1703,7 +1703,7 @@ public class InternalAdeptnessLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalAdeptness.g:6456:61: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // InternalAdeptness.g:6400:61: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -1746,12 +1746,12 @@ public class InternalAdeptnessLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalAdeptness.g:6458:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // InternalAdeptness.g:6458:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // InternalAdeptness.g:6402:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // InternalAdeptness.g:6402:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // InternalAdeptness.g:6458:24: ( options {greedy=false; } : . )*
+            // InternalAdeptness.g:6402:24: ( options {greedy=false; } : . )*
             loop7:
             do {
                 int alt7=2;
@@ -1776,7 +1776,7 @@ public class InternalAdeptnessLexer extends Lexer {
 
                 switch (alt7) {
             	case 1 :
-            	    // InternalAdeptness.g:6458:52: .
+            	    // InternalAdeptness.g:6402:52: .
             	    {
             	    matchAny(); 
 
@@ -1806,12 +1806,12 @@ public class InternalAdeptnessLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalAdeptness.g:6460:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // InternalAdeptness.g:6460:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // InternalAdeptness.g:6404:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // InternalAdeptness.g:6404:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // InternalAdeptness.g:6460:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // InternalAdeptness.g:6404:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop8:
             do {
                 int alt8=2;
@@ -1824,7 +1824,7 @@ public class InternalAdeptnessLexer extends Lexer {
 
                 switch (alt8) {
             	case 1 :
-            	    // InternalAdeptness.g:6460:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // InternalAdeptness.g:6404:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -1844,7 +1844,7 @@ public class InternalAdeptnessLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalAdeptness.g:6460:40: ( ( '\\r' )? '\\n' )?
+            // InternalAdeptness.g:6404:40: ( ( '\\r' )? '\\n' )?
             int alt10=2;
             int LA10_0 = input.LA(1);
 
@@ -1853,9 +1853,9 @@ public class InternalAdeptnessLexer extends Lexer {
             }
             switch (alt10) {
                 case 1 :
-                    // InternalAdeptness.g:6460:41: ( '\\r' )? '\\n'
+                    // InternalAdeptness.g:6404:41: ( '\\r' )? '\\n'
                     {
-                    // InternalAdeptness.g:6460:41: ( '\\r' )?
+                    // InternalAdeptness.g:6404:41: ( '\\r' )?
                     int alt9=2;
                     int LA9_0 = input.LA(1);
 
@@ -1864,7 +1864,7 @@ public class InternalAdeptnessLexer extends Lexer {
                     }
                     switch (alt9) {
                         case 1 :
-                            // InternalAdeptness.g:6460:41: '\\r'
+                            // InternalAdeptness.g:6404:41: '\\r'
                             {
                             match('\r'); 
 
@@ -1896,10 +1896,10 @@ public class InternalAdeptnessLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalAdeptness.g:6462:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // InternalAdeptness.g:6462:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalAdeptness.g:6406:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // InternalAdeptness.g:6406:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // InternalAdeptness.g:6462:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalAdeptness.g:6406:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt11=0;
             loop11:
             do {
@@ -1953,8 +1953,8 @@ public class InternalAdeptnessLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalAdeptness.g:6464:16: ( . )
-            // InternalAdeptness.g:6464:18: .
+            // InternalAdeptness.g:6408:16: ( . )
+            // InternalAdeptness.g:6408:18: .
             {
             matchAny(); 
 
