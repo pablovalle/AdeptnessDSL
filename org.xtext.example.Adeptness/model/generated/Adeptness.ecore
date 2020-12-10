@@ -58,6 +58,25 @@
   <eClassifiers xsi:type="ecore:EClass" name="When">
     <eStructuralFeatures xsi:type="ecore:EReference" name="em" eType="#//ExpressionsModel"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="aw" eType="#//AfterWhen"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AfterWhen">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="wait" eType="#//Wait" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="during" eType="#//During"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Wait">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="time" eType="#//DOUBLE"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="unit" eType="#//TimeType"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="During">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="time" eType="#//DOUBLE"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="unit" eType="#//TimeType"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Checks">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
