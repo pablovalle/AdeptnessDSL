@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getFrontParentheses <em>Front Parentheses</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getName <em>Name</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getValue <em>Value</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getOp <em>Op</em>}</li>
@@ -27,6 +28,18 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface AbstractElement2 extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Front Parentheses</b></em>' attribute list.
+   * The list contents are of type {@link java.lang.String}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Front Parentheses</em>' attribute list.
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getAbstractElement2_FrontParentheses()
+   * @model unique="false"
+   * @generated
+   */
+  EList<String> getFrontParentheses();
+
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->

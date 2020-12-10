@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.xtext.example.mydsl.adeptness.Operators#getOperator <em>Operator</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Operators#getComparation <em>Comparation</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Operators#getLogicOperator <em>Logic Operator</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Operators#getBackParentheses <em>Back Parentheses</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getOperators()
@@ -90,5 +91,27 @@ public interface Operators extends EObject
    * @generated
    */
   void setLogicOperator(LogicOp value);
+
+  /**
+   * Returns the value of the '<em><b>Back Parentheses</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Back Parentheses</em>' attribute.
+   * @see #setBackParentheses(String)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getOperators_BackParentheses()
+   * @model
+   * @generated
+   */
+  String getBackParentheses();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Operators#getBackParentheses <em>Back Parentheses</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Back Parentheses</em>' attribute.
+   * @see #getBackParentheses()
+   * @generated
+   */
+  void setBackParentheses(String value);
 
 } // Operators

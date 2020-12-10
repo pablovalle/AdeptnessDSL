@@ -29,6 +29,7 @@ import org.xtext.example.mydsl.adeptness.Operators;
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.OperatorsImpl#getOperator <em>Operator</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.OperatorsImpl#getComparation <em>Comparation</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.OperatorsImpl#getLogicOperator <em>Logic Operator</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.OperatorsImpl#getBackParentheses <em>Back Parentheses</em>}</li>
  * </ul>
  *
  * @generated
@@ -64,6 +65,26 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
    * @ordered
    */
   protected LogicOp logicOperator;
+
+  /**
+   * The default value of the '{@link #getBackParentheses() <em>Back Parentheses</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getBackParentheses()
+   * @generated
+   * @ordered
+   */
+  protected static final String BACK_PARENTHESES_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getBackParentheses() <em>Back Parentheses</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getBackParentheses()
+   * @generated
+   * @ordered
+   */
+  protected String backParentheses = BACK_PARENTHESES_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -242,6 +263,31 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
    * @generated
    */
   @Override
+  public String getBackParentheses()
+  {
+    return backParentheses;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setBackParentheses(String newBackParentheses)
+  {
+    String oldBackParentheses = backParentheses;
+    backParentheses = newBackParentheses;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.OPERATORS__BACK_PARENTHESES, oldBackParentheses, backParentheses));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
@@ -272,6 +318,8 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
         return getComparation();
       case AdeptnessPackage.OPERATORS__LOGIC_OPERATOR:
         return getLogicOperator();
+      case AdeptnessPackage.OPERATORS__BACK_PARENTHESES:
+        return getBackParentheses();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -294,6 +342,9 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
         return;
       case AdeptnessPackage.OPERATORS__LOGIC_OPERATOR:
         setLogicOperator((LogicOp)newValue);
+        return;
+      case AdeptnessPackage.OPERATORS__BACK_PARENTHESES:
+        setBackParentheses((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -318,6 +369,9 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
       case AdeptnessPackage.OPERATORS__LOGIC_OPERATOR:
         setLogicOperator((LogicOp)null);
         return;
+      case AdeptnessPackage.OPERATORS__BACK_PARENTHESES:
+        setBackParentheses(BACK_PARENTHESES_EDEFAULT);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -338,8 +392,27 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
         return comparation != null;
       case AdeptnessPackage.OPERATORS__LOGIC_OPERATOR:
         return logicOperator != null;
+      case AdeptnessPackage.OPERATORS__BACK_PARENTHESES:
+        return BACK_PARENTHESES_EDEFAULT == null ? backParentheses != null : !BACK_PARENTHESES_EDEFAULT.equals(backParentheses);
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (backParentheses: ");
+    result.append(backParentheses);
+    result.append(')');
+    return result.toString();
   }
 
 } //OperatorsImpl

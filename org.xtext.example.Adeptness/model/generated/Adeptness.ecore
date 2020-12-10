@@ -221,6 +221,8 @@
         eType="#//AbstractElement2" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractElement2">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="frontParentheses" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//DOUBLE"
         containment="true"/>
@@ -234,6 +236,7 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="logicOperator" eType="#//LogicOp"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backParentheses" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CompOp">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="op" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

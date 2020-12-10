@@ -1570,39 +1570,26 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	public class ExpressionsModelElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.ExpressionsModel");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cLeftParenthesisKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cElementsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cElementsAbstractElement2ParserRuleCall_1_0 = (RuleCall)cElementsAssignment_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cElementsAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cElementsAbstractElement2ParserRuleCall_0 = (RuleCall)cElementsAssignment.eContents().get(0);
 		
 		///*
 		// * MATH ELEMENTS
 		// */ ExpressionsModel:
-		//	"("?
-		//	elements+=AbstractElement2*
-		//	")"?;
+		//	elements+=AbstractElement2*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//"("? elements+=AbstractElement2* ")"?
-		public Group getGroup() { return cGroup; }
-		
-		//"("?
-		public Keyword getLeftParenthesisKeyword_0() { return cLeftParenthesisKeyword_0; }
-		
 		//elements+=AbstractElement2*
-		public Assignment getElementsAssignment_1() { return cElementsAssignment_1; }
+		public Assignment getElementsAssignment() { return cElementsAssignment; }
 		
 		//AbstractElement2
-		public RuleCall getElementsAbstractElement2ParserRuleCall_1_0() { return cElementsAbstractElement2ParserRuleCall_1_0; }
-		
-		//")"?
-		public Keyword getRightParenthesisKeyword_2() { return cRightParenthesisKeyword_2; }
+		public RuleCall getElementsAbstractElement2ParserRuleCall_0() { return cElementsAbstractElement2ParserRuleCall_0; }
 	}
 	public class AbstractElement2Elements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.AbstractElement2");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cLeftParenthesisKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cFrontParenthesesAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cFrontParenthesesFrontParenthesesParserRuleCall_0_0 = (RuleCall)cFrontParenthesesAssignment_0.eContents().get(0);
 		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
 		private final Assignment cNameAssignment_1_0 = (Assignment)cAlternatives_1.eContents().get(0);
 		private final RuleCall cNameIDTerminalRuleCall_1_0_0 = (RuleCall)cNameAssignment_1_0.eContents().get(0);
@@ -1610,18 +1597,21 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cValueDOUBLEParserRuleCall_1_1_0 = (RuleCall)cValueAssignment_1_1.eContents().get(0);
 		private final Assignment cOpAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cOpOperatorsParserRuleCall_2_0 = (RuleCall)cOpAssignment_2.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
 		//AbstractElement2:
-		//	"("* (name=ID | value=DOUBLE) op+=Operators*
-		//	")"*;
+		//	frontParentheses+=FrontParentheses* (name=ID | value=DOUBLE) op+=Operators*
+		//	//(backParentheses+=BackParentheses)*
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//"("* (name=ID | value=DOUBLE) op+=Operators* ")"*
+		//frontParentheses+=FrontParentheses* (name=ID | value=DOUBLE) op+=Operators*
 		public Group getGroup() { return cGroup; }
 		
-		//"("*
-		public Keyword getLeftParenthesisKeyword_0() { return cLeftParenthesisKeyword_0; }
+		//frontParentheses+=FrontParentheses*
+		public Assignment getFrontParenthesesAssignment_0() { return cFrontParenthesesAssignment_0; }
+		
+		//FrontParentheses
+		public RuleCall getFrontParenthesesFrontParenthesesParserRuleCall_0_0() { return cFrontParenthesesFrontParenthesesParserRuleCall_0_0; }
 		
 		//(name=ID | value=DOUBLE)
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
@@ -1643,9 +1633,28 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Operators
 		public RuleCall getOpOperatorsParserRuleCall_2_0() { return cOpOperatorsParserRuleCall_2_0; }
+	}
+	public class FrontParenthesesElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.FrontParentheses");
+		private final Keyword cLeftParenthesisKeyword = (Keyword)rule.eContents().get(1);
 		
-		//")"*
-		public Keyword getRightParenthesisKeyword_3() { return cRightParenthesisKeyword_3; }
+		//FrontParentheses:
+		//	"(";
+		@Override public ParserRule getRule() { return rule; }
+		
+		//"("
+		public Keyword getLeftParenthesisKeyword() { return cLeftParenthesisKeyword; }
+	}
+	public class BackParenthesesElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.BackParentheses");
+		private final Keyword cRightParenthesisKeyword = (Keyword)rule.eContents().get(1);
+		
+		//BackParentheses:
+		//	")";
+		@Override public ParserRule getRule() { return rule; }
+		
+		//")"
+		public Keyword getRightParenthesisKeyword() { return cRightParenthesisKeyword; }
 	}
 	public class OperatorsElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Operators");
@@ -1656,13 +1665,14 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cComparationCompOpParserRuleCall_1_0 = (RuleCall)cComparationAssignment_1.eContents().get(0);
 		private final Assignment cLogicOperatorAssignment_2 = (Assignment)cAlternatives.eContents().get(2);
 		private final RuleCall cLogicOperatorLogicOpParserRuleCall_2_0 = (RuleCall)cLogicOperatorAssignment_2.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_3 = (Keyword)cAlternatives.eContents().get(3);
+		private final Assignment cBackParenthesesAssignment_3 = (Assignment)cAlternatives.eContents().get(3);
+		private final RuleCall cBackParenthesesBackParenthesesParserRuleCall_3_0 = (RuleCall)cBackParenthesesAssignment_3.eContents().get(0);
 		
 		//Operators:
-		//	operator=Op | comparation=CompOp | logicOperator=LogicOp | ")";
+		//	operator=Op | comparation=CompOp | logicOperator=LogicOp | backParentheses=BackParentheses;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//operator=Op | comparation=CompOp | logicOperator=LogicOp | ")"
+		//operator=Op | comparation=CompOp | logicOperator=LogicOp | backParentheses=BackParentheses
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//operator=Op
@@ -1683,8 +1693,11 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		//LogicOp
 		public RuleCall getLogicOperatorLogicOpParserRuleCall_2_0() { return cLogicOperatorLogicOpParserRuleCall_2_0; }
 		
-		//")"
-		public Keyword getRightParenthesisKeyword_3() { return cRightParenthesisKeyword_3; }
+		//backParentheses=BackParentheses
+		public Assignment getBackParenthesesAssignment_3() { return cBackParenthesesAssignment_3; }
+		
+		//BackParentheses
+		public RuleCall getBackParenthesesBackParenthesesParserRuleCall_3_0() { return cBackParenthesesBackParenthesesParserRuleCall_3_0; }
 	}
 	public class CompOpElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.CompOp");
@@ -1827,6 +1840,8 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	private final PackageDeclarationElements pPackageDeclaration;
 	private final ExpressionsModelElements pExpressionsModel;
 	private final AbstractElement2Elements pAbstractElement2;
+	private final FrontParenthesesElements pFrontParentheses;
+	private final BackParenthesesElements pBackParentheses;
 	private final OperatorsElements pOperators;
 	private final CompOpElements pCompOp;
 	private final LogicOpElements pLogicOp;
@@ -1887,6 +1902,8 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		this.pPackageDeclaration = new PackageDeclarationElements();
 		this.pExpressionsModel = new ExpressionsModelElements();
 		this.pAbstractElement2 = new AbstractElement2Elements();
+		this.pFrontParentheses = new FrontParenthesesElements();
+		this.pBackParentheses = new BackParenthesesElements();
 		this.pOperators = new OperatorsElements();
 		this.pCompOp = new CompOpElements();
 		this.pLogicOp = new LogicOpElements();
@@ -2410,9 +2427,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	///*
 	// * MATH ELEMENTS
 	// */ ExpressionsModel:
-	//	"("?
-	//	elements+=AbstractElement2*
-	//	")"?;
+	//	elements+=AbstractElement2*;
 	public ExpressionsModelElements getExpressionsModelAccess() {
 		return pExpressionsModel;
 	}
@@ -2422,8 +2437,9 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//AbstractElement2:
-	//	"("* (name=ID | value=DOUBLE) op+=Operators*
-	//	")"*;
+	//	frontParentheses+=FrontParentheses* (name=ID | value=DOUBLE) op+=Operators*
+	//	//(backParentheses+=BackParentheses)*
+	//;
 	public AbstractElement2Elements getAbstractElement2Access() {
 		return pAbstractElement2;
 	}
@@ -2432,8 +2448,28 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		return getAbstractElement2Access().getRule();
 	}
 	
+	//FrontParentheses:
+	//	"(";
+	public FrontParenthesesElements getFrontParenthesesAccess() {
+		return pFrontParentheses;
+	}
+	
+	public ParserRule getFrontParenthesesRule() {
+		return getFrontParenthesesAccess().getRule();
+	}
+	
+	//BackParentheses:
+	//	")";
+	public BackParenthesesElements getBackParenthesesAccess() {
+		return pBackParentheses;
+	}
+	
+	public ParserRule getBackParenthesesRule() {
+		return getBackParenthesesAccess().getRule();
+	}
+	
 	//Operators:
-	//	operator=Op | comparation=CompOp | logicOperator=LogicOp | ")";
+	//	operator=Op | comparation=CompOp | logicOperator=LogicOp | backParentheses=BackParentheses;
 	public OperatorsElements getOperatorsAccess() {
 		return pOperators;
 	}

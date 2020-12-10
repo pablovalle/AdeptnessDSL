@@ -1787,7 +1787,7 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EAttribute getAbstractElement2_Name()
+  public EAttribute getAbstractElement2_FrontParentheses()
   {
     return (EAttribute)abstractElement2EClass.getEStructuralFeatures().get(0);
   }
@@ -1798,9 +1798,20 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
+  public EAttribute getAbstractElement2_Name()
+  {
+    return (EAttribute)abstractElement2EClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EReference getAbstractElement2_Value()
   {
-    return (EReference)abstractElement2EClass.getEStructuralFeatures().get(1);
+    return (EReference)abstractElement2EClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1811,7 +1822,7 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
   @Override
   public EReference getAbstractElement2_Op()
   {
-    return (EReference)abstractElement2EClass.getEStructuralFeatures().get(2);
+    return (EReference)abstractElement2EClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1856,6 +1867,17 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
   public EReference getOperators_LogicOperator()
   {
     return (EReference)operatorsEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getOperators_BackParentheses()
+  {
+    return (EAttribute)operatorsEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -2117,6 +2139,7 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     createEReference(expressionsModelEClass, EXPRESSIONS_MODEL__ELEMENTS);
 
     abstractElement2EClass = createEClass(ABSTRACT_ELEMENT2);
+    createEAttribute(abstractElement2EClass, ABSTRACT_ELEMENT2__FRONT_PARENTHESES);
     createEAttribute(abstractElement2EClass, ABSTRACT_ELEMENT2__NAME);
     createEReference(abstractElement2EClass, ABSTRACT_ELEMENT2__VALUE);
     createEReference(abstractElement2EClass, ABSTRACT_ELEMENT2__OP);
@@ -2125,6 +2148,7 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     createEReference(operatorsEClass, OPERATORS__OPERATOR);
     createEReference(operatorsEClass, OPERATORS__COMPARATION);
     createEReference(operatorsEClass, OPERATORS__LOGIC_OPERATOR);
+    createEAttribute(operatorsEClass, OPERATORS__BACK_PARENTHESES);
 
     compOpEClass = createEClass(COMP_OP);
     createEAttribute(compOpEClass, COMP_OP__OP);
@@ -2335,6 +2359,7 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     initEReference(getExpressionsModel_Elements(), this.getAbstractElement2(), null, "elements", null, 0, -1, ExpressionsModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(abstractElement2EClass, AbstractElement2.class, "AbstractElement2", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getAbstractElement2_FrontParentheses(), ecorePackage.getEString(), "frontParentheses", null, 0, -1, AbstractElement2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getAbstractElement2_Name(), ecorePackage.getEString(), "name", null, 0, 1, AbstractElement2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getAbstractElement2_Value(), this.getDOUBLE(), null, "value", null, 0, 1, AbstractElement2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getAbstractElement2_Op(), this.getOperators(), null, "op", null, 0, -1, AbstractElement2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2343,6 +2368,7 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     initEReference(getOperators_Operator(), this.getOp(), null, "operator", null, 0, 1, Operators.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getOperators_Comparation(), this.getCompOp(), null, "comparation", null, 0, 1, Operators.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getOperators_LogicOperator(), this.getLogicOp(), null, "logicOperator", null, 0, 1, Operators.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getOperators_BackParentheses(), ecorePackage.getEString(), "backParentheses", null, 0, 1, Operators.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(compOpEClass, CompOp.class, "CompOp", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getCompOp_Op(), ecorePackage.getEString(), "op", null, 0, 1, CompOp.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -10,8 +10,6 @@ import org.eclipse.xtext.IGrammarAccess;
 import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.serializer.analysis.GrammarAlias.AbstractElementAlias;
-import org.eclipse.xtext.serializer.analysis.GrammarAlias.TokenAlias;
-import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynNavigable;
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynTransition;
 import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 import org.xtext.example.mydsl.services.AdeptnessGrammarAccess;
@@ -20,18 +18,10 @@ import org.xtext.example.mydsl.services.AdeptnessGrammarAccess;
 public class AdeptnessSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected AdeptnessGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_AbstractElement2_LeftParenthesisKeyword_0_a;
-	protected AbstractElementAlias match_AbstractElement2_RightParenthesisKeyword_3_a;
-	protected AbstractElementAlias match_ExpressionsModel_LeftParenthesisKeyword_0_q;
-	protected AbstractElementAlias match_ExpressionsModel_RightParenthesisKeyword_2_q;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (AdeptnessGrammarAccess) access;
-		match_AbstractElement2_LeftParenthesisKeyword_0_a = new TokenAlias(true, true, grammarAccess.getAbstractElement2Access().getLeftParenthesisKeyword_0());
-		match_AbstractElement2_RightParenthesisKeyword_3_a = new TokenAlias(true, true, grammarAccess.getAbstractElement2Access().getRightParenthesisKeyword_3());
-		match_ExpressionsModel_LeftParenthesisKeyword_0_q = new TokenAlias(false, true, grammarAccess.getExpressionsModelAccess().getLeftParenthesisKeyword_0());
-		match_ExpressionsModel_RightParenthesisKeyword_2_q = new TokenAlias(false, true, grammarAccess.getExpressionsModelAccess().getRightParenthesisKeyword_2());
 	}
 	
 	@Override
@@ -46,65 +36,8 @@ public class AdeptnessSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if (match_AbstractElement2_LeftParenthesisKeyword_0_a.equals(syntax))
-				emit_AbstractElement2_LeftParenthesisKeyword_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_AbstractElement2_RightParenthesisKeyword_3_a.equals(syntax))
-				emit_AbstractElement2_RightParenthesisKeyword_3_a(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_ExpressionsModel_LeftParenthesisKeyword_0_q.equals(syntax))
-				emit_ExpressionsModel_LeftParenthesisKeyword_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_ExpressionsModel_RightParenthesisKeyword_2_q.equals(syntax))
-				emit_ExpressionsModel_RightParenthesisKeyword_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else acceptNodes(getLastNavigableState(), syntaxNodes);
+			acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
 
-	/**
-	 * Ambiguous syntax:
-	 *     '('*
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     (rule start) (ambiguity) name=ID
-	 *     (rule start) (ambiguity) value=DOUBLE
-	 */
-	protected void emit_AbstractElement2_LeftParenthesisKeyword_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Ambiguous syntax:
-	 *     ')'*
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     name=ID (ambiguity) (rule end)
-	 *     op+=Operators (ambiguity) (rule end)
-	 *     value=DOUBLE (ambiguity) (rule end)
-	 */
-	protected void emit_AbstractElement2_RightParenthesisKeyword_3_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Ambiguous syntax:
-	 *     '('?
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     (rule start) (ambiguity) ')'? (rule start)
-	 *     (rule start) (ambiguity) elements+=AbstractElement2
-	 */
-	protected void emit_ExpressionsModel_LeftParenthesisKeyword_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Ambiguous syntax:
-	 *     ')'?
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     (rule start) '('? (ambiguity) (rule start)
-	 *     elements+=AbstractElement2 (ambiguity) (rule end)
-	 */
-	protected void emit_ExpressionsModel_RightParenthesisKeyword_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
 }

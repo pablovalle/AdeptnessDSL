@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -32,6 +33,7 @@ import org.xtext.example.mydsl.adeptness.Operators;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl#getFrontParentheses <em>Front Parentheses</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl#getName <em>Name</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl#getValue <em>Value</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.AbstractElement2Impl#getOp <em>Op</em>}</li>
@@ -41,6 +43,16 @@ import org.xtext.example.mydsl.adeptness.Operators;
  */
 public class AbstractElement2Impl extends MinimalEObjectImpl.Container implements AbstractElement2
 {
+  /**
+   * The cached value of the '{@link #getFrontParentheses() <em>Front Parentheses</em>}' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getFrontParentheses()
+   * @generated
+   * @ordered
+   */
+  protected EList<String> frontParentheses;
+
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
@@ -100,6 +112,21 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
   protected EClass eStaticClass()
   {
     return AdeptnessPackage.Literals.ABSTRACT_ELEMENT2;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EList<String> getFrontParentheses()
+  {
+    if (frontParentheses == null)
+    {
+      frontParentheses = new EDataTypeEList<String>(String.class, this, AdeptnessPackage.ABSTRACT_ELEMENT2__FRONT_PARENTHESES);
+    }
+    return frontParentheses;
   }
 
   /**
@@ -220,6 +247,8 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
+      case AdeptnessPackage.ABSTRACT_ELEMENT2__FRONT_PARENTHESES:
+        return getFrontParentheses();
       case AdeptnessPackage.ABSTRACT_ELEMENT2__NAME:
         return getName();
       case AdeptnessPackage.ABSTRACT_ELEMENT2__VALUE:
@@ -241,6 +270,10 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
+      case AdeptnessPackage.ABSTRACT_ELEMENT2__FRONT_PARENTHESES:
+        getFrontParentheses().clear();
+        getFrontParentheses().addAll((Collection<? extends String>)newValue);
+        return;
       case AdeptnessPackage.ABSTRACT_ELEMENT2__NAME:
         setName((String)newValue);
         return;
@@ -265,6 +298,9 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
+      case AdeptnessPackage.ABSTRACT_ELEMENT2__FRONT_PARENTHESES:
+        getFrontParentheses().clear();
+        return;
       case AdeptnessPackage.ABSTRACT_ELEMENT2__NAME:
         setName(NAME_EDEFAULT);
         return;
@@ -288,6 +324,8 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
+      case AdeptnessPackage.ABSTRACT_ELEMENT2__FRONT_PARENTHESES:
+        return frontParentheses != null && !frontParentheses.isEmpty();
       case AdeptnessPackage.ABSTRACT_ELEMENT2__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case AdeptnessPackage.ABSTRACT_ELEMENT2__VALUE:
@@ -309,7 +347,9 @@ public class AbstractElement2Impl extends MinimalEObjectImpl.Container implement
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (name: ");
+    result.append(" (frontParentheses: ");
+    result.append(frontParentheses);
+    result.append(", name: ");
     result.append(name);
     result.append(')');
     return result.toString();

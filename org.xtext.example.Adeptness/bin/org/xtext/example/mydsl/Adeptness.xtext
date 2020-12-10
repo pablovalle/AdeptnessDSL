@@ -230,21 +230,26 @@ PackageDeclaration:
  * MATH ELEMENTS
  */
  ExpressionsModel:
- 	("(")?
+
  	(elements+=AbstractElement2)*
-	(")")?
+
 ;
 
  AbstractElement2:
- 	("(")*
-	(name=ID | value=DOUBLE)
+ 	(frontParentheses+=FrontParentheses)*
+	((name=ID) | (value=DOUBLE))
 	(op+=Operators)*
-	(")")*
+
 	
 ;
-
+FrontParentheses:
+	"("
+;
+BackParentheses:
+	")"
+;
 Operators:
-	(operator=Op|comparation=CompOp|logicOperator=LogicOp|")")
+	(operator=Op|comparation=CompOp|logicOperator=LogicOp| backParentheses=BackParentheses)
 ;
 
 CompOp:

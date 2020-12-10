@@ -86,7 +86,6 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getDAccess().getGroup_2(), "rule__D__Group_2__0");
 			builder.put(grammarAccess.getDataTypeAccess().getGroup(), "rule__DataType__Group__0");
 			builder.put(grammarAccess.getPackageDeclarationAccess().getGroup(), "rule__PackageDeclaration__Group__0");
-			builder.put(grammarAccess.getExpressionsModelAccess().getGroup(), "rule__ExpressionsModel__Group__0");
 			builder.put(grammarAccess.getAbstractElement2Access().getGroup(), "rule__AbstractElement2__Group__0");
 			builder.put(grammarAccess.getAdeptnessAccess().getElementsAssignment(), "rule__Adeptness__ElementsAssignment");
 			builder.put(grammarAccess.getImportsAccess().getImportedNamespaceAssignment_1(), "rule__Imports__ImportedNamespaceAssignment_1");
@@ -173,13 +172,15 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getDataTypeAccess().getNameAssignment_1(), "rule__DataType__NameAssignment_1");
 			builder.put(grammarAccess.getPackageDeclarationAccess().getNameAssignment_1(), "rule__PackageDeclaration__NameAssignment_1");
 			builder.put(grammarAccess.getPackageDeclarationAccess().getElementsAssignment_3(), "rule__PackageDeclaration__ElementsAssignment_3");
-			builder.put(grammarAccess.getExpressionsModelAccess().getElementsAssignment_1(), "rule__ExpressionsModel__ElementsAssignment_1");
+			builder.put(grammarAccess.getExpressionsModelAccess().getElementsAssignment(), "rule__ExpressionsModel__ElementsAssignment");
+			builder.put(grammarAccess.getAbstractElement2Access().getFrontParenthesesAssignment_0(), "rule__AbstractElement2__FrontParenthesesAssignment_0");
 			builder.put(grammarAccess.getAbstractElement2Access().getNameAssignment_1_0(), "rule__AbstractElement2__NameAssignment_1_0");
 			builder.put(grammarAccess.getAbstractElement2Access().getValueAssignment_1_1(), "rule__AbstractElement2__ValueAssignment_1_1");
 			builder.put(grammarAccess.getAbstractElement2Access().getOpAssignment_2(), "rule__AbstractElement2__OpAssignment_2");
 			builder.put(grammarAccess.getOperatorsAccess().getOperatorAssignment_0(), "rule__Operators__OperatorAssignment_0");
 			builder.put(grammarAccess.getOperatorsAccess().getComparationAssignment_1(), "rule__Operators__ComparationAssignment_1");
 			builder.put(grammarAccess.getOperatorsAccess().getLogicOperatorAssignment_2(), "rule__Operators__LogicOperatorAssignment_2");
+			builder.put(grammarAccess.getOperatorsAccess().getBackParenthesesAssignment_3(), "rule__Operators__BackParenthesesAssignment_3");
 			builder.put(grammarAccess.getCompOpAccess().getOpAssignment(), "rule__CompOp__OpAssignment");
 			builder.put(grammarAccess.getLogicOpAccess().getOpAssignment(), "rule__LogicOp__OpAssignment");
 			builder.put(grammarAccess.getOpAccess().getOpAssignment(), "rule__Op__OpAssignment");

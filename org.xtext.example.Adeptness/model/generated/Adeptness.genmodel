@@ -166,6 +166,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//ExpressionsModel/elements"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//AbstractElement2">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//AbstractElement2/frontParentheses"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//AbstractElement2/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//AbstractElement2/value"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//AbstractElement2/op"/>
@@ -174,6 +175,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Operators/operator"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Operators/comparation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Operators/logicOperator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//Operators/backParentheses"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//CompOp">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//CompOp/op"/>

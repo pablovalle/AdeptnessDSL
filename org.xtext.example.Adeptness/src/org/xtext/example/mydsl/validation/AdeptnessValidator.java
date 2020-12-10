@@ -31,6 +31,7 @@ import org.xtext.example.mydsl.adeptness.Sig_type;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.Upper;
 import org.xtext.example.mydsl.adeptness.When;
+import org.xtext.example.mydsl.adeptness.While;
 
 /**
  * This class contains custom validation rules. 
@@ -495,23 +496,50 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			error("This variable is not in the monitoring plan",AdeptnessPackage.Literals.ABSTRACT_ELEMENT2__NAME);
 		}
 	}
-	/*@Check
-	public void aaaa(ExpressionsModel el) {
-		for (int i=0; i<el.getElements().size(); i++) {
-			if(el.getElements().get(i).getOp().get(0).getOperator()!=null) {
-				error("This must be a boolean expression", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+	
+	@Check
+	public void chekcExpressions(ExpressionsModel data) {
+		int conOpenPar=0, conClosePar=0;
+		boolean is=false;
+		for(int i=0; i<data.getElements().size(); i++) {
+			AbstractElement2 elements=data.getElements().get(i);
+			conOpenPar=conOpenPar+elements.getFrontParentheses().size();
+			if(i>0 && (elements.getName()!=null || elements.getValue()!=null) && (data.getElements().get(i-1).getName()!=null || data.getElements().get(i-1).getValue()!=null)) {
+				if(data.getElements().get(i-1).getOp().size()==0) {
+					error("Two values or signals can't be concatenated without an operator:", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+				}
+				else {
+					for(int j=0; j<data.getElements().get(i-1).getOp().size(); j++) {
+						if(data.getElements().get(i-1).getOp().get(j).getComparation()!=null || data.getElements().get(i-1).getOp().get(j).getLogicOperator()!=null || data.getElements().get(i-1).getOp().get(j).getOperator()!=null) {
+							is=true;
+						}
+					}
+					if(!is) {
+						error("Two values or signals can't be concatenated without an operator", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+					}
+					is=false;
+				}
+				
+				
+			}
+			for(int j=0 ; j< elements.getOp().size(); j++) {
+				if(elements.getOp().get(j).getBackParentheses()!=null) {
+					conClosePar++;
+				}
+				if(j>0 && elements.getOp().get(j).getBackParentheses()!=null && elements.getOp().get(j-1).getBackParentheses()==null) {
+					error("You can't concatenate operatros this way", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+				}
+				if(j>0 && elements.getOp().get(j).getBackParentheses()==null && elements.getOp().get(j-1).getBackParentheses()==null) {
+					error("You can't concatenate operatros this way", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+				}
+								
 			}
 		}
-	}*/
-	/*@Check
-	public void chekcWhen(When when) {
-		System.out.println("A");
-		for(int i=0; i<when.getEm().getElements().size(); i++) {
-			System.out.println(when.getEm().getElements().get(i).getExpression().getVariable().getName().toString());
-			System.out.println(when.getEm().getElements().get(i).getExpression().getVariable().getExpression().getVariable().getName().toString());
+		if(conOpenPar!=conClosePar) {
+			error("Parentheses are not correctly opened and closed",AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 		}
 		
-	}*/
+	}
 	
 	
 	

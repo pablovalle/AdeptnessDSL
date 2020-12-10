@@ -2623,37 +2623,23 @@ ruleExpressionsModel returns [EObject current=null]
 }:
 	(
 		(
-			otherlv_0='('
 			{
-				newLeafNode(otherlv_0, grammarAccess.getExpressionsModelAccess().getLeftParenthesisKeyword_0());
+				newCompositeNode(grammarAccess.getExpressionsModelAccess().getElementsAbstractElement2ParserRuleCall_0());
 			}
-		)?
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getExpressionsModelAccess().getElementsAbstractElement2ParserRuleCall_1_0());
-				}
-				lv_elements_1_0=ruleAbstractElement2
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getExpressionsModelRule());
-					}
-					add(
-						$current,
-						"elements",
-						lv_elements_1_0,
-						"org.xtext.example.mydsl.Adeptness.AbstractElement2");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)*
-		(
-			otherlv_2=')'
+			lv_elements_0_0=ruleAbstractElement2
 			{
-				newLeafNode(otherlv_2, grammarAccess.getExpressionsModelAccess().getRightParenthesisKeyword_2());
+				if ($current==null) {
+					$current = createModelElementForParent(grammarAccess.getExpressionsModelRule());
+				}
+				add(
+					$current,
+					"elements",
+					lv_elements_0_0,
+					"org.xtext.example.mydsl.Adeptness.AbstractElement2");
+				afterParserOrEnumRuleCall();
 			}
-		)?
-	)
+		)
+	)*
 ;
 
 // Entry rule entryRuleAbstractElement2
@@ -2673,10 +2659,23 @@ ruleAbstractElement2 returns [EObject current=null]
 }:
 	(
 		(
-			otherlv_0='('
-			{
-				newLeafNode(otherlv_0, grammarAccess.getAbstractElement2Access().getLeftParenthesisKeyword_0());
-			}
+			(
+				{
+					newCompositeNode(grammarAccess.getAbstractElement2Access().getFrontParenthesesFrontParenthesesParserRuleCall_0_0());
+				}
+				lv_frontParentheses_0_0=ruleFrontParentheses
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getAbstractElement2Rule());
+					}
+					add(
+						$current,
+						"frontParentheses",
+						lv_frontParentheses_0_0,
+						"org.xtext.example.mydsl.Adeptness.FrontParentheses");
+					afterParserOrEnumRuleCall();
+				}
+			)
 		)*
 		(
 			(
@@ -2737,13 +2736,51 @@ ruleAbstractElement2 returns [EObject current=null]
 				}
 			)
 		)*
-		(
-			otherlv_4=')'
-			{
-				newLeafNode(otherlv_4, grammarAccess.getAbstractElement2Access().getRightParenthesisKeyword_3());
-			}
-		)*
 	)
+;
+
+// Entry rule entryRuleFrontParentheses
+entryRuleFrontParentheses returns [String current=null]:
+	{ newCompositeNode(grammarAccess.getFrontParenthesesRule()); }
+	iv_ruleFrontParentheses=ruleFrontParentheses
+	{ $current=$iv_ruleFrontParentheses.current.getText(); }
+	EOF;
+
+// Rule FrontParentheses
+ruleFrontParentheses returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	kw='('
+	{
+		$current.merge(kw);
+		newLeafNode(kw, grammarAccess.getFrontParenthesesAccess().getLeftParenthesisKeyword());
+	}
+;
+
+// Entry rule entryRuleBackParentheses
+entryRuleBackParentheses returns [String current=null]:
+	{ newCompositeNode(grammarAccess.getBackParenthesesRule()); }
+	iv_ruleBackParentheses=ruleBackParentheses
+	{ $current=$iv_ruleBackParentheses.current.getText(); }
+	EOF;
+
+// Rule BackParentheses
+ruleBackParentheses returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	kw=')'
+	{
+		$current.merge(kw);
+		newLeafNode(kw, grammarAccess.getBackParenthesesAccess().getRightParenthesisKeyword());
+	}
 ;
 
 // Entry rule entryRuleOperators
@@ -2822,10 +2859,25 @@ ruleOperators returns [EObject current=null]
 			)
 		)
 		    |
-		otherlv_3=')'
-		{
-			newLeafNode(otherlv_3, grammarAccess.getOperatorsAccess().getRightParenthesisKeyword_3());
-		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getOperatorsAccess().getBackParenthesesBackParenthesesParserRuleCall_3_0());
+				}
+				lv_backParentheses_3_0=ruleBackParentheses
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getOperatorsRule());
+					}
+					set(
+						$current,
+						"backParentheses",
+						lv_backParentheses_3_0,
+						"org.xtext.example.mydsl.Adeptness.BackParentheses");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
 	)
 ;
 

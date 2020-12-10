@@ -217,7 +217,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     AbstractElement2 returns AbstractElement2
 	 *
 	 * Constraint:
-	 *     ((name=ID | value=DOUBLE) op+=Operators*)
+	 *     (frontParentheses+=FrontParentheses* (name=ID | value=DOUBLE) op+=Operators*)
 	 */
 	protected void sequence_AbstractElement2(ISerializationContext context, AbstractElement2 semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -676,7 +676,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Operators returns Operators
 	 *
 	 * Constraint:
-	 *     (operator=Op | comparation=CompOp | logicOperator=LogicOp)
+	 *     (operator=Op | comparation=CompOp | logicOperator=LogicOp | backParentheses=BackParentheses)
 	 */
 	protected void sequence_Operators(ISerializationContext context, Operators semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

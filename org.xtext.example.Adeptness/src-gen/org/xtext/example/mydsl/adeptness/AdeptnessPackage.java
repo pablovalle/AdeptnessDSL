@@ -1585,13 +1585,22 @@ public interface AdeptnessPackage extends EPackage
   int ABSTRACT_ELEMENT2 = 41;
 
   /**
+   * The feature id for the '<em><b>Front Parentheses</b></em>' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ABSTRACT_ELEMENT2__FRONT_PARENTHESES = 0;
+
+  /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ABSTRACT_ELEMENT2__NAME = 0;
+  int ABSTRACT_ELEMENT2__NAME = 1;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -1600,7 +1609,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ABSTRACT_ELEMENT2__VALUE = 1;
+  int ABSTRACT_ELEMENT2__VALUE = 2;
 
   /**
    * The feature id for the '<em><b>Op</b></em>' containment reference list.
@@ -1609,7 +1618,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ABSTRACT_ELEMENT2__OP = 2;
+  int ABSTRACT_ELEMENT2__OP = 3;
 
   /**
    * The number of structural features of the '<em>Abstract Element2</em>' class.
@@ -1618,7 +1627,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ABSTRACT_ELEMENT2_FEATURE_COUNT = 3;
+  int ABSTRACT_ELEMENT2_FEATURE_COUNT = 4;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.OperatorsImpl <em>Operators</em>}' class.
@@ -1658,13 +1667,22 @@ public interface AdeptnessPackage extends EPackage
   int OPERATORS__LOGIC_OPERATOR = 2;
 
   /**
+   * The feature id for the '<em><b>Back Parentheses</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATORS__BACK_PARENTHESES = 3;
+
+  /**
    * The number of structural features of the '<em>Operators</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int OPERATORS_FEATURE_COUNT = 3;
+  int OPERATORS_FEATURE_COUNT = 4;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.CompOpImpl <em>Comp Op</em>}' class.
@@ -3041,6 +3059,17 @@ public interface AdeptnessPackage extends EPackage
   EClass getAbstractElement2();
 
   /**
+   * Returns the meta object for the attribute list '{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getFrontParentheses <em>Front Parentheses</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute list '<em>Front Parentheses</em>'.
+   * @see org.xtext.example.mydsl.adeptness.AbstractElement2#getFrontParentheses()
+   * @see #getAbstractElement2()
+   * @generated
+   */
+  EAttribute getAbstractElement2_FrontParentheses();
+
+  /**
    * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.AbstractElement2#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3115,6 +3144,17 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    */
   EReference getOperators_LogicOperator();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Operators#getBackParentheses <em>Back Parentheses</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Back Parentheses</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Operators#getBackParentheses()
+   * @see #getOperators()
+   * @generated
+   */
+  EAttribute getOperators_BackParentheses();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.CompOp <em>Comp Op</em>}'.
@@ -4255,6 +4295,14 @@ public interface AdeptnessPackage extends EPackage
     EClass ABSTRACT_ELEMENT2 = eINSTANCE.getAbstractElement2();
 
     /**
+     * The meta object literal for the '<em><b>Front Parentheses</b></em>' attribute list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute ABSTRACT_ELEMENT2__FRONT_PARENTHESES = eINSTANCE.getAbstractElement2_FrontParentheses();
+
+    /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4311,6 +4359,14 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EReference OPERATORS__LOGIC_OPERATOR = eINSTANCE.getOperators_LogicOperator();
+
+    /**
+     * The meta object literal for the '<em><b>Back Parentheses</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute OPERATORS__BACK_PARENTHESES = eINSTANCE.getOperators_BackParentheses();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.CompOpImpl <em>Comp Op</em>}' class.
