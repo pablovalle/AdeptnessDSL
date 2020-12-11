@@ -14,6 +14,8 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.xtext.example.mydsl.adeptness.Oracle
 import org.eclipse.emf.common.util.EList
 import org.xtext.example.mydsl.adeptness.Checks
+import java.util.ArrayList
+import java.util.List
 
 /**
  * Generates code from your model files on save.
@@ -53,13 +55,13 @@ class AdeptnessGenerator extends AbstractGenerator {
 				fsa.generateFile(d.fullyQualifiedName.toString("/")+".h", d.create_up_h())
 				fsa.generateFile(d.fullyQualifiedName.toString("/")+".m", d.create_up_m())
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
-			}
+			}*/
 			for(q: e.oracle){
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".c", q.create_oracle_c())
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".h", q.create_oracle_h())
-				fsa.generateFile(q.fullyQualifiedName.toString("/")+".m", q.create_oracle_m())
+				//fsa.generateFile(q.fullyQualifiedName.toString("/")+".m", q.create_oracle_m())
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
-			}*/
+			}
 			
 		}
     }
@@ -117,7 +119,7 @@ class AdeptnessGenerator extends AbstractGenerator {
 	'''*/
 	
 	
-	/*def create_oracle_m(Oracle param)'''
+	def create_oracle_m(Oracle param)'''
 	
 	def= legacy_code('initialize');
 	def.OutputFcnSpec= 'double y1=«param.name.toString()»(double u1)';
@@ -132,42 +134,105 @@ class AdeptnessGenerator extends AbstractGenerator {
 	#ifndef «param.name.toString().toUpperCase»_H
 	#define «param.name.toString().toUpperCase»_H
 	«FOR param1: param.check»
+	«IF param1.name!==null»
 		«IF param1.reference.upper!==null»
 		struct Ret{
 			int assert;
 			double diff;
 		};
-		struct Ret BelowReference (double «param1.name.toString()»);
+		struct Ret BelowReference (double «param1.name.toString()»[], double timeStamp[]);
 		«ELSEIF param1.reference.lower!==null»
 		struct Ret{
 			int assert;
 			double diff;
 		};
-		struct Ret AboveRefrence (double «param1.name.toString()»);
+		struct Ret AboveReference (double «param1.name.toString()»[], double timeStamp[]);
 		«ELSEIF param1.reference.range!==null»
 		struct Ret{
 			int assert;
 			double diff_up;
 			double diff_down;
 		};
-		struct Ret RangeReference (double «param1.name.toString()»);
+		struct Ret RangeReference (double «param1.name.toString()»[], double timeStamp[]);
 		«ELSEIF param1.reference.gap!==null»
 		struct Ret{
 			int assert;
 			double diff_up;
 			double diff_down;
 		};
-		struct Ret GapReference (double «param1.name.toString()»);
+		struct Ret GapReference (double «param1.name.toString()»[], double timeStamp[]);
 		«ENDIF»
+	«ELSE»
+	«var cont=0»
+	«IF param1.reference.upper!==null»
+		struct Ret{
+			int assert;
+			double diff;
+		};
+		struct Ret BelowReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]);
+		«ELSEIF param1.reference.lower!==null»
+		struct Ret{
+			int assert;
+			double diff;
+		};
+		struct Ret AboveReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]);
+		«ELSEIF param1.reference.range!==null»
+		struct Ret{
+			int assert;
+			double diff_up;
+			double diff_down;
+		};
+		struct Ret RangeReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]);
+		«ELSEIF param1.reference.gap!==null»
+		struct Ret{
+			int assert;
+			double diff_up;
+			double diff_down;
+		};
+		struct Ret GapReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]);
+	«ENDIF»
+	«ENDIF»
 	«ENDFOR»
 	
 	#endif
-	'''
-	
+	'''	
 	def create_oracle_c(Oracle param)'''
 	#include "«param.name.toString()».h"
 	«FOR param1: param.check»
-		//Comment: «param1.description.value.toString»
+		«IF param1.name!==null»
+		«IF param1.reference.upper!==null»
+		struct Ret BelowReference (double «param1.name.toString()», double timeStamp[]){
+		«ELSEIF param1.reference.lower!==null»
+		struct Ret AboveReference (double «param1.name.toString()», double timeStamp[]){
+		«ELSEIF param1.reference.range!==null»
+		struct Ret RangeReference (double «param1.name.toString()», double timeStamp[]){
+		«ELSEIF param1.reference.gap!==null»
+		struct Ret GapReference (double «param1.name.toString()», double timeStamp[]){
+		«ENDIF»
+				struct Ret ret;
+				return ret;
+			}		
+		«ELSE»
+		«IF param1.reference.upper!==null»
+		struct Ret BelowReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]){
+		«ELSEIF param1.reference.lower!==null»
+		struct Ret AboveReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]){
+		«ELSEIF param1.reference.range!==null»
+		struct Ret RangeReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]){
+		«ELSEIF param1.reference.gap!==null»
+		struct Ret GapReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]){
+		«ENDIF»
+				struct Ret ret;
+				return ret;
+			}		
+		«ENDIF»
+	«ENDFOR»
+	'''
+	
+	/*def create_oracle_c(Oracle param)'''
+	#include "«param.name.toString()».h"
+	«FOR param1: param.check»
+		//Comment: «param1.description.value.toString»'''
 		«IF param1.reference.upper!==null»
 		struct Ret BelowReference (double «param1.name.toString()»){
 			struct Ret ret;
