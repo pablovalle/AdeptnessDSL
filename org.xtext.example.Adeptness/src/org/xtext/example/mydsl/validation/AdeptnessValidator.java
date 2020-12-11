@@ -577,6 +577,20 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			error("Only conditions are available for when type", AdeptnessPackage.Literals.WHEN__EM);
 		}
 	}
+	@Check
+	public void checkChecksCondition(Checks check) {
+		for(int i=0; i<check.getEm().getElements().size(); i++) {
+			AbstractElement2 element=check.getEm().getElements().get(i);
+			for(int j=0; j<element.getOp().size(); j++) {
+				if(element.getOp().get(j).getLogicOperator()!=null)  {
+					error("The operator: "+element.getOp().get(j).getLogicOperator().getOp().toString()+" is not available for checks",AdeptnessPackage.Literals.CHECKS__EM);
+				}
+				else if(element.getOp().get(j).getComparation()!=null) {
+					error("The operator: "+element.getOp().get(j).getComparation().getOp().toString()+" is not available for checks",AdeptnessPackage.Literals.CHECKS__EM);
+				}
+			}
+		}
+	}
 	
 	
 	
