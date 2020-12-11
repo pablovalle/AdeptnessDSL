@@ -540,6 +540,43 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 		
 	}
+	@Check
+	public void checkWhileConditions(While data) {
+		int contLogicOp=0, contCompOp=0;
+		for(int i=0; i< data.getEm().getElements().size(); i++) {
+			AbstractElement2 element=data.getEm().getElements().get(i);
+			for (int j=0; j<element.getOp().size(); j++) {
+				if(element.getOp().get(j).getLogicOperator()!=null) {
+					contLogicOp++;
+				}
+				else if(element.getOp().get(j).getComparation()!=null) {
+					contCompOp++;
+				}
+			}
+		}
+		if(contLogicOp+1!=contCompOp) {
+			error("Only conditions are available for while type", AdeptnessPackage.Literals.WHILE__EM);
+		}
+	}
+	
+	@Check
+	public void checkWhenConditions(When data) {
+		int contLogicOp=0, contCompOp=0;
+		for(int i=0; i< data.getEm().getElements().size(); i++) {
+			AbstractElement2 element=data.getEm().getElements().get(i);
+			for (int j=0; j<element.getOp().size(); j++) {
+				if(element.getOp().get(j).getLogicOperator()!=null) {
+					contLogicOp++;
+				}
+				else if(element.getOp().get(j).getComparation()!=null) {
+					contCompOp++;
+				}
+			}
+		}
+		if(contLogicOp+1!=contCompOp) {
+			error("Only conditions are available for when type", AdeptnessPackage.Literals.WHEN__EM);
+		}
+	}
 	
 	
 	
