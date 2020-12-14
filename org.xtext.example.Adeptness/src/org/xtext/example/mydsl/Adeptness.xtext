@@ -88,8 +88,8 @@ ImportMonitoringPlan:
 
 Oracle: 
 	'ORACLE' name=ID ':'
-		(when+=When|while+=While)?
-		(check+=Checks)+'ENDORACLE'
+		(when=When|while=While)?
+		(check=Checks)'ENDORACLE'
 ;
 
 While:

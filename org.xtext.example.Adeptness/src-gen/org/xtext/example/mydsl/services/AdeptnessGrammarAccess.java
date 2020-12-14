@@ -475,11 +475,11 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cENDORACLEKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
 		//Oracle:
-		//	'ORACLE' name=ID ':' (when+=When | while+=While)?
-		//	check+=Checks+ 'ENDORACLE';
+		//	'ORACLE' name=ID ':' (when=When | while=While)?
+		//	check=Checks 'ENDORACLE';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'ORACLE' name=ID ':' (when+=When | while+=While)? check+=Checks+ 'ENDORACLE'
+		//'ORACLE' name=ID ':' (when=When | while=While)? check=Checks 'ENDORACLE'
 		public Group getGroup() { return cGroup; }
 		
 		//'ORACLE'
@@ -494,22 +494,22 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		//':'
 		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
 		
-		//(when+=When | while+=While)?
+		//(when=When | while=While)?
 		public Alternatives getAlternatives_3() { return cAlternatives_3; }
 		
-		//when+=When
+		//when=When
 		public Assignment getWhenAssignment_3_0() { return cWhenAssignment_3_0; }
 		
 		//When
 		public RuleCall getWhenWhenParserRuleCall_3_0_0() { return cWhenWhenParserRuleCall_3_0_0; }
 		
-		//while+=While
+		//while=While
 		public Assignment getWhileAssignment_3_1() { return cWhileAssignment_3_1; }
 		
 		//While
 		public RuleCall getWhileWhileParserRuleCall_3_1_0() { return cWhileWhileParserRuleCall_3_1_0; }
 		
-		//check+=Checks+
+		//check=Checks
 		public Assignment getCheckAssignment_4() { return cCheckAssignment_4; }
 		
 		//Checks
@@ -1599,9 +1599,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cOpOperatorsParserRuleCall_2_0 = (RuleCall)cOpAssignment_2.eContents().get(0);
 		
 		//AbstractElement2:
-		//	frontParentheses+=FrontParentheses* (name=ID | value=DOUBLE) op+=Operators*
-		//	//(backParentheses+=BackParentheses)*
-		//;
+		//	frontParentheses+=FrontParentheses* (name=ID | value=DOUBLE) op+=Operators*;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//frontParentheses+=FrontParentheses* (name=ID | value=DOUBLE) op+=Operators*
@@ -2084,8 +2082,8 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Oracle:
-	//	'ORACLE' name=ID ':' (when+=When | while+=While)?
-	//	check+=Checks+ 'ENDORACLE';
+	//	'ORACLE' name=ID ':' (when=When | while=While)?
+	//	check=Checks 'ENDORACLE';
 	public OracleElements getOracleAccess() {
 		return pOracle;
 	}
@@ -2437,9 +2435,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//AbstractElement2:
-	//	frontParentheses+=FrontParentheses* (name=ID | value=DOUBLE) op+=Operators*
-	//	//(backParentheses+=BackParentheses)*
-	//;
+	//	frontParentheses+=FrontParentheses* (name=ID | value=DOUBLE) op+=Operators*;
 	public AbstractElement2Elements getAbstractElement2Access() {
 		return pAbstractElement2;
 	}

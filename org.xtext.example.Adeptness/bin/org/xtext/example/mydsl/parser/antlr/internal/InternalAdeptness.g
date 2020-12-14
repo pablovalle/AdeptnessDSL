@@ -774,7 +774,7 @@ ruleOracle returns [EObject current=null]
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getOracleRule());
 						}
-						add(
+						set(
 							$current,
 							"when",
 							lv_when_3_0,
@@ -794,7 +794,7 @@ ruleOracle returns [EObject current=null]
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getOracleRule());
 						}
-						add(
+						set(
 							$current,
 							"while",
 							lv_while_4_0,
@@ -814,7 +814,7 @@ ruleOracle returns [EObject current=null]
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getOracleRule());
 					}
-					add(
+					set(
 						$current,
 						"check",
 						lv_check_5_0,
@@ -822,7 +822,7 @@ ruleOracle returns [EObject current=null]
 					afterParserOrEnumRuleCall();
 				}
 			)
-		)+
+		)
 		otherlv_6='ENDORACLE'
 		{
 			newLeafNode(otherlv_6, grammarAccess.getOracleAccess().getENDORACLEKeyword_5());

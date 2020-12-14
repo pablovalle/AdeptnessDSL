@@ -2938,16 +2938,9 @@ rule__Oracle__Group__4__Impl
 	}
 :
 (
-	(
-		{ before(grammarAccess.getOracleAccess().getCheckAssignment_4()); }
-		(rule__Oracle__CheckAssignment_4)
-		{ after(grammarAccess.getOracleAccess().getCheckAssignment_4()); }
-	)
-	(
-		{ before(grammarAccess.getOracleAccess().getCheckAssignment_4()); }
-		(rule__Oracle__CheckAssignment_4)*
-		{ after(grammarAccess.getOracleAccess().getCheckAssignment_4()); }
-	)
+	{ before(grammarAccess.getOracleAccess().getCheckAssignment_4()); }
+	(rule__Oracle__CheckAssignment_4)
+	{ after(grammarAccess.getOracleAccess().getCheckAssignment_4()); }
 )
 ;
 finally {

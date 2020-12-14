@@ -3,21 +3,14 @@
  */
 package org.xtext.example.mydsl.adeptness.impl;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.Checks;
@@ -64,34 +57,34 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getWhen() <em>When</em>}' containment reference list.
+   * The cached value of the '{@link #getWhen() <em>When</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getWhen()
    * @generated
    * @ordered
    */
-  protected EList<When> when;
+  protected When when;
 
   /**
-   * The cached value of the '{@link #getWhile() <em>While</em>}' containment reference list.
+   * The cached value of the '{@link #getWhile() <em>While</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getWhile()
    * @generated
    * @ordered
    */
-  protected EList<While> while_;
+  protected While while_;
 
   /**
-   * The cached value of the '{@link #getCheck() <em>Check</em>}' containment reference list.
+   * The cached value of the '{@link #getCheck() <em>Check</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getCheck()
    * @generated
    * @ordered
    */
-  protected EList<Checks> check;
+  protected Checks check;
 
   /**
    * <!-- begin-user-doc -->
@@ -145,12 +138,8 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
    * @generated
    */
   @Override
-  public EList<When> getWhen()
+  public When getWhen()
   {
-    if (when == null)
-    {
-      when = new EObjectContainmentEList<When>(When.class, this, AdeptnessPackage.ORACLE__WHEN);
-    }
     return when;
   }
 
@@ -159,14 +148,16 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public EList<While> getWhile()
+  public NotificationChain basicSetWhen(When newWhen, NotificationChain msgs)
   {
-    if (while_ == null)
+    When oldWhen = when;
+    when = newWhen;
+    if (eNotificationRequired())
     {
-      while_ = new EObjectContainmentEList<While>(While.class, this, AdeptnessPackage.ORACLE__WHILE);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.ORACLE__WHEN, oldWhen, newWhen);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return while_;
+    return msgs;
   }
 
   /**
@@ -175,13 +166,120 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
    * @generated
    */
   @Override
-  public EList<Checks> getCheck()
+  public void setWhen(When newWhen)
   {
-    if (check == null)
+    if (newWhen != when)
     {
-      check = new EObjectContainmentEList<Checks>(Checks.class, this, AdeptnessPackage.ORACLE__CHECK);
+      NotificationChain msgs = null;
+      if (when != null)
+        msgs = ((InternalEObject)when).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.ORACLE__WHEN, null, msgs);
+      if (newWhen != null)
+        msgs = ((InternalEObject)newWhen).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.ORACLE__WHEN, null, msgs);
+      msgs = basicSetWhen(newWhen, msgs);
+      if (msgs != null) msgs.dispatch();
     }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.ORACLE__WHEN, newWhen, newWhen));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public While getWhile()
+  {
+    return while_;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetWhile(While newWhile, NotificationChain msgs)
+  {
+    While oldWhile = while_;
+    while_ = newWhile;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.ORACLE__WHILE, oldWhile, newWhile);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setWhile(While newWhile)
+  {
+    if (newWhile != while_)
+    {
+      NotificationChain msgs = null;
+      if (while_ != null)
+        msgs = ((InternalEObject)while_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.ORACLE__WHILE, null, msgs);
+      if (newWhile != null)
+        msgs = ((InternalEObject)newWhile).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.ORACLE__WHILE, null, msgs);
+      msgs = basicSetWhile(newWhile, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.ORACLE__WHILE, newWhile, newWhile));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Checks getCheck()
+  {
     return check;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetCheck(Checks newCheck, NotificationChain msgs)
+  {
+    Checks oldCheck = check;
+    check = newCheck;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.ORACLE__CHECK, oldCheck, newCheck);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setCheck(Checks newCheck)
+  {
+    if (newCheck != check)
+    {
+      NotificationChain msgs = null;
+      if (check != null)
+        msgs = ((InternalEObject)check).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.ORACLE__CHECK, null, msgs);
+      if (newCheck != null)
+        msgs = ((InternalEObject)newCheck).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.ORACLE__CHECK, null, msgs);
+      msgs = basicSetCheck(newCheck, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.ORACLE__CHECK, newCheck, newCheck));
   }
 
   /**
@@ -195,11 +293,11 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
     switch (featureID)
     {
       case AdeptnessPackage.ORACLE__WHEN:
-        return ((InternalEList<?>)getWhen()).basicRemove(otherEnd, msgs);
+        return basicSetWhen(null, msgs);
       case AdeptnessPackage.ORACLE__WHILE:
-        return ((InternalEList<?>)getWhile()).basicRemove(otherEnd, msgs);
+        return basicSetWhile(null, msgs);
       case AdeptnessPackage.ORACLE__CHECK:
-        return ((InternalEList<?>)getCheck()).basicRemove(otherEnd, msgs);
+        return basicSetCheck(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -231,7 +329,6 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -241,16 +338,13 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
         setName((String)newValue);
         return;
       case AdeptnessPackage.ORACLE__WHEN:
-        getWhen().clear();
-        getWhen().addAll((Collection<? extends When>)newValue);
+        setWhen((When)newValue);
         return;
       case AdeptnessPackage.ORACLE__WHILE:
-        getWhile().clear();
-        getWhile().addAll((Collection<? extends While>)newValue);
+        setWhile((While)newValue);
         return;
       case AdeptnessPackage.ORACLE__CHECK:
-        getCheck().clear();
-        getCheck().addAll((Collection<? extends Checks>)newValue);
+        setCheck((Checks)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -270,13 +364,13 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
         setName(NAME_EDEFAULT);
         return;
       case AdeptnessPackage.ORACLE__WHEN:
-        getWhen().clear();
+        setWhen((When)null);
         return;
       case AdeptnessPackage.ORACLE__WHILE:
-        getWhile().clear();
+        setWhile((While)null);
         return;
       case AdeptnessPackage.ORACLE__CHECK:
-        getCheck().clear();
+        setCheck((Checks)null);
         return;
     }
     super.eUnset(featureID);
@@ -295,11 +389,11 @@ public class OracleImpl extends MinimalEObjectImpl.Container implements Oracle
       case AdeptnessPackage.ORACLE__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case AdeptnessPackage.ORACLE__WHEN:
-        return when != null && !when.isEmpty();
+        return when != null;
       case AdeptnessPackage.ORACLE__WHILE:
-        return while_ != null && !while_.isEmpty();
+        return while_ != null;
       case AdeptnessPackage.ORACLE__CHECK:
-        return check != null && !check.isEmpty();
+        return check != null;
     }
     return super.eIsSet(featureID);
   }

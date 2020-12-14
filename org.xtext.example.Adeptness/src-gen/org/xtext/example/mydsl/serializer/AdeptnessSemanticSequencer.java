@@ -688,7 +688,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Oracle returns Oracle
 	 *
 	 * Constraint:
-	 *     (name=ID (when+=When | while+=While)? check+=Checks+)
+	 *     (name=ID (when=When | while=While)? check=Checks)
 	 */
 	protected void sequence_Oracle(ISerializationContext context, Oracle semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

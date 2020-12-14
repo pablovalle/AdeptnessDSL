@@ -411,7 +411,7 @@ public interface AdeptnessPackage extends EPackage
   int ORACLE__NAME = 0;
 
   /**
-   * The feature id for the '<em><b>When</b></em>' containment reference list.
+   * The feature id for the '<em><b>When</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -420,7 +420,7 @@ public interface AdeptnessPackage extends EPackage
   int ORACLE__WHEN = 1;
 
   /**
-   * The feature id for the '<em><b>While</b></em>' containment reference list.
+   * The feature id for the '<em><b>While</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -429,7 +429,7 @@ public interface AdeptnessPackage extends EPackage
   int ORACLE__WHILE = 2;
 
   /**
-   * The feature id for the '<em><b>Check</b></em>' containment reference list.
+   * The feature id for the '<em><b>Check</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -2045,10 +2045,10 @@ public interface AdeptnessPackage extends EPackage
   EAttribute getOracle_Name();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Oracle#getWhen <em>When</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Oracle#getWhen <em>When</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>When</em>'.
+   * @return the meta object for the containment reference '<em>When</em>'.
    * @see org.xtext.example.mydsl.adeptness.Oracle#getWhen()
    * @see #getOracle()
    * @generated
@@ -2056,10 +2056,10 @@ public interface AdeptnessPackage extends EPackage
   EReference getOracle_When();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Oracle#getWhile <em>While</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Oracle#getWhile <em>While</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>While</em>'.
+   * @return the meta object for the containment reference '<em>While</em>'.
    * @see org.xtext.example.mydsl.adeptness.Oracle#getWhile()
    * @see #getOracle()
    * @generated
@@ -2067,10 +2067,10 @@ public interface AdeptnessPackage extends EPackage
   EReference getOracle_While();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.adeptness.Oracle#getCheck <em>Check</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Oracle#getCheck <em>Check</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Check</em>'.
+   * @return the meta object for the containment reference '<em>Check</em>'.
    * @see org.xtext.example.mydsl.adeptness.Oracle#getCheck()
    * @see #getOracle()
    * @generated
@@ -3473,7 +3473,7 @@ public interface AdeptnessPackage extends EPackage
     EAttribute ORACLE__NAME = eINSTANCE.getOracle_Name();
 
     /**
-     * The meta object literal for the '<em><b>When</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>When</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -3481,7 +3481,7 @@ public interface AdeptnessPackage extends EPackage
     EReference ORACLE__WHEN = eINSTANCE.getOracle_When();
 
     /**
-     * The meta object literal for the '<em><b>While</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>While</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -3489,7 +3489,7 @@ public interface AdeptnessPackage extends EPackage
     EReference ORACLE__WHILE = eINSTANCE.getOracle_While();
 
     /**
-     * The meta object literal for the '<em><b>Check</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Check</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated

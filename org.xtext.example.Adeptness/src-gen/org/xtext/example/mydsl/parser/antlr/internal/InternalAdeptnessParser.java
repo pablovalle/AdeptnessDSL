@@ -1949,7 +1949,7 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOracle"
-    // InternalAdeptness.g:732:1: ruleOracle returns [EObject current=null] : (otherlv_0= 'ORACLE' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= ':' ( ( (lv_when_3_0= ruleWhen ) ) | ( (lv_while_4_0= ruleWhile ) ) )? ( (lv_check_5_0= ruleChecks ) )+ otherlv_6= 'ENDORACLE' ) ;
+    // InternalAdeptness.g:732:1: ruleOracle returns [EObject current=null] : (otherlv_0= 'ORACLE' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= ':' ( ( (lv_when_3_0= ruleWhen ) ) | ( (lv_while_4_0= ruleWhile ) ) )? ( (lv_check_5_0= ruleChecks ) ) otherlv_6= 'ENDORACLE' ) ;
     public final EObject ruleOracle() throws RecognitionException {
         EObject current = null;
 
@@ -1968,11 +1968,11 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalAdeptness.g:738:2: ( (otherlv_0= 'ORACLE' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= ':' ( ( (lv_when_3_0= ruleWhen ) ) | ( (lv_while_4_0= ruleWhile ) ) )? ( (lv_check_5_0= ruleChecks ) )+ otherlv_6= 'ENDORACLE' ) )
-            // InternalAdeptness.g:739:2: (otherlv_0= 'ORACLE' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= ':' ( ( (lv_when_3_0= ruleWhen ) ) | ( (lv_while_4_0= ruleWhile ) ) )? ( (lv_check_5_0= ruleChecks ) )+ otherlv_6= 'ENDORACLE' )
+            // InternalAdeptness.g:738:2: ( (otherlv_0= 'ORACLE' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= ':' ( ( (lv_when_3_0= ruleWhen ) ) | ( (lv_while_4_0= ruleWhile ) ) )? ( (lv_check_5_0= ruleChecks ) ) otherlv_6= 'ENDORACLE' ) )
+            // InternalAdeptness.g:739:2: (otherlv_0= 'ORACLE' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= ':' ( ( (lv_when_3_0= ruleWhen ) ) | ( (lv_while_4_0= ruleWhile ) ) )? ( (lv_check_5_0= ruleChecks ) ) otherlv_6= 'ENDORACLE' )
             {
-            // InternalAdeptness.g:739:2: (otherlv_0= 'ORACLE' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= ':' ( ( (lv_when_3_0= ruleWhen ) ) | ( (lv_while_4_0= ruleWhile ) ) )? ( (lv_check_5_0= ruleChecks ) )+ otherlv_6= 'ENDORACLE' )
-            // InternalAdeptness.g:740:3: otherlv_0= 'ORACLE' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= ':' ( ( (lv_when_3_0= ruleWhen ) ) | ( (lv_while_4_0= ruleWhile ) ) )? ( (lv_check_5_0= ruleChecks ) )+ otherlv_6= 'ENDORACLE'
+            // InternalAdeptness.g:739:2: (otherlv_0= 'ORACLE' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= ':' ( ( (lv_when_3_0= ruleWhen ) ) | ( (lv_while_4_0= ruleWhile ) ) )? ( (lv_check_5_0= ruleChecks ) ) otherlv_6= 'ENDORACLE' )
+            // InternalAdeptness.g:740:3: otherlv_0= 'ORACLE' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= ':' ( ( (lv_when_3_0= ruleWhen ) ) | ( (lv_while_4_0= ruleWhile ) ) )? ( (lv_check_5_0= ruleChecks ) ) otherlv_6= 'ENDORACLE'
             {
             otherlv_0=(Token)match(input,30,FOLLOW_4); 
 
@@ -2040,7 +2040,7 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
                     						if (current==null) {
                     							current = createModelElementForParent(grammarAccess.getOracleRule());
                     						}
-                    						add(
+                    						set(
                     							current,
                     							"when",
                     							lv_when_3_0,
@@ -2077,7 +2077,7 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
                     						if (current==null) {
                     							current = createModelElementForParent(grammarAccess.getOracleRule());
                     						}
-                    						add(
+                    						set(
                     							current,
                     							"while",
                     							lv_while_4_0,
@@ -2096,59 +2096,36 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalAdeptness.g:807:3: ( (lv_check_5_0= ruleChecks ) )+
-            int cnt13=0;
-            loop13:
-            do {
-                int alt13=2;
-                int LA13_0 = input.LA(1);
+            // InternalAdeptness.g:807:3: ( (lv_check_5_0= ruleChecks ) )
+            // InternalAdeptness.g:808:4: (lv_check_5_0= ruleChecks )
+            {
+            // InternalAdeptness.g:808:4: (lv_check_5_0= ruleChecks )
+            // InternalAdeptness.g:809:5: lv_check_5_0= ruleChecks
+            {
 
-                if ( (LA13_0==38) ) {
-                    alt13=1;
-                }
+            					newCompositeNode(grammarAccess.getOracleAccess().getCheckChecksParserRuleCall_4_0());
+            				
+            pushFollow(FOLLOW_22);
+            lv_check_5_0=ruleChecks();
 
-
-                switch (alt13) {
-            	case 1 :
-            	    // InternalAdeptness.g:808:4: (lv_check_5_0= ruleChecks )
-            	    {
-            	    // InternalAdeptness.g:808:4: (lv_check_5_0= ruleChecks )
-            	    // InternalAdeptness.g:809:5: lv_check_5_0= ruleChecks
-            	    {
-
-            	    					newCompositeNode(grammarAccess.getOracleAccess().getCheckChecksParserRuleCall_4_0());
-            	    				
-            	    pushFollow(FOLLOW_22);
-            	    lv_check_5_0=ruleChecks();
-
-            	    state._fsp--;
+            state._fsp--;
 
 
-            	    					if (current==null) {
-            	    						current = createModelElementForParent(grammarAccess.getOracleRule());
-            	    					}
-            	    					add(
-            	    						current,
-            	    						"check",
-            	    						lv_check_5_0,
-            	    						"org.xtext.example.mydsl.Adeptness.Checks");
-            	    					afterParserOrEnumRuleCall();
-            	    				
+            					if (current==null) {
+            						current = createModelElementForParent(grammarAccess.getOracleRule());
+            					}
+            					set(
+            						current,
+            						"check",
+            						lv_check_5_0,
+            						"org.xtext.example.mydsl.Adeptness.Checks");
+            					afterParserOrEnumRuleCall();
+            				
 
-            	    }
+            }
 
 
-            	    }
-            	    break;
-
-            	default :
-            	    if ( cnt13 >= 1 ) break loop13;
-                        EarlyExitException eee =
-                            new EarlyExitException(13, input);
-                        throw eee;
-                }
-                cnt13++;
-            } while (true);
+            }
 
             otherlv_6=(Token)match(input,31,FOLLOW_2); 
 
@@ -2381,13 +2358,13 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             }
 
             // InternalAdeptness.g:914:3: ( (lv_aw_2_0= ruleAfterWhen ) )?
-            int alt14=2;
-            int LA14_0 = input.LA(1);
+            int alt13=2;
+            int LA13_0 = input.LA(1);
 
-            if ( (LA14_0==34||LA14_0==37) ) {
-                alt14=1;
+            if ( (LA13_0==34||LA13_0==37) ) {
+                alt13=1;
             }
-            switch (alt14) {
+            switch (alt13) {
                 case 1 :
                     // InternalAdeptness.g:915:4: (lv_aw_2_0= ruleAfterWhen )
                     {
@@ -2498,22 +2475,22 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:951:2: ( ( (lv_wait_0_0= ruleWait ) ) | ( (lv_during_1_0= ruleDuring ) ) )
             {
             // InternalAdeptness.g:951:2: ( ( (lv_wait_0_0= ruleWait ) ) | ( (lv_during_1_0= ruleDuring ) ) )
-            int alt15=2;
-            int LA15_0 = input.LA(1);
+            int alt14=2;
+            int LA14_0 = input.LA(1);
 
-            if ( (LA15_0==34) ) {
-                alt15=1;
+            if ( (LA14_0==34) ) {
+                alt14=1;
             }
-            else if ( (LA15_0==37) ) {
-                alt15=2;
+            else if ( (LA14_0==37) ) {
+                alt14=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 15, 0, input);
+                    new NoViableAltException("", 14, 0, input);
 
                 throw nvae;
             }
-            switch (alt15) {
+            switch (alt14) {
                 case 1 :
                     // InternalAdeptness.g:952:3: ( (lv_wait_0_0= ruleWait ) )
                     {
@@ -2987,22 +2964,22 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             			newLeafNode(otherlv_0, grammarAccess.getChecksAccess().getChecksKeyword_0());
             		
             // InternalAdeptness.g:1152:3: ( ( (lv_name_1_0= RULE_ID ) ) | ( (lv_em_2_0= ruleExpressionsModel ) ) )
-            int alt16=2;
-            int LA16_0 = input.LA(1);
+            int alt15=2;
+            int LA15_0 = input.LA(1);
 
-            if ( (LA16_0==RULE_ID) ) {
-                alt16=1;
+            if ( (LA15_0==RULE_ID) ) {
+                alt15=1;
             }
-            else if ( (LA16_0==RULE_INT||(LA16_0>=47 && LA16_0<=51)||LA16_0==53||LA16_0==56||LA16_0==65) ) {
-                alt16=2;
+            else if ( (LA15_0==RULE_INT||(LA15_0>=47 && LA15_0<=51)||LA15_0==53||LA15_0==56||LA15_0==65) ) {
+                alt15=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 16, 0, input);
+                    new NoViableAltException("", 15, 0, input);
 
                 throw nvae;
             }
-            switch (alt16) {
+            switch (alt15) {
                 case 1 :
                     // InternalAdeptness.g:1153:4: ( (lv_name_1_0= RULE_ID ) )
                     {
@@ -3107,18 +3084,18 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             }
 
             // InternalAdeptness.g:1211:3: ( (lv_failReason_4_0= ruleFailReason ) )+
-            int cnt17=0;
-            loop17:
+            int cnt16=0;
+            loop16:
             do {
-                int alt17=2;
-                int LA17_0 = input.LA(1);
+                int alt16=2;
+                int LA16_0 = input.LA(1);
 
-                if ( (LA17_0==40) ) {
-                    alt17=1;
+                if ( (LA16_0==40) ) {
+                    alt16=1;
                 }
 
 
-                switch (alt17) {
+                switch (alt16) {
             	case 1 :
             	    // InternalAdeptness.g:1212:4: (lv_failReason_4_0= ruleFailReason )
             	    {
@@ -3152,12 +3129,12 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             	    break;
 
             	default :
-            	    if ( cnt17 >= 1 ) break loop17;
+            	    if ( cnt16 >= 1 ) break loop16;
                         EarlyExitException eee =
-                            new EarlyExitException(17, input);
+                            new EarlyExitException(16, input);
                         throw eee;
                 }
-                cnt17++;
+                cnt16++;
             } while (true);
 
             // InternalAdeptness.g:1230:3: ( (lv_description_5_0= ruleDescription ) )
@@ -3493,9 +3470,9 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:1351:3: ( ( (lv_highPeak_0_0= ruleHighPeak ) ) | ( (lv_highTime_1_0= ruleHighTime ) ) | ( (lv_constDeg_2_0= ruleConstDeg ) ) | ( (lv_xPeaks_3_0= ruleXPeaks ) ) ) otherlv_4= ';'
             {
             // InternalAdeptness.g:1351:3: ( ( (lv_highPeak_0_0= ruleHighPeak ) ) | ( (lv_highTime_1_0= ruleHighTime ) ) | ( (lv_constDeg_2_0= ruleConstDeg ) ) | ( (lv_xPeaks_3_0= ruleXPeaks ) ) )
-            int alt18=4;
-            alt18 = dfa18.predict(input);
-            switch (alt18) {
+            int alt17=4;
+            alt17 = dfa17.predict(input);
+            switch (alt17) {
                 case 1 :
                     // InternalAdeptness.g:1352:4: ( (lv_highPeak_0_0= ruleHighPeak ) )
                     {
@@ -4367,46 +4344,46 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:1730:3: ( ( (lv_upper_0_0= ruleUpper ) ) | ( (lv_lower_1_0= ruleLower ) ) | ( (lv_range_2_0= ruleRange ) ) | ( (lv_gap_3_0= ruleGap ) ) | ( (lv_same_4_0= ruleSame ) ) | ( (lv_notsame_5_0= ruleNotSame ) ) ) otherlv_6= ';'
             {
             // InternalAdeptness.g:1730:3: ( ( (lv_upper_0_0= ruleUpper ) ) | ( (lv_lower_1_0= ruleLower ) ) | ( (lv_range_2_0= ruleRange ) ) | ( (lv_gap_3_0= ruleGap ) ) | ( (lv_same_4_0= ruleSame ) ) | ( (lv_notsame_5_0= ruleNotSame ) ) )
-            int alt19=6;
+            int alt18=6;
             switch ( input.LA(1) ) {
             case 49:
                 {
-                alt19=1;
+                alt18=1;
                 }
                 break;
             case 50:
                 {
-                alt19=2;
+                alt18=2;
                 }
                 break;
             case 51:
                 {
-                alt19=3;
+                alt18=3;
                 }
                 break;
             case 53:
                 {
-                alt19=4;
+                alt18=4;
                 }
                 break;
             case 47:
                 {
-                alt19=5;
+                alt18=5;
                 }
                 break;
             case 48:
                 {
-                alt19=6;
+                alt18=6;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 19, 0, input);
+                    new NoViableAltException("", 18, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt19) {
+            switch (alt18) {
                 case 1 :
                     // InternalAdeptness.g:1731:4: ( (lv_upper_0_0= ruleUpper ) )
                     {
@@ -5460,18 +5437,18 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:2171:2: ( ( (lv_value_0_0= ruleDOUBLE ) ) | ( (lv_em_1_0= ruleExpressionsModel ) ) )
             {
             // InternalAdeptness.g:2171:2: ( ( (lv_value_0_0= ruleDOUBLE ) ) | ( (lv_em_1_0= ruleExpressionsModel ) ) )
-            int alt20=2;
+            int alt19=2;
             switch ( input.LA(1) ) {
             case 56:
                 {
-                int LA20_1 = input.LA(2);
+                int LA19_1 = input.LA(2);
 
-                if ( (LA20_1==RULE_INT) ) {
-                    alt20=1;
+                if ( (LA19_1==RULE_INT) ) {
+                    alt19=1;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("", 20, 1, input);
+                        new NoViableAltException("", 19, 1, input);
 
                     throw nvae;
                 }
@@ -5479,7 +5456,7 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
                 break;
             case RULE_INT:
                 {
-                alt20=1;
+                alt19=1;
                 }
                 break;
             case EOF:
@@ -5487,17 +5464,17 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             case 41:
             case 65:
                 {
-                alt20=2;
+                alt19=2;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 20, 0, input);
+                    new NoViableAltException("", 19, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt20) {
+            switch (alt19) {
                 case 1 :
                     // InternalAdeptness.g:2172:3: ( (lv_value_0_0= ruleDOUBLE ) )
                     {
@@ -5648,18 +5625,18 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:2229:2: ( ( (lv_value_0_0= ruleDOUBLE ) ) | ( (lv_em_1_0= ruleExpressionsModel ) ) )
             {
             // InternalAdeptness.g:2229:2: ( ( (lv_value_0_0= ruleDOUBLE ) ) | ( (lv_em_1_0= ruleExpressionsModel ) ) )
-            int alt21=2;
+            int alt20=2;
             switch ( input.LA(1) ) {
             case 56:
                 {
-                int LA21_1 = input.LA(2);
+                int LA20_1 = input.LA(2);
 
-                if ( (LA21_1==RULE_INT) ) {
-                    alt21=1;
+                if ( (LA20_1==RULE_INT) ) {
+                    alt20=1;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("", 21, 1, input);
+                        new NoViableAltException("", 20, 1, input);
 
                     throw nvae;
                 }
@@ -5667,7 +5644,7 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
                 break;
             case RULE_INT:
                 {
-                alt21=1;
+                alt20=1;
                 }
                 break;
             case EOF:
@@ -5676,17 +5653,17 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             case 52:
             case 65:
                 {
-                alt21=2;
+                alt20=2;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 21, 0, input);
+                    new NoViableAltException("", 20, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt21) {
+            switch (alt20) {
                 case 1 :
                     // InternalAdeptness.g:2230:3: ( (lv_value_0_0= ruleDOUBLE ) )
                     {
@@ -5935,22 +5912,22 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:2323:2: (kw= 'true' | kw= 'false' )
             {
             // InternalAdeptness.g:2323:2: (kw= 'true' | kw= 'false' )
-            int alt22=2;
-            int LA22_0 = input.LA(1);
+            int alt21=2;
+            int LA21_0 = input.LA(1);
 
-            if ( (LA22_0==54) ) {
-                alt22=1;
+            if ( (LA21_0==54) ) {
+                alt21=1;
             }
-            else if ( (LA22_0==55) ) {
-                alt22=2;
+            else if ( (LA21_0==55) ) {
+                alt21=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 22, 0, input);
+                    new NoViableAltException("", 21, 0, input);
 
                 throw nvae;
             }
-            switch (alt22) {
+            switch (alt21) {
                 case 1 :
                     // InternalAdeptness.g:2324:3: kw= 'true'
                     {
@@ -6152,13 +6129,13 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:2390:3: (kw= '-' )? this_INT_1= RULE_INT (kw= '.' this_INT_3= RULE_INT )?
             {
             // InternalAdeptness.g:2390:3: (kw= '-' )?
-            int alt23=2;
-            int LA23_0 = input.LA(1);
+            int alt22=2;
+            int LA22_0 = input.LA(1);
 
-            if ( (LA23_0==56) ) {
-                alt23=1;
+            if ( (LA22_0==56) ) {
+                alt22=1;
             }
-            switch (alt23) {
+            switch (alt22) {
                 case 1 :
                     // InternalAdeptness.g:2391:4: kw= '-'
                     {
@@ -6181,13 +6158,13 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             			newLeafNode(this_INT_1, grammarAccess.getDAccess().getINTTerminalRuleCall_1());
             		
             // InternalAdeptness.g:2404:3: (kw= '.' this_INT_3= RULE_INT )?
-            int alt24=2;
-            int LA24_0 = input.LA(1);
+            int alt23=2;
+            int LA23_0 = input.LA(1);
 
-            if ( (LA24_0==13) ) {
-                alt24=1;
+            if ( (LA23_0==13) ) {
+                alt23=1;
             }
-            switch (alt24) {
+            switch (alt23) {
                 case 1 :
                     // InternalAdeptness.g:2405:4: kw= '.' this_INT_3= RULE_INT
                     {
@@ -6285,36 +6262,36 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:2436:2: ( ( (lv_time_0_0= 'miliseconds' ) ) | ( (lv_time_1_0= 'seconds' ) ) | ( (lv_time_2_0= 'minutes' ) ) | ( (lv_time_3_0= 'hours' ) ) )
             {
             // InternalAdeptness.g:2436:2: ( ( (lv_time_0_0= 'miliseconds' ) ) | ( (lv_time_1_0= 'seconds' ) ) | ( (lv_time_2_0= 'minutes' ) ) | ( (lv_time_3_0= 'hours' ) ) )
-            int alt25=4;
+            int alt24=4;
             switch ( input.LA(1) ) {
             case 57:
                 {
-                alt25=1;
+                alt24=1;
                 }
                 break;
             case 58:
                 {
-                alt25=2;
+                alt24=2;
                 }
                 break;
             case 59:
                 {
-                alt25=3;
+                alt24=3;
                 }
                 break;
             case 60:
                 {
-                alt25=4;
+                alt24=4;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 25, 0, input);
+                    new NoViableAltException("", 24, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt25) {
+            switch (alt24) {
                 case 1 :
                     // InternalAdeptness.g:2437:3: ( (lv_time_0_0= 'miliseconds' ) )
                     {
@@ -6654,17 +6631,17 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             			newLeafNode(otherlv_2, grammarAccess.getPackageDeclarationAccess().getLeftCurlyBracketKeyword_2());
             		
             // InternalAdeptness.g:2583:3: ( (lv_elements_3_0= ruleAbstractElement ) )*
-            loop26:
+            loop25:
             do {
-                int alt26=2;
-                int LA26_0 = input.LA(1);
+                int alt25=2;
+                int LA25_0 = input.LA(1);
 
-                if ( (LA26_0==11||LA26_0==14||LA26_0==25||(LA26_0>=61 && LA26_0<=62)) ) {
-                    alt26=1;
+                if ( (LA25_0==11||LA25_0==14||LA25_0==25||(LA25_0>=61 && LA25_0<=62)) ) {
+                    alt25=1;
                 }
 
 
-                switch (alt26) {
+                switch (alt25) {
             	case 1 :
             	    // InternalAdeptness.g:2584:4: (lv_elements_3_0= ruleAbstractElement )
             	    {
@@ -6698,7 +6675,7 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             	    break;
 
             	default :
-            	    break loop26;
+            	    break loop25;
                 }
             } while (true);
 
@@ -6780,17 +6757,17 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:2624:2: ( (lv_elements_0_0= ruleAbstractElement2 ) )*
             {
             // InternalAdeptness.g:2624:2: ( (lv_elements_0_0= ruleAbstractElement2 ) )*
-            loop27:
+            loop26:
             do {
-                int alt27=2;
-                int LA27_0 = input.LA(1);
+                int alt26=2;
+                int LA26_0 = input.LA(1);
 
-                if ( ((LA27_0>=RULE_ID && LA27_0<=RULE_INT)||LA27_0==56||LA27_0==65) ) {
-                    alt27=1;
+                if ( ((LA26_0>=RULE_ID && LA26_0<=RULE_INT)||LA26_0==56||LA26_0==65) ) {
+                    alt26=1;
                 }
 
 
-                switch (alt27) {
+                switch (alt26) {
             	case 1 :
             	    // InternalAdeptness.g:2625:3: (lv_elements_0_0= ruleAbstractElement2 )
             	    {
@@ -6824,7 +6801,7 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             	    break;
 
             	default :
-            	    break loop27;
+            	    break loop26;
                 }
             } while (true);
 
@@ -6907,17 +6884,17 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:2661:3: ( (lv_frontParentheses_0_0= ruleFrontParentheses ) )* ( ( (lv_name_1_0= RULE_ID ) ) | ( (lv_value_2_0= ruleDOUBLE ) ) ) ( (lv_op_3_0= ruleOperators ) )*
             {
             // InternalAdeptness.g:2661:3: ( (lv_frontParentheses_0_0= ruleFrontParentheses ) )*
-            loop28:
+            loop27:
             do {
-                int alt28=2;
-                int LA28_0 = input.LA(1);
+                int alt27=2;
+                int LA27_0 = input.LA(1);
 
-                if ( (LA28_0==65) ) {
-                    alt28=1;
+                if ( (LA27_0==65) ) {
+                    alt27=1;
                 }
 
 
-                switch (alt28) {
+                switch (alt27) {
             	case 1 :
             	    // InternalAdeptness.g:2662:4: (lv_frontParentheses_0_0= ruleFrontParentheses )
             	    {
@@ -6951,27 +6928,27 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             	    break;
 
             	default :
-            	    break loop28;
+            	    break loop27;
                 }
             } while (true);
 
             // InternalAdeptness.g:2680:3: ( ( (lv_name_1_0= RULE_ID ) ) | ( (lv_value_2_0= ruleDOUBLE ) ) )
-            int alt29=2;
-            int LA29_0 = input.LA(1);
+            int alt28=2;
+            int LA28_0 = input.LA(1);
 
-            if ( (LA29_0==RULE_ID) ) {
-                alt29=1;
+            if ( (LA28_0==RULE_ID) ) {
+                alt28=1;
             }
-            else if ( (LA29_0==RULE_INT||LA29_0==56) ) {
-                alt29=2;
+            else if ( (LA28_0==RULE_INT||LA28_0==56) ) {
+                alt28=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 29, 0, input);
+                    new NoViableAltException("", 28, 0, input);
 
                 throw nvae;
             }
-            switch (alt29) {
+            switch (alt28) {
                 case 1 :
                     // InternalAdeptness.g:2681:4: ( (lv_name_1_0= RULE_ID ) )
                     {
@@ -7045,17 +7022,17 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             }
 
             // InternalAdeptness.g:2720:3: ( (lv_op_3_0= ruleOperators ) )*
-            loop30:
+            loop29:
             do {
-                int alt30=2;
-                int LA30_0 = input.LA(1);
+                int alt29=2;
+                int LA29_0 = input.LA(1);
 
-                if ( (LA30_0==36||LA30_0==56||(LA30_0>=66 && LA30_0<=76)) ) {
-                    alt30=1;
+                if ( (LA29_0==36||LA29_0==56||(LA29_0>=66 && LA29_0<=76)) ) {
+                    alt29=1;
                 }
 
 
-                switch (alt30) {
+                switch (alt29) {
             	case 1 :
             	    // InternalAdeptness.g:2721:4: (lv_op_3_0= ruleOperators )
             	    {
@@ -7089,7 +7066,7 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             	    break;
 
             	default :
-            	    break loop30;
+            	    break loop29;
                 }
             } while (true);
 
@@ -7321,14 +7298,14 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:2801:2: ( ( (lv_operator_0_0= ruleOp ) ) | ( (lv_comparation_1_0= ruleCompOp ) ) | ( (lv_logicOperator_2_0= ruleLogicOp ) ) | ( (lv_backParentheses_3_0= ruleBackParentheses ) ) )
             {
             // InternalAdeptness.g:2801:2: ( ( (lv_operator_0_0= ruleOp ) ) | ( (lv_comparation_1_0= ruleCompOp ) ) | ( (lv_logicOperator_2_0= ruleLogicOp ) ) | ( (lv_backParentheses_3_0= ruleBackParentheses ) ) )
-            int alt31=4;
+            int alt30=4;
             switch ( input.LA(1) ) {
             case 56:
             case 74:
             case 75:
             case 76:
                 {
-                alt31=1;
+                alt30=1;
                 }
                 break;
             case 66:
@@ -7338,28 +7315,28 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             case 70:
             case 71:
                 {
-                alt31=2;
+                alt30=2;
                 }
                 break;
             case 72:
             case 73:
                 {
-                alt31=3;
+                alt30=3;
                 }
                 break;
             case 36:
                 {
-                alt31=4;
+                alt30=4;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 31, 0, input);
+                    new NoViableAltException("", 30, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt31) {
+            switch (alt30) {
                 case 1 :
                     // InternalAdeptness.g:2802:3: ( (lv_operator_0_0= ruleOp ) )
                     {
@@ -7592,46 +7569,46 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:2901:4: (lv_op_0_1= '==' | lv_op_0_2= '!=' | lv_op_0_3= '>=' | lv_op_0_4= '<=' | lv_op_0_5= '<' | lv_op_0_6= '>' )
             {
             // InternalAdeptness.g:2901:4: (lv_op_0_1= '==' | lv_op_0_2= '!=' | lv_op_0_3= '>=' | lv_op_0_4= '<=' | lv_op_0_5= '<' | lv_op_0_6= '>' )
-            int alt32=6;
+            int alt31=6;
             switch ( input.LA(1) ) {
             case 66:
                 {
-                alt32=1;
+                alt31=1;
                 }
                 break;
             case 67:
                 {
-                alt32=2;
+                alt31=2;
                 }
                 break;
             case 68:
                 {
-                alt32=3;
+                alt31=3;
                 }
                 break;
             case 69:
                 {
-                alt32=4;
+                alt31=4;
                 }
                 break;
             case 70:
                 {
-                alt32=5;
+                alt31=5;
                 }
                 break;
             case 71:
                 {
-                alt32=6;
+                alt31=6;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 32, 0, input);
+                    new NoViableAltException("", 31, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt32) {
+            switch (alt31) {
                 case 1 :
                     // InternalAdeptness.g:2902:5: lv_op_0_1= '=='
                     {
@@ -7814,22 +7791,22 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:2989:4: (lv_op_0_1= '&&' | lv_op_0_2= '||' )
             {
             // InternalAdeptness.g:2989:4: (lv_op_0_1= '&&' | lv_op_0_2= '||' )
-            int alt33=2;
-            int LA33_0 = input.LA(1);
+            int alt32=2;
+            int LA32_0 = input.LA(1);
 
-            if ( (LA33_0==72) ) {
-                alt33=1;
+            if ( (LA32_0==72) ) {
+                alt32=1;
             }
-            else if ( (LA33_0==73) ) {
-                alt33=2;
+            else if ( (LA32_0==73) ) {
+                alt32=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 33, 0, input);
+                    new NoViableAltException("", 32, 0, input);
 
                 throw nvae;
             }
-            switch (alt33) {
+            switch (alt32) {
                 case 1 :
                     // InternalAdeptness.g:2990:5: lv_op_0_1= '&&'
                     {
@@ -7950,36 +7927,36 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
             // InternalAdeptness.g:3033:4: (lv_op_0_1= '+' | lv_op_0_2= '-' | lv_op_0_3= '*' | lv_op_0_4= '/' )
             {
             // InternalAdeptness.g:3033:4: (lv_op_0_1= '+' | lv_op_0_2= '-' | lv_op_0_3= '*' | lv_op_0_4= '/' )
-            int alt34=4;
+            int alt33=4;
             switch ( input.LA(1) ) {
             case 74:
                 {
-                alt34=1;
+                alt33=1;
                 }
                 break;
             case 56:
                 {
-                alt34=2;
+                alt33=2;
                 }
                 break;
             case 75:
                 {
-                alt34=3;
+                alt33=3;
                 }
                 break;
             case 76:
                 {
-                alt34=4;
+                alt33=4;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 34, 0, input);
+                    new NoViableAltException("", 33, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt34) {
+            switch (alt33) {
                 case 1 :
                     // InternalAdeptness.g:3034:5: lv_op_0_1= '+'
                     {
@@ -8074,23 +8051,23 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
     // Delegated rules
 
 
-    protected DFA18 dfa18 = new DFA18(this);
+    protected DFA17 dfa17 = new DFA17(this);
     static final String dfa_1s = "\12\uffff";
     static final String dfa_2s = "\1\52\1\5\1\uffff\1\5\1\15\1\5\3\uffff\1\51";
     static final String dfa_3s = "\1\55\1\70\1\uffff\1\5\1\56\1\5\3\uffff\1\56";
-    static final String dfa_4s = "\2\uffff\1\3\3\uffff\1\2\1\1\1\4\1\uffff";
+    static final String dfa_4s = "\2\uffff\1\3\3\uffff\1\4\1\2\1\1\1\uffff";
     static final String dfa_5s = "\12\uffff}>";
     static final String[] dfa_6s = {
             "\1\1\2\uffff\1\2",
             "\1\4\62\uffff\1\3",
             "",
             "\1\4",
-            "\1\5\33\uffff\1\7\1\uffff\1\10\2\uffff\1\6",
+            "\1\5\33\uffff\1\10\1\uffff\1\6\2\uffff\1\7",
             "\1\11",
             "",
             "",
             "",
-            "\1\7\1\uffff\1\10\2\uffff\1\6"
+            "\1\10\1\uffff\1\6\2\uffff\1\7"
     };
 
     static final short[] dfa_1 = DFA.unpackEncodedString(dfa_1s);
@@ -8100,11 +8077,11 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
     static final short[] dfa_5 = DFA.unpackEncodedString(dfa_5s);
     static final short[][] dfa_6 = unpackEncodedStringArray(dfa_6s);
 
-    class DFA18 extends DFA {
+    class DFA17 extends DFA {
 
-        public DFA18(BaseRecognizer recognizer) {
+        public DFA17(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 18;
+            this.decisionNumber = 17;
             this.eot = dfa_1;
             this.eof = dfa_1;
             this.min = dfa_2;
@@ -8140,7 +8117,7 @@ public class InternalAdeptnessParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_19 = new BitSet(new long[]{0x0000000050000000L});
     public static final BitSet FOLLOW_20 = new BitSet(new long[]{0x0000000070000000L});
     public static final BitSet FOLLOW_21 = new BitSet(new long[]{0x0000004300000000L});
-    public static final BitSet FOLLOW_22 = new BitSet(new long[]{0x0000004380000000L});
+    public static final BitSet FOLLOW_22 = new BitSet(new long[]{0x0000000080000000L});
     public static final BitSet FOLLOW_23 = new BitSet(new long[]{0x0100000000000030L,0x0000000000000002L});
     public static final BitSet FOLLOW_24 = new BitSet(new long[]{0x0100002400000030L,0x0000000000000002L});
     public static final BitSet FOLLOW_25 = new BitSet(new long[]{0x0000002400000002L});

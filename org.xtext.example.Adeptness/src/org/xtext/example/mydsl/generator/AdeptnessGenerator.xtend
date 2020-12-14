@@ -119,7 +119,7 @@ class AdeptnessGenerator extends AbstractGenerator {
 	'''*/
 	
 	
-	def create_oracle_m(Oracle param)'''
+	/*def create_oracle_m(Oracle param)'''
 	
 	def= legacy_code('initialize');
 	def.OutputFcnSpec= 'double y1=«param.name.toString()»(double u1)';
@@ -129,104 +129,471 @@ class AdeptnessGenerator extends AbstractGenerator {
 	legacy_code('sfcn_cmex_generate' ,def)
 	legacy_code('compile' ,def)
 	exit
-	'''
+	'''*/
 	def create_oracle_h(Oracle param)'''
 	#ifndef «param.name.toString().toUpperCase»_H
 	#define «param.name.toString().toUpperCase»_H
-	«FOR param1: param.check»
-	«IF param1.name!==null»
-		«IF param1.reference.upper!==null»
-		struct Ret{
-			int assert;
-			double diff;
-		};
-		struct Ret BelowReference (double «param1.name.toString()»[], double timeStamp[]);
-		«ELSEIF param1.reference.lower!==null»
-		struct Ret{
-			int assert;
-			double diff;
-		};
-		struct Ret AboveReference (double «param1.name.toString()»[], double timeStamp[]);
-		«ELSEIF param1.reference.range!==null»
-		struct Ret{
-			int assert;
-			double diff_up;
-			double diff_down;
-		};
-		struct Ret RangeReference (double «param1.name.toString()»[], double timeStamp[]);
-		«ELSEIF param1.reference.gap!==null»
-		struct Ret{
-			int assert;
-			double diff_up;
-			double diff_down;
-		};
-		struct Ret GapReference (double «param1.name.toString()»[], double timeStamp[]);
+	«IF param.when!==null && param.^while!==null»
+		«IF param.check.name!==null»
+			«IF param.check.reference.upper!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+						
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ENDIF»
+		«ELSE»
+			«IF param.check.reference.upper!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+						
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ENDIF»
+		«ENDIF»
+	«ELSEIF param.when===null && param.^while!==null»
+		«IF param.check.name!==null»
+			«IF param.check.reference.upper!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ENDIF»
+		«ELSE»
+			«IF param.check.reference.upper!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ENDIF»
+		«ENDIF»
+	«ELSEIF param.when!==null && param.^while===null»
+		«IF param.check.name!==null»
+			«IF param.check.reference.upper!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+						
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ENDIF»
+		«ELSE»
+			«IF param.check.reference.upper!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]);			
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]);
+			«ENDIF»
 		«ENDIF»
 	«ELSE»
-	«var cont=0»
-	«IF param1.reference.upper!==null»
-		struct Ret{
-			int assert;
-			double diff;
-		};
-		struct Ret BelowReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]);
-		«ELSEIF param1.reference.lower!==null»
-		struct Ret{
-			int assert;
-			double diff;
-		};
-		struct Ret AboveReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]);
-		«ELSEIF param1.reference.range!==null»
-		struct Ret{
-			int assert;
-			double diff_up;
-			double diff_down;
-		};
-		struct Ret RangeReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]);
-		«ELSEIF param1.reference.gap!==null»
-		struct Ret{
-			int assert;
-			double diff_up;
-			double diff_down;
-		};
-		struct Ret GapReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]);
+		«IF param.check.name!==null»
+			«IF param.check.reference.upper!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], double timeStamp[]);
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[],double timeStamp[]);
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[],double timeStamp[]);
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[],double timeStamp[]);			
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[],double timeStamp[]);
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[],double timeStamp[]);
+			«ENDIF»
+		«ELSE»
+			«IF param.check.reference.upper!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]);
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]);
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]);
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret{
+				int assert;
+				double diff;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]);				
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]);
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret{
+				int assert;
+				double diff_up;
+				double diff_down;
+			};
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]);
+			«ENDIF»
+		«ENDIF»
 	«ENDIF»
-	«ENDIF»
-	«ENDFOR»
 	
 	#endif
 	'''	
 	def create_oracle_c(Oracle param)'''
 	#include "«param.name.toString()».h"
-	«FOR param1: param.check»
-		«IF param1.name!==null»
-		«IF param1.reference.upper!==null»
-		struct Ret BelowReference (double «param1.name.toString()», double timeStamp[]){
-		«ELSEIF param1.reference.lower!==null»
-		struct Ret AboveReference (double «param1.name.toString()», double timeStamp[]){
-		«ELSEIF param1.reference.range!==null»
-		struct Ret RangeReference (double «param1.name.toString()», double timeStamp[]){
-		«ELSEIF param1.reference.gap!==null»
-		struct Ret GapReference (double «param1.name.toString()», double timeStamp[]){
-		«ENDIF»
-				struct Ret ret;
-				return ret;
-			}		
+	«IF param.when!==null && param.^while!==null»
+		«IF param.check.name!==null»
+			«IF param.check.reference.upper!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ENDIF»
 		«ELSE»
-		«IF param1.reference.upper!==null»
-		struct Ret BelowReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]){
-		«ELSEIF param1.reference.lower!==null»
-		struct Ret AboveReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]){
-		«ELSEIF param1.reference.range!==null»
-		struct Ret RangeReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]){
-		«ELSEIF param1.reference.gap!==null»
-		struct Ret GapReference («FOR name:param1.em.elements»«IF name.name!==null»double «name.name.toString»[] , «ENDIF»«ENDFOR» double timeStamp[]){
+			«IF param.check.reference.upper!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){			
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ENDIF»
 		«ENDIF»
-				struct Ret ret;
-				return ret;
-			}		
+	«ELSEIF param.when===null && param.^while!==null»
+		«IF param.check.name!==null»
+			«IF param.check.reference.upper!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){				
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ENDIF»
+		«ELSE»
+			«IF param.check.reference.upper!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){				
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ENDIF»
 		«ENDIF»
-	«ENDFOR»
+	«ELSEIF param.when!==null && param.^while===null»
+		«IF param.check.name!==null»
+			«IF param.check.reference.upper!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){			
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ENDIF»
+		«ELSE»
+			«IF param.check.reference.upper!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){			
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
+			«ENDIF»
+		«ENDIF»
+	«ELSE»
+		«IF param.check.name!==null»
+			«IF param.check.reference.upper!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[],double timeStamp[]){
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[],double timeStamp[]){
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[],double timeStamp[]){
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[],double timeStamp[]){			
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[],double timeStamp[]){
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret «param.name.toString()» (double «param.check.name.toString()»[],double timeStamp[]){
+			«ENDIF»
+		«ELSE»
+			«IF param.check.reference.upper!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){
+			«ELSEIF param.check.reference.lower!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){
+			«ELSEIF param.check.reference.same!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){
+			«ELSEIF param.check.reference.notsame!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){			
+			«ELSEIF param.check.reference.range!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){
+			«ELSEIF param.check.reference.gap!==null»
+			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){
+			«ENDIF»
+		«ENDIF»
+	«ENDIF»
+		struct Ret ret;
+		return ret;
+	}
 	'''
 	
 	/*def create_oracle_c(Oracle param)'''

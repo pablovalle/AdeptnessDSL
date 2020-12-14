@@ -3,8 +3,6 @@
  */
 package org.xtext.example.mydsl.adeptness;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -51,39 +49,69 @@ public interface Oracle extends EObject
   void setName(String value);
 
   /**
-   * Returns the value of the '<em><b>When</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.example.mydsl.adeptness.When}.
+   * Returns the value of the '<em><b>When</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>When</em>' containment reference list.
+   * @return the value of the '<em>When</em>' containment reference.
+   * @see #setWhen(When)
    * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getOracle_When()
    * @model containment="true"
    * @generated
    */
-  EList<When> getWhen();
+  When getWhen();
 
   /**
-   * Returns the value of the '<em><b>While</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.example.mydsl.adeptness.While}.
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Oracle#getWhen <em>When</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>While</em>' containment reference list.
+   * @param value the new value of the '<em>When</em>' containment reference.
+   * @see #getWhen()
+   * @generated
+   */
+  void setWhen(When value);
+
+  /**
+   * Returns the value of the '<em><b>While</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>While</em>' containment reference.
+   * @see #setWhile(While)
    * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getOracle_While()
    * @model containment="true"
    * @generated
    */
-  EList<While> getWhile();
+  While getWhile();
 
   /**
-   * Returns the value of the '<em><b>Check</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.example.mydsl.adeptness.Checks}.
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Oracle#getWhile <em>While</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Check</em>' containment reference list.
+   * @param value the new value of the '<em>While</em>' containment reference.
+   * @see #getWhile()
+   * @generated
+   */
+  void setWhile(While value);
+
+  /**
+   * Returns the value of the '<em><b>Check</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Check</em>' containment reference.
+   * @see #setCheck(Checks)
    * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getOracle_Check()
    * @model containment="true"
    * @generated
    */
-  EList<Checks> getCheck();
+  Checks getCheck();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Oracle#getCheck <em>Check</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Check</em>' containment reference.
+   * @see #getCheck()
+   * @generated
+   */
+  void setCheck(Checks value);
 
 } // Oracle

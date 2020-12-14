@@ -16,11 +16,12 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.xtext.example.mydsl.adeptness.AbstractElement2;
-import org.xtext.example.mydsl.adeptness.Checks;
 import org.xtext.example.mydsl.adeptness.Gap;
 import org.xtext.example.mydsl.adeptness.Lower;
+import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.Range;
+import org.xtext.example.mydsl.adeptness.Same;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.Upper;
 
@@ -54,92 +55,18 @@ public class AdeptnessGenerator extends AbstractGenerator {
   }
   
   /**
-   * def createXML(Iterable<Signal> signals)'''
-   * <?xml version='1.0' encoding="UTF-8"?>
-   * «FOR s : signals»
-   * <Signal>
-   * <SignalDescription name="«s.fullyQualifiedName.toString("/")»">
-   * <TypeSignalDescription name="Static">
-   * «FOR c: s.check_gap»
-   * <Type name="«c.name.toString»">
-   * <Parameters>
-   * <«c.inclusive_bound.eClass.name.toString()»>«c.inclusive_bound.value.bool»</«c.inclusive_bound.eClass.name.toString()»>
-   * <«c.bound_up.eClass.name.toString()»>«c.bound_up.value.DVal»</«c.bound_up.eClass.name.toString()»>
-   * <«c.bound_low.eClass.name.toString()»>«c.bound_low.value.DVal»</«c.bound_low.eClass.name.toString()»>
-   * </Parameters>
-   * </Type>
-   * «ENDFOR»
-   * </TypeSignalDescription>
-   * <TypeSignalDescription name="Static_Low">
-   * «FOR l: s.check_static_lower»
-   * <Type name="«l.name.toString»">
-   * <Parameters>
-   * <«l.inclusive_bound.eClass.name.toString()»>«l.inclusive_bound.value.bool»</«l.inclusive_bound.eClass.name.toString()»>
-   * <«l.bound_low.eClass.name.toString()»>«l.bound_low.value.DVal»</«l.bound_low.eClass.name.toString()»>
-   * </Parameters>
-   * </Type>
-   * «ENDFOR»
-   * </TypeSignalDescription>
-   * <TypeSignalDescription name="Static_Up">
-   * «FOR u: s.check_static_upper»
-   * <Type name="«u.name.toString»">
-   * <Parameters>
-   * <«u.inclusive_bound.eClass.name.toString()»>«u.inclusive_bound.value.bool»</«u.inclusive_bound.eClass.name.toString()»>
-   * <«u.bound_up.eClass.name.toString()»>«u.bound_up.value.DVal»</«u.bound_up.eClass.name.toString()»>
-   * </Parameters>
-   * </Type>
-   * «ENDFOR»
-   * </TypeSignalDescription>
-   * <TypeSignalDescription name="Dynamic">
-   * «FOR d: s.check_range»
-   * <Type name="«d.name.toString»">
-   * <Parameters>
-   * <«d.inclusive_bound.eClass.name.toString()»>«d.inclusive_bound.value.bool»</«d.inclusive_bound.eClass.name.toString()»>
-   * <«d.bound_up.eClass.name.toString()»>«d.bound_up.value.DVal»</«d.bound_up.eClass.name.toString()»>
-   * <«d.bound_low.eClass.name.toString()»>«d.bound_low.value.DVal»</«d.bound_low.eClass.name.toString()»>
-   * </Parameters>
-   * </Type>
-   * «ENDFOR»
-   * </TypeSignalDescription>
-   * </SignalDescription>
-   * </Signal>
-   * «ENDFOR»
+   * def create_oracle_m(Oracle param)'''
+   * 
+   * def= legacy_code('initialize');
+   * def.OutputFcnSpec= 'double y1=«param.name.toString()»(double u1)';
+   * def.SourceFiles= {'«param.name.toString()».c'};
+   * def.HeaderFiles= {'«param.name.toString()».h'};
+   * def.SFunctionName= 'S_«param.name.toString()»';
+   * legacy_code('sfcn_cmex_generate' ,def)
+   * legacy_code('compile' ,def)
+   * exit
    * '''
    */
-  public CharSequence create_oracle_m(final Oracle param) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.newLine();
-    _builder.append("def= legacy_code(\'initialize\');");
-    _builder.newLine();
-    _builder.append("def.OutputFcnSpec= \'double y1=");
-    String _string = param.getName().toString();
-    _builder.append(_string);
-    _builder.append("(double u1)\';");
-    _builder.newLineIfNotEmpty();
-    _builder.append("def.SourceFiles= {\'");
-    String _string_1 = param.getName().toString();
-    _builder.append(_string_1);
-    _builder.append(".c\'};");
-    _builder.newLineIfNotEmpty();
-    _builder.append("def.HeaderFiles= {\'");
-    String _string_2 = param.getName().toString();
-    _builder.append(_string_2);
-    _builder.append(".h\'};");
-    _builder.newLineIfNotEmpty();
-    _builder.append("def.SFunctionName= \'S_");
-    String _string_3 = param.getName().toString();
-    _builder.append(_string_3);
-    _builder.append("\';");
-    _builder.newLineIfNotEmpty();
-    _builder.append("legacy_code(\'sfcn_cmex_generate\' ,def)");
-    _builder.newLine();
-    _builder.append("legacy_code(\'compile\' ,def)");
-    _builder.newLine();
-    _builder.append("exit");
-    _builder.newLine();
-    return _builder;
-  }
-  
   public CharSequence create_oracle_h(final Oracle param) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("#ifndef ");
@@ -153,14 +80,13 @@ public class AdeptnessGenerator extends AbstractGenerator {
     _builder.append("_H");
     _builder.newLineIfNotEmpty();
     {
-      EList<Checks> _check = param.getCheck();
-      for(final Checks param1 : _check) {
+      if (((param.getWhen() != null) && (param.getWhile() != null))) {
         {
-          String _name = param1.getName();
+          String _name = param.getCheck().getName();
           boolean _tripleNotEquals = (_name != null);
           if (_tripleNotEquals) {
             {
-              Upper _upper = param1.getReference().getUpper();
+              Upper _upper = param.getCheck().getReference().getUpper();
               boolean _tripleNotEquals_1 = (_upper != null);
               if (_tripleNotEquals_1) {
                 _builder.append("struct Ret{");
@@ -173,15 +99,49 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.newLine();
                 _builder.append("};");
                 _builder.newLine();
-                _builder.append("struct Ret BelowReference (double ");
-                String _string = param1.getName().toString();
+                _builder.append("struct Ret ");
+                String _string = param.getName().toString();
                 _builder.append(_string);
-                _builder.append("[], double timeStamp[]);");
+                _builder.append(" (double ");
+                String _string_1 = param.getCheck().getName().toString();
+                _builder.append(_string_1);
+                _builder.append("[], ");
+                {
+                  EList<AbstractElement2> _elements = param.getWhen().getEm().getElements();
+                  for(final AbstractElement2 par1 : _elements) {
+                    {
+                      String _name_1 = par1.getName();
+                      boolean _tripleNotEquals_2 = (_name_1 != null);
+                      if (_tripleNotEquals_2) {
+                        _builder.append("double ");
+                        String _name_2 = par1.getName();
+                        _builder.append(_name_2);
+                        _builder.append("[],");
+                      }
+                    }
+                  }
+                }
+                {
+                  EList<AbstractElement2> _elements_1 = param.getWhile().getEm().getElements();
+                  for(final AbstractElement2 par2 : _elements_1) {
+                    {
+                      String _name_3 = par2.getName();
+                      boolean _tripleNotEquals_3 = (_name_3 != null);
+                      if (_tripleNotEquals_3) {
+                        _builder.append("double ");
+                        String _name_4 = par2.getName();
+                        _builder.append(_name_4);
+                        _builder.append("[],");
+                      }
+                    }
+                  }
+                }
+                _builder.append(" double timeStamp[]);");
                 _builder.newLineIfNotEmpty();
               } else {
-                Lower _lower = param1.getReference().getLower();
-                boolean _tripleNotEquals_2 = (_lower != null);
-                if (_tripleNotEquals_2) {
+                Lower _lower = param.getCheck().getReference().getLower();
+                boolean _tripleNotEquals_4 = (_lower != null);
+                if (_tripleNotEquals_4) {
                   _builder.append("struct Ret{");
                   _builder.newLine();
                   _builder.append("\t");
@@ -192,67 +152,277 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.newLine();
                   _builder.append("};");
                   _builder.newLine();
-                  _builder.append("struct Ret AboveReference (double ");
-                  String _string_1 = param1.getName().toString();
-                  _builder.append(_string_1);
-                  _builder.append("[], double timeStamp[]);");
+                  _builder.append("struct Ret ");
+                  String _string_2 = param.getName().toString();
+                  _builder.append(_string_2);
+                  _builder.append(" (double ");
+                  String _string_3 = param.getCheck().getName().toString();
+                  _builder.append(_string_3);
+                  _builder.append("[], ");
+                  {
+                    EList<AbstractElement2> _elements_2 = param.getWhen().getEm().getElements();
+                    for(final AbstractElement2 par1_1 : _elements_2) {
+                      {
+                        String _name_5 = par1_1.getName();
+                        boolean _tripleNotEquals_5 = (_name_5 != null);
+                        if (_tripleNotEquals_5) {
+                          _builder.append("double ");
+                          String _name_6 = par1_1.getName();
+                          _builder.append(_name_6);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  {
+                    EList<AbstractElement2> _elements_3 = param.getWhile().getEm().getElements();
+                    for(final AbstractElement2 par2_1 : _elements_3) {
+                      {
+                        String _name_7 = par2_1.getName();
+                        boolean _tripleNotEquals_6 = (_name_7 != null);
+                        if (_tripleNotEquals_6) {
+                          _builder.append("double ");
+                          String _name_8 = par2_1.getName();
+                          _builder.append(_name_8);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  _builder.append(" double timeStamp[]);");
                   _builder.newLineIfNotEmpty();
                 } else {
-                  Range _range = param1.getReference().getRange();
-                  boolean _tripleNotEquals_3 = (_range != null);
-                  if (_tripleNotEquals_3) {
+                  Same _same = param.getCheck().getReference().getSame();
+                  boolean _tripleNotEquals_7 = (_same != null);
+                  if (_tripleNotEquals_7) {
                     _builder.append("struct Ret{");
                     _builder.newLine();
                     _builder.append("\t");
                     _builder.append("int assert;");
                     _builder.newLine();
                     _builder.append("\t");
-                    _builder.append("double diff_up;");
-                    _builder.newLine();
-                    _builder.append("\t");
-                    _builder.append("double diff_down;");
+                    _builder.append("double diff;");
                     _builder.newLine();
                     _builder.append("};");
                     _builder.newLine();
-                    _builder.append("struct Ret RangeReference (double ");
-                    String _string_2 = param1.getName().toString();
-                    _builder.append(_string_2);
-                    _builder.append("[], double timeStamp[]);");
+                    _builder.append("struct Ret ");
+                    String _string_4 = param.getName().toString();
+                    _builder.append(_string_4);
+                    _builder.append(" (double ");
+                    String _string_5 = param.getCheck().getName().toString();
+                    _builder.append(_string_5);
+                    _builder.append("[], ");
+                    {
+                      EList<AbstractElement2> _elements_4 = param.getWhen().getEm().getElements();
+                      for(final AbstractElement2 par1_2 : _elements_4) {
+                        {
+                          String _name_9 = par1_2.getName();
+                          boolean _tripleNotEquals_8 = (_name_9 != null);
+                          if (_tripleNotEquals_8) {
+                            _builder.append("double ");
+                            String _name_10 = par1_2.getName();
+                            _builder.append(_name_10);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    {
+                      EList<AbstractElement2> _elements_5 = param.getWhile().getEm().getElements();
+                      for(final AbstractElement2 par2_2 : _elements_5) {
+                        {
+                          String _name_11 = par2_2.getName();
+                          boolean _tripleNotEquals_9 = (_name_11 != null);
+                          if (_tripleNotEquals_9) {
+                            _builder.append("double ");
+                            String _name_12 = par2_2.getName();
+                            _builder.append(_name_12);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" double timeStamp[]);");
                     _builder.newLineIfNotEmpty();
                   } else {
-                    Gap _gap = param1.getReference().getGap();
-                    boolean _tripleNotEquals_4 = (_gap != null);
-                    if (_tripleNotEquals_4) {
+                    NotSame _notsame = param.getCheck().getReference().getNotsame();
+                    boolean _tripleNotEquals_10 = (_notsame != null);
+                    if (_tripleNotEquals_10) {
                       _builder.append("struct Ret{");
                       _builder.newLine();
                       _builder.append("\t");
                       _builder.append("int assert;");
                       _builder.newLine();
                       _builder.append("\t");
-                      _builder.append("double diff_up;");
-                      _builder.newLine();
-                      _builder.append("\t");
-                      _builder.append("double diff_down;");
+                      _builder.append("double diff;");
                       _builder.newLine();
                       _builder.append("};");
                       _builder.newLine();
-                      _builder.append("struct Ret GapReference (double ");
-                      String _string_3 = param1.getName().toString();
-                      _builder.append(_string_3);
-                      _builder.append("[], double timeStamp[]);");
+                      _builder.append("struct Ret ");
+                      String _string_6 = param.getName().toString();
+                      _builder.append(_string_6);
+                      _builder.append(" (double ");
+                      String _string_7 = param.getCheck().getName().toString();
+                      _builder.append(_string_7);
+                      _builder.append("[], ");
+                      {
+                        EList<AbstractElement2> _elements_6 = param.getWhen().getEm().getElements();
+                        for(final AbstractElement2 par1_3 : _elements_6) {
+                          {
+                            String _name_13 = par1_3.getName();
+                            boolean _tripleNotEquals_11 = (_name_13 != null);
+                            if (_tripleNotEquals_11) {
+                              _builder.append("double ");
+                              String _name_14 = par1_3.getName();
+                              _builder.append(_name_14);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      {
+                        EList<AbstractElement2> _elements_7 = param.getWhile().getEm().getElements();
+                        for(final AbstractElement2 par2_3 : _elements_7) {
+                          {
+                            String _name_15 = par2_3.getName();
+                            boolean _tripleNotEquals_12 = (_name_15 != null);
+                            if (_tripleNotEquals_12) {
+                              _builder.append("double ");
+                              String _name_16 = par2_3.getName();
+                              _builder.append(_name_16);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" double timeStamp[]);");
                       _builder.newLineIfNotEmpty();
+                      _builder.append("\t\t\t");
+                      _builder.newLine();
+                    } else {
+                      Range _range = param.getCheck().getReference().getRange();
+                      boolean _tripleNotEquals_13 = (_range != null);
+                      if (_tripleNotEquals_13) {
+                        _builder.append("struct Ret{");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("int assert;");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("double diff_up;");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("double diff_down;");
+                        _builder.newLine();
+                        _builder.append("};");
+                        _builder.newLine();
+                        _builder.append("struct Ret ");
+                        String _string_8 = param.getName().toString();
+                        _builder.append(_string_8);
+                        _builder.append(" (double ");
+                        String _string_9 = param.getCheck().getName().toString();
+                        _builder.append(_string_9);
+                        _builder.append("[], ");
+                        {
+                          EList<AbstractElement2> _elements_8 = param.getWhen().getEm().getElements();
+                          for(final AbstractElement2 par1_4 : _elements_8) {
+                            {
+                              String _name_17 = par1_4.getName();
+                              boolean _tripleNotEquals_14 = (_name_17 != null);
+                              if (_tripleNotEquals_14) {
+                                _builder.append("double ");
+                                String _name_18 = par1_4.getName();
+                                _builder.append(_name_18);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        {
+                          EList<AbstractElement2> _elements_9 = param.getWhile().getEm().getElements();
+                          for(final AbstractElement2 par2_4 : _elements_9) {
+                            {
+                              String _name_19 = par2_4.getName();
+                              boolean _tripleNotEquals_15 = (_name_19 != null);
+                              if (_tripleNotEquals_15) {
+                                _builder.append("double ");
+                                String _name_20 = par2_4.getName();
+                                _builder.append(_name_20);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" double timeStamp[]);");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        Gap _gap = param.getCheck().getReference().getGap();
+                        boolean _tripleNotEquals_16 = (_gap != null);
+                        if (_tripleNotEquals_16) {
+                          _builder.append("struct Ret{");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("int assert;");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("double diff_up;");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("double diff_down;");
+                          _builder.newLine();
+                          _builder.append("};");
+                          _builder.newLine();
+                          _builder.append("struct Ret ");
+                          String _string_10 = param.getName().toString();
+                          _builder.append(_string_10);
+                          _builder.append(" (double ");
+                          String _string_11 = param.getCheck().getName().toString();
+                          _builder.append(_string_11);
+                          _builder.append("[], ");
+                          {
+                            EList<AbstractElement2> _elements_10 = param.getWhen().getEm().getElements();
+                            for(final AbstractElement2 par1_5 : _elements_10) {
+                              {
+                                String _name_21 = par1_5.getName();
+                                boolean _tripleNotEquals_17 = (_name_21 != null);
+                                if (_tripleNotEquals_17) {
+                                  _builder.append("double ");
+                                  String _name_22 = par1_5.getName();
+                                  _builder.append(_name_22);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          {
+                            EList<AbstractElement2> _elements_11 = param.getWhile().getEm().getElements();
+                            for(final AbstractElement2 par2_5 : _elements_11) {
+                              {
+                                String _name_23 = par2_5.getName();
+                                boolean _tripleNotEquals_18 = (_name_23 != null);
+                                if (_tripleNotEquals_18) {
+                                  _builder.append("double ");
+                                  String _name_24 = par2_5.getName();
+                                  _builder.append(_name_24);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" double timeStamp[]);");
+                          _builder.newLineIfNotEmpty();
+                        }
+                      }
                     }
                   }
                 }
               }
             }
           } else {
-            int cont = 0;
-            _builder.newLineIfNotEmpty();
             {
-              Upper _upper_1 = param1.getReference().getUpper();
-              boolean _tripleNotEquals_5 = (_upper_1 != null);
-              if (_tripleNotEquals_5) {
+              Upper _upper_1 = param.getCheck().getReference().getUpper();
+              boolean _tripleNotEquals_19 = (_upper_1 != null);
+              if (_tripleNotEquals_19) {
                 _builder.append("struct Ret{");
                 _builder.newLine();
                 _builder.append("\t");
@@ -263,18 +433,52 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.newLine();
                 _builder.append("};");
                 _builder.newLine();
-                _builder.append("struct Ret BelowReference (");
+                _builder.append("struct Ret ");
+                String _string_12 = param.getName().toString();
+                _builder.append(_string_12);
+                _builder.append(" (");
                 {
-                  EList<AbstractElement2> _elements = param1.getEm().getElements();
-                  for(final AbstractElement2 name : _elements) {
+                  EList<AbstractElement2> _elements_12 = param.getCheck().getEm().getElements();
+                  for(final AbstractElement2 par3 : _elements_12) {
                     {
-                      String _name_1 = name.getName();
-                      boolean _tripleNotEquals_6 = (_name_1 != null);
-                      if (_tripleNotEquals_6) {
+                      String _name_25 = par3.getName();
+                      boolean _tripleNotEquals_20 = (_name_25 != null);
+                      if (_tripleNotEquals_20) {
                         _builder.append("double ");
-                        String _string_4 = name.getName().toString();
-                        _builder.append(_string_4);
-                        _builder.append("[] , ");
+                        String _name_26 = par3.getName();
+                        _builder.append(_name_26);
+                        _builder.append("[],");
+                      }
+                    }
+                  }
+                }
+                _builder.append(" ");
+                {
+                  EList<AbstractElement2> _elements_13 = param.getWhen().getEm().getElements();
+                  for(final AbstractElement2 par1_6 : _elements_13) {
+                    {
+                      String _name_27 = par1_6.getName();
+                      boolean _tripleNotEquals_21 = (_name_27 != null);
+                      if (_tripleNotEquals_21) {
+                        _builder.append("double ");
+                        String _name_28 = par1_6.getName();
+                        _builder.append(_name_28);
+                        _builder.append("[],");
+                      }
+                    }
+                  }
+                }
+                {
+                  EList<AbstractElement2> _elements_14 = param.getWhile().getEm().getElements();
+                  for(final AbstractElement2 par2_6 : _elements_14) {
+                    {
+                      String _name_29 = par2_6.getName();
+                      boolean _tripleNotEquals_22 = (_name_29 != null);
+                      if (_tripleNotEquals_22) {
+                        _builder.append("double ");
+                        String _name_30 = par2_6.getName();
+                        _builder.append(_name_30);
+                        _builder.append("[],");
                       }
                     }
                   }
@@ -282,9 +486,9 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.append(" double timeStamp[]);");
                 _builder.newLineIfNotEmpty();
               } else {
-                Lower _lower_1 = param1.getReference().getLower();
-                boolean _tripleNotEquals_7 = (_lower_1 != null);
-                if (_tripleNotEquals_7) {
+                Lower _lower_1 = param.getCheck().getReference().getLower();
+                boolean _tripleNotEquals_23 = (_lower_1 != null);
+                if (_tripleNotEquals_23) {
                   _builder.append("struct Ret{");
                   _builder.newLine();
                   _builder.append("\t");
@@ -295,18 +499,52 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.newLine();
                   _builder.append("};");
                   _builder.newLine();
-                  _builder.append("struct Ret AboveReference (");
+                  _builder.append("struct Ret ");
+                  String _string_13 = param.getName().toString();
+                  _builder.append(_string_13);
+                  _builder.append(" (");
                   {
-                    EList<AbstractElement2> _elements_1 = param1.getEm().getElements();
-                    for(final AbstractElement2 name_1 : _elements_1) {
+                    EList<AbstractElement2> _elements_15 = param.getCheck().getEm().getElements();
+                    for(final AbstractElement2 par3_1 : _elements_15) {
                       {
-                        String _name_2 = name_1.getName();
-                        boolean _tripleNotEquals_8 = (_name_2 != null);
-                        if (_tripleNotEquals_8) {
+                        String _name_31 = par3_1.getName();
+                        boolean _tripleNotEquals_24 = (_name_31 != null);
+                        if (_tripleNotEquals_24) {
                           _builder.append("double ");
-                          String _string_5 = name_1.getName().toString();
-                          _builder.append(_string_5);
-                          _builder.append("[] , ");
+                          String _name_32 = par3_1.getName();
+                          _builder.append(_name_32);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  _builder.append(" ");
+                  {
+                    EList<AbstractElement2> _elements_16 = param.getWhen().getEm().getElements();
+                    for(final AbstractElement2 par1_7 : _elements_16) {
+                      {
+                        String _name_33 = par1_7.getName();
+                        boolean _tripleNotEquals_25 = (_name_33 != null);
+                        if (_tripleNotEquals_25) {
+                          _builder.append("double ");
+                          String _name_34 = par1_7.getName();
+                          _builder.append(_name_34);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  {
+                    EList<AbstractElement2> _elements_17 = param.getWhile().getEm().getElements();
+                    for(final AbstractElement2 par2_7 : _elements_17) {
+                      {
+                        String _name_35 = par2_7.getName();
+                        boolean _tripleNotEquals_26 = (_name_35 != null);
+                        if (_tripleNotEquals_26) {
+                          _builder.append("double ");
+                          String _name_36 = par2_7.getName();
+                          _builder.append(_name_36);
+                          _builder.append("[],");
                         }
                       }
                     }
@@ -314,34 +552,65 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.append(" double timeStamp[]);");
                   _builder.newLineIfNotEmpty();
                 } else {
-                  Range _range_1 = param1.getReference().getRange();
-                  boolean _tripleNotEquals_9 = (_range_1 != null);
-                  if (_tripleNotEquals_9) {
+                  Same _same_1 = param.getCheck().getReference().getSame();
+                  boolean _tripleNotEquals_27 = (_same_1 != null);
+                  if (_tripleNotEquals_27) {
                     _builder.append("struct Ret{");
                     _builder.newLine();
                     _builder.append("\t");
                     _builder.append("int assert;");
                     _builder.newLine();
                     _builder.append("\t");
-                    _builder.append("double diff_up;");
-                    _builder.newLine();
-                    _builder.append("\t");
-                    _builder.append("double diff_down;");
+                    _builder.append("double diff;");
                     _builder.newLine();
                     _builder.append("};");
                     _builder.newLine();
-                    _builder.append("struct Ret RangeReference (");
+                    _builder.append("struct Ret ");
+                    String _string_14 = param.getName().toString();
+                    _builder.append(_string_14);
+                    _builder.append(" (");
                     {
-                      EList<AbstractElement2> _elements_2 = param1.getEm().getElements();
-                      for(final AbstractElement2 name_2 : _elements_2) {
+                      EList<AbstractElement2> _elements_18 = param.getCheck().getEm().getElements();
+                      for(final AbstractElement2 par3_2 : _elements_18) {
                         {
-                          String _name_3 = name_2.getName();
-                          boolean _tripleNotEquals_10 = (_name_3 != null);
-                          if (_tripleNotEquals_10) {
+                          String _name_37 = par3_2.getName();
+                          boolean _tripleNotEquals_28 = (_name_37 != null);
+                          if (_tripleNotEquals_28) {
                             _builder.append("double ");
-                            String _string_6 = name_2.getName().toString();
-                            _builder.append(_string_6);
-                            _builder.append("[] , ");
+                            String _name_38 = par3_2.getName();
+                            _builder.append(_name_38);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" ");
+                    {
+                      EList<AbstractElement2> _elements_19 = param.getWhen().getEm().getElements();
+                      for(final AbstractElement2 par1_8 : _elements_19) {
+                        {
+                          String _name_39 = par1_8.getName();
+                          boolean _tripleNotEquals_29 = (_name_39 != null);
+                          if (_tripleNotEquals_29) {
+                            _builder.append("double ");
+                            String _name_40 = par1_8.getName();
+                            _builder.append(_name_40);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    {
+                      EList<AbstractElement2> _elements_20 = param.getWhile().getEm().getElements();
+                      for(final AbstractElement2 par2_8 : _elements_20) {
+                        {
+                          String _name_41 = par2_8.getName();
+                          boolean _tripleNotEquals_30 = (_name_41 != null);
+                          if (_tripleNotEquals_30) {
+                            _builder.append("double ");
+                            String _name_42 = par2_8.getName();
+                            _builder.append(_name_42);
+                            _builder.append("[],");
                           }
                         }
                       }
@@ -349,40 +618,1731 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.append(" double timeStamp[]);");
                     _builder.newLineIfNotEmpty();
                   } else {
-                    Gap _gap_1 = param1.getReference().getGap();
-                    boolean _tripleNotEquals_11 = (_gap_1 != null);
-                    if (_tripleNotEquals_11) {
+                    NotSame _notsame_1 = param.getCheck().getReference().getNotsame();
+                    boolean _tripleNotEquals_31 = (_notsame_1 != null);
+                    if (_tripleNotEquals_31) {
                       _builder.append("struct Ret{");
                       _builder.newLine();
                       _builder.append("\t");
                       _builder.append("int assert;");
                       _builder.newLine();
                       _builder.append("\t");
-                      _builder.append("double diff_up;");
-                      _builder.newLine();
-                      _builder.append("\t");
-                      _builder.append("double diff_down;");
+                      _builder.append("double diff;");
                       _builder.newLine();
                       _builder.append("};");
                       _builder.newLine();
-                      _builder.append("struct Ret GapReference (");
+                      _builder.append("struct Ret ");
+                      String _string_15 = param.getName().toString();
+                      _builder.append(_string_15);
+                      _builder.append(" (");
                       {
-                        EList<AbstractElement2> _elements_3 = param1.getEm().getElements();
-                        for(final AbstractElement2 name_3 : _elements_3) {
+                        EList<AbstractElement2> _elements_21 = param.getCheck().getEm().getElements();
+                        for(final AbstractElement2 par3_3 : _elements_21) {
                           {
-                            String _name_4 = name_3.getName();
-                            boolean _tripleNotEquals_12 = (_name_4 != null);
-                            if (_tripleNotEquals_12) {
+                            String _name_43 = par3_3.getName();
+                            boolean _tripleNotEquals_32 = (_name_43 != null);
+                            if (_tripleNotEquals_32) {
                               _builder.append("double ");
-                              String _string_7 = name_3.getName().toString();
-                              _builder.append(_string_7);
-                              _builder.append("[] , ");
+                              String _name_44 = par3_3.getName();
+                              _builder.append(_name_44);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" ");
+                      {
+                        EList<AbstractElement2> _elements_22 = param.getWhen().getEm().getElements();
+                        for(final AbstractElement2 par1_9 : _elements_22) {
+                          {
+                            String _name_45 = par1_9.getName();
+                            boolean _tripleNotEquals_33 = (_name_45 != null);
+                            if (_tripleNotEquals_33) {
+                              _builder.append("double ");
+                              String _name_46 = par1_9.getName();
+                              _builder.append(_name_46);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      {
+                        EList<AbstractElement2> _elements_23 = param.getWhile().getEm().getElements();
+                        for(final AbstractElement2 par2_9 : _elements_23) {
+                          {
+                            String _name_47 = par2_9.getName();
+                            boolean _tripleNotEquals_34 = (_name_47 != null);
+                            if (_tripleNotEquals_34) {
+                              _builder.append("double ");
+                              String _name_48 = par2_9.getName();
+                              _builder.append(_name_48);
+                              _builder.append("[],");
                             }
                           }
                         }
                       }
                       _builder.append(" double timeStamp[]);");
                       _builder.newLineIfNotEmpty();
+                      _builder.append("\t\t\t");
+                      _builder.newLine();
+                    } else {
+                      Range _range_1 = param.getCheck().getReference().getRange();
+                      boolean _tripleNotEquals_35 = (_range_1 != null);
+                      if (_tripleNotEquals_35) {
+                        _builder.append("struct Ret{");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("int assert;");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("double diff_up;");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("double diff_down;");
+                        _builder.newLine();
+                        _builder.append("};");
+                        _builder.newLine();
+                        _builder.append("struct Ret ");
+                        String _string_16 = param.getName().toString();
+                        _builder.append(_string_16);
+                        _builder.append(" (");
+                        {
+                          EList<AbstractElement2> _elements_24 = param.getCheck().getEm().getElements();
+                          for(final AbstractElement2 par3_4 : _elements_24) {
+                            {
+                              String _name_49 = par3_4.getName();
+                              boolean _tripleNotEquals_36 = (_name_49 != null);
+                              if (_tripleNotEquals_36) {
+                                _builder.append("double ");
+                                String _name_50 = par3_4.getName();
+                                _builder.append(_name_50);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" ");
+                        {
+                          EList<AbstractElement2> _elements_25 = param.getWhen().getEm().getElements();
+                          for(final AbstractElement2 par1_10 : _elements_25) {
+                            {
+                              String _name_51 = par1_10.getName();
+                              boolean _tripleNotEquals_37 = (_name_51 != null);
+                              if (_tripleNotEquals_37) {
+                                _builder.append("double ");
+                                String _name_52 = par1_10.getName();
+                                _builder.append(_name_52);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        {
+                          EList<AbstractElement2> _elements_26 = param.getWhile().getEm().getElements();
+                          for(final AbstractElement2 par2_10 : _elements_26) {
+                            {
+                              String _name_53 = par2_10.getName();
+                              boolean _tripleNotEquals_38 = (_name_53 != null);
+                              if (_tripleNotEquals_38) {
+                                _builder.append("double ");
+                                String _name_54 = par2_10.getName();
+                                _builder.append(_name_54);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" double timeStamp[]);");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        Gap _gap_1 = param.getCheck().getReference().getGap();
+                        boolean _tripleNotEquals_39 = (_gap_1 != null);
+                        if (_tripleNotEquals_39) {
+                          _builder.append("struct Ret{");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("int assert;");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("double diff_up;");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("double diff_down;");
+                          _builder.newLine();
+                          _builder.append("};");
+                          _builder.newLine();
+                          _builder.append("struct Ret ");
+                          String _string_17 = param.getName().toString();
+                          _builder.append(_string_17);
+                          _builder.append(" (");
+                          {
+                            EList<AbstractElement2> _elements_27 = param.getCheck().getEm().getElements();
+                            for(final AbstractElement2 par3_5 : _elements_27) {
+                              {
+                                String _name_55 = par3_5.getName();
+                                boolean _tripleNotEquals_40 = (_name_55 != null);
+                                if (_tripleNotEquals_40) {
+                                  _builder.append("double ");
+                                  String _name_56 = par3_5.getName();
+                                  _builder.append(_name_56);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" ");
+                          {
+                            EList<AbstractElement2> _elements_28 = param.getWhen().getEm().getElements();
+                            for(final AbstractElement2 par1_11 : _elements_28) {
+                              {
+                                String _name_57 = par1_11.getName();
+                                boolean _tripleNotEquals_41 = (_name_57 != null);
+                                if (_tripleNotEquals_41) {
+                                  _builder.append("double ");
+                                  String _name_58 = par1_11.getName();
+                                  _builder.append(_name_58);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          {
+                            EList<AbstractElement2> _elements_29 = param.getWhile().getEm().getElements();
+                            for(final AbstractElement2 par2_11 : _elements_29) {
+                              {
+                                String _name_59 = par2_11.getName();
+                                boolean _tripleNotEquals_42 = (_name_59 != null);
+                                if (_tripleNotEquals_42) {
+                                  _builder.append("double ");
+                                  String _name_60 = par2_11.getName();
+                                  _builder.append(_name_60);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" double timeStamp[]);");
+                          _builder.newLineIfNotEmpty();
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      } else {
+        if (((param.getWhen() == null) && (param.getWhile() != null))) {
+          {
+            String _name_61 = param.getCheck().getName();
+            boolean _tripleNotEquals_43 = (_name_61 != null);
+            if (_tripleNotEquals_43) {
+              {
+                Upper _upper_2 = param.getCheck().getReference().getUpper();
+                boolean _tripleNotEquals_44 = (_upper_2 != null);
+                if (_tripleNotEquals_44) {
+                  _builder.append("struct Ret{");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("int assert;");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("double diff;");
+                  _builder.newLine();
+                  _builder.append("};");
+                  _builder.newLine();
+                  _builder.append("struct Ret ");
+                  String _string_18 = param.getName().toString();
+                  _builder.append(_string_18);
+                  _builder.append(" (double ");
+                  String _string_19 = param.getCheck().getName().toString();
+                  _builder.append(_string_19);
+                  _builder.append("[], ");
+                  {
+                    EList<AbstractElement2> _elements_30 = param.getWhile().getEm().getElements();
+                    for(final AbstractElement2 par2_12 : _elements_30) {
+                      {
+                        String _name_62 = par2_12.getName();
+                        boolean _tripleNotEquals_45 = (_name_62 != null);
+                        if (_tripleNotEquals_45) {
+                          _builder.append("double ");
+                          String _name_63 = par2_12.getName();
+                          _builder.append(_name_63);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  _builder.append(" double timeStamp[]);");
+                  _builder.newLineIfNotEmpty();
+                } else {
+                  Lower _lower_2 = param.getCheck().getReference().getLower();
+                  boolean _tripleNotEquals_46 = (_lower_2 != null);
+                  if (_tripleNotEquals_46) {
+                    _builder.append("struct Ret{");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("int assert;");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("double diff;");
+                    _builder.newLine();
+                    _builder.append("};");
+                    _builder.newLine();
+                    _builder.append("struct Ret ");
+                    String _string_20 = param.getName().toString();
+                    _builder.append(_string_20);
+                    _builder.append(" (double ");
+                    String _string_21 = param.getCheck().getName().toString();
+                    _builder.append(_string_21);
+                    _builder.append("[], ");
+                    {
+                      EList<AbstractElement2> _elements_31 = param.getWhile().getEm().getElements();
+                      for(final AbstractElement2 par2_13 : _elements_31) {
+                        {
+                          String _name_64 = par2_13.getName();
+                          boolean _tripleNotEquals_47 = (_name_64 != null);
+                          if (_tripleNotEquals_47) {
+                            _builder.append("double ");
+                            String _name_65 = par2_13.getName();
+                            _builder.append(_name_65);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" double timeStamp[]);");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Same _same_2 = param.getCheck().getReference().getSame();
+                    boolean _tripleNotEquals_48 = (_same_2 != null);
+                    if (_tripleNotEquals_48) {
+                      _builder.append("struct Ret{");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("int assert;");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("double diff;");
+                      _builder.newLine();
+                      _builder.append("};");
+                      _builder.newLine();
+                      _builder.append("struct Ret ");
+                      String _string_22 = param.getName().toString();
+                      _builder.append(_string_22);
+                      _builder.append(" (double ");
+                      String _string_23 = param.getCheck().getName().toString();
+                      _builder.append(_string_23);
+                      _builder.append("[], ");
+                      {
+                        EList<AbstractElement2> _elements_32 = param.getWhile().getEm().getElements();
+                        for(final AbstractElement2 par2_14 : _elements_32) {
+                          {
+                            String _name_66 = par2_14.getName();
+                            boolean _tripleNotEquals_49 = (_name_66 != null);
+                            if (_tripleNotEquals_49) {
+                              _builder.append("double ");
+                              String _name_67 = par2_14.getName();
+                              _builder.append(_name_67);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" double timeStamp[]);");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      NotSame _notsame_2 = param.getCheck().getReference().getNotsame();
+                      boolean _tripleNotEquals_50 = (_notsame_2 != null);
+                      if (_tripleNotEquals_50) {
+                        _builder.append("struct Ret{");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("int assert;");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("double diff;");
+                        _builder.newLine();
+                        _builder.append("};");
+                        _builder.newLine();
+                        _builder.append("struct Ret ");
+                        String _string_24 = param.getName().toString();
+                        _builder.append(_string_24);
+                        _builder.append(" (double ");
+                        String _string_25 = param.getCheck().getName().toString();
+                        _builder.append(_string_25);
+                        _builder.append("[], ");
+                        {
+                          EList<AbstractElement2> _elements_33 = param.getWhile().getEm().getElements();
+                          for(final AbstractElement2 par2_15 : _elements_33) {
+                            {
+                              String _name_68 = par2_15.getName();
+                              boolean _tripleNotEquals_51 = (_name_68 != null);
+                              if (_tripleNotEquals_51) {
+                                _builder.append("double ");
+                                String _name_69 = par2_15.getName();
+                                _builder.append(_name_69);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" double timeStamp[]);");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        Range _range_2 = param.getCheck().getReference().getRange();
+                        boolean _tripleNotEquals_52 = (_range_2 != null);
+                        if (_tripleNotEquals_52) {
+                          _builder.append("struct Ret{");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("int assert;");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("double diff_up;");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("double diff_down;");
+                          _builder.newLine();
+                          _builder.append("};");
+                          _builder.newLine();
+                          _builder.append("struct Ret ");
+                          String _string_26 = param.getName().toString();
+                          _builder.append(_string_26);
+                          _builder.append(" (double ");
+                          String _string_27 = param.getCheck().getName().toString();
+                          _builder.append(_string_27);
+                          _builder.append("[], ");
+                          {
+                            EList<AbstractElement2> _elements_34 = param.getWhile().getEm().getElements();
+                            for(final AbstractElement2 par2_16 : _elements_34) {
+                              {
+                                String _name_70 = par2_16.getName();
+                                boolean _tripleNotEquals_53 = (_name_70 != null);
+                                if (_tripleNotEquals_53) {
+                                  _builder.append("double ");
+                                  String _name_71 = par2_16.getName();
+                                  _builder.append(_name_71);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" double timeStamp[]);");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          Gap _gap_2 = param.getCheck().getReference().getGap();
+                          boolean _tripleNotEquals_54 = (_gap_2 != null);
+                          if (_tripleNotEquals_54) {
+                            _builder.append("struct Ret{");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("int assert;");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("double diff_up;");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("double diff_down;");
+                            _builder.newLine();
+                            _builder.append("};");
+                            _builder.newLine();
+                            _builder.append("struct Ret ");
+                            String _string_28 = param.getName().toString();
+                            _builder.append(_string_28);
+                            _builder.append(" (double ");
+                            String _string_29 = param.getCheck().getName().toString();
+                            _builder.append(_string_29);
+                            _builder.append("[], ");
+                            {
+                              EList<AbstractElement2> _elements_35 = param.getWhile().getEm().getElements();
+                              for(final AbstractElement2 par2_17 : _elements_35) {
+                                {
+                                  String _name_72 = par2_17.getName();
+                                  boolean _tripleNotEquals_55 = (_name_72 != null);
+                                  if (_tripleNotEquals_55) {
+                                    _builder.append("double ");
+                                    String _name_73 = par2_17.getName();
+                                    _builder.append(_name_73);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" double timeStamp[]);");
+                            _builder.newLineIfNotEmpty();
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            } else {
+              {
+                Upper _upper_3 = param.getCheck().getReference().getUpper();
+                boolean _tripleNotEquals_56 = (_upper_3 != null);
+                if (_tripleNotEquals_56) {
+                  _builder.append("struct Ret{");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("int assert;");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("double diff;");
+                  _builder.newLine();
+                  _builder.append("};");
+                  _builder.newLine();
+                  _builder.append("struct Ret ");
+                  String _string_30 = param.getName().toString();
+                  _builder.append(_string_30);
+                  _builder.append(" (");
+                  {
+                    EList<AbstractElement2> _elements_36 = param.getCheck().getEm().getElements();
+                    for(final AbstractElement2 par3_6 : _elements_36) {
+                      {
+                        String _name_74 = par3_6.getName();
+                        boolean _tripleNotEquals_57 = (_name_74 != null);
+                        if (_tripleNotEquals_57) {
+                          _builder.append("double ");
+                          String _name_75 = par3_6.getName();
+                          _builder.append(_name_75);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  _builder.append(" ");
+                  {
+                    EList<AbstractElement2> _elements_37 = param.getWhile().getEm().getElements();
+                    for(final AbstractElement2 par2_18 : _elements_37) {
+                      {
+                        String _name_76 = par2_18.getName();
+                        boolean _tripleNotEquals_58 = (_name_76 != null);
+                        if (_tripleNotEquals_58) {
+                          _builder.append("double ");
+                          String _name_77 = par2_18.getName();
+                          _builder.append(_name_77);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  _builder.append(" double timeStamp[]);");
+                  _builder.newLineIfNotEmpty();
+                } else {
+                  Lower _lower_3 = param.getCheck().getReference().getLower();
+                  boolean _tripleNotEquals_59 = (_lower_3 != null);
+                  if (_tripleNotEquals_59) {
+                    _builder.append("struct Ret{");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("int assert;");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("double diff;");
+                    _builder.newLine();
+                    _builder.append("};");
+                    _builder.newLine();
+                    _builder.append("struct Ret ");
+                    String _string_31 = param.getName().toString();
+                    _builder.append(_string_31);
+                    _builder.append(" (");
+                    {
+                      EList<AbstractElement2> _elements_38 = param.getCheck().getEm().getElements();
+                      for(final AbstractElement2 par3_7 : _elements_38) {
+                        {
+                          String _name_78 = par3_7.getName();
+                          boolean _tripleNotEquals_60 = (_name_78 != null);
+                          if (_tripleNotEquals_60) {
+                            _builder.append("double ");
+                            String _name_79 = par3_7.getName();
+                            _builder.append(_name_79);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" ");
+                    {
+                      EList<AbstractElement2> _elements_39 = param.getWhile().getEm().getElements();
+                      for(final AbstractElement2 par2_19 : _elements_39) {
+                        {
+                          String _name_80 = par2_19.getName();
+                          boolean _tripleNotEquals_61 = (_name_80 != null);
+                          if (_tripleNotEquals_61) {
+                            _builder.append("double ");
+                            String _name_81 = par2_19.getName();
+                            _builder.append(_name_81);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" double timeStamp[]);");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Same _same_3 = param.getCheck().getReference().getSame();
+                    boolean _tripleNotEquals_62 = (_same_3 != null);
+                    if (_tripleNotEquals_62) {
+                      _builder.append("struct Ret{");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("int assert;");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("double diff;");
+                      _builder.newLine();
+                      _builder.append("};");
+                      _builder.newLine();
+                      _builder.append("struct Ret ");
+                      String _string_32 = param.getName().toString();
+                      _builder.append(_string_32);
+                      _builder.append(" (");
+                      {
+                        EList<AbstractElement2> _elements_40 = param.getCheck().getEm().getElements();
+                        for(final AbstractElement2 par3_8 : _elements_40) {
+                          {
+                            String _name_82 = par3_8.getName();
+                            boolean _tripleNotEquals_63 = (_name_82 != null);
+                            if (_tripleNotEquals_63) {
+                              _builder.append("double ");
+                              String _name_83 = par3_8.getName();
+                              _builder.append(_name_83);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" ");
+                      {
+                        EList<AbstractElement2> _elements_41 = param.getWhile().getEm().getElements();
+                        for(final AbstractElement2 par2_20 : _elements_41) {
+                          {
+                            String _name_84 = par2_20.getName();
+                            boolean _tripleNotEquals_64 = (_name_84 != null);
+                            if (_tripleNotEquals_64) {
+                              _builder.append("double ");
+                              String _name_85 = par2_20.getName();
+                              _builder.append(_name_85);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" double timeStamp[]);");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      NotSame _notsame_3 = param.getCheck().getReference().getNotsame();
+                      boolean _tripleNotEquals_65 = (_notsame_3 != null);
+                      if (_tripleNotEquals_65) {
+                        _builder.append("struct Ret{");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("int assert;");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("double diff;");
+                        _builder.newLine();
+                        _builder.append("};");
+                        _builder.newLine();
+                        _builder.append("struct Ret ");
+                        String _string_33 = param.getName().toString();
+                        _builder.append(_string_33);
+                        _builder.append(" (");
+                        {
+                          EList<AbstractElement2> _elements_42 = param.getCheck().getEm().getElements();
+                          for(final AbstractElement2 par3_9 : _elements_42) {
+                            {
+                              String _name_86 = par3_9.getName();
+                              boolean _tripleNotEquals_66 = (_name_86 != null);
+                              if (_tripleNotEquals_66) {
+                                _builder.append("double ");
+                                String _name_87 = par3_9.getName();
+                                _builder.append(_name_87);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" ");
+                        {
+                          EList<AbstractElement2> _elements_43 = param.getWhile().getEm().getElements();
+                          for(final AbstractElement2 par2_21 : _elements_43) {
+                            {
+                              String _name_88 = par2_21.getName();
+                              boolean _tripleNotEquals_67 = (_name_88 != null);
+                              if (_tripleNotEquals_67) {
+                                _builder.append("double ");
+                                String _name_89 = par2_21.getName();
+                                _builder.append(_name_89);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" double timeStamp[]);");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        Range _range_3 = param.getCheck().getReference().getRange();
+                        boolean _tripleNotEquals_68 = (_range_3 != null);
+                        if (_tripleNotEquals_68) {
+                          _builder.append("struct Ret{");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("int assert;");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("double diff_up;");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("double diff_down;");
+                          _builder.newLine();
+                          _builder.append("};");
+                          _builder.newLine();
+                          _builder.append("struct Ret ");
+                          String _string_34 = param.getName().toString();
+                          _builder.append(_string_34);
+                          _builder.append(" (");
+                          {
+                            EList<AbstractElement2> _elements_44 = param.getCheck().getEm().getElements();
+                            for(final AbstractElement2 par3_10 : _elements_44) {
+                              {
+                                String _name_90 = par3_10.getName();
+                                boolean _tripleNotEquals_69 = (_name_90 != null);
+                                if (_tripleNotEquals_69) {
+                                  _builder.append("double ");
+                                  String _name_91 = par3_10.getName();
+                                  _builder.append(_name_91);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" ");
+                          {
+                            EList<AbstractElement2> _elements_45 = param.getWhile().getEm().getElements();
+                            for(final AbstractElement2 par2_22 : _elements_45) {
+                              {
+                                String _name_92 = par2_22.getName();
+                                boolean _tripleNotEquals_70 = (_name_92 != null);
+                                if (_tripleNotEquals_70) {
+                                  _builder.append("double ");
+                                  String _name_93 = par2_22.getName();
+                                  _builder.append(_name_93);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" double timeStamp[]);");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          Gap _gap_3 = param.getCheck().getReference().getGap();
+                          boolean _tripleNotEquals_71 = (_gap_3 != null);
+                          if (_tripleNotEquals_71) {
+                            _builder.append("struct Ret{");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("int assert;");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("double diff_up;");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("double diff_down;");
+                            _builder.newLine();
+                            _builder.append("};");
+                            _builder.newLine();
+                            _builder.append("struct Ret ");
+                            String _string_35 = param.getName().toString();
+                            _builder.append(_string_35);
+                            _builder.append(" (");
+                            {
+                              EList<AbstractElement2> _elements_46 = param.getCheck().getEm().getElements();
+                              for(final AbstractElement2 par3_11 : _elements_46) {
+                                {
+                                  String _name_94 = par3_11.getName();
+                                  boolean _tripleNotEquals_72 = (_name_94 != null);
+                                  if (_tripleNotEquals_72) {
+                                    _builder.append("double ");
+                                    String _name_95 = par3_11.getName();
+                                    _builder.append(_name_95);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" ");
+                            {
+                              EList<AbstractElement2> _elements_47 = param.getWhile().getEm().getElements();
+                              for(final AbstractElement2 par2_23 : _elements_47) {
+                                {
+                                  String _name_96 = par2_23.getName();
+                                  boolean _tripleNotEquals_73 = (_name_96 != null);
+                                  if (_tripleNotEquals_73) {
+                                    _builder.append("double ");
+                                    String _name_97 = par2_23.getName();
+                                    _builder.append(_name_97);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" double timeStamp[]);");
+                            _builder.newLineIfNotEmpty();
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        } else {
+          if (((param.getWhen() != null) && (param.getWhile() == null))) {
+            {
+              String _name_98 = param.getCheck().getName();
+              boolean _tripleNotEquals_74 = (_name_98 != null);
+              if (_tripleNotEquals_74) {
+                {
+                  Upper _upper_4 = param.getCheck().getReference().getUpper();
+                  boolean _tripleNotEquals_75 = (_upper_4 != null);
+                  if (_tripleNotEquals_75) {
+                    _builder.append("struct Ret{");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("int assert;");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("double diff;");
+                    _builder.newLine();
+                    _builder.append("};");
+                    _builder.newLine();
+                    _builder.append("struct Ret ");
+                    String _string_36 = param.getName().toString();
+                    _builder.append(_string_36);
+                    _builder.append(" (double ");
+                    String _string_37 = param.getCheck().getName().toString();
+                    _builder.append(_string_37);
+                    _builder.append("[], ");
+                    {
+                      EList<AbstractElement2> _elements_48 = param.getWhen().getEm().getElements();
+                      for(final AbstractElement2 par1_12 : _elements_48) {
+                        {
+                          String _name_99 = par1_12.getName();
+                          boolean _tripleNotEquals_76 = (_name_99 != null);
+                          if (_tripleNotEquals_76) {
+                            _builder.append("double ");
+                            String _name_100 = par1_12.getName();
+                            _builder.append(_name_100);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" double timeStamp[]);");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Lower _lower_4 = param.getCheck().getReference().getLower();
+                    boolean _tripleNotEquals_77 = (_lower_4 != null);
+                    if (_tripleNotEquals_77) {
+                      _builder.append("struct Ret{");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("int assert;");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("double diff;");
+                      _builder.newLine();
+                      _builder.append("};");
+                      _builder.newLine();
+                      _builder.append("struct Ret ");
+                      String _string_38 = param.getName().toString();
+                      _builder.append(_string_38);
+                      _builder.append(" (double ");
+                      String _string_39 = param.getCheck().getName().toString();
+                      _builder.append(_string_39);
+                      _builder.append("[], ");
+                      {
+                        EList<AbstractElement2> _elements_49 = param.getWhen().getEm().getElements();
+                        for(final AbstractElement2 par1_13 : _elements_49) {
+                          {
+                            String _name_101 = par1_13.getName();
+                            boolean _tripleNotEquals_78 = (_name_101 != null);
+                            if (_tripleNotEquals_78) {
+                              _builder.append("double ");
+                              String _name_102 = par1_13.getName();
+                              _builder.append(_name_102);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" double timeStamp[]);");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      Same _same_4 = param.getCheck().getReference().getSame();
+                      boolean _tripleNotEquals_79 = (_same_4 != null);
+                      if (_tripleNotEquals_79) {
+                        _builder.append("struct Ret{");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("int assert;");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("double diff;");
+                        _builder.newLine();
+                        _builder.append("};");
+                        _builder.newLine();
+                        _builder.append("struct Ret ");
+                        String _string_40 = param.getName().toString();
+                        _builder.append(_string_40);
+                        _builder.append(" (double ");
+                        String _string_41 = param.getCheck().getName().toString();
+                        _builder.append(_string_41);
+                        _builder.append("[], ");
+                        {
+                          EList<AbstractElement2> _elements_50 = param.getWhen().getEm().getElements();
+                          for(final AbstractElement2 par1_14 : _elements_50) {
+                            {
+                              String _name_103 = par1_14.getName();
+                              boolean _tripleNotEquals_80 = (_name_103 != null);
+                              if (_tripleNotEquals_80) {
+                                _builder.append("double ");
+                                String _name_104 = par1_14.getName();
+                                _builder.append(_name_104);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" double timeStamp[]);");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        NotSame _notsame_4 = param.getCheck().getReference().getNotsame();
+                        boolean _tripleNotEquals_81 = (_notsame_4 != null);
+                        if (_tripleNotEquals_81) {
+                          _builder.append("struct Ret{");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("int assert;");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("double diff;");
+                          _builder.newLine();
+                          _builder.append("};");
+                          _builder.newLine();
+                          _builder.append("struct Ret ");
+                          String _string_42 = param.getName().toString();
+                          _builder.append(_string_42);
+                          _builder.append(" (double ");
+                          String _string_43 = param.getCheck().getName().toString();
+                          _builder.append(_string_43);
+                          _builder.append("[], ");
+                          {
+                            EList<AbstractElement2> _elements_51 = param.getWhen().getEm().getElements();
+                            for(final AbstractElement2 par1_15 : _elements_51) {
+                              {
+                                String _name_105 = par1_15.getName();
+                                boolean _tripleNotEquals_82 = (_name_105 != null);
+                                if (_tripleNotEquals_82) {
+                                  _builder.append("double ");
+                                  String _name_106 = par1_15.getName();
+                                  _builder.append(_name_106);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" double timeStamp[]);");
+                          _builder.newLineIfNotEmpty();
+                          _builder.append("\t\t\t");
+                          _builder.newLine();
+                        } else {
+                          Range _range_4 = param.getCheck().getReference().getRange();
+                          boolean _tripleNotEquals_83 = (_range_4 != null);
+                          if (_tripleNotEquals_83) {
+                            _builder.append("struct Ret{");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("int assert;");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("double diff_up;");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("double diff_down;");
+                            _builder.newLine();
+                            _builder.append("};");
+                            _builder.newLine();
+                            _builder.append("struct Ret ");
+                            String _string_44 = param.getName().toString();
+                            _builder.append(_string_44);
+                            _builder.append(" (double ");
+                            String _string_45 = param.getCheck().getName().toString();
+                            _builder.append(_string_45);
+                            _builder.append("[], ");
+                            {
+                              EList<AbstractElement2> _elements_52 = param.getWhen().getEm().getElements();
+                              for(final AbstractElement2 par1_16 : _elements_52) {
+                                {
+                                  String _name_107 = par1_16.getName();
+                                  boolean _tripleNotEquals_84 = (_name_107 != null);
+                                  if (_tripleNotEquals_84) {
+                                    _builder.append("double ");
+                                    String _name_108 = par1_16.getName();
+                                    _builder.append(_name_108);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" double timeStamp[]);");
+                            _builder.newLineIfNotEmpty();
+                          } else {
+                            Gap _gap_4 = param.getCheck().getReference().getGap();
+                            boolean _tripleNotEquals_85 = (_gap_4 != null);
+                            if (_tripleNotEquals_85) {
+                              _builder.append("struct Ret{");
+                              _builder.newLine();
+                              _builder.append("\t");
+                              _builder.append("int assert;");
+                              _builder.newLine();
+                              _builder.append("\t");
+                              _builder.append("double diff_up;");
+                              _builder.newLine();
+                              _builder.append("\t");
+                              _builder.append("double diff_down;");
+                              _builder.newLine();
+                              _builder.append("};");
+                              _builder.newLine();
+                              _builder.append("struct Ret ");
+                              String _string_46 = param.getName().toString();
+                              _builder.append(_string_46);
+                              _builder.append(" (double ");
+                              String _string_47 = param.getCheck().getName().toString();
+                              _builder.append(_string_47);
+                              _builder.append("[], ");
+                              {
+                                EList<AbstractElement2> _elements_53 = param.getWhen().getEm().getElements();
+                                for(final AbstractElement2 par1_17 : _elements_53) {
+                                  {
+                                    String _name_109 = par1_17.getName();
+                                    boolean _tripleNotEquals_86 = (_name_109 != null);
+                                    if (_tripleNotEquals_86) {
+                                      _builder.append("double ");
+                                      String _name_110 = par1_17.getName();
+                                      _builder.append(_name_110);
+                                      _builder.append("[],");
+                                    }
+                                  }
+                                }
+                              }
+                              _builder.append(" double timeStamp[]);");
+                              _builder.newLineIfNotEmpty();
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              } else {
+                {
+                  Upper _upper_5 = param.getCheck().getReference().getUpper();
+                  boolean _tripleNotEquals_87 = (_upper_5 != null);
+                  if (_tripleNotEquals_87) {
+                    _builder.append("struct Ret{");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("int assert;");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("double diff;");
+                    _builder.newLine();
+                    _builder.append("};");
+                    _builder.newLine();
+                    _builder.append("struct Ret ");
+                    String _string_48 = param.getName().toString();
+                    _builder.append(_string_48);
+                    _builder.append(" (");
+                    {
+                      EList<AbstractElement2> _elements_54 = param.getCheck().getEm().getElements();
+                      for(final AbstractElement2 par3_12 : _elements_54) {
+                        {
+                          String _name_111 = par3_12.getName();
+                          boolean _tripleNotEquals_88 = (_name_111 != null);
+                          if (_tripleNotEquals_88) {
+                            _builder.append("double ");
+                            String _name_112 = par3_12.getName();
+                            _builder.append(_name_112);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" ");
+                    {
+                      EList<AbstractElement2> _elements_55 = param.getWhen().getEm().getElements();
+                      for(final AbstractElement2 par1_18 : _elements_55) {
+                        {
+                          String _name_113 = par1_18.getName();
+                          boolean _tripleNotEquals_89 = (_name_113 != null);
+                          if (_tripleNotEquals_89) {
+                            _builder.append("double ");
+                            String _name_114 = par1_18.getName();
+                            _builder.append(_name_114);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" double timeStamp[]);");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Lower _lower_5 = param.getCheck().getReference().getLower();
+                    boolean _tripleNotEquals_90 = (_lower_5 != null);
+                    if (_tripleNotEquals_90) {
+                      _builder.append("struct Ret{");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("int assert;");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("double diff;");
+                      _builder.newLine();
+                      _builder.append("};");
+                      _builder.newLine();
+                      _builder.append("struct Ret ");
+                      String _string_49 = param.getName().toString();
+                      _builder.append(_string_49);
+                      _builder.append(" (");
+                      {
+                        EList<AbstractElement2> _elements_56 = param.getCheck().getEm().getElements();
+                        for(final AbstractElement2 par3_13 : _elements_56) {
+                          {
+                            String _name_115 = par3_13.getName();
+                            boolean _tripleNotEquals_91 = (_name_115 != null);
+                            if (_tripleNotEquals_91) {
+                              _builder.append("double ");
+                              String _name_116 = par3_13.getName();
+                              _builder.append(_name_116);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" ");
+                      {
+                        EList<AbstractElement2> _elements_57 = param.getWhen().getEm().getElements();
+                        for(final AbstractElement2 par1_19 : _elements_57) {
+                          {
+                            String _name_117 = par1_19.getName();
+                            boolean _tripleNotEquals_92 = (_name_117 != null);
+                            if (_tripleNotEquals_92) {
+                              _builder.append("double ");
+                              String _name_118 = par1_19.getName();
+                              _builder.append(_name_118);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" double timeStamp[]);");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      Same _same_5 = param.getCheck().getReference().getSame();
+                      boolean _tripleNotEquals_93 = (_same_5 != null);
+                      if (_tripleNotEquals_93) {
+                        _builder.append("struct Ret{");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("int assert;");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("double diff;");
+                        _builder.newLine();
+                        _builder.append("};");
+                        _builder.newLine();
+                        _builder.append("struct Ret ");
+                        String _string_50 = param.getName().toString();
+                        _builder.append(_string_50);
+                        _builder.append(" (");
+                        {
+                          EList<AbstractElement2> _elements_58 = param.getCheck().getEm().getElements();
+                          for(final AbstractElement2 par3_14 : _elements_58) {
+                            {
+                              String _name_119 = par3_14.getName();
+                              boolean _tripleNotEquals_94 = (_name_119 != null);
+                              if (_tripleNotEquals_94) {
+                                _builder.append("double ");
+                                String _name_120 = par3_14.getName();
+                                _builder.append(_name_120);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" ");
+                        {
+                          EList<AbstractElement2> _elements_59 = param.getWhen().getEm().getElements();
+                          for(final AbstractElement2 par1_20 : _elements_59) {
+                            {
+                              String _name_121 = par1_20.getName();
+                              boolean _tripleNotEquals_95 = (_name_121 != null);
+                              if (_tripleNotEquals_95) {
+                                _builder.append("double ");
+                                String _name_122 = par1_20.getName();
+                                _builder.append(_name_122);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" double timeStamp[]);");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        NotSame _notsame_5 = param.getCheck().getReference().getNotsame();
+                        boolean _tripleNotEquals_96 = (_notsame_5 != null);
+                        if (_tripleNotEquals_96) {
+                          _builder.append("struct Ret{");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("int assert;");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("double diff;");
+                          _builder.newLine();
+                          _builder.append("};");
+                          _builder.newLine();
+                          _builder.append("struct Ret ");
+                          String _string_51 = param.getName().toString();
+                          _builder.append(_string_51);
+                          _builder.append(" (");
+                          {
+                            EList<AbstractElement2> _elements_60 = param.getCheck().getEm().getElements();
+                            for(final AbstractElement2 par3_15 : _elements_60) {
+                              {
+                                String _name_123 = par3_15.getName();
+                                boolean _tripleNotEquals_97 = (_name_123 != null);
+                                if (_tripleNotEquals_97) {
+                                  _builder.append("double ");
+                                  String _name_124 = par3_15.getName();
+                                  _builder.append(_name_124);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" ");
+                          {
+                            EList<AbstractElement2> _elements_61 = param.getWhen().getEm().getElements();
+                            for(final AbstractElement2 par1_21 : _elements_61) {
+                              {
+                                String _name_125 = par1_21.getName();
+                                boolean _tripleNotEquals_98 = (_name_125 != null);
+                                if (_tripleNotEquals_98) {
+                                  _builder.append("double ");
+                                  String _name_126 = par1_21.getName();
+                                  _builder.append(_name_126);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" double timeStamp[]);\t\t\t");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          Range _range_5 = param.getCheck().getReference().getRange();
+                          boolean _tripleNotEquals_99 = (_range_5 != null);
+                          if (_tripleNotEquals_99) {
+                            _builder.append("struct Ret{");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("int assert;");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("double diff_up;");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("double diff_down;");
+                            _builder.newLine();
+                            _builder.append("};");
+                            _builder.newLine();
+                            _builder.append("struct Ret ");
+                            String _string_52 = param.getName().toString();
+                            _builder.append(_string_52);
+                            _builder.append(" (");
+                            {
+                              EList<AbstractElement2> _elements_62 = param.getCheck().getEm().getElements();
+                              for(final AbstractElement2 par3_16 : _elements_62) {
+                                {
+                                  String _name_127 = par3_16.getName();
+                                  boolean _tripleNotEquals_100 = (_name_127 != null);
+                                  if (_tripleNotEquals_100) {
+                                    _builder.append("double ");
+                                    String _name_128 = par3_16.getName();
+                                    _builder.append(_name_128);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" ");
+                            {
+                              EList<AbstractElement2> _elements_63 = param.getWhen().getEm().getElements();
+                              for(final AbstractElement2 par1_22 : _elements_63) {
+                                {
+                                  String _name_129 = par1_22.getName();
+                                  boolean _tripleNotEquals_101 = (_name_129 != null);
+                                  if (_tripleNotEquals_101) {
+                                    _builder.append("double ");
+                                    String _name_130 = par1_22.getName();
+                                    _builder.append(_name_130);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" double timeStamp[]);");
+                            _builder.newLineIfNotEmpty();
+                          } else {
+                            Gap _gap_5 = param.getCheck().getReference().getGap();
+                            boolean _tripleNotEquals_102 = (_gap_5 != null);
+                            if (_tripleNotEquals_102) {
+                              _builder.append("struct Ret{");
+                              _builder.newLine();
+                              _builder.append("\t");
+                              _builder.append("int assert;");
+                              _builder.newLine();
+                              _builder.append("\t");
+                              _builder.append("double diff_up;");
+                              _builder.newLine();
+                              _builder.append("\t");
+                              _builder.append("double diff_down;");
+                              _builder.newLine();
+                              _builder.append("};");
+                              _builder.newLine();
+                              _builder.append("struct Ret ");
+                              String _string_53 = param.getName().toString();
+                              _builder.append(_string_53);
+                              _builder.append(" (");
+                              {
+                                EList<AbstractElement2> _elements_64 = param.getCheck().getEm().getElements();
+                                for(final AbstractElement2 par3_17 : _elements_64) {
+                                  {
+                                    String _name_131 = par3_17.getName();
+                                    boolean _tripleNotEquals_103 = (_name_131 != null);
+                                    if (_tripleNotEquals_103) {
+                                      _builder.append("double ");
+                                      String _name_132 = par3_17.getName();
+                                      _builder.append(_name_132);
+                                      _builder.append("[],");
+                                    }
+                                  }
+                                }
+                              }
+                              _builder.append(" ");
+                              {
+                                EList<AbstractElement2> _elements_65 = param.getWhen().getEm().getElements();
+                                for(final AbstractElement2 par1_23 : _elements_65) {
+                                  {
+                                    String _name_133 = par1_23.getName();
+                                    boolean _tripleNotEquals_104 = (_name_133 != null);
+                                    if (_tripleNotEquals_104) {
+                                      _builder.append("double ");
+                                      String _name_134 = par1_23.getName();
+                                      _builder.append(_name_134);
+                                      _builder.append("[],");
+                                    }
+                                  }
+                                }
+                              }
+                              _builder.append(" double timeStamp[]);");
+                              _builder.newLineIfNotEmpty();
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } else {
+            {
+              String _name_135 = param.getCheck().getName();
+              boolean _tripleNotEquals_105 = (_name_135 != null);
+              if (_tripleNotEquals_105) {
+                {
+                  Upper _upper_6 = param.getCheck().getReference().getUpper();
+                  boolean _tripleNotEquals_106 = (_upper_6 != null);
+                  if (_tripleNotEquals_106) {
+                    _builder.append("struct Ret{");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("int assert;");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("double diff;");
+                    _builder.newLine();
+                    _builder.append("};");
+                    _builder.newLine();
+                    _builder.append("struct Ret ");
+                    String _string_54 = param.getName().toString();
+                    _builder.append(_string_54);
+                    _builder.append(" (double ");
+                    String _string_55 = param.getCheck().getName().toString();
+                    _builder.append(_string_55);
+                    _builder.append("[], double timeStamp[]);");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Lower _lower_6 = param.getCheck().getReference().getLower();
+                    boolean _tripleNotEquals_107 = (_lower_6 != null);
+                    if (_tripleNotEquals_107) {
+                      _builder.append("struct Ret{");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("int assert;");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("double diff;");
+                      _builder.newLine();
+                      _builder.append("};");
+                      _builder.newLine();
+                      _builder.append("struct Ret ");
+                      String _string_56 = param.getName().toString();
+                      _builder.append(_string_56);
+                      _builder.append(" (double ");
+                      String _string_57 = param.getCheck().getName().toString();
+                      _builder.append(_string_57);
+                      _builder.append("[],double timeStamp[]);");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      Same _same_6 = param.getCheck().getReference().getSame();
+                      boolean _tripleNotEquals_108 = (_same_6 != null);
+                      if (_tripleNotEquals_108) {
+                        _builder.append("struct Ret{");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("int assert;");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("double diff;");
+                        _builder.newLine();
+                        _builder.append("};");
+                        _builder.newLine();
+                        _builder.append("struct Ret ");
+                        String _string_58 = param.getName().toString();
+                        _builder.append(_string_58);
+                        _builder.append(" (double ");
+                        String _string_59 = param.getCheck().getName().toString();
+                        _builder.append(_string_59);
+                        _builder.append("[],double timeStamp[]);");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        NotSame _notsame_6 = param.getCheck().getReference().getNotsame();
+                        boolean _tripleNotEquals_109 = (_notsame_6 != null);
+                        if (_tripleNotEquals_109) {
+                          _builder.append("struct Ret{");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("int assert;");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("double diff;");
+                          _builder.newLine();
+                          _builder.append("};");
+                          _builder.newLine();
+                          _builder.append("struct Ret ");
+                          String _string_60 = param.getName().toString();
+                          _builder.append(_string_60);
+                          _builder.append(" (double ");
+                          String _string_61 = param.getCheck().getName().toString();
+                          _builder.append(_string_61);
+                          _builder.append("[],double timeStamp[]);\t\t\t");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          Range _range_6 = param.getCheck().getReference().getRange();
+                          boolean _tripleNotEquals_110 = (_range_6 != null);
+                          if (_tripleNotEquals_110) {
+                            _builder.append("struct Ret{");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("int assert;");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("double diff_up;");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("double diff_down;");
+                            _builder.newLine();
+                            _builder.append("};");
+                            _builder.newLine();
+                            _builder.append("struct Ret ");
+                            String _string_62 = param.getName().toString();
+                            _builder.append(_string_62);
+                            _builder.append(" (double ");
+                            String _string_63 = param.getCheck().getName().toString();
+                            _builder.append(_string_63);
+                            _builder.append("[],double timeStamp[]);");
+                            _builder.newLineIfNotEmpty();
+                          } else {
+                            Gap _gap_6 = param.getCheck().getReference().getGap();
+                            boolean _tripleNotEquals_111 = (_gap_6 != null);
+                            if (_tripleNotEquals_111) {
+                              _builder.append("struct Ret{");
+                              _builder.newLine();
+                              _builder.append("\t");
+                              _builder.append("int assert;");
+                              _builder.newLine();
+                              _builder.append("\t");
+                              _builder.append("double diff_up;");
+                              _builder.newLine();
+                              _builder.append("\t");
+                              _builder.append("double diff_down;");
+                              _builder.newLine();
+                              _builder.append("};");
+                              _builder.newLine();
+                              _builder.append("struct Ret ");
+                              String _string_64 = param.getName().toString();
+                              _builder.append(_string_64);
+                              _builder.append(" (double ");
+                              String _string_65 = param.getCheck().getName().toString();
+                              _builder.append(_string_65);
+                              _builder.append("[],double timeStamp[]);");
+                              _builder.newLineIfNotEmpty();
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              } else {
+                {
+                  Upper _upper_7 = param.getCheck().getReference().getUpper();
+                  boolean _tripleNotEquals_112 = (_upper_7 != null);
+                  if (_tripleNotEquals_112) {
+                    _builder.append("struct Ret{");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("int assert;");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("double diff;");
+                    _builder.newLine();
+                    _builder.append("};");
+                    _builder.newLine();
+                    _builder.append("struct Ret ");
+                    String _string_66 = param.getName().toString();
+                    _builder.append(_string_66);
+                    _builder.append(" (");
+                    {
+                      EList<AbstractElement2> _elements_66 = param.getCheck().getEm().getElements();
+                      for(final AbstractElement2 par3_18 : _elements_66) {
+                        {
+                          String _name_136 = par3_18.getName();
+                          boolean _tripleNotEquals_113 = (_name_136 != null);
+                          if (_tripleNotEquals_113) {
+                            _builder.append("double ");
+                            String _name_137 = par3_18.getName();
+                            _builder.append(_name_137);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append("double timeStamp[]);");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Lower _lower_7 = param.getCheck().getReference().getLower();
+                    boolean _tripleNotEquals_114 = (_lower_7 != null);
+                    if (_tripleNotEquals_114) {
+                      _builder.append("struct Ret{");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("int assert;");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("double diff;");
+                      _builder.newLine();
+                      _builder.append("};");
+                      _builder.newLine();
+                      _builder.append("struct Ret ");
+                      String _string_67 = param.getName().toString();
+                      _builder.append(_string_67);
+                      _builder.append(" (");
+                      {
+                        EList<AbstractElement2> _elements_67 = param.getCheck().getEm().getElements();
+                        for(final AbstractElement2 par3_19 : _elements_67) {
+                          {
+                            String _name_138 = par3_19.getName();
+                            boolean _tripleNotEquals_115 = (_name_138 != null);
+                            if (_tripleNotEquals_115) {
+                              _builder.append("double ");
+                              String _name_139 = par3_19.getName();
+                              _builder.append(_name_139);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append("double timeStamp[]);");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      Same _same_7 = param.getCheck().getReference().getSame();
+                      boolean _tripleNotEquals_116 = (_same_7 != null);
+                      if (_tripleNotEquals_116) {
+                        _builder.append("struct Ret{");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("int assert;");
+                        _builder.newLine();
+                        _builder.append("\t");
+                        _builder.append("double diff;");
+                        _builder.newLine();
+                        _builder.append("};");
+                        _builder.newLine();
+                        _builder.append("struct Ret ");
+                        String _string_68 = param.getName().toString();
+                        _builder.append(_string_68);
+                        _builder.append(" (");
+                        {
+                          EList<AbstractElement2> _elements_68 = param.getCheck().getEm().getElements();
+                          for(final AbstractElement2 par3_20 : _elements_68) {
+                            {
+                              String _name_140 = par3_20.getName();
+                              boolean _tripleNotEquals_117 = (_name_140 != null);
+                              if (_tripleNotEquals_117) {
+                                _builder.append("double ");
+                                String _name_141 = par3_20.getName();
+                                _builder.append(_name_141);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append("double timeStamp[]);");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        NotSame _notsame_7 = param.getCheck().getReference().getNotsame();
+                        boolean _tripleNotEquals_118 = (_notsame_7 != null);
+                        if (_tripleNotEquals_118) {
+                          _builder.append("struct Ret{");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("int assert;");
+                          _builder.newLine();
+                          _builder.append("\t");
+                          _builder.append("double diff;");
+                          _builder.newLine();
+                          _builder.append("};");
+                          _builder.newLine();
+                          _builder.append("struct Ret ");
+                          String _string_69 = param.getName().toString();
+                          _builder.append(_string_69);
+                          _builder.append(" (");
+                          {
+                            EList<AbstractElement2> _elements_69 = param.getCheck().getEm().getElements();
+                            for(final AbstractElement2 par3_21 : _elements_69) {
+                              {
+                                String _name_142 = par3_21.getName();
+                                boolean _tripleNotEquals_119 = (_name_142 != null);
+                                if (_tripleNotEquals_119) {
+                                  _builder.append("double ");
+                                  String _name_143 = par3_21.getName();
+                                  _builder.append(_name_143);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append("double timeStamp[]);\t\t\t\t");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          Range _range_7 = param.getCheck().getReference().getRange();
+                          boolean _tripleNotEquals_120 = (_range_7 != null);
+                          if (_tripleNotEquals_120) {
+                            _builder.append("struct Ret{");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("int assert;");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("double diff_up;");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("double diff_down;");
+                            _builder.newLine();
+                            _builder.append("};");
+                            _builder.newLine();
+                            _builder.append("struct Ret ");
+                            String _string_70 = param.getName().toString();
+                            _builder.append(_string_70);
+                            _builder.append(" (");
+                            {
+                              EList<AbstractElement2> _elements_70 = param.getCheck().getEm().getElements();
+                              for(final AbstractElement2 par3_22 : _elements_70) {
+                                {
+                                  String _name_144 = par3_22.getName();
+                                  boolean _tripleNotEquals_121 = (_name_144 != null);
+                                  if (_tripleNotEquals_121) {
+                                    _builder.append("double ");
+                                    String _name_145 = par3_22.getName();
+                                    _builder.append(_name_145);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append("double timeStamp[]);");
+                            _builder.newLineIfNotEmpty();
+                          } else {
+                            Gap _gap_7 = param.getCheck().getReference().getGap();
+                            boolean _tripleNotEquals_122 = (_gap_7 != null);
+                            if (_tripleNotEquals_122) {
+                              _builder.append("struct Ret{");
+                              _builder.newLine();
+                              _builder.append("\t");
+                              _builder.append("int assert;");
+                              _builder.newLine();
+                              _builder.append("\t");
+                              _builder.append("double diff_up;");
+                              _builder.newLine();
+                              _builder.append("\t");
+                              _builder.append("double diff_down;");
+                              _builder.newLine();
+                              _builder.append("};");
+                              _builder.newLine();
+                              _builder.append("struct Ret ");
+                              String _string_71 = param.getName().toString();
+                              _builder.append(_string_71);
+                              _builder.append(" (");
+                              {
+                                EList<AbstractElement2> _elements_71 = param.getCheck().getEm().getElements();
+                                for(final AbstractElement2 par3_23 : _elements_71) {
+                                  {
+                                    String _name_146 = par3_23.getName();
+                                    boolean _tripleNotEquals_123 = (_name_146 != null);
+                                    if (_tripleNotEquals_123) {
+                                      _builder.append("double ");
+                                      String _name_147 = par3_23.getName();
+                                      _builder.append(_name_147);
+                                      _builder.append("[],");
+                                    }
+                                  }
+                                }
+                              }
+                              _builder.append("double timeStamp[]);");
+                              _builder.newLineIfNotEmpty();
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -406,79 +2366,48 @@ public class AdeptnessGenerator extends AbstractGenerator {
     _builder.append(".h\"");
     _builder.newLineIfNotEmpty();
     {
-      EList<Checks> _check = param.getCheck();
-      for(final Checks param1 : _check) {
+      if (((param.getWhen() != null) && (param.getWhile() != null))) {
         {
-          String _name = param1.getName();
+          String _name = param.getCheck().getName();
           boolean _tripleNotEquals = (_name != null);
           if (_tripleNotEquals) {
             {
-              Upper _upper = param1.getReference().getUpper();
+              Upper _upper = param.getCheck().getReference().getUpper();
               boolean _tripleNotEquals_1 = (_upper != null);
               if (_tripleNotEquals_1) {
-                _builder.append("struct Ret BelowReference (double ");
-                String _string_1 = param1.getName().toString();
+                _builder.append("struct Ret ");
+                String _string_1 = param.getName().toString();
                 _builder.append(_string_1);
-                _builder.append(", double timeStamp[]){");
-                _builder.newLineIfNotEmpty();
-              } else {
-                Lower _lower = param1.getReference().getLower();
-                boolean _tripleNotEquals_2 = (_lower != null);
-                if (_tripleNotEquals_2) {
-                  _builder.append("struct Ret AboveReference (double ");
-                  String _string_2 = param1.getName().toString();
-                  _builder.append(_string_2);
-                  _builder.append(", double timeStamp[]){");
-                  _builder.newLineIfNotEmpty();
-                } else {
-                  Range _range = param1.getReference().getRange();
-                  boolean _tripleNotEquals_3 = (_range != null);
-                  if (_tripleNotEquals_3) {
-                    _builder.append("struct Ret RangeReference (double ");
-                    String _string_3 = param1.getName().toString();
-                    _builder.append(_string_3);
-                    _builder.append(", double timeStamp[]){");
-                    _builder.newLineIfNotEmpty();
-                  } else {
-                    Gap _gap = param1.getReference().getGap();
-                    boolean _tripleNotEquals_4 = (_gap != null);
-                    if (_tripleNotEquals_4) {
-                      _builder.append("struct Ret GapReference (double ");
-                      String _string_4 = param1.getName().toString();
-                      _builder.append(_string_4);
-                      _builder.append(", double timeStamp[]){");
-                      _builder.newLineIfNotEmpty();
+                _builder.append(" (double ");
+                String _string_2 = param.getCheck().getName().toString();
+                _builder.append(_string_2);
+                _builder.append("[], ");
+                {
+                  EList<AbstractElement2> _elements = param.getWhen().getEm().getElements();
+                  for(final AbstractElement2 par1 : _elements) {
+                    {
+                      String _name_1 = par1.getName();
+                      boolean _tripleNotEquals_2 = (_name_1 != null);
+                      if (_tripleNotEquals_2) {
+                        _builder.append("double ");
+                        String _name_2 = par1.getName();
+                        _builder.append(_name_2);
+                        _builder.append("[],");
+                      }
                     }
                   }
                 }
-              }
-            }
-            _builder.append("\t\t");
-            _builder.append("struct Ret ret;");
-            _builder.newLine();
-            _builder.append("\t\t");
-            _builder.append("return ret;");
-            _builder.newLine();
-            _builder.append("\t");
-            _builder.append("}\t\t");
-            _builder.newLine();
-          } else {
-            {
-              Upper _upper_1 = param1.getReference().getUpper();
-              boolean _tripleNotEquals_5 = (_upper_1 != null);
-              if (_tripleNotEquals_5) {
-                _builder.append("struct Ret BelowReference (");
                 {
-                  EList<AbstractElement2> _elements = param1.getEm().getElements();
-                  for(final AbstractElement2 name : _elements) {
+                  EList<AbstractElement2> _elements_1 = param.getWhile().getEm().getElements();
+                  for(final AbstractElement2 par2 : _elements_1) {
                     {
-                      String _name_1 = name.getName();
-                      boolean _tripleNotEquals_6 = (_name_1 != null);
-                      if (_tripleNotEquals_6) {
+                      String _name_3 = par2.getName();
+                      boolean _tripleNotEquals_3 = (_name_3 != null);
+                      if (_tripleNotEquals_3) {
                         _builder.append("double ");
-                        String _string_5 = name.getName().toString();
-                        _builder.append(_string_5);
-                        _builder.append("[] , ");
+                        String _name_4 = par2.getName();
+                        _builder.append(_name_4);
+                        _builder.append("[],");
                       }
                     }
                   }
@@ -486,21 +2415,42 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.append(" double timeStamp[]){");
                 _builder.newLineIfNotEmpty();
               } else {
-                Lower _lower_1 = param1.getReference().getLower();
-                boolean _tripleNotEquals_7 = (_lower_1 != null);
-                if (_tripleNotEquals_7) {
-                  _builder.append("struct Ret AboveReference (");
+                Lower _lower = param.getCheck().getReference().getLower();
+                boolean _tripleNotEquals_4 = (_lower != null);
+                if (_tripleNotEquals_4) {
+                  _builder.append("struct Ret ");
+                  String _string_3 = param.getName().toString();
+                  _builder.append(_string_3);
+                  _builder.append(" (double ");
+                  String _string_4 = param.getCheck().getName().toString();
+                  _builder.append(_string_4);
+                  _builder.append("[], ");
                   {
-                    EList<AbstractElement2> _elements_1 = param1.getEm().getElements();
-                    for(final AbstractElement2 name_1 : _elements_1) {
+                    EList<AbstractElement2> _elements_2 = param.getWhen().getEm().getElements();
+                    for(final AbstractElement2 par1_1 : _elements_2) {
                       {
-                        String _name_2 = name_1.getName();
-                        boolean _tripleNotEquals_8 = (_name_2 != null);
-                        if (_tripleNotEquals_8) {
+                        String _name_5 = par1_1.getName();
+                        boolean _tripleNotEquals_5 = (_name_5 != null);
+                        if (_tripleNotEquals_5) {
                           _builder.append("double ");
-                          String _string_6 = name_1.getName().toString();
-                          _builder.append(_string_6);
-                          _builder.append("[] , ");
+                          String _name_6 = par1_1.getName();
+                          _builder.append(_name_6);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  {
+                    EList<AbstractElement2> _elements_3 = param.getWhile().getEm().getElements();
+                    for(final AbstractElement2 par2_1 : _elements_3) {
+                      {
+                        String _name_7 = par2_1.getName();
+                        boolean _tripleNotEquals_6 = (_name_7 != null);
+                        if (_tripleNotEquals_6) {
+                          _builder.append("double ");
+                          String _name_8 = par2_1.getName();
+                          _builder.append(_name_8);
+                          _builder.append("[],");
                         }
                       }
                     }
@@ -508,21 +2458,42 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.append(" double timeStamp[]){");
                   _builder.newLineIfNotEmpty();
                 } else {
-                  Range _range_1 = param1.getReference().getRange();
-                  boolean _tripleNotEquals_9 = (_range_1 != null);
-                  if (_tripleNotEquals_9) {
-                    _builder.append("struct Ret RangeReference (");
+                  Same _same = param.getCheck().getReference().getSame();
+                  boolean _tripleNotEquals_7 = (_same != null);
+                  if (_tripleNotEquals_7) {
+                    _builder.append("struct Ret ");
+                    String _string_5 = param.getName().toString();
+                    _builder.append(_string_5);
+                    _builder.append(" (double ");
+                    String _string_6 = param.getCheck().getName().toString();
+                    _builder.append(_string_6);
+                    _builder.append("[], ");
                     {
-                      EList<AbstractElement2> _elements_2 = param1.getEm().getElements();
-                      for(final AbstractElement2 name_2 : _elements_2) {
+                      EList<AbstractElement2> _elements_4 = param.getWhen().getEm().getElements();
+                      for(final AbstractElement2 par1_2 : _elements_4) {
                         {
-                          String _name_3 = name_2.getName();
-                          boolean _tripleNotEquals_10 = (_name_3 != null);
-                          if (_tripleNotEquals_10) {
+                          String _name_9 = par1_2.getName();
+                          boolean _tripleNotEquals_8 = (_name_9 != null);
+                          if (_tripleNotEquals_8) {
                             _builder.append("double ");
-                            String _string_7 = name_2.getName().toString();
-                            _builder.append(_string_7);
-                            _builder.append("[] , ");
+                            String _name_10 = par1_2.getName();
+                            _builder.append(_name_10);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    {
+                      EList<AbstractElement2> _elements_5 = param.getWhile().getEm().getElements();
+                      for(final AbstractElement2 par2_2 : _elements_5) {
+                        {
+                          String _name_11 = par2_2.getName();
+                          boolean _tripleNotEquals_9 = (_name_11 != null);
+                          if (_tripleNotEquals_9) {
+                            _builder.append("double ");
+                            String _name_12 = par2_2.getName();
+                            _builder.append(_name_12);
+                            _builder.append("[],");
                           }
                         }
                       }
@@ -530,45 +2501,1617 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.append(" double timeStamp[]){");
                     _builder.newLineIfNotEmpty();
                   } else {
-                    Gap _gap_1 = param1.getReference().getGap();
-                    boolean _tripleNotEquals_11 = (_gap_1 != null);
-                    if (_tripleNotEquals_11) {
-                      _builder.append("struct Ret GapReference (");
+                    NotSame _notsame = param.getCheck().getReference().getNotsame();
+                    boolean _tripleNotEquals_10 = (_notsame != null);
+                    if (_tripleNotEquals_10) {
+                      _builder.append("struct Ret ");
+                      String _string_7 = param.getName().toString();
+                      _builder.append(_string_7);
+                      _builder.append(" (double ");
+                      String _string_8 = param.getCheck().getName().toString();
+                      _builder.append(_string_8);
+                      _builder.append("[], ");
                       {
-                        EList<AbstractElement2> _elements_3 = param1.getEm().getElements();
-                        for(final AbstractElement2 name_3 : _elements_3) {
+                        EList<AbstractElement2> _elements_6 = param.getWhen().getEm().getElements();
+                        for(final AbstractElement2 par1_3 : _elements_6) {
                           {
-                            String _name_4 = name_3.getName();
-                            boolean _tripleNotEquals_12 = (_name_4 != null);
+                            String _name_13 = par1_3.getName();
+                            boolean _tripleNotEquals_11 = (_name_13 != null);
+                            if (_tripleNotEquals_11) {
+                              _builder.append("double ");
+                              String _name_14 = par1_3.getName();
+                              _builder.append(_name_14);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      {
+                        EList<AbstractElement2> _elements_7 = param.getWhile().getEm().getElements();
+                        for(final AbstractElement2 par2_3 : _elements_7) {
+                          {
+                            String _name_15 = par2_3.getName();
+                            boolean _tripleNotEquals_12 = (_name_15 != null);
                             if (_tripleNotEquals_12) {
                               _builder.append("double ");
-                              String _string_8 = name_3.getName().toString();
-                              _builder.append(_string_8);
-                              _builder.append("[] , ");
+                              String _name_16 = par2_3.getName();
+                              _builder.append(_name_16);
+                              _builder.append("[],");
                             }
                           }
                         }
                       }
                       _builder.append(" double timeStamp[]){");
                       _builder.newLineIfNotEmpty();
+                    } else {
+                      Range _range = param.getCheck().getReference().getRange();
+                      boolean _tripleNotEquals_13 = (_range != null);
+                      if (_tripleNotEquals_13) {
+                        _builder.append("struct Ret ");
+                        String _string_9 = param.getName().toString();
+                        _builder.append(_string_9);
+                        _builder.append(" (double ");
+                        String _string_10 = param.getCheck().getName().toString();
+                        _builder.append(_string_10);
+                        _builder.append("[], ");
+                        {
+                          EList<AbstractElement2> _elements_8 = param.getWhen().getEm().getElements();
+                          for(final AbstractElement2 par1_4 : _elements_8) {
+                            {
+                              String _name_17 = par1_4.getName();
+                              boolean _tripleNotEquals_14 = (_name_17 != null);
+                              if (_tripleNotEquals_14) {
+                                _builder.append("double ");
+                                String _name_18 = par1_4.getName();
+                                _builder.append(_name_18);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        {
+                          EList<AbstractElement2> _elements_9 = param.getWhile().getEm().getElements();
+                          for(final AbstractElement2 par2_4 : _elements_9) {
+                            {
+                              String _name_19 = par2_4.getName();
+                              boolean _tripleNotEquals_15 = (_name_19 != null);
+                              if (_tripleNotEquals_15) {
+                                _builder.append("double ");
+                                String _name_20 = par2_4.getName();
+                                _builder.append(_name_20);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" double timeStamp[]){");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        Gap _gap = param.getCheck().getReference().getGap();
+                        boolean _tripleNotEquals_16 = (_gap != null);
+                        if (_tripleNotEquals_16) {
+                          _builder.append("struct Ret ");
+                          String _string_11 = param.getName().toString();
+                          _builder.append(_string_11);
+                          _builder.append(" (double ");
+                          String _string_12 = param.getCheck().getName().toString();
+                          _builder.append(_string_12);
+                          _builder.append("[], ");
+                          {
+                            EList<AbstractElement2> _elements_10 = param.getWhen().getEm().getElements();
+                            for(final AbstractElement2 par1_5 : _elements_10) {
+                              {
+                                String _name_21 = par1_5.getName();
+                                boolean _tripleNotEquals_17 = (_name_21 != null);
+                                if (_tripleNotEquals_17) {
+                                  _builder.append("double ");
+                                  String _name_22 = par1_5.getName();
+                                  _builder.append(_name_22);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          {
+                            EList<AbstractElement2> _elements_11 = param.getWhile().getEm().getElements();
+                            for(final AbstractElement2 par2_5 : _elements_11) {
+                              {
+                                String _name_23 = par2_5.getName();
+                                boolean _tripleNotEquals_18 = (_name_23 != null);
+                                if (_tripleNotEquals_18) {
+                                  _builder.append("double ");
+                                  String _name_24 = par2_5.getName();
+                                  _builder.append(_name_24);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" double timeStamp[]){");
+                          _builder.newLineIfNotEmpty();
+                        }
+                      }
                     }
                   }
                 }
               }
             }
-            _builder.append("\t\t");
-            _builder.append("struct Ret ret;");
-            _builder.newLine();
-            _builder.append("\t\t");
-            _builder.append("return ret;");
-            _builder.newLine();
-            _builder.append("\t");
-            _builder.append("}\t\t");
-            _builder.newLine();
+          } else {
+            {
+              Upper _upper_1 = param.getCheck().getReference().getUpper();
+              boolean _tripleNotEquals_19 = (_upper_1 != null);
+              if (_tripleNotEquals_19) {
+                _builder.append("struct Ret ");
+                String _string_13 = param.getName().toString();
+                _builder.append(_string_13);
+                _builder.append(" (");
+                {
+                  EList<AbstractElement2> _elements_12 = param.getCheck().getEm().getElements();
+                  for(final AbstractElement2 par3 : _elements_12) {
+                    {
+                      String _name_25 = par3.getName();
+                      boolean _tripleNotEquals_20 = (_name_25 != null);
+                      if (_tripleNotEquals_20) {
+                        _builder.append("double ");
+                        String _name_26 = par3.getName();
+                        _builder.append(_name_26);
+                        _builder.append("[],");
+                      }
+                    }
+                  }
+                }
+                _builder.append(" ");
+                {
+                  EList<AbstractElement2> _elements_13 = param.getWhen().getEm().getElements();
+                  for(final AbstractElement2 par1_6 : _elements_13) {
+                    {
+                      String _name_27 = par1_6.getName();
+                      boolean _tripleNotEquals_21 = (_name_27 != null);
+                      if (_tripleNotEquals_21) {
+                        _builder.append("double ");
+                        String _name_28 = par1_6.getName();
+                        _builder.append(_name_28);
+                        _builder.append("[],");
+                      }
+                    }
+                  }
+                }
+                {
+                  EList<AbstractElement2> _elements_14 = param.getWhile().getEm().getElements();
+                  for(final AbstractElement2 par2_6 : _elements_14) {
+                    {
+                      String _name_29 = par2_6.getName();
+                      boolean _tripleNotEquals_22 = (_name_29 != null);
+                      if (_tripleNotEquals_22) {
+                        _builder.append("double ");
+                        String _name_30 = par2_6.getName();
+                        _builder.append(_name_30);
+                        _builder.append("[],");
+                      }
+                    }
+                  }
+                }
+                _builder.append(" double timeStamp[]){");
+                _builder.newLineIfNotEmpty();
+              } else {
+                Lower _lower_1 = param.getCheck().getReference().getLower();
+                boolean _tripleNotEquals_23 = (_lower_1 != null);
+                if (_tripleNotEquals_23) {
+                  _builder.append("struct Ret ");
+                  String _string_14 = param.getName().toString();
+                  _builder.append(_string_14);
+                  _builder.append(" (");
+                  {
+                    EList<AbstractElement2> _elements_15 = param.getCheck().getEm().getElements();
+                    for(final AbstractElement2 par3_1 : _elements_15) {
+                      {
+                        String _name_31 = par3_1.getName();
+                        boolean _tripleNotEquals_24 = (_name_31 != null);
+                        if (_tripleNotEquals_24) {
+                          _builder.append("double ");
+                          String _name_32 = par3_1.getName();
+                          _builder.append(_name_32);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  _builder.append(" ");
+                  {
+                    EList<AbstractElement2> _elements_16 = param.getWhen().getEm().getElements();
+                    for(final AbstractElement2 par1_7 : _elements_16) {
+                      {
+                        String _name_33 = par1_7.getName();
+                        boolean _tripleNotEquals_25 = (_name_33 != null);
+                        if (_tripleNotEquals_25) {
+                          _builder.append("double ");
+                          String _name_34 = par1_7.getName();
+                          _builder.append(_name_34);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  {
+                    EList<AbstractElement2> _elements_17 = param.getWhile().getEm().getElements();
+                    for(final AbstractElement2 par2_7 : _elements_17) {
+                      {
+                        String _name_35 = par2_7.getName();
+                        boolean _tripleNotEquals_26 = (_name_35 != null);
+                        if (_tripleNotEquals_26) {
+                          _builder.append("double ");
+                          String _name_36 = par2_7.getName();
+                          _builder.append(_name_36);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  _builder.append(" double timeStamp[]){");
+                  _builder.newLineIfNotEmpty();
+                } else {
+                  Same _same_1 = param.getCheck().getReference().getSame();
+                  boolean _tripleNotEquals_27 = (_same_1 != null);
+                  if (_tripleNotEquals_27) {
+                    _builder.append("struct Ret ");
+                    String _string_15 = param.getName().toString();
+                    _builder.append(_string_15);
+                    _builder.append(" (");
+                    {
+                      EList<AbstractElement2> _elements_18 = param.getCheck().getEm().getElements();
+                      for(final AbstractElement2 par3_2 : _elements_18) {
+                        {
+                          String _name_37 = par3_2.getName();
+                          boolean _tripleNotEquals_28 = (_name_37 != null);
+                          if (_tripleNotEquals_28) {
+                            _builder.append("double ");
+                            String _name_38 = par3_2.getName();
+                            _builder.append(_name_38);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" ");
+                    {
+                      EList<AbstractElement2> _elements_19 = param.getWhen().getEm().getElements();
+                      for(final AbstractElement2 par1_8 : _elements_19) {
+                        {
+                          String _name_39 = par1_8.getName();
+                          boolean _tripleNotEquals_29 = (_name_39 != null);
+                          if (_tripleNotEquals_29) {
+                            _builder.append("double ");
+                            String _name_40 = par1_8.getName();
+                            _builder.append(_name_40);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    {
+                      EList<AbstractElement2> _elements_20 = param.getWhile().getEm().getElements();
+                      for(final AbstractElement2 par2_8 : _elements_20) {
+                        {
+                          String _name_41 = par2_8.getName();
+                          boolean _tripleNotEquals_30 = (_name_41 != null);
+                          if (_tripleNotEquals_30) {
+                            _builder.append("double ");
+                            String _name_42 = par2_8.getName();
+                            _builder.append(_name_42);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" double timeStamp[]){");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    NotSame _notsame_1 = param.getCheck().getReference().getNotsame();
+                    boolean _tripleNotEquals_31 = (_notsame_1 != null);
+                    if (_tripleNotEquals_31) {
+                      _builder.append("struct Ret ");
+                      String _string_16 = param.getName().toString();
+                      _builder.append(_string_16);
+                      _builder.append(" (");
+                      {
+                        EList<AbstractElement2> _elements_21 = param.getCheck().getEm().getElements();
+                        for(final AbstractElement2 par3_3 : _elements_21) {
+                          {
+                            String _name_43 = par3_3.getName();
+                            boolean _tripleNotEquals_32 = (_name_43 != null);
+                            if (_tripleNotEquals_32) {
+                              _builder.append("double ");
+                              String _name_44 = par3_3.getName();
+                              _builder.append(_name_44);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" ");
+                      {
+                        EList<AbstractElement2> _elements_22 = param.getWhen().getEm().getElements();
+                        for(final AbstractElement2 par1_9 : _elements_22) {
+                          {
+                            String _name_45 = par1_9.getName();
+                            boolean _tripleNotEquals_33 = (_name_45 != null);
+                            if (_tripleNotEquals_33) {
+                              _builder.append("double ");
+                              String _name_46 = par1_9.getName();
+                              _builder.append(_name_46);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      {
+                        EList<AbstractElement2> _elements_23 = param.getWhile().getEm().getElements();
+                        for(final AbstractElement2 par2_9 : _elements_23) {
+                          {
+                            String _name_47 = par2_9.getName();
+                            boolean _tripleNotEquals_34 = (_name_47 != null);
+                            if (_tripleNotEquals_34) {
+                              _builder.append("double ");
+                              String _name_48 = par2_9.getName();
+                              _builder.append(_name_48);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" double timeStamp[]){\t\t\t");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      Range _range_1 = param.getCheck().getReference().getRange();
+                      boolean _tripleNotEquals_35 = (_range_1 != null);
+                      if (_tripleNotEquals_35) {
+                        _builder.append("struct Ret ");
+                        String _string_17 = param.getName().toString();
+                        _builder.append(_string_17);
+                        _builder.append(" (");
+                        {
+                          EList<AbstractElement2> _elements_24 = param.getCheck().getEm().getElements();
+                          for(final AbstractElement2 par3_4 : _elements_24) {
+                            {
+                              String _name_49 = par3_4.getName();
+                              boolean _tripleNotEquals_36 = (_name_49 != null);
+                              if (_tripleNotEquals_36) {
+                                _builder.append("double ");
+                                String _name_50 = par3_4.getName();
+                                _builder.append(_name_50);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" ");
+                        {
+                          EList<AbstractElement2> _elements_25 = param.getWhen().getEm().getElements();
+                          for(final AbstractElement2 par1_10 : _elements_25) {
+                            {
+                              String _name_51 = par1_10.getName();
+                              boolean _tripleNotEquals_37 = (_name_51 != null);
+                              if (_tripleNotEquals_37) {
+                                _builder.append("double ");
+                                String _name_52 = par1_10.getName();
+                                _builder.append(_name_52);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        {
+                          EList<AbstractElement2> _elements_26 = param.getWhile().getEm().getElements();
+                          for(final AbstractElement2 par2_10 : _elements_26) {
+                            {
+                              String _name_53 = par2_10.getName();
+                              boolean _tripleNotEquals_38 = (_name_53 != null);
+                              if (_tripleNotEquals_38) {
+                                _builder.append("double ");
+                                String _name_54 = par2_10.getName();
+                                _builder.append(_name_54);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" double timeStamp[]){");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        Gap _gap_1 = param.getCheck().getReference().getGap();
+                        boolean _tripleNotEquals_39 = (_gap_1 != null);
+                        if (_tripleNotEquals_39) {
+                          _builder.append("struct Ret ");
+                          String _string_18 = param.getName().toString();
+                          _builder.append(_string_18);
+                          _builder.append(" (");
+                          {
+                            EList<AbstractElement2> _elements_27 = param.getCheck().getEm().getElements();
+                            for(final AbstractElement2 par3_5 : _elements_27) {
+                              {
+                                String _name_55 = par3_5.getName();
+                                boolean _tripleNotEquals_40 = (_name_55 != null);
+                                if (_tripleNotEquals_40) {
+                                  _builder.append("double ");
+                                  String _name_56 = par3_5.getName();
+                                  _builder.append(_name_56);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" ");
+                          {
+                            EList<AbstractElement2> _elements_28 = param.getWhen().getEm().getElements();
+                            for(final AbstractElement2 par1_11 : _elements_28) {
+                              {
+                                String _name_57 = par1_11.getName();
+                                boolean _tripleNotEquals_41 = (_name_57 != null);
+                                if (_tripleNotEquals_41) {
+                                  _builder.append("double ");
+                                  String _name_58 = par1_11.getName();
+                                  _builder.append(_name_58);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          {
+                            EList<AbstractElement2> _elements_29 = param.getWhile().getEm().getElements();
+                            for(final AbstractElement2 par2_11 : _elements_29) {
+                              {
+                                String _name_59 = par2_11.getName();
+                                boolean _tripleNotEquals_42 = (_name_59 != null);
+                                if (_tripleNotEquals_42) {
+                                  _builder.append("double ");
+                                  String _name_60 = par2_11.getName();
+                                  _builder.append(_name_60);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" double timeStamp[]){");
+                          _builder.newLineIfNotEmpty();
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      } else {
+        if (((param.getWhen() == null) && (param.getWhile() != null))) {
+          {
+            String _name_61 = param.getCheck().getName();
+            boolean _tripleNotEquals_43 = (_name_61 != null);
+            if (_tripleNotEquals_43) {
+              {
+                Upper _upper_2 = param.getCheck().getReference().getUpper();
+                boolean _tripleNotEquals_44 = (_upper_2 != null);
+                if (_tripleNotEquals_44) {
+                  _builder.append("struct Ret ");
+                  String _string_19 = param.getName().toString();
+                  _builder.append(_string_19);
+                  _builder.append(" (double ");
+                  String _string_20 = param.getCheck().getName().toString();
+                  _builder.append(_string_20);
+                  _builder.append("[], ");
+                  {
+                    EList<AbstractElement2> _elements_30 = param.getWhile().getEm().getElements();
+                    for(final AbstractElement2 par2_12 : _elements_30) {
+                      {
+                        String _name_62 = par2_12.getName();
+                        boolean _tripleNotEquals_45 = (_name_62 != null);
+                        if (_tripleNotEquals_45) {
+                          _builder.append("double ");
+                          String _name_63 = par2_12.getName();
+                          _builder.append(_name_63);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  _builder.append(" double timeStamp[]){");
+                  _builder.newLineIfNotEmpty();
+                } else {
+                  Lower _lower_2 = param.getCheck().getReference().getLower();
+                  boolean _tripleNotEquals_46 = (_lower_2 != null);
+                  if (_tripleNotEquals_46) {
+                    _builder.append("struct Ret ");
+                    String _string_21 = param.getName().toString();
+                    _builder.append(_string_21);
+                    _builder.append(" (double ");
+                    String _string_22 = param.getCheck().getName().toString();
+                    _builder.append(_string_22);
+                    _builder.append("[], ");
+                    {
+                      EList<AbstractElement2> _elements_31 = param.getWhile().getEm().getElements();
+                      for(final AbstractElement2 par2_13 : _elements_31) {
+                        {
+                          String _name_64 = par2_13.getName();
+                          boolean _tripleNotEquals_47 = (_name_64 != null);
+                          if (_tripleNotEquals_47) {
+                            _builder.append("double ");
+                            String _name_65 = par2_13.getName();
+                            _builder.append(_name_65);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" double timeStamp[]){");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Same _same_2 = param.getCheck().getReference().getSame();
+                    boolean _tripleNotEquals_48 = (_same_2 != null);
+                    if (_tripleNotEquals_48) {
+                      _builder.append("struct Ret ");
+                      String _string_23 = param.getName().toString();
+                      _builder.append(_string_23);
+                      _builder.append(" (double ");
+                      String _string_24 = param.getCheck().getName().toString();
+                      _builder.append(_string_24);
+                      _builder.append("[], ");
+                      {
+                        EList<AbstractElement2> _elements_32 = param.getWhile().getEm().getElements();
+                        for(final AbstractElement2 par2_14 : _elements_32) {
+                          {
+                            String _name_66 = par2_14.getName();
+                            boolean _tripleNotEquals_49 = (_name_66 != null);
+                            if (_tripleNotEquals_49) {
+                              _builder.append("double ");
+                              String _name_67 = par2_14.getName();
+                              _builder.append(_name_67);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" double timeStamp[]){");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      NotSame _notsame_2 = param.getCheck().getReference().getNotsame();
+                      boolean _tripleNotEquals_50 = (_notsame_2 != null);
+                      if (_tripleNotEquals_50) {
+                        _builder.append("struct Ret ");
+                        String _string_25 = param.getName().toString();
+                        _builder.append(_string_25);
+                        _builder.append(" (double ");
+                        String _string_26 = param.getCheck().getName().toString();
+                        _builder.append(_string_26);
+                        _builder.append("[], ");
+                        {
+                          EList<AbstractElement2> _elements_33 = param.getWhile().getEm().getElements();
+                          for(final AbstractElement2 par2_15 : _elements_33) {
+                            {
+                              String _name_68 = par2_15.getName();
+                              boolean _tripleNotEquals_51 = (_name_68 != null);
+                              if (_tripleNotEquals_51) {
+                                _builder.append("double ");
+                                String _name_69 = par2_15.getName();
+                                _builder.append(_name_69);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" double timeStamp[]){\t\t\t\t");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        Range _range_2 = param.getCheck().getReference().getRange();
+                        boolean _tripleNotEquals_52 = (_range_2 != null);
+                        if (_tripleNotEquals_52) {
+                          _builder.append("struct Ret ");
+                          String _string_27 = param.getName().toString();
+                          _builder.append(_string_27);
+                          _builder.append(" (double ");
+                          String _string_28 = param.getCheck().getName().toString();
+                          _builder.append(_string_28);
+                          _builder.append("[], ");
+                          {
+                            EList<AbstractElement2> _elements_34 = param.getWhile().getEm().getElements();
+                            for(final AbstractElement2 par2_16 : _elements_34) {
+                              {
+                                String _name_70 = par2_16.getName();
+                                boolean _tripleNotEquals_53 = (_name_70 != null);
+                                if (_tripleNotEquals_53) {
+                                  _builder.append("double ");
+                                  String _name_71 = par2_16.getName();
+                                  _builder.append(_name_71);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" double timeStamp[]){");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          Gap _gap_2 = param.getCheck().getReference().getGap();
+                          boolean _tripleNotEquals_54 = (_gap_2 != null);
+                          if (_tripleNotEquals_54) {
+                            _builder.append("struct Ret ");
+                            String _string_29 = param.getName().toString();
+                            _builder.append(_string_29);
+                            _builder.append(" (double ");
+                            String _string_30 = param.getCheck().getName().toString();
+                            _builder.append(_string_30);
+                            _builder.append("[], ");
+                            {
+                              EList<AbstractElement2> _elements_35 = param.getWhile().getEm().getElements();
+                              for(final AbstractElement2 par2_17 : _elements_35) {
+                                {
+                                  String _name_72 = par2_17.getName();
+                                  boolean _tripleNotEquals_55 = (_name_72 != null);
+                                  if (_tripleNotEquals_55) {
+                                    _builder.append("double ");
+                                    String _name_73 = par2_17.getName();
+                                    _builder.append(_name_73);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" double timeStamp[]){");
+                            _builder.newLineIfNotEmpty();
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            } else {
+              {
+                Upper _upper_3 = param.getCheck().getReference().getUpper();
+                boolean _tripleNotEquals_56 = (_upper_3 != null);
+                if (_tripleNotEquals_56) {
+                  _builder.append("struct Ret ");
+                  String _string_31 = param.getName().toString();
+                  _builder.append(_string_31);
+                  _builder.append(" (");
+                  {
+                    EList<AbstractElement2> _elements_36 = param.getCheck().getEm().getElements();
+                    for(final AbstractElement2 par3_6 : _elements_36) {
+                      {
+                        String _name_74 = par3_6.getName();
+                        boolean _tripleNotEquals_57 = (_name_74 != null);
+                        if (_tripleNotEquals_57) {
+                          _builder.append("double ");
+                          String _name_75 = par3_6.getName();
+                          _builder.append(_name_75);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  _builder.append(" ");
+                  {
+                    EList<AbstractElement2> _elements_37 = param.getWhile().getEm().getElements();
+                    for(final AbstractElement2 par2_18 : _elements_37) {
+                      {
+                        String _name_76 = par2_18.getName();
+                        boolean _tripleNotEquals_58 = (_name_76 != null);
+                        if (_tripleNotEquals_58) {
+                          _builder.append("double ");
+                          String _name_77 = par2_18.getName();
+                          _builder.append(_name_77);
+                          _builder.append("[],");
+                        }
+                      }
+                    }
+                  }
+                  _builder.append(" double timeStamp[]){");
+                  _builder.newLineIfNotEmpty();
+                } else {
+                  Lower _lower_3 = param.getCheck().getReference().getLower();
+                  boolean _tripleNotEquals_59 = (_lower_3 != null);
+                  if (_tripleNotEquals_59) {
+                    _builder.append("struct Ret ");
+                    String _string_32 = param.getName().toString();
+                    _builder.append(_string_32);
+                    _builder.append(" (");
+                    {
+                      EList<AbstractElement2> _elements_38 = param.getCheck().getEm().getElements();
+                      for(final AbstractElement2 par3_7 : _elements_38) {
+                        {
+                          String _name_78 = par3_7.getName();
+                          boolean _tripleNotEquals_60 = (_name_78 != null);
+                          if (_tripleNotEquals_60) {
+                            _builder.append("double ");
+                            String _name_79 = par3_7.getName();
+                            _builder.append(_name_79);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" ");
+                    {
+                      EList<AbstractElement2> _elements_39 = param.getWhile().getEm().getElements();
+                      for(final AbstractElement2 par2_19 : _elements_39) {
+                        {
+                          String _name_80 = par2_19.getName();
+                          boolean _tripleNotEquals_61 = (_name_80 != null);
+                          if (_tripleNotEquals_61) {
+                            _builder.append("double ");
+                            String _name_81 = par2_19.getName();
+                            _builder.append(_name_81);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" double timeStamp[]){");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Same _same_3 = param.getCheck().getReference().getSame();
+                    boolean _tripleNotEquals_62 = (_same_3 != null);
+                    if (_tripleNotEquals_62) {
+                      _builder.append("struct Ret ");
+                      String _string_33 = param.getName().toString();
+                      _builder.append(_string_33);
+                      _builder.append(" (");
+                      {
+                        EList<AbstractElement2> _elements_40 = param.getCheck().getEm().getElements();
+                        for(final AbstractElement2 par3_8 : _elements_40) {
+                          {
+                            String _name_82 = par3_8.getName();
+                            boolean _tripleNotEquals_63 = (_name_82 != null);
+                            if (_tripleNotEquals_63) {
+                              _builder.append("double ");
+                              String _name_83 = par3_8.getName();
+                              _builder.append(_name_83);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" ");
+                      {
+                        EList<AbstractElement2> _elements_41 = param.getWhile().getEm().getElements();
+                        for(final AbstractElement2 par2_20 : _elements_41) {
+                          {
+                            String _name_84 = par2_20.getName();
+                            boolean _tripleNotEquals_64 = (_name_84 != null);
+                            if (_tripleNotEquals_64) {
+                              _builder.append("double ");
+                              String _name_85 = par2_20.getName();
+                              _builder.append(_name_85);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" double timeStamp[]){");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      NotSame _notsame_3 = param.getCheck().getReference().getNotsame();
+                      boolean _tripleNotEquals_65 = (_notsame_3 != null);
+                      if (_tripleNotEquals_65) {
+                        _builder.append("struct Ret ");
+                        String _string_34 = param.getName().toString();
+                        _builder.append(_string_34);
+                        _builder.append(" (");
+                        {
+                          EList<AbstractElement2> _elements_42 = param.getCheck().getEm().getElements();
+                          for(final AbstractElement2 par3_9 : _elements_42) {
+                            {
+                              String _name_86 = par3_9.getName();
+                              boolean _tripleNotEquals_66 = (_name_86 != null);
+                              if (_tripleNotEquals_66) {
+                                _builder.append("double ");
+                                String _name_87 = par3_9.getName();
+                                _builder.append(_name_87);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" ");
+                        {
+                          EList<AbstractElement2> _elements_43 = param.getWhile().getEm().getElements();
+                          for(final AbstractElement2 par2_21 : _elements_43) {
+                            {
+                              String _name_88 = par2_21.getName();
+                              boolean _tripleNotEquals_67 = (_name_88 != null);
+                              if (_tripleNotEquals_67) {
+                                _builder.append("double ");
+                                String _name_89 = par2_21.getName();
+                                _builder.append(_name_89);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" double timeStamp[]){\t\t\t\t");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        Range _range_3 = param.getCheck().getReference().getRange();
+                        boolean _tripleNotEquals_68 = (_range_3 != null);
+                        if (_tripleNotEquals_68) {
+                          _builder.append("struct Ret ");
+                          String _string_35 = param.getName().toString();
+                          _builder.append(_string_35);
+                          _builder.append(" (");
+                          {
+                            EList<AbstractElement2> _elements_44 = param.getCheck().getEm().getElements();
+                            for(final AbstractElement2 par3_10 : _elements_44) {
+                              {
+                                String _name_90 = par3_10.getName();
+                                boolean _tripleNotEquals_69 = (_name_90 != null);
+                                if (_tripleNotEquals_69) {
+                                  _builder.append("double ");
+                                  String _name_91 = par3_10.getName();
+                                  _builder.append(_name_91);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" ");
+                          {
+                            EList<AbstractElement2> _elements_45 = param.getWhile().getEm().getElements();
+                            for(final AbstractElement2 par2_22 : _elements_45) {
+                              {
+                                String _name_92 = par2_22.getName();
+                                boolean _tripleNotEquals_70 = (_name_92 != null);
+                                if (_tripleNotEquals_70) {
+                                  _builder.append("double ");
+                                  String _name_93 = par2_22.getName();
+                                  _builder.append(_name_93);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" double timeStamp[]){");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          Gap _gap_3 = param.getCheck().getReference().getGap();
+                          boolean _tripleNotEquals_71 = (_gap_3 != null);
+                          if (_tripleNotEquals_71) {
+                            _builder.append("struct Ret ");
+                            String _string_36 = param.getName().toString();
+                            _builder.append(_string_36);
+                            _builder.append(" (");
+                            {
+                              EList<AbstractElement2> _elements_46 = param.getCheck().getEm().getElements();
+                              for(final AbstractElement2 par3_11 : _elements_46) {
+                                {
+                                  String _name_94 = par3_11.getName();
+                                  boolean _tripleNotEquals_72 = (_name_94 != null);
+                                  if (_tripleNotEquals_72) {
+                                    _builder.append("double ");
+                                    String _name_95 = par3_11.getName();
+                                    _builder.append(_name_95);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" ");
+                            {
+                              EList<AbstractElement2> _elements_47 = param.getWhile().getEm().getElements();
+                              for(final AbstractElement2 par2_23 : _elements_47) {
+                                {
+                                  String _name_96 = par2_23.getName();
+                                  boolean _tripleNotEquals_73 = (_name_96 != null);
+                                  if (_tripleNotEquals_73) {
+                                    _builder.append("double ");
+                                    String _name_97 = par2_23.getName();
+                                    _builder.append(_name_97);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" double timeStamp[]){");
+                            _builder.newLineIfNotEmpty();
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        } else {
+          if (((param.getWhen() != null) && (param.getWhile() == null))) {
+            {
+              String _name_98 = param.getCheck().getName();
+              boolean _tripleNotEquals_74 = (_name_98 != null);
+              if (_tripleNotEquals_74) {
+                {
+                  Upper _upper_4 = param.getCheck().getReference().getUpper();
+                  boolean _tripleNotEquals_75 = (_upper_4 != null);
+                  if (_tripleNotEquals_75) {
+                    _builder.append("struct Ret ");
+                    String _string_37 = param.getName().toString();
+                    _builder.append(_string_37);
+                    _builder.append(" (double ");
+                    String _string_38 = param.getCheck().getName().toString();
+                    _builder.append(_string_38);
+                    _builder.append("[], ");
+                    {
+                      EList<AbstractElement2> _elements_48 = param.getWhen().getEm().getElements();
+                      for(final AbstractElement2 par1_12 : _elements_48) {
+                        {
+                          String _name_99 = par1_12.getName();
+                          boolean _tripleNotEquals_76 = (_name_99 != null);
+                          if (_tripleNotEquals_76) {
+                            _builder.append("double ");
+                            String _name_100 = par1_12.getName();
+                            _builder.append(_name_100);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" double timeStamp[]){");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Lower _lower_4 = param.getCheck().getReference().getLower();
+                    boolean _tripleNotEquals_77 = (_lower_4 != null);
+                    if (_tripleNotEquals_77) {
+                      _builder.append("struct Ret ");
+                      String _string_39 = param.getName().toString();
+                      _builder.append(_string_39);
+                      _builder.append(" (double ");
+                      String _string_40 = param.getCheck().getName().toString();
+                      _builder.append(_string_40);
+                      _builder.append("[], ");
+                      {
+                        EList<AbstractElement2> _elements_49 = param.getWhen().getEm().getElements();
+                        for(final AbstractElement2 par1_13 : _elements_49) {
+                          {
+                            String _name_101 = par1_13.getName();
+                            boolean _tripleNotEquals_78 = (_name_101 != null);
+                            if (_tripleNotEquals_78) {
+                              _builder.append("double ");
+                              String _name_102 = par1_13.getName();
+                              _builder.append(_name_102);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" double timeStamp[]){");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      Same _same_4 = param.getCheck().getReference().getSame();
+                      boolean _tripleNotEquals_79 = (_same_4 != null);
+                      if (_tripleNotEquals_79) {
+                        _builder.append("struct Ret ");
+                        String _string_41 = param.getName().toString();
+                        _builder.append(_string_41);
+                        _builder.append(" (double ");
+                        String _string_42 = param.getCheck().getName().toString();
+                        _builder.append(_string_42);
+                        _builder.append("[], ");
+                        {
+                          EList<AbstractElement2> _elements_50 = param.getWhen().getEm().getElements();
+                          for(final AbstractElement2 par1_14 : _elements_50) {
+                            {
+                              String _name_103 = par1_14.getName();
+                              boolean _tripleNotEquals_80 = (_name_103 != null);
+                              if (_tripleNotEquals_80) {
+                                _builder.append("double ");
+                                String _name_104 = par1_14.getName();
+                                _builder.append(_name_104);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" double timeStamp[]){");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        NotSame _notsame_4 = param.getCheck().getReference().getNotsame();
+                        boolean _tripleNotEquals_81 = (_notsame_4 != null);
+                        if (_tripleNotEquals_81) {
+                          _builder.append("struct Ret ");
+                          String _string_43 = param.getName().toString();
+                          _builder.append(_string_43);
+                          _builder.append(" (double ");
+                          String _string_44 = param.getCheck().getName().toString();
+                          _builder.append(_string_44);
+                          _builder.append("[], ");
+                          {
+                            EList<AbstractElement2> _elements_51 = param.getWhen().getEm().getElements();
+                            for(final AbstractElement2 par1_15 : _elements_51) {
+                              {
+                                String _name_105 = par1_15.getName();
+                                boolean _tripleNotEquals_82 = (_name_105 != null);
+                                if (_tripleNotEquals_82) {
+                                  _builder.append("double ");
+                                  String _name_106 = par1_15.getName();
+                                  _builder.append(_name_106);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" double timeStamp[]){\t\t\t");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          Range _range_4 = param.getCheck().getReference().getRange();
+                          boolean _tripleNotEquals_83 = (_range_4 != null);
+                          if (_tripleNotEquals_83) {
+                            _builder.append("struct Ret ");
+                            String _string_45 = param.getName().toString();
+                            _builder.append(_string_45);
+                            _builder.append(" (double ");
+                            String _string_46 = param.getCheck().getName().toString();
+                            _builder.append(_string_46);
+                            _builder.append("[], ");
+                            {
+                              EList<AbstractElement2> _elements_52 = param.getWhen().getEm().getElements();
+                              for(final AbstractElement2 par1_16 : _elements_52) {
+                                {
+                                  String _name_107 = par1_16.getName();
+                                  boolean _tripleNotEquals_84 = (_name_107 != null);
+                                  if (_tripleNotEquals_84) {
+                                    _builder.append("double ");
+                                    String _name_108 = par1_16.getName();
+                                    _builder.append(_name_108);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" double timeStamp[]){");
+                            _builder.newLineIfNotEmpty();
+                          } else {
+                            Gap _gap_4 = param.getCheck().getReference().getGap();
+                            boolean _tripleNotEquals_85 = (_gap_4 != null);
+                            if (_tripleNotEquals_85) {
+                              _builder.append("struct Ret ");
+                              String _string_47 = param.getName().toString();
+                              _builder.append(_string_47);
+                              _builder.append(" (double ");
+                              String _string_48 = param.getCheck().getName().toString();
+                              _builder.append(_string_48);
+                              _builder.append("[], ");
+                              {
+                                EList<AbstractElement2> _elements_53 = param.getWhen().getEm().getElements();
+                                for(final AbstractElement2 par1_17 : _elements_53) {
+                                  {
+                                    String _name_109 = par1_17.getName();
+                                    boolean _tripleNotEquals_86 = (_name_109 != null);
+                                    if (_tripleNotEquals_86) {
+                                      _builder.append("double ");
+                                      String _name_110 = par1_17.getName();
+                                      _builder.append(_name_110);
+                                      _builder.append("[],");
+                                    }
+                                  }
+                                }
+                              }
+                              _builder.append(" double timeStamp[]){");
+                              _builder.newLineIfNotEmpty();
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              } else {
+                {
+                  Upper _upper_5 = param.getCheck().getReference().getUpper();
+                  boolean _tripleNotEquals_87 = (_upper_5 != null);
+                  if (_tripleNotEquals_87) {
+                    _builder.append("struct Ret ");
+                    String _string_49 = param.getName().toString();
+                    _builder.append(_string_49);
+                    _builder.append(" (");
+                    {
+                      EList<AbstractElement2> _elements_54 = param.getCheck().getEm().getElements();
+                      for(final AbstractElement2 par3_12 : _elements_54) {
+                        {
+                          String _name_111 = par3_12.getName();
+                          boolean _tripleNotEquals_88 = (_name_111 != null);
+                          if (_tripleNotEquals_88) {
+                            _builder.append("double ");
+                            String _name_112 = par3_12.getName();
+                            _builder.append(_name_112);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" ");
+                    {
+                      EList<AbstractElement2> _elements_55 = param.getWhen().getEm().getElements();
+                      for(final AbstractElement2 par1_18 : _elements_55) {
+                        {
+                          String _name_113 = par1_18.getName();
+                          boolean _tripleNotEquals_89 = (_name_113 != null);
+                          if (_tripleNotEquals_89) {
+                            _builder.append("double ");
+                            String _name_114 = par1_18.getName();
+                            _builder.append(_name_114);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" double timeStamp[]){");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Lower _lower_5 = param.getCheck().getReference().getLower();
+                    boolean _tripleNotEquals_90 = (_lower_5 != null);
+                    if (_tripleNotEquals_90) {
+                      _builder.append("struct Ret ");
+                      String _string_50 = param.getName().toString();
+                      _builder.append(_string_50);
+                      _builder.append(" (");
+                      {
+                        EList<AbstractElement2> _elements_56 = param.getCheck().getEm().getElements();
+                        for(final AbstractElement2 par3_13 : _elements_56) {
+                          {
+                            String _name_115 = par3_13.getName();
+                            boolean _tripleNotEquals_91 = (_name_115 != null);
+                            if (_tripleNotEquals_91) {
+                              _builder.append("double ");
+                              String _name_116 = par3_13.getName();
+                              _builder.append(_name_116);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" ");
+                      {
+                        EList<AbstractElement2> _elements_57 = param.getWhen().getEm().getElements();
+                        for(final AbstractElement2 par1_19 : _elements_57) {
+                          {
+                            String _name_117 = par1_19.getName();
+                            boolean _tripleNotEquals_92 = (_name_117 != null);
+                            if (_tripleNotEquals_92) {
+                              _builder.append("double ");
+                              String _name_118 = par1_19.getName();
+                              _builder.append(_name_118);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" double timeStamp[]){");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      Same _same_5 = param.getCheck().getReference().getSame();
+                      boolean _tripleNotEquals_93 = (_same_5 != null);
+                      if (_tripleNotEquals_93) {
+                        _builder.append("struct Ret ");
+                        String _string_51 = param.getName().toString();
+                        _builder.append(_string_51);
+                        _builder.append(" (");
+                        {
+                          EList<AbstractElement2> _elements_58 = param.getCheck().getEm().getElements();
+                          for(final AbstractElement2 par3_14 : _elements_58) {
+                            {
+                              String _name_119 = par3_14.getName();
+                              boolean _tripleNotEquals_94 = (_name_119 != null);
+                              if (_tripleNotEquals_94) {
+                                _builder.append("double ");
+                                String _name_120 = par3_14.getName();
+                                _builder.append(_name_120);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" ");
+                        {
+                          EList<AbstractElement2> _elements_59 = param.getWhen().getEm().getElements();
+                          for(final AbstractElement2 par1_20 : _elements_59) {
+                            {
+                              String _name_121 = par1_20.getName();
+                              boolean _tripleNotEquals_95 = (_name_121 != null);
+                              if (_tripleNotEquals_95) {
+                                _builder.append("double ");
+                                String _name_122 = par1_20.getName();
+                                _builder.append(_name_122);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" double timeStamp[]){");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        NotSame _notsame_5 = param.getCheck().getReference().getNotsame();
+                        boolean _tripleNotEquals_96 = (_notsame_5 != null);
+                        if (_tripleNotEquals_96) {
+                          _builder.append("struct Ret ");
+                          String _string_52 = param.getName().toString();
+                          _builder.append(_string_52);
+                          _builder.append(" (");
+                          {
+                            EList<AbstractElement2> _elements_60 = param.getCheck().getEm().getElements();
+                            for(final AbstractElement2 par3_15 : _elements_60) {
+                              {
+                                String _name_123 = par3_15.getName();
+                                boolean _tripleNotEquals_97 = (_name_123 != null);
+                                if (_tripleNotEquals_97) {
+                                  _builder.append("double ");
+                                  String _name_124 = par3_15.getName();
+                                  _builder.append(_name_124);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" ");
+                          {
+                            EList<AbstractElement2> _elements_61 = param.getWhen().getEm().getElements();
+                            for(final AbstractElement2 par1_21 : _elements_61) {
+                              {
+                                String _name_125 = par1_21.getName();
+                                boolean _tripleNotEquals_98 = (_name_125 != null);
+                                if (_tripleNotEquals_98) {
+                                  _builder.append("double ");
+                                  String _name_126 = par1_21.getName();
+                                  _builder.append(_name_126);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" double timeStamp[]){\t\t\t");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          Range _range_5 = param.getCheck().getReference().getRange();
+                          boolean _tripleNotEquals_99 = (_range_5 != null);
+                          if (_tripleNotEquals_99) {
+                            _builder.append("struct Ret ");
+                            String _string_53 = param.getName().toString();
+                            _builder.append(_string_53);
+                            _builder.append(" (");
+                            {
+                              EList<AbstractElement2> _elements_62 = param.getCheck().getEm().getElements();
+                              for(final AbstractElement2 par3_16 : _elements_62) {
+                                {
+                                  String _name_127 = par3_16.getName();
+                                  boolean _tripleNotEquals_100 = (_name_127 != null);
+                                  if (_tripleNotEquals_100) {
+                                    _builder.append("double ");
+                                    String _name_128 = par3_16.getName();
+                                    _builder.append(_name_128);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" ");
+                            {
+                              EList<AbstractElement2> _elements_63 = param.getWhen().getEm().getElements();
+                              for(final AbstractElement2 par1_22 : _elements_63) {
+                                {
+                                  String _name_129 = par1_22.getName();
+                                  boolean _tripleNotEquals_101 = (_name_129 != null);
+                                  if (_tripleNotEquals_101) {
+                                    _builder.append("double ");
+                                    String _name_130 = par1_22.getName();
+                                    _builder.append(_name_130);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" double timeStamp[]){");
+                            _builder.newLineIfNotEmpty();
+                          } else {
+                            Gap _gap_5 = param.getCheck().getReference().getGap();
+                            boolean _tripleNotEquals_102 = (_gap_5 != null);
+                            if (_tripleNotEquals_102) {
+                              _builder.append("struct Ret ");
+                              String _string_54 = param.getName().toString();
+                              _builder.append(_string_54);
+                              _builder.append(" (");
+                              {
+                                EList<AbstractElement2> _elements_64 = param.getCheck().getEm().getElements();
+                                for(final AbstractElement2 par3_17 : _elements_64) {
+                                  {
+                                    String _name_131 = par3_17.getName();
+                                    boolean _tripleNotEquals_103 = (_name_131 != null);
+                                    if (_tripleNotEquals_103) {
+                                      _builder.append("double ");
+                                      String _name_132 = par3_17.getName();
+                                      _builder.append(_name_132);
+                                      _builder.append("[],");
+                                    }
+                                  }
+                                }
+                              }
+                              _builder.append(" ");
+                              {
+                                EList<AbstractElement2> _elements_65 = param.getWhen().getEm().getElements();
+                                for(final AbstractElement2 par1_23 : _elements_65) {
+                                  {
+                                    String _name_133 = par1_23.getName();
+                                    boolean _tripleNotEquals_104 = (_name_133 != null);
+                                    if (_tripleNotEquals_104) {
+                                      _builder.append("double ");
+                                      String _name_134 = par1_23.getName();
+                                      _builder.append(_name_134);
+                                      _builder.append("[],");
+                                    }
+                                  }
+                                }
+                              }
+                              _builder.append(" double timeStamp[]){");
+                              _builder.newLineIfNotEmpty();
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } else {
+            {
+              String _name_135 = param.getCheck().getName();
+              boolean _tripleNotEquals_105 = (_name_135 != null);
+              if (_tripleNotEquals_105) {
+                {
+                  Upper _upper_6 = param.getCheck().getReference().getUpper();
+                  boolean _tripleNotEquals_106 = (_upper_6 != null);
+                  if (_tripleNotEquals_106) {
+                    _builder.append("struct Ret ");
+                    String _string_55 = param.getName().toString();
+                    _builder.append(_string_55);
+                    _builder.append(" (double ");
+                    String _string_56 = param.getCheck().getName().toString();
+                    _builder.append(_string_56);
+                    _builder.append("[],double timeStamp[]){");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Lower _lower_6 = param.getCheck().getReference().getLower();
+                    boolean _tripleNotEquals_107 = (_lower_6 != null);
+                    if (_tripleNotEquals_107) {
+                      _builder.append("struct Ret ");
+                      String _string_57 = param.getName().toString();
+                      _builder.append(_string_57);
+                      _builder.append(" (double ");
+                      String _string_58 = param.getCheck().getName().toString();
+                      _builder.append(_string_58);
+                      _builder.append("[],double timeStamp[]){");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      Same _same_6 = param.getCheck().getReference().getSame();
+                      boolean _tripleNotEquals_108 = (_same_6 != null);
+                      if (_tripleNotEquals_108) {
+                        _builder.append("struct Ret ");
+                        String _string_59 = param.getName().toString();
+                        _builder.append(_string_59);
+                        _builder.append(" (double ");
+                        String _string_60 = param.getCheck().getName().toString();
+                        _builder.append(_string_60);
+                        _builder.append("[],double timeStamp[]){");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        NotSame _notsame_6 = param.getCheck().getReference().getNotsame();
+                        boolean _tripleNotEquals_109 = (_notsame_6 != null);
+                        if (_tripleNotEquals_109) {
+                          _builder.append("struct Ret ");
+                          String _string_61 = param.getName().toString();
+                          _builder.append(_string_61);
+                          _builder.append(" (double ");
+                          String _string_62 = param.getCheck().getName().toString();
+                          _builder.append(_string_62);
+                          _builder.append("[],double timeStamp[]){\t\t\t");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          Range _range_6 = param.getCheck().getReference().getRange();
+                          boolean _tripleNotEquals_110 = (_range_6 != null);
+                          if (_tripleNotEquals_110) {
+                            _builder.append("struct Ret ");
+                            String _string_63 = param.getName().toString();
+                            _builder.append(_string_63);
+                            _builder.append(" (double ");
+                            String _string_64 = param.getCheck().getName().toString();
+                            _builder.append(_string_64);
+                            _builder.append("[],double timeStamp[]){");
+                            _builder.newLineIfNotEmpty();
+                          } else {
+                            Gap _gap_6 = param.getCheck().getReference().getGap();
+                            boolean _tripleNotEquals_111 = (_gap_6 != null);
+                            if (_tripleNotEquals_111) {
+                              _builder.append("struct Ret ");
+                              String _string_65 = param.getName().toString();
+                              _builder.append(_string_65);
+                              _builder.append(" (double ");
+                              String _string_66 = param.getCheck().getName().toString();
+                              _builder.append(_string_66);
+                              _builder.append("[],double timeStamp[]){");
+                              _builder.newLineIfNotEmpty();
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              } else {
+                {
+                  Upper _upper_7 = param.getCheck().getReference().getUpper();
+                  boolean _tripleNotEquals_112 = (_upper_7 != null);
+                  if (_tripleNotEquals_112) {
+                    _builder.append("struct Ret ");
+                    String _string_67 = param.getName().toString();
+                    _builder.append(_string_67);
+                    _builder.append(" (");
+                    {
+                      EList<AbstractElement2> _elements_66 = param.getCheck().getEm().getElements();
+                      for(final AbstractElement2 par3_18 : _elements_66) {
+                        {
+                          String _name_136 = par3_18.getName();
+                          boolean _tripleNotEquals_113 = (_name_136 != null);
+                          if (_tripleNotEquals_113) {
+                            _builder.append("double ");
+                            String _name_137 = par3_18.getName();
+                            _builder.append(_name_137);
+                            _builder.append("[],");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append("double timeStamp[]){");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Lower _lower_7 = param.getCheck().getReference().getLower();
+                    boolean _tripleNotEquals_114 = (_lower_7 != null);
+                    if (_tripleNotEquals_114) {
+                      _builder.append("struct Ret ");
+                      String _string_68 = param.getName().toString();
+                      _builder.append(_string_68);
+                      _builder.append(" (");
+                      {
+                        EList<AbstractElement2> _elements_67 = param.getCheck().getEm().getElements();
+                        for(final AbstractElement2 par3_19 : _elements_67) {
+                          {
+                            String _name_138 = par3_19.getName();
+                            boolean _tripleNotEquals_115 = (_name_138 != null);
+                            if (_tripleNotEquals_115) {
+                              _builder.append("double ");
+                              String _name_139 = par3_19.getName();
+                              _builder.append(_name_139);
+                              _builder.append("[],");
+                            }
+                          }
+                        }
+                      }
+                      _builder.append("double timeStamp[]){");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      Same _same_7 = param.getCheck().getReference().getSame();
+                      boolean _tripleNotEquals_116 = (_same_7 != null);
+                      if (_tripleNotEquals_116) {
+                        _builder.append("struct Ret ");
+                        String _string_69 = param.getName().toString();
+                        _builder.append(_string_69);
+                        _builder.append(" (");
+                        {
+                          EList<AbstractElement2> _elements_68 = param.getCheck().getEm().getElements();
+                          for(final AbstractElement2 par3_20 : _elements_68) {
+                            {
+                              String _name_140 = par3_20.getName();
+                              boolean _tripleNotEquals_117 = (_name_140 != null);
+                              if (_tripleNotEquals_117) {
+                                _builder.append("double ");
+                                String _name_141 = par3_20.getName();
+                                _builder.append(_name_141);
+                                _builder.append("[],");
+                              }
+                            }
+                          }
+                        }
+                        _builder.append("double timeStamp[]){");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        NotSame _notsame_7 = param.getCheck().getReference().getNotsame();
+                        boolean _tripleNotEquals_118 = (_notsame_7 != null);
+                        if (_tripleNotEquals_118) {
+                          _builder.append("struct Ret ");
+                          String _string_70 = param.getName().toString();
+                          _builder.append(_string_70);
+                          _builder.append(" (");
+                          {
+                            EList<AbstractElement2> _elements_69 = param.getCheck().getEm().getElements();
+                            for(final AbstractElement2 par3_21 : _elements_69) {
+                              {
+                                String _name_142 = par3_21.getName();
+                                boolean _tripleNotEquals_119 = (_name_142 != null);
+                                if (_tripleNotEquals_119) {
+                                  _builder.append("double ");
+                                  String _name_143 = par3_21.getName();
+                                  _builder.append(_name_143);
+                                  _builder.append("[],");
+                                }
+                              }
+                            }
+                          }
+                          _builder.append("double timeStamp[]){\t\t\t");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          Range _range_7 = param.getCheck().getReference().getRange();
+                          boolean _tripleNotEquals_120 = (_range_7 != null);
+                          if (_tripleNotEquals_120) {
+                            _builder.append("struct Ret ");
+                            String _string_71 = param.getName().toString();
+                            _builder.append(_string_71);
+                            _builder.append(" (");
+                            {
+                              EList<AbstractElement2> _elements_70 = param.getCheck().getEm().getElements();
+                              for(final AbstractElement2 par3_22 : _elements_70) {
+                                {
+                                  String _name_144 = par3_22.getName();
+                                  boolean _tripleNotEquals_121 = (_name_144 != null);
+                                  if (_tripleNotEquals_121) {
+                                    _builder.append("double ");
+                                    String _name_145 = par3_22.getName();
+                                    _builder.append(_name_145);
+                                    _builder.append("[],");
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append("double timeStamp[]){");
+                            _builder.newLineIfNotEmpty();
+                          } else {
+                            Gap _gap_7 = param.getCheck().getReference().getGap();
+                            boolean _tripleNotEquals_122 = (_gap_7 != null);
+                            if (_tripleNotEquals_122) {
+                              _builder.append("struct Ret ");
+                              String _string_72 = param.getName().toString();
+                              _builder.append(_string_72);
+                              _builder.append(" (");
+                              {
+                                EList<AbstractElement2> _elements_71 = param.getCheck().getEm().getElements();
+                                for(final AbstractElement2 par3_23 : _elements_71) {
+                                  {
+                                    String _name_146 = par3_23.getName();
+                                    boolean _tripleNotEquals_123 = (_name_146 != null);
+                                    if (_tripleNotEquals_123) {
+                                      _builder.append("double ");
+                                      String _name_147 = par3_23.getName();
+                                      _builder.append(_name_147);
+                                      _builder.append("[],");
+                                    }
+                                  }
+                                }
+                              }
+                              _builder.append("double timeStamp[]){");
+                              _builder.newLineIfNotEmpty();
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     }
+    _builder.append("\t");
+    _builder.append("struct Ret ret;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("return ret;");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
     return _builder;
   }
 }
