@@ -1894,6 +1894,67 @@ ruleSame returns [EObject current=null]
 				}
 			)
 		)
+		(
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getSameAccess().getTimesExactlyParserRuleCall_2_0_0());
+					}
+					lv_times_2_0=ruleExactly
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getSameRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_2_0,
+							"org.xtext.example.mydsl.Adeptness.Exactly");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getSameAccess().getTimesAt_mostParserRuleCall_2_1_0());
+					}
+					lv_times_3_0=ruleAt_most
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getSameRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_3_0,
+							"org.xtext.example.mydsl.Adeptness.At_most");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getSameAccess().getTimesAt_leastParserRuleCall_2_2_0());
+					}
+					lv_times_4_0=ruleAt_least
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getSameRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_4_0,
+							"org.xtext.example.mydsl.Adeptness.At_least");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)?
 	)
 ;
 
@@ -1936,6 +1997,67 @@ ruleNotSame returns [EObject current=null]
 				}
 			)
 		)
+		(
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getNotSameAccess().getTimesExactlyParserRuleCall_2_0_0());
+					}
+					lv_times_2_0=ruleExactly
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getNotSameRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_2_0,
+							"org.xtext.example.mydsl.Adeptness.Exactly");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getNotSameAccess().getTimesAt_mostParserRuleCall_2_1_0());
+					}
+					lv_times_3_0=ruleAt_most
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getNotSameRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_3_0,
+							"org.xtext.example.mydsl.Adeptness.At_most");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getNotSameAccess().getTimesAt_leastParserRuleCall_2_2_0());
+					}
+					lv_times_4_0=ruleAt_least
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getNotSameRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_4_0,
+							"org.xtext.example.mydsl.Adeptness.At_least");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)?
 	)
 ;
 
@@ -1978,6 +2100,67 @@ ruleUpper returns [EObject current=null]
 				}
 			)
 		)
+		(
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getUpperAccess().getTimesExactlyParserRuleCall_2_0_0());
+					}
+					lv_times_2_0=ruleExactly
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getUpperRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_2_0,
+							"org.xtext.example.mydsl.Adeptness.Exactly");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getUpperAccess().getTimesAt_mostParserRuleCall_2_1_0());
+					}
+					lv_times_3_0=ruleAt_most
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getUpperRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_3_0,
+							"org.xtext.example.mydsl.Adeptness.At_most");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getUpperAccess().getTimesAt_leastParserRuleCall_2_2_0());
+					}
+					lv_times_4_0=ruleAt_least
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getUpperRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_4_0,
+							"org.xtext.example.mydsl.Adeptness.At_least");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)?
 	)
 ;
 
@@ -2020,6 +2203,67 @@ ruleLower returns [EObject current=null]
 				}
 			)
 		)
+		(
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getLowerAccess().getTimesExactlyParserRuleCall_2_0_0());
+					}
+					lv_times_2_0=ruleExactly
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getLowerRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_2_0,
+							"org.xtext.example.mydsl.Adeptness.Exactly");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getLowerAccess().getTimesAt_mostParserRuleCall_2_1_0());
+					}
+					lv_times_3_0=ruleAt_most
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getLowerRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_3_0,
+							"org.xtext.example.mydsl.Adeptness.At_most");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getLowerAccess().getTimesAt_leastParserRuleCall_2_2_0());
+					}
+					lv_times_4_0=ruleAt_least
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getLowerRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_4_0,
+							"org.xtext.example.mydsl.Adeptness.At_least");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)?
 	)
 ;
 
@@ -2085,6 +2329,67 @@ ruleRange returns [EObject current=null]
 				}
 			)
 		)
+		(
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getRangeAccess().getTimesExactlyParserRuleCall_4_0_0());
+					}
+					lv_times_4_0=ruleExactly
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getRangeRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_4_0,
+							"org.xtext.example.mydsl.Adeptness.Exactly");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getRangeAccess().getTimesAt_mostParserRuleCall_4_1_0());
+					}
+					lv_times_5_0=ruleAt_most
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getRangeRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_5_0,
+							"org.xtext.example.mydsl.Adeptness.At_most");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getRangeAccess().getTimesAt_leastParserRuleCall_4_2_0());
+					}
+					lv_times_6_0=ruleAt_least
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getRangeRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_6_0,
+							"org.xtext.example.mydsl.Adeptness.At_least");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)?
 	)
 ;
 
@@ -2148,6 +2453,406 @@ ruleGap returns [EObject current=null]
 						"org.xtext.example.mydsl.Adeptness.Bound_up");
 					afterParserOrEnumRuleCall();
 				}
+			)
+		)
+		(
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getGapAccess().getTimesExactlyParserRuleCall_4_0_0());
+					}
+					lv_times_4_0=ruleExactly
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getGapRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_4_0,
+							"org.xtext.example.mydsl.Adeptness.Exactly");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getGapAccess().getTimesAt_mostParserRuleCall_4_1_0());
+					}
+					lv_times_5_0=ruleAt_most
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getGapRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_5_0,
+							"org.xtext.example.mydsl.Adeptness.At_most");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getGapAccess().getTimesAt_leastParserRuleCall_4_2_0());
+					}
+					lv_times_6_0=ruleAt_least
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getGapRule());
+						}
+						set(
+							$current,
+							"times",
+							lv_times_6_0,
+							"org.xtext.example.mydsl.Adeptness.At_least");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)?
+	)
+;
+
+// Entry rule entryRuleExactly
+entryRuleExactly returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getExactlyRule()); }
+	iv_ruleExactly=ruleExactly
+	{ $current=$iv_ruleExactly.current; }
+	EOF;
+
+// Rule Exactly
+ruleExactly returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='exactly'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getExactlyAccess().getExactlyKeyword_0());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getExactlyAccess().getValueDOUBLEParserRuleCall_1_0());
+				}
+				lv_value_1_0=ruleDOUBLE
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getExactlyRule());
+					}
+					set(
+						$current,
+						"value",
+						lv_value_1_0,
+						"org.xtext.example.mydsl.Adeptness.DOUBLE");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		(
+			otherlv_2='times'
+			{
+				newLeafNode(otherlv_2, grammarAccess.getExactlyAccess().getTimesKeyword_2_0());
+			}
+			    |
+			(
+				otherlv_3='times in'
+				{
+					newLeafNode(otherlv_3, grammarAccess.getExactlyAccess().getTimesInKeyword_2_1_0());
+				}
+				(
+					(
+						{
+							newCompositeNode(grammarAccess.getExactlyAccess().getTimeDOUBLEParserRuleCall_2_1_1_0());
+						}
+						lv_time_4_0=ruleDOUBLE
+						{
+							if ($current==null) {
+								$current = createModelElementForParent(grammarAccess.getExactlyRule());
+							}
+							set(
+								$current,
+								"time",
+								lv_time_4_0,
+								"org.xtext.example.mydsl.Adeptness.DOUBLE");
+							afterParserOrEnumRuleCall();
+						}
+					)
+				)
+				(
+					(
+						{
+							newCompositeNode(grammarAccess.getExactlyAccess().getUnitTimeTypeParserRuleCall_2_1_2_0());
+						}
+						lv_unit_5_0=ruleTimeType
+						{
+							if ($current==null) {
+								$current = createModelElementForParent(grammarAccess.getExactlyRule());
+							}
+							set(
+								$current,
+								"unit",
+								lv_unit_5_0,
+								"org.xtext.example.mydsl.Adeptness.TimeType");
+							afterParserOrEnumRuleCall();
+						}
+					)
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getExactlyAccess().getUnitTimeTypeParserRuleCall_2_2_0());
+					}
+					lv_unit_6_0=ruleTimeType
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getExactlyRule());
+						}
+						set(
+							$current,
+							"unit",
+							lv_unit_6_0,
+							"org.xtext.example.mydsl.Adeptness.TimeType");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleAt_most
+entryRuleAt_most returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getAt_mostRule()); }
+	iv_ruleAt_most=ruleAt_most
+	{ $current=$iv_ruleAt_most.current; }
+	EOF;
+
+// Rule At_most
+ruleAt_most returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='at most'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getAt_mostAccess().getAtMostKeyword_0());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getAt_mostAccess().getValueDOUBLEParserRuleCall_1_0());
+				}
+				lv_value_1_0=ruleDOUBLE
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getAt_mostRule());
+					}
+					set(
+						$current,
+						"value",
+						lv_value_1_0,
+						"org.xtext.example.mydsl.Adeptness.DOUBLE");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		(
+			otherlv_2='times'
+			{
+				newLeafNode(otherlv_2, grammarAccess.getAt_mostAccess().getTimesKeyword_2_0());
+			}
+			    |
+			(
+				otherlv_3='times in'
+				{
+					newLeafNode(otherlv_3, grammarAccess.getAt_mostAccess().getTimesInKeyword_2_1_0());
+				}
+				(
+					(
+						{
+							newCompositeNode(grammarAccess.getAt_mostAccess().getTimeDOUBLEParserRuleCall_2_1_1_0());
+						}
+						lv_time_4_0=ruleDOUBLE
+						{
+							if ($current==null) {
+								$current = createModelElementForParent(grammarAccess.getAt_mostRule());
+							}
+							set(
+								$current,
+								"time",
+								lv_time_4_0,
+								"org.xtext.example.mydsl.Adeptness.DOUBLE");
+							afterParserOrEnumRuleCall();
+						}
+					)
+				)
+				(
+					(
+						{
+							newCompositeNode(grammarAccess.getAt_mostAccess().getUnitTimeTypeParserRuleCall_2_1_2_0());
+						}
+						lv_unit_5_0=ruleTimeType
+						{
+							if ($current==null) {
+								$current = createModelElementForParent(grammarAccess.getAt_mostRule());
+							}
+							set(
+								$current,
+								"unit",
+								lv_unit_5_0,
+								"org.xtext.example.mydsl.Adeptness.TimeType");
+							afterParserOrEnumRuleCall();
+						}
+					)
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getAt_mostAccess().getUnitTimeTypeParserRuleCall_2_2_0());
+					}
+					lv_unit_6_0=ruleTimeType
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getAt_mostRule());
+						}
+						set(
+							$current,
+							"unit",
+							lv_unit_6_0,
+							"org.xtext.example.mydsl.Adeptness.TimeType");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleAt_least
+entryRuleAt_least returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getAt_leastRule()); }
+	iv_ruleAt_least=ruleAt_least
+	{ $current=$iv_ruleAt_least.current; }
+	EOF;
+
+// Rule At_least
+ruleAt_least returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='at least'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getAt_leastAccess().getAtLeastKeyword_0());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getAt_leastAccess().getValueDOUBLEParserRuleCall_1_0());
+				}
+				lv_value_1_0=ruleDOUBLE
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getAt_leastRule());
+					}
+					set(
+						$current,
+						"value",
+						lv_value_1_0,
+						"org.xtext.example.mydsl.Adeptness.DOUBLE");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		(
+			otherlv_2='times'
+			{
+				newLeafNode(otherlv_2, grammarAccess.getAt_leastAccess().getTimesKeyword_2_0());
+			}
+			    |
+			(
+				otherlv_3='times in'
+				{
+					newLeafNode(otherlv_3, grammarAccess.getAt_leastAccess().getTimesInKeyword_2_1_0());
+				}
+				(
+					(
+						{
+							newCompositeNode(grammarAccess.getAt_leastAccess().getTimeDOUBLEParserRuleCall_2_1_1_0());
+						}
+						lv_time_4_0=ruleDOUBLE
+						{
+							if ($current==null) {
+								$current = createModelElementForParent(grammarAccess.getAt_leastRule());
+							}
+							set(
+								$current,
+								"time",
+								lv_time_4_0,
+								"org.xtext.example.mydsl.Adeptness.DOUBLE");
+							afterParserOrEnumRuleCall();
+						}
+					)
+				)
+				(
+					(
+						{
+							newCompositeNode(grammarAccess.getAt_leastAccess().getUnitTimeTypeParserRuleCall_2_1_2_0());
+						}
+						lv_unit_5_0=ruleTimeType
+						{
+							if ($current==null) {
+								$current = createModelElementForParent(grammarAccess.getAt_leastRule());
+							}
+							set(
+								$current,
+								"unit",
+								lv_unit_5_0,
+								"org.xtext.example.mydsl.Adeptness.TimeType");
+							afterParserOrEnumRuleCall();
+						}
+					)
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getAt_leastAccess().getUnitTimeTypeParserRuleCall_2_2_0());
+					}
+					lv_unit_6_0=ruleTimeType
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getAt_leastRule());
+						}
+						set(
+							$current,
+							"unit",
+							lv_unit_6_0,
+							"org.xtext.example.mydsl.Adeptness.TimeType");
+						afterParserOrEnumRuleCall();
+					}
+				)
 			)
 		)
 	)

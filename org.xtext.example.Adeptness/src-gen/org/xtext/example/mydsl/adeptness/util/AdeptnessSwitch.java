@@ -310,6 +310,27 @@ public class AdeptnessSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case AdeptnessPackage.EXACTLY:
+      {
+        Exactly exactly = (Exactly)theEObject;
+        T result = caseExactly(exactly);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case AdeptnessPackage.AT_MOST:
+      {
+        At_most at_most = (At_most)theEObject;
+        T result = caseAt_most(at_most);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case AdeptnessPackage.AT_LEAST:
+      {
+        At_least at_least = (At_least)theEObject;
+        T result = caseAt_least(at_least);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case AdeptnessPackage.BOUND_UP:
       {
         Bound_up bound_up = (Bound_up)theEObject;
@@ -932,6 +953,54 @@ public class AdeptnessSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseInclusiveBound(InclusiveBound object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Exactly</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Exactly</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseExactly(Exactly object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>At most</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>At most</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAt_most(At_most object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>At least</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>At least</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAt_least(At_least object)
   {
     return null;
   }

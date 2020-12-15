@@ -241,6 +241,21 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
         return createInclusiveBoundAdapter();
       }
       @Override
+      public Adapter caseExactly(Exactly object)
+      {
+        return createExactlyAdapter();
+      }
+      @Override
+      public Adapter caseAt_most(At_most object)
+      {
+        return createAt_mostAdapter();
+      }
+      @Override
+      public Adapter caseAt_least(At_least object)
+      {
+        return createAt_leastAdapter();
+      }
+      @Override
       public Adapter caseBound_up(Bound_up object)
       {
         return createBound_upAdapter();
@@ -818,6 +833,51 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createInclusiveBoundAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Exactly <em>Exactly</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.Exactly
+   * @generated
+   */
+  public Adapter createExactlyAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.At_most <em>At most</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.At_most
+   * @generated
+   */
+  public Adapter createAt_mostAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.At_least <em>At least</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.At_least
+   * @generated
+   */
+  public Adapter createAt_leastAdapter()
   {
     return null;
   }

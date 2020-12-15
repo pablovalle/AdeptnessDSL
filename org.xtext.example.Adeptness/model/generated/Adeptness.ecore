@@ -158,17 +158,25 @@
   <eClassifiers xsi:type="ecore:EClass" name="Same">
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="times" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NotSame">
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="times" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Upper">
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="times" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Lower">
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_lower" eType="#//Bound_Down"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="times" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Range">
@@ -176,16 +184,44 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="times" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Gap">
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_lower" eType="#//Bound_Down"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="times" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="InclusiveBound">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//BOOLEAN"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Exactly">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//DOUBLE"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="time" eType="#//DOUBLE"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="unit" eType="#//TimeType"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="At_most">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//DOUBLE"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="time" eType="#//DOUBLE"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="unit" eType="#//TimeType"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="At_least">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//DOUBLE"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="time" eType="#//DOUBLE"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="unit" eType="#//TimeType"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Bound_up">

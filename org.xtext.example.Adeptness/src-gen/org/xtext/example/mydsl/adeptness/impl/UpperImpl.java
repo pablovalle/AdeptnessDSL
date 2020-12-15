@@ -7,6 +7,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -25,6 +26,7 @@ import org.xtext.example.mydsl.adeptness.Upper;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.UpperImpl#getBound_upp <em>Bound upp</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.UpperImpl#getTimes <em>Times</em>}</li>
  * </ul>
  *
  * @generated
@@ -40,6 +42,16 @@ public class UpperImpl extends MinimalEObjectImpl.Container implements Upper
    * @ordered
    */
   protected Bound_up bound_upp;
+
+  /**
+   * The cached value of the '{@link #getTimes() <em>Times</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTimes()
+   * @generated
+   * @ordered
+   */
+  protected EObject times;
 
   /**
    * <!-- begin-user-doc -->
@@ -118,12 +130,64 @@ public class UpperImpl extends MinimalEObjectImpl.Container implements Upper
    * @generated
    */
   @Override
+  public EObject getTimes()
+  {
+    return times;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetTimes(EObject newTimes, NotificationChain msgs)
+  {
+    EObject oldTimes = times;
+    times = newTimes;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.UPPER__TIMES, oldTimes, newTimes);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setTimes(EObject newTimes)
+  {
+    if (newTimes != times)
+    {
+      NotificationChain msgs = null;
+      if (times != null)
+        msgs = ((InternalEObject)times).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.UPPER__TIMES, null, msgs);
+      if (newTimes != null)
+        msgs = ((InternalEObject)newTimes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.UPPER__TIMES, null, msgs);
+      msgs = basicSetTimes(newTimes, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.UPPER__TIMES, newTimes, newTimes));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
     {
       case AdeptnessPackage.UPPER__BOUND_UPP:
         return basicSetBound_upp(null, msgs);
+      case AdeptnessPackage.UPPER__TIMES:
+        return basicSetTimes(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -140,6 +204,8 @@ public class UpperImpl extends MinimalEObjectImpl.Container implements Upper
     {
       case AdeptnessPackage.UPPER__BOUND_UPP:
         return getBound_upp();
+      case AdeptnessPackage.UPPER__TIMES:
+        return getTimes();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -156,6 +222,9 @@ public class UpperImpl extends MinimalEObjectImpl.Container implements Upper
     {
       case AdeptnessPackage.UPPER__BOUND_UPP:
         setBound_upp((Bound_up)newValue);
+        return;
+      case AdeptnessPackage.UPPER__TIMES:
+        setTimes((EObject)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -174,6 +243,9 @@ public class UpperImpl extends MinimalEObjectImpl.Container implements Upper
       case AdeptnessPackage.UPPER__BOUND_UPP:
         setBound_upp((Bound_up)null);
         return;
+      case AdeptnessPackage.UPPER__TIMES:
+        setTimes((EObject)null);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -190,6 +262,8 @@ public class UpperImpl extends MinimalEObjectImpl.Container implements Upper
     {
       case AdeptnessPackage.UPPER__BOUND_UPP:
         return bound_upp != null;
+      case AdeptnessPackage.UPPER__TIMES:
+        return times != null;
     }
     return super.eIsSet(featureID);
   }

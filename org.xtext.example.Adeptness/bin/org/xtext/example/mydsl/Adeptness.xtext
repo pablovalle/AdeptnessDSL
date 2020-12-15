@@ -161,34 +161,59 @@ PrecondReference:
 ;
 
 Same:
-	'should be' (bound_upp=Bound_up)
+	'should be' (bound_upp=Bound_up) 
+	((times=Exactly)| (times=At_most)| (times=At_least))?
 ;
 
 NotSame:
 	'should not be' (bound_upp=Bound_up)
+	((times=Exactly)| (times=At_most)| (times=At_least))?
 ;
 
 //Oracle for upper limit --> Below reference signal
 Upper:
 	'is below' (bound_upp=Bound_up)
+	((times=Exactly)| (times=At_most)| (times=At_least))?
 ;
 //Oracle for lower limit --> Above reference signal
 Lower:
 	'is above' (bound_lower=Bound_Down)
+	((times=Exactly)| (times=At_most)| (times=At_least))?
 ;
 //Oracle for Above and Below limit --> In range reference signal
 Range:
 	'is in range between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
+	((times=Exactly)| (times=At_most)| (times=At_least))?
 ;
 //Oracle for !Above and !Below limit --> Gap reference signal
 Gap:
 	'not in range between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
+	((times=Exactly)| (times=At_most)| (times=At_least))?
 ;
 
 //If the limits must be included ==
 InclusiveBound:
 	'inclusiveBound' name=ID '=' value= BOOLEAN
 ;
+
+//exactly at a especified time
+Exactly:
+	'exactly'
+	value=DOUBLE 
+	('times' | 'times in' (time=DOUBLE) (unit=TimeType) | (unit=TimeType))
+	 
+;
+At_most:
+	'at most'
+	value=DOUBLE 
+	('times' | 'times in' (time=DOUBLE) (unit=TimeType) | (unit=TimeType))
+;
+At_least:
+	'at least'
+	value=DOUBLE 
+	('times' | 'times in' (time=DOUBLE) (unit=TimeType) | (unit=TimeType))
+;
+
 //Upper limit
 
 Bound_up:

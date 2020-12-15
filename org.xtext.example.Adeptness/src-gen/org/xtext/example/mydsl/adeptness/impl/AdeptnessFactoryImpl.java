@@ -98,6 +98,9 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.RANGE: return createRange();
       case AdeptnessPackage.GAP: return createGap();
       case AdeptnessPackage.INCLUSIVE_BOUND: return createInclusiveBound();
+      case AdeptnessPackage.EXACTLY: return createExactly();
+      case AdeptnessPackage.AT_MOST: return createAt_most();
+      case AdeptnessPackage.AT_LEAST: return createAt_least();
       case AdeptnessPackage.BOUND_UP: return createBound_up();
       case AdeptnessPackage.BOUND_DOWN: return createBound_Down();
       case AdeptnessPackage.BOOLEAN: return createBOOLEAN();
@@ -510,6 +513,42 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
   {
     InclusiveBoundImpl inclusiveBound = new InclusiveBoundImpl();
     return inclusiveBound;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Exactly createExactly()
+  {
+    ExactlyImpl exactly = new ExactlyImpl();
+    return exactly;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public At_most createAt_most()
+  {
+    At_mostImpl at_most = new At_mostImpl();
+    return at_most;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public At_least createAt_least()
+  {
+    At_leastImpl at_least = new At_leastImpl();
+    return at_least;
   }
 
   /**

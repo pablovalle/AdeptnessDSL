@@ -7,6 +7,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -27,6 +28,7 @@ import org.xtext.example.mydsl.adeptness.Range;
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.RangeImpl#getBound_lower <em>Bound lower</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.RangeImpl#getBound_upp <em>Bound upp</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.RangeImpl#getTimes <em>Times</em>}</li>
  * </ul>
  *
  * @generated
@@ -52,6 +54,16 @@ public class RangeImpl extends MinimalEObjectImpl.Container implements Range
    * @ordered
    */
   protected Bound_up bound_upp;
+
+  /**
+   * The cached value of the '{@link #getTimes() <em>Times</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTimes()
+   * @generated
+   * @ordered
+   */
+  protected EObject times;
 
   /**
    * <!-- begin-user-doc -->
@@ -180,6 +192,56 @@ public class RangeImpl extends MinimalEObjectImpl.Container implements Range
    * @generated
    */
   @Override
+  public EObject getTimes()
+  {
+    return times;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetTimes(EObject newTimes, NotificationChain msgs)
+  {
+    EObject oldTimes = times;
+    times = newTimes;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.RANGE__TIMES, oldTimes, newTimes);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setTimes(EObject newTimes)
+  {
+    if (newTimes != times)
+    {
+      NotificationChain msgs = null;
+      if (times != null)
+        msgs = ((InternalEObject)times).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.RANGE__TIMES, null, msgs);
+      if (newTimes != null)
+        msgs = ((InternalEObject)newTimes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.RANGE__TIMES, null, msgs);
+      msgs = basicSetTimes(newTimes, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.RANGE__TIMES, newTimes, newTimes));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
@@ -188,6 +250,8 @@ public class RangeImpl extends MinimalEObjectImpl.Container implements Range
         return basicSetBound_lower(null, msgs);
       case AdeptnessPackage.RANGE__BOUND_UPP:
         return basicSetBound_upp(null, msgs);
+      case AdeptnessPackage.RANGE__TIMES:
+        return basicSetTimes(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -206,6 +270,8 @@ public class RangeImpl extends MinimalEObjectImpl.Container implements Range
         return getBound_lower();
       case AdeptnessPackage.RANGE__BOUND_UPP:
         return getBound_upp();
+      case AdeptnessPackage.RANGE__TIMES:
+        return getTimes();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -225,6 +291,9 @@ public class RangeImpl extends MinimalEObjectImpl.Container implements Range
         return;
       case AdeptnessPackage.RANGE__BOUND_UPP:
         setBound_upp((Bound_up)newValue);
+        return;
+      case AdeptnessPackage.RANGE__TIMES:
+        setTimes((EObject)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -246,6 +315,9 @@ public class RangeImpl extends MinimalEObjectImpl.Container implements Range
       case AdeptnessPackage.RANGE__BOUND_UPP:
         setBound_upp((Bound_up)null);
         return;
+      case AdeptnessPackage.RANGE__TIMES:
+        setTimes((EObject)null);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -264,6 +336,8 @@ public class RangeImpl extends MinimalEObjectImpl.Container implements Range
         return bound_lower != null;
       case AdeptnessPackage.RANGE__BOUND_UPP:
         return bound_upp != null;
+      case AdeptnessPackage.RANGE__TIMES:
+        return times != null;
     }
     return super.eIsSet(featureID);
   }

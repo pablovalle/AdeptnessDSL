@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Lower#getBound_lower <em>Bound lower</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Lower#getTimes <em>Times</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getLower()
@@ -44,5 +45,27 @@ public interface Lower extends EObject
    * @generated
    */
   void setBound_lower(Bound_Down value);
+
+  /**
+   * Returns the value of the '<em><b>Times</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Times</em>' containment reference.
+   * @see #setTimes(EObject)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getLower_Times()
+   * @model containment="true"
+   * @generated
+   */
+  EObject getTimes();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Lower#getTimes <em>Times</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Times</em>' containment reference.
+   * @see #getTimes()
+   * @generated
+   */
+  void setTimes(EObject value);
 
 } // Lower

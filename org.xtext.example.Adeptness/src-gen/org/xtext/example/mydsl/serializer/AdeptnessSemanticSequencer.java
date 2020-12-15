@@ -18,6 +18,8 @@ import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.Adeptness;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.AfterWhen;
+import org.xtext.example.mydsl.adeptness.At_least;
+import org.xtext.example.mydsl.adeptness.At_most;
 import org.xtext.example.mydsl.adeptness.BOOLEAN;
 import org.xtext.example.mydsl.adeptness.Bound_Down;
 import org.xtext.example.mydsl.adeptness.Bound_up;
@@ -28,6 +30,7 @@ import org.xtext.example.mydsl.adeptness.DOUBLE;
 import org.xtext.example.mydsl.adeptness.DataType;
 import org.xtext.example.mydsl.adeptness.Description;
 import org.xtext.example.mydsl.adeptness.During;
+import org.xtext.example.mydsl.adeptness.Exactly;
 import org.xtext.example.mydsl.adeptness.ExpressionsModel;
 import org.xtext.example.mydsl.adeptness.FailReason;
 import org.xtext.example.mydsl.adeptness.Gap;
@@ -84,6 +87,12 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 			case AdeptnessPackage.AFTER_WHEN:
 				sequence_AfterWhen(context, (AfterWhen) semanticObject); 
 				return; 
+			case AdeptnessPackage.AT_LEAST:
+				sequence_At_least(context, (At_least) semanticObject); 
+				return; 
+			case AdeptnessPackage.AT_MOST:
+				sequence_At_most(context, (At_most) semanticObject); 
+				return; 
 			case AdeptnessPackage.BOOLEAN:
 				sequence_BOOLEAN(context, (BOOLEAN) semanticObject); 
 				return; 
@@ -113,6 +122,9 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 				return; 
 			case AdeptnessPackage.DURING:
 				sequence_During(context, (During) semanticObject); 
+				return; 
+			case AdeptnessPackage.EXACTLY:
+				sequence_Exactly(context, (Exactly) semanticObject); 
 				return; 
 			case AdeptnessPackage.EXPRESSIONS_MODEL:
 				sequence_ExpressionsModel(context, (ExpressionsModel) semanticObject); 
@@ -244,6 +256,30 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     (wait=Wait | during=During)
 	 */
 	protected void sequence_AfterWhen(ISerializationContext context, AfterWhen semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     At_least returns At_least
+	 *
+	 * Constraint:
+	 *     (value=DOUBLE ((time=DOUBLE unit=TimeType) | unit=TimeType)?)
+	 */
+	protected void sequence_At_least(ISerializationContext context, At_least semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     At_most returns At_most
+	 *
+	 * Constraint:
+	 *     (value=DOUBLE ((time=DOUBLE unit=TimeType) | unit=TimeType)?)
+	 */
+	protected void sequence_At_most(ISerializationContext context, At_most semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -418,6 +454,18 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	
 	/**
 	 * Contexts:
+	 *     Exactly returns Exactly
+	 *
+	 * Constraint:
+	 *     (value=DOUBLE ((time=DOUBLE unit=TimeType) | unit=TimeType)?)
+	 */
+	protected void sequence_Exactly(ISerializationContext context, Exactly semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     ExpressionsModel returns ExpressionsModel
 	 *
 	 * Constraint:
@@ -451,19 +499,10 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Gap returns Gap
 	 *
 	 * Constraint:
-	 *     (bound_lower=Bound_Down bound_upp=Bound_up)
+	 *     (bound_lower=Bound_Down bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?)
 	 */
 	protected void sequence_Gap(ISerializationContext context, Gap semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.GAP__BOUND_LOWER) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.GAP__BOUND_LOWER));
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.GAP__BOUND_UPP) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.GAP__BOUND_UPP));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getGapAccess().getBound_lowerBound_DownParserRuleCall_1_0(), semanticObject.getBound_lower());
-		feeder.accept(grammarAccess.getGapAccess().getBound_uppBound_upParserRuleCall_3_0(), semanticObject.getBound_upp());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -584,16 +623,10 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Lower returns Lower
 	 *
 	 * Constraint:
-	 *     bound_lower=Bound_Down
+	 *     (bound_lower=Bound_Down (times=Exactly | times=At_most | times=At_least)?)
 	 */
 	protected void sequence_Lower(ISerializationContext context, Lower semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.LOWER__BOUND_LOWER) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.LOWER__BOUND_LOWER));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getLowerAccess().getBound_lowerBound_DownParserRuleCall_1_0(), semanticObject.getBound_lower());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -646,16 +679,10 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     NotSame returns NotSame
 	 *
 	 * Constraint:
-	 *     bound_upp=Bound_up
+	 *     (bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?)
 	 */
 	protected void sequence_NotSame(ISerializationContext context, NotSame semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.NOT_SAME__BOUND_UPP) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.NOT_SAME__BOUND_UPP));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getNotSameAccess().getBound_uppBound_upParserRuleCall_1_0(), semanticObject.getBound_upp());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -732,19 +759,10 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Range returns Range
 	 *
 	 * Constraint:
-	 *     (bound_lower=Bound_Down bound_upp=Bound_up)
+	 *     (bound_lower=Bound_Down bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?)
 	 */
 	protected void sequence_Range(ISerializationContext context, Range semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.RANGE__BOUND_LOWER) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.RANGE__BOUND_LOWER));
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.RANGE__BOUND_UPP) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.RANGE__BOUND_UPP));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getRangeAccess().getBound_lowerBound_DownParserRuleCall_1_0(), semanticObject.getBound_lower());
-		feeder.accept(grammarAccess.getRangeAccess().getBound_uppBound_upParserRuleCall_3_0(), semanticObject.getBound_upp());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -784,16 +802,10 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Same returns Same
 	 *
 	 * Constraint:
-	 *     bound_upp=Bound_up
+	 *     (bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?)
 	 */
 	protected void sequence_Same(ISerializationContext context, Same semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.SAME__BOUND_UPP) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.SAME__BOUND_UPP));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getSameAccess().getBound_uppBound_upParserRuleCall_1_0(), semanticObject.getBound_upp());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -840,16 +852,10 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Upper returns Upper
 	 *
 	 * Constraint:
-	 *     bound_upp=Bound_up
+	 *     (bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?)
 	 */
 	protected void sequence_Upper(ISerializationContext context, Upper semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.UPPER__BOUND_UPP) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.UPPER__BOUND_UPP));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getUpperAccess().getBound_uppBound_upParserRuleCall_1_0(), semanticObject.getBound_upp());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

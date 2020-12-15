@@ -118,27 +118,48 @@
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//Same">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Same/bound_upp"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Same/times"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//NotSame">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//NotSame/bound_upp"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//NotSame/times"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//Upper">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Upper/bound_upp"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Upper/times"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//Lower">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Lower/bound_lower"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Lower/times"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//Range">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Range/bound_lower"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Range/bound_upp"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Range/times"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//Gap">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Gap/bound_lower"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Gap/bound_upp"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Gap/times"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//InclusiveBound">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Adeptness.ecore#//InclusiveBound/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//InclusiveBound/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//Exactly">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Exactly/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Exactly/time"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Exactly/unit"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//At_most">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//At_most/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//At_most/time"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//At_most/unit"/>
+    </genClasses>
+    <genClasses ecoreClass="Adeptness.ecore#//At_least">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//At_least/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//At_least/time"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//At_least/unit"/>
     </genClasses>
     <genClasses ecoreClass="Adeptness.ecore#//Bound_up">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Adeptness.ecore#//Bound_up/value"/>

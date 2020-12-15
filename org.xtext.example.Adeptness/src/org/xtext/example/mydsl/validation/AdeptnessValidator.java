@@ -12,8 +12,13 @@ import org.xtext.example.mydsl.adeptness.AbstractElement;
 import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.Adeptness;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
+import org.xtext.example.mydsl.adeptness.At_least;
+import org.xtext.example.mydsl.adeptness.At_most;
+import org.xtext.example.mydsl.adeptness.Bound_Down;
+import org.xtext.example.mydsl.adeptness.Bound_up;
 import org.xtext.example.mydsl.adeptness.Checks;
 import org.xtext.example.mydsl.adeptness.ConstDeg;
+import org.xtext.example.mydsl.adeptness.Exactly;
 import org.xtext.example.mydsl.adeptness.ExpressionsModel;
 import org.xtext.example.mydsl.adeptness.Gap;
 import org.xtext.example.mydsl.adeptness.HighPeak;
@@ -24,9 +29,11 @@ import org.xtext.example.mydsl.adeptness.Lower;
 import org.xtext.example.mydsl.adeptness.MonitoringFile;
 import org.xtext.example.mydsl.adeptness.MonitoringPlan;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
+import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.PrecondReference;
 import org.xtext.example.mydsl.adeptness.Range;
+import org.xtext.example.mydsl.adeptness.Same;
 import org.xtext.example.mydsl.adeptness.Sig_type;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.Upper;
@@ -589,6 +596,83 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					error("The operator: "+element.getOp().get(j).getComparation().getOp().toString()+" is not available for checks",AdeptnessPackage.Literals.CHECKS__EM);
 				}
 			}
+		}
+	}
+	@Check
+	public void checkAtLeastValues(At_least atLeast) {
+		if(atLeast.getValue().getDVal()<0) {
+			error("This value: "+atLeast.getValue().getDVal()+" must be a positive value", AdeptnessPackage.Literals.AT_LEAST__VALUE);
+		}
+		if(atLeast.getTime().getDVal()<0) {
+			error("This value: "+atLeast.getTime().getDVal()+" must be a positive value", AdeptnessPackage.Literals.AT_LEAST__TIME);
+		}
+	}
+	@Check
+	public void checkAtMostValues(At_most atMost) {
+		if(atMost.getValue().getDVal()<0) {
+			error("This value: "+atMost.getValue().getDVal()+" must be a positive value", AdeptnessPackage.Literals.AT_MOST__VALUE);
+		}
+		if(atMost.getTime().getDVal()<0) {
+			error("This value: "+atMost.getTime().getDVal()+" must be a positive value", AdeptnessPackage.Literals.AT_MOST__TIME);
+		}
+	}
+	@Check
+	public void checkExactlyValues(Exactly exactly) {
+		if(exactly.getValue().getDVal()<0) {
+			error("This value: "+exactly.getValue().getDVal()+" must be a positive value", AdeptnessPackage.Literals.EXACTLY__VALUE);
+		}
+		if(exactly.getTime().getDVal()<0) {
+			error("This value: "+exactly.getTime().getDVal()+" must be a positive value", AdeptnessPackage.Literals.EXACTLY__TIME);
+		}
+	}
+	@Check
+	public void checkEmptyLowerValue(Lower lower) {
+		if(lower.getBound_lower().getValue()==null && lower.getBound_lower().getEm()==null) {
+			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.LOWER__BOUND_LOWER);
+			
+		}
+	}
+	@Check
+	public void checkEmptyLowerValue(Upper upper) {
+		if(upper.getBound_upp().getValue()==null && upper.getBound_upp().getEm()==null) {
+			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
+			
+		}
+	}
+	@Check
+	public void checkEmptyLowerValue(Range range) {
+		if(range.getBound_lower().getValue()==null && range.getBound_lower().getEm()==null) {
+			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.LOWER__BOUND_LOWER);
+			
+		}
+		if(range.getBound_upp().getValue()==null && range.getBound_upp().getEm()==null) {
+			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
+			
+		}
+	}
+	@Check
+	public void checkEmptyLowerValue(Gap gap) {
+		if(gap.getBound_lower().getValue()==null && gap.getBound_lower().getEm()==null) {
+			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.LOWER__BOUND_LOWER);
+			
+		}
+		if(gap.getBound_upp().getValue()==null && gap.getBound_upp().getEm()==null) {
+			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
+			
+		}
+	}
+	@Check
+	public void checkEmptyLowerValue(Same same) {
+		if(same.getBound_upp().getValue()==null && same.getBound_upp().getEm()==null) {
+			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
+			
+		}
+	}
+	@Check
+	public void checkEmptyLowerValue(NotSame notSame) {
+		if(notSame.getBound_upp().getValue()==null && notSame.getBound_upp().getEm()==null) {
+			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
+			
 		}
 	}
 	

@@ -1125,12 +1125,19 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cShouldBeKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cBound_uppAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cBound_uppBound_upParserRuleCall_1_0 = (RuleCall)cBound_uppAssignment_1.eContents().get(0);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Assignment cTimesAssignment_2_0 = (Assignment)cAlternatives_2.eContents().get(0);
+		private final RuleCall cTimesExactlyParserRuleCall_2_0_0 = (RuleCall)cTimesAssignment_2_0.eContents().get(0);
+		private final Assignment cTimesAssignment_2_1 = (Assignment)cAlternatives_2.eContents().get(1);
+		private final RuleCall cTimesAt_mostParserRuleCall_2_1_0 = (RuleCall)cTimesAssignment_2_1.eContents().get(0);
+		private final Assignment cTimesAssignment_2_2 = (Assignment)cAlternatives_2.eContents().get(2);
+		private final RuleCall cTimesAt_leastParserRuleCall_2_2_0 = (RuleCall)cTimesAssignment_2_2.eContents().get(0);
 		
 		//Same:
-		//	'should be' bound_upp=Bound_up;
+		//	'should be' bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'should be' bound_upp=Bound_up
+		//'should be' bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?
 		public Group getGroup() { return cGroup; }
 		
 		//'should be'
@@ -1141,6 +1148,27 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Bound_up
 		public RuleCall getBound_uppBound_upParserRuleCall_1_0() { return cBound_uppBound_upParserRuleCall_1_0; }
+		
+		//(times=Exactly | times=At_most | times=At_least)?
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+		
+		//times=Exactly
+		public Assignment getTimesAssignment_2_0() { return cTimesAssignment_2_0; }
+		
+		//Exactly
+		public RuleCall getTimesExactlyParserRuleCall_2_0_0() { return cTimesExactlyParserRuleCall_2_0_0; }
+		
+		//times=At_most
+		public Assignment getTimesAssignment_2_1() { return cTimesAssignment_2_1; }
+		
+		//At_most
+		public RuleCall getTimesAt_mostParserRuleCall_2_1_0() { return cTimesAt_mostParserRuleCall_2_1_0; }
+		
+		//times=At_least
+		public Assignment getTimesAssignment_2_2() { return cTimesAssignment_2_2; }
+		
+		//At_least
+		public RuleCall getTimesAt_leastParserRuleCall_2_2_0() { return cTimesAt_leastParserRuleCall_2_2_0; }
 	}
 	public class NotSameElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.NotSame");
@@ -1148,12 +1176,19 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cShouldNotBeKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cBound_uppAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cBound_uppBound_upParserRuleCall_1_0 = (RuleCall)cBound_uppAssignment_1.eContents().get(0);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Assignment cTimesAssignment_2_0 = (Assignment)cAlternatives_2.eContents().get(0);
+		private final RuleCall cTimesExactlyParserRuleCall_2_0_0 = (RuleCall)cTimesAssignment_2_0.eContents().get(0);
+		private final Assignment cTimesAssignment_2_1 = (Assignment)cAlternatives_2.eContents().get(1);
+		private final RuleCall cTimesAt_mostParserRuleCall_2_1_0 = (RuleCall)cTimesAssignment_2_1.eContents().get(0);
+		private final Assignment cTimesAssignment_2_2 = (Assignment)cAlternatives_2.eContents().get(2);
+		private final RuleCall cTimesAt_leastParserRuleCall_2_2_0 = (RuleCall)cTimesAssignment_2_2.eContents().get(0);
 		
 		//NotSame:
-		//	'should not be' bound_upp=Bound_up;
+		//	'should not be' bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'should not be' bound_upp=Bound_up
+		//'should not be' bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?
 		public Group getGroup() { return cGroup; }
 		
 		//'should not be'
@@ -1164,6 +1199,27 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Bound_up
 		public RuleCall getBound_uppBound_upParserRuleCall_1_0() { return cBound_uppBound_upParserRuleCall_1_0; }
+		
+		//(times=Exactly | times=At_most | times=At_least)?
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+		
+		//times=Exactly
+		public Assignment getTimesAssignment_2_0() { return cTimesAssignment_2_0; }
+		
+		//Exactly
+		public RuleCall getTimesExactlyParserRuleCall_2_0_0() { return cTimesExactlyParserRuleCall_2_0_0; }
+		
+		//times=At_most
+		public Assignment getTimesAssignment_2_1() { return cTimesAssignment_2_1; }
+		
+		//At_most
+		public RuleCall getTimesAt_mostParserRuleCall_2_1_0() { return cTimesAt_mostParserRuleCall_2_1_0; }
+		
+		//times=At_least
+		public Assignment getTimesAssignment_2_2() { return cTimesAssignment_2_2; }
+		
+		//At_least
+		public RuleCall getTimesAt_leastParserRuleCall_2_2_0() { return cTimesAt_leastParserRuleCall_2_2_0; }
 	}
 	public class UpperElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Upper");
@@ -1171,13 +1227,20 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cIsBelowKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cBound_uppAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cBound_uppBound_upParserRuleCall_1_0 = (RuleCall)cBound_uppAssignment_1.eContents().get(0);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Assignment cTimesAssignment_2_0 = (Assignment)cAlternatives_2.eContents().get(0);
+		private final RuleCall cTimesExactlyParserRuleCall_2_0_0 = (RuleCall)cTimesAssignment_2_0.eContents().get(0);
+		private final Assignment cTimesAssignment_2_1 = (Assignment)cAlternatives_2.eContents().get(1);
+		private final RuleCall cTimesAt_mostParserRuleCall_2_1_0 = (RuleCall)cTimesAssignment_2_1.eContents().get(0);
+		private final Assignment cTimesAssignment_2_2 = (Assignment)cAlternatives_2.eContents().get(2);
+		private final RuleCall cTimesAt_leastParserRuleCall_2_2_0 = (RuleCall)cTimesAssignment_2_2.eContents().get(0);
 		
 		////Oracle for upper limit --> Below reference signal
 		//Upper:
-		//	'is below' bound_upp=Bound_up;
+		//	'is below' bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'is below' bound_upp=Bound_up
+		//'is below' bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?
 		public Group getGroup() { return cGroup; }
 		
 		//'is below'
@@ -1188,6 +1251,27 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Bound_up
 		public RuleCall getBound_uppBound_upParserRuleCall_1_0() { return cBound_uppBound_upParserRuleCall_1_0; }
+		
+		//(times=Exactly | times=At_most | times=At_least)?
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+		
+		//times=Exactly
+		public Assignment getTimesAssignment_2_0() { return cTimesAssignment_2_0; }
+		
+		//Exactly
+		public RuleCall getTimesExactlyParserRuleCall_2_0_0() { return cTimesExactlyParserRuleCall_2_0_0; }
+		
+		//times=At_most
+		public Assignment getTimesAssignment_2_1() { return cTimesAssignment_2_1; }
+		
+		//At_most
+		public RuleCall getTimesAt_mostParserRuleCall_2_1_0() { return cTimesAt_mostParserRuleCall_2_1_0; }
+		
+		//times=At_least
+		public Assignment getTimesAssignment_2_2() { return cTimesAssignment_2_2; }
+		
+		//At_least
+		public RuleCall getTimesAt_leastParserRuleCall_2_2_0() { return cTimesAt_leastParserRuleCall_2_2_0; }
 	}
 	public class LowerElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Lower");
@@ -1195,13 +1279,20 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cIsAboveKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cBound_lowerAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cBound_lowerBound_DownParserRuleCall_1_0 = (RuleCall)cBound_lowerAssignment_1.eContents().get(0);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Assignment cTimesAssignment_2_0 = (Assignment)cAlternatives_2.eContents().get(0);
+		private final RuleCall cTimesExactlyParserRuleCall_2_0_0 = (RuleCall)cTimesAssignment_2_0.eContents().get(0);
+		private final Assignment cTimesAssignment_2_1 = (Assignment)cAlternatives_2.eContents().get(1);
+		private final RuleCall cTimesAt_mostParserRuleCall_2_1_0 = (RuleCall)cTimesAssignment_2_1.eContents().get(0);
+		private final Assignment cTimesAssignment_2_2 = (Assignment)cAlternatives_2.eContents().get(2);
+		private final RuleCall cTimesAt_leastParserRuleCall_2_2_0 = (RuleCall)cTimesAssignment_2_2.eContents().get(0);
 		
 		////Oracle for lower limit --> Above reference signal
 		//Lower:
-		//	'is above' bound_lower=Bound_Down;
+		//	'is above' bound_lower=Bound_Down (times=Exactly | times=At_most | times=At_least)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'is above' bound_lower=Bound_Down
+		//'is above' bound_lower=Bound_Down (times=Exactly | times=At_most | times=At_least)?
 		public Group getGroup() { return cGroup; }
 		
 		//'is above'
@@ -1212,6 +1303,27 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Bound_Down
 		public RuleCall getBound_lowerBound_DownParserRuleCall_1_0() { return cBound_lowerBound_DownParserRuleCall_1_0; }
+		
+		//(times=Exactly | times=At_most | times=At_least)?
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+		
+		//times=Exactly
+		public Assignment getTimesAssignment_2_0() { return cTimesAssignment_2_0; }
+		
+		//Exactly
+		public RuleCall getTimesExactlyParserRuleCall_2_0_0() { return cTimesExactlyParserRuleCall_2_0_0; }
+		
+		//times=At_most
+		public Assignment getTimesAssignment_2_1() { return cTimesAssignment_2_1; }
+		
+		//At_most
+		public RuleCall getTimesAt_mostParserRuleCall_2_1_0() { return cTimesAt_mostParserRuleCall_2_1_0; }
+		
+		//times=At_least
+		public Assignment getTimesAssignment_2_2() { return cTimesAssignment_2_2; }
+		
+		//At_least
+		public RuleCall getTimesAt_leastParserRuleCall_2_2_0() { return cTimesAt_leastParserRuleCall_2_2_0; }
 	}
 	public class RangeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Range");
@@ -1222,13 +1334,21 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cAndKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cBound_uppAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cBound_uppBound_upParserRuleCall_3_0 = (RuleCall)cBound_uppAssignment_3.eContents().get(0);
+		private final Alternatives cAlternatives_4 = (Alternatives)cGroup.eContents().get(4);
+		private final Assignment cTimesAssignment_4_0 = (Assignment)cAlternatives_4.eContents().get(0);
+		private final RuleCall cTimesExactlyParserRuleCall_4_0_0 = (RuleCall)cTimesAssignment_4_0.eContents().get(0);
+		private final Assignment cTimesAssignment_4_1 = (Assignment)cAlternatives_4.eContents().get(1);
+		private final RuleCall cTimesAt_mostParserRuleCall_4_1_0 = (RuleCall)cTimesAssignment_4_1.eContents().get(0);
+		private final Assignment cTimesAssignment_4_2 = (Assignment)cAlternatives_4.eContents().get(2);
+		private final RuleCall cTimesAt_leastParserRuleCall_4_2_0 = (RuleCall)cTimesAssignment_4_2.eContents().get(0);
 		
 		////Oracle for Above and Below limit --> In range reference signal
 		//Range:
-		//	'is in range between' bound_lower=Bound_Down 'and' bound_upp=Bound_up;
+		//	'is in range between' bound_lower=Bound_Down 'and' bound_upp=Bound_up (times=Exactly | times=At_most |
+		//	times=At_least)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'is in range between' bound_lower=Bound_Down 'and' bound_upp=Bound_up
+		//'is in range between' bound_lower=Bound_Down 'and' bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?
 		public Group getGroup() { return cGroup; }
 		
 		//'is in range between'
@@ -1248,6 +1368,27 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Bound_up
 		public RuleCall getBound_uppBound_upParserRuleCall_3_0() { return cBound_uppBound_upParserRuleCall_3_0; }
+		
+		//(times=Exactly | times=At_most | times=At_least)?
+		public Alternatives getAlternatives_4() { return cAlternatives_4; }
+		
+		//times=Exactly
+		public Assignment getTimesAssignment_4_0() { return cTimesAssignment_4_0; }
+		
+		//Exactly
+		public RuleCall getTimesExactlyParserRuleCall_4_0_0() { return cTimesExactlyParserRuleCall_4_0_0; }
+		
+		//times=At_most
+		public Assignment getTimesAssignment_4_1() { return cTimesAssignment_4_1; }
+		
+		//At_most
+		public RuleCall getTimesAt_mostParserRuleCall_4_1_0() { return cTimesAt_mostParserRuleCall_4_1_0; }
+		
+		//times=At_least
+		public Assignment getTimesAssignment_4_2() { return cTimesAssignment_4_2; }
+		
+		//At_least
+		public RuleCall getTimesAt_leastParserRuleCall_4_2_0() { return cTimesAt_leastParserRuleCall_4_2_0; }
 	}
 	public class GapElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Gap");
@@ -1258,13 +1399,21 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cAndKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cBound_uppAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cBound_uppBound_upParserRuleCall_3_0 = (RuleCall)cBound_uppAssignment_3.eContents().get(0);
+		private final Alternatives cAlternatives_4 = (Alternatives)cGroup.eContents().get(4);
+		private final Assignment cTimesAssignment_4_0 = (Assignment)cAlternatives_4.eContents().get(0);
+		private final RuleCall cTimesExactlyParserRuleCall_4_0_0 = (RuleCall)cTimesAssignment_4_0.eContents().get(0);
+		private final Assignment cTimesAssignment_4_1 = (Assignment)cAlternatives_4.eContents().get(1);
+		private final RuleCall cTimesAt_mostParserRuleCall_4_1_0 = (RuleCall)cTimesAssignment_4_1.eContents().get(0);
+		private final Assignment cTimesAssignment_4_2 = (Assignment)cAlternatives_4.eContents().get(2);
+		private final RuleCall cTimesAt_leastParserRuleCall_4_2_0 = (RuleCall)cTimesAssignment_4_2.eContents().get(0);
 		
 		////Oracle for !Above and !Below limit --> Gap reference signal
 		//Gap:
-		//	'not in range between' bound_lower=Bound_Down 'and' bound_upp=Bound_up;
+		//	'not in range between' bound_lower=Bound_Down 'and' bound_upp=Bound_up (times=Exactly | times=At_most |
+		//	times=At_least)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'not in range between' bound_lower=Bound_Down 'and' bound_upp=Bound_up
+		//'not in range between' bound_lower=Bound_Down 'and' bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?
 		public Group getGroup() { return cGroup; }
 		
 		//'not in range between'
@@ -1284,6 +1433,27 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Bound_up
 		public RuleCall getBound_uppBound_upParserRuleCall_3_0() { return cBound_uppBound_upParserRuleCall_3_0; }
+		
+		//(times=Exactly | times=At_most | times=At_least)?
+		public Alternatives getAlternatives_4() { return cAlternatives_4; }
+		
+		//times=Exactly
+		public Assignment getTimesAssignment_4_0() { return cTimesAssignment_4_0; }
+		
+		//Exactly
+		public RuleCall getTimesExactlyParserRuleCall_4_0_0() { return cTimesExactlyParserRuleCall_4_0_0; }
+		
+		//times=At_most
+		public Assignment getTimesAssignment_4_1() { return cTimesAssignment_4_1; }
+		
+		//At_most
+		public RuleCall getTimesAt_mostParserRuleCall_4_1_0() { return cTimesAt_mostParserRuleCall_4_1_0; }
+		
+		//times=At_least
+		public Assignment getTimesAssignment_4_2() { return cTimesAssignment_4_2; }
+		
+		//At_least
+		public RuleCall getTimesAt_leastParserRuleCall_4_2_0() { return cTimesAt_leastParserRuleCall_4_2_0; }
 	}
 	public class InclusiveBoundElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.InclusiveBound");
@@ -1320,6 +1490,199 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//BOOLEAN
 		public RuleCall getValueBOOLEANParserRuleCall_3_0() { return cValueBOOLEANParserRuleCall_3_0; }
+	}
+	public class ExactlyElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Exactly");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cExactlyKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cValueAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cValueDOUBLEParserRuleCall_1_0 = (RuleCall)cValueAssignment_1.eContents().get(0);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Keyword cTimesKeyword_2_0 = (Keyword)cAlternatives_2.eContents().get(0);
+		private final Group cGroup_2_1 = (Group)cAlternatives_2.eContents().get(1);
+		private final Keyword cTimesInKeyword_2_1_0 = (Keyword)cGroup_2_1.eContents().get(0);
+		private final Assignment cTimeAssignment_2_1_1 = (Assignment)cGroup_2_1.eContents().get(1);
+		private final RuleCall cTimeDOUBLEParserRuleCall_2_1_1_0 = (RuleCall)cTimeAssignment_2_1_1.eContents().get(0);
+		private final Assignment cUnitAssignment_2_1_2 = (Assignment)cGroup_2_1.eContents().get(2);
+		private final RuleCall cUnitTimeTypeParserRuleCall_2_1_2_0 = (RuleCall)cUnitAssignment_2_1_2.eContents().get(0);
+		private final Assignment cUnitAssignment_2_2 = (Assignment)cAlternatives_2.eContents().get(2);
+		private final RuleCall cUnitTimeTypeParserRuleCall_2_2_0 = (RuleCall)cUnitAssignment_2_2.eContents().get(0);
+		
+		////exactly at a especified time
+		//Exactly:
+		//	'exactly'
+		//	value=DOUBLE ('times' | 'times in' time=DOUBLE unit=TimeType | unit=TimeType);
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'exactly' value=DOUBLE ('times' | 'times in' time=DOUBLE unit=TimeType | unit=TimeType)
+		public Group getGroup() { return cGroup; }
+		
+		//'exactly'
+		public Keyword getExactlyKeyword_0() { return cExactlyKeyword_0; }
+		
+		//value=DOUBLE
+		public Assignment getValueAssignment_1() { return cValueAssignment_1; }
+		
+		//DOUBLE
+		public RuleCall getValueDOUBLEParserRuleCall_1_0() { return cValueDOUBLEParserRuleCall_1_0; }
+		
+		//('times' | 'times in' time=DOUBLE unit=TimeType | unit=TimeType)
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+		
+		//'times'
+		public Keyword getTimesKeyword_2_0() { return cTimesKeyword_2_0; }
+		
+		//'times in' time=DOUBLE unit=TimeType
+		public Group getGroup_2_1() { return cGroup_2_1; }
+		
+		//'times in'
+		public Keyword getTimesInKeyword_2_1_0() { return cTimesInKeyword_2_1_0; }
+		
+		//time=DOUBLE
+		public Assignment getTimeAssignment_2_1_1() { return cTimeAssignment_2_1_1; }
+		
+		//DOUBLE
+		public RuleCall getTimeDOUBLEParserRuleCall_2_1_1_0() { return cTimeDOUBLEParserRuleCall_2_1_1_0; }
+		
+		//unit=TimeType
+		public Assignment getUnitAssignment_2_1_2() { return cUnitAssignment_2_1_2; }
+		
+		//TimeType
+		public RuleCall getUnitTimeTypeParserRuleCall_2_1_2_0() { return cUnitTimeTypeParserRuleCall_2_1_2_0; }
+		
+		//unit=TimeType
+		public Assignment getUnitAssignment_2_2() { return cUnitAssignment_2_2; }
+		
+		//TimeType
+		public RuleCall getUnitTimeTypeParserRuleCall_2_2_0() { return cUnitTimeTypeParserRuleCall_2_2_0; }
+	}
+	public class At_mostElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.At_most");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cAtMostKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cValueAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cValueDOUBLEParserRuleCall_1_0 = (RuleCall)cValueAssignment_1.eContents().get(0);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Keyword cTimesKeyword_2_0 = (Keyword)cAlternatives_2.eContents().get(0);
+		private final Group cGroup_2_1 = (Group)cAlternatives_2.eContents().get(1);
+		private final Keyword cTimesInKeyword_2_1_0 = (Keyword)cGroup_2_1.eContents().get(0);
+		private final Assignment cTimeAssignment_2_1_1 = (Assignment)cGroup_2_1.eContents().get(1);
+		private final RuleCall cTimeDOUBLEParserRuleCall_2_1_1_0 = (RuleCall)cTimeAssignment_2_1_1.eContents().get(0);
+		private final Assignment cUnitAssignment_2_1_2 = (Assignment)cGroup_2_1.eContents().get(2);
+		private final RuleCall cUnitTimeTypeParserRuleCall_2_1_2_0 = (RuleCall)cUnitAssignment_2_1_2.eContents().get(0);
+		private final Assignment cUnitAssignment_2_2 = (Assignment)cAlternatives_2.eContents().get(2);
+		private final RuleCall cUnitTimeTypeParserRuleCall_2_2_0 = (RuleCall)cUnitAssignment_2_2.eContents().get(0);
+		
+		//At_most:
+		//	'at most'
+		//	value=DOUBLE ('times' | 'times in' time=DOUBLE unit=TimeType | unit=TimeType);
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'at most' value=DOUBLE ('times' | 'times in' time=DOUBLE unit=TimeType | unit=TimeType)
+		public Group getGroup() { return cGroup; }
+		
+		//'at most'
+		public Keyword getAtMostKeyword_0() { return cAtMostKeyword_0; }
+		
+		//value=DOUBLE
+		public Assignment getValueAssignment_1() { return cValueAssignment_1; }
+		
+		//DOUBLE
+		public RuleCall getValueDOUBLEParserRuleCall_1_0() { return cValueDOUBLEParserRuleCall_1_0; }
+		
+		//('times' | 'times in' time=DOUBLE unit=TimeType | unit=TimeType)
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+		
+		//'times'
+		public Keyword getTimesKeyword_2_0() { return cTimesKeyword_2_0; }
+		
+		//'times in' time=DOUBLE unit=TimeType
+		public Group getGroup_2_1() { return cGroup_2_1; }
+		
+		//'times in'
+		public Keyword getTimesInKeyword_2_1_0() { return cTimesInKeyword_2_1_0; }
+		
+		//time=DOUBLE
+		public Assignment getTimeAssignment_2_1_1() { return cTimeAssignment_2_1_1; }
+		
+		//DOUBLE
+		public RuleCall getTimeDOUBLEParserRuleCall_2_1_1_0() { return cTimeDOUBLEParserRuleCall_2_1_1_0; }
+		
+		//unit=TimeType
+		public Assignment getUnitAssignment_2_1_2() { return cUnitAssignment_2_1_2; }
+		
+		//TimeType
+		public RuleCall getUnitTimeTypeParserRuleCall_2_1_2_0() { return cUnitTimeTypeParserRuleCall_2_1_2_0; }
+		
+		//unit=TimeType
+		public Assignment getUnitAssignment_2_2() { return cUnitAssignment_2_2; }
+		
+		//TimeType
+		public RuleCall getUnitTimeTypeParserRuleCall_2_2_0() { return cUnitTimeTypeParserRuleCall_2_2_0; }
+	}
+	public class At_leastElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.At_least");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cAtLeastKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cValueAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cValueDOUBLEParserRuleCall_1_0 = (RuleCall)cValueAssignment_1.eContents().get(0);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Keyword cTimesKeyword_2_0 = (Keyword)cAlternatives_2.eContents().get(0);
+		private final Group cGroup_2_1 = (Group)cAlternatives_2.eContents().get(1);
+		private final Keyword cTimesInKeyword_2_1_0 = (Keyword)cGroup_2_1.eContents().get(0);
+		private final Assignment cTimeAssignment_2_1_1 = (Assignment)cGroup_2_1.eContents().get(1);
+		private final RuleCall cTimeDOUBLEParserRuleCall_2_1_1_0 = (RuleCall)cTimeAssignment_2_1_1.eContents().get(0);
+		private final Assignment cUnitAssignment_2_1_2 = (Assignment)cGroup_2_1.eContents().get(2);
+		private final RuleCall cUnitTimeTypeParserRuleCall_2_1_2_0 = (RuleCall)cUnitAssignment_2_1_2.eContents().get(0);
+		private final Assignment cUnitAssignment_2_2 = (Assignment)cAlternatives_2.eContents().get(2);
+		private final RuleCall cUnitTimeTypeParserRuleCall_2_2_0 = (RuleCall)cUnitAssignment_2_2.eContents().get(0);
+		
+		//At_least:
+		//	'at least'
+		//	value=DOUBLE ('times' | 'times in' time=DOUBLE unit=TimeType | unit=TimeType);
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'at least' value=DOUBLE ('times' | 'times in' time=DOUBLE unit=TimeType | unit=TimeType)
+		public Group getGroup() { return cGroup; }
+		
+		//'at least'
+		public Keyword getAtLeastKeyword_0() { return cAtLeastKeyword_0; }
+		
+		//value=DOUBLE
+		public Assignment getValueAssignment_1() { return cValueAssignment_1; }
+		
+		//DOUBLE
+		public RuleCall getValueDOUBLEParserRuleCall_1_0() { return cValueDOUBLEParserRuleCall_1_0; }
+		
+		//('times' | 'times in' time=DOUBLE unit=TimeType | unit=TimeType)
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+		
+		//'times'
+		public Keyword getTimesKeyword_2_0() { return cTimesKeyword_2_0; }
+		
+		//'times in' time=DOUBLE unit=TimeType
+		public Group getGroup_2_1() { return cGroup_2_1; }
+		
+		//'times in'
+		public Keyword getTimesInKeyword_2_1_0() { return cTimesInKeyword_2_1_0; }
+		
+		//time=DOUBLE
+		public Assignment getTimeAssignment_2_1_1() { return cTimeAssignment_2_1_1; }
+		
+		//DOUBLE
+		public RuleCall getTimeDOUBLEParserRuleCall_2_1_1_0() { return cTimeDOUBLEParserRuleCall_2_1_1_0; }
+		
+		//unit=TimeType
+		public Assignment getUnitAssignment_2_1_2() { return cUnitAssignment_2_1_2; }
+		
+		//TimeType
+		public RuleCall getUnitTimeTypeParserRuleCall_2_1_2_0() { return cUnitTimeTypeParserRuleCall_2_1_2_0; }
+		
+		//unit=TimeType
+		public Assignment getUnitAssignment_2_2() { return cUnitAssignment_2_2; }
+		
+		//TimeType
+		public RuleCall getUnitTimeTypeParserRuleCall_2_2_0() { return cUnitTimeTypeParserRuleCall_2_2_0; }
 	}
 	public class Bound_upElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Bound_up");
@@ -1827,6 +2190,9 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	private final RangeElements pRange;
 	private final GapElements pGap;
 	private final InclusiveBoundElements pInclusiveBound;
+	private final ExactlyElements pExactly;
+	private final At_mostElements pAt_most;
+	private final At_leastElements pAt_least;
 	private final Bound_upElements pBound_up;
 	private final Bound_DownElements pBound_Down;
 	private final BOOLEANElements pBOOLEAN;
@@ -1889,6 +2255,9 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		this.pRange = new RangeElements();
 		this.pGap = new GapElements();
 		this.pInclusiveBound = new InclusiveBoundElements();
+		this.pExactly = new ExactlyElements();
+		this.pAt_most = new At_mostElements();
+		this.pAt_least = new At_leastElements();
 		this.pBound_up = new Bound_upElements();
 		this.pBound_Down = new Bound_DownElements();
 		this.pBOOLEAN = new BOOLEANElements();
@@ -2250,7 +2619,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Same:
-	//	'should be' bound_upp=Bound_up;
+	//	'should be' bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?;
 	public SameElements getSameAccess() {
 		return pSame;
 	}
@@ -2260,7 +2629,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//NotSame:
-	//	'should not be' bound_upp=Bound_up;
+	//	'should not be' bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?;
 	public NotSameElements getNotSameAccess() {
 		return pNotSame;
 	}
@@ -2271,7 +2640,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	
 	////Oracle for upper limit --> Below reference signal
 	//Upper:
-	//	'is below' bound_upp=Bound_up;
+	//	'is below' bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?;
 	public UpperElements getUpperAccess() {
 		return pUpper;
 	}
@@ -2282,7 +2651,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	
 	////Oracle for lower limit --> Above reference signal
 	//Lower:
-	//	'is above' bound_lower=Bound_Down;
+	//	'is above' bound_lower=Bound_Down (times=Exactly | times=At_most | times=At_least)?;
 	public LowerElements getLowerAccess() {
 		return pLower;
 	}
@@ -2293,7 +2662,8 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	
 	////Oracle for Above and Below limit --> In range reference signal
 	//Range:
-	//	'is in range between' bound_lower=Bound_Down 'and' bound_upp=Bound_up;
+	//	'is in range between' bound_lower=Bound_Down 'and' bound_upp=Bound_up (times=Exactly | times=At_most |
+	//	times=At_least)?;
 	public RangeElements getRangeAccess() {
 		return pRange;
 	}
@@ -2304,7 +2674,8 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	
 	////Oracle for !Above and !Below limit --> Gap reference signal
 	//Gap:
-	//	'not in range between' bound_lower=Bound_Down 'and' bound_upp=Bound_up;
+	//	'not in range between' bound_lower=Bound_Down 'and' bound_upp=Bound_up (times=Exactly | times=At_most |
+	//	times=At_least)?;
 	public GapElements getGapAccess() {
 		return pGap;
 	}
@@ -2322,6 +2693,40 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getInclusiveBoundRule() {
 		return getInclusiveBoundAccess().getRule();
+	}
+	
+	////exactly at a especified time
+	//Exactly:
+	//	'exactly'
+	//	value=DOUBLE ('times' | 'times in' time=DOUBLE unit=TimeType | unit=TimeType);
+	public ExactlyElements getExactlyAccess() {
+		return pExactly;
+	}
+	
+	public ParserRule getExactlyRule() {
+		return getExactlyAccess().getRule();
+	}
+	
+	//At_most:
+	//	'at most'
+	//	value=DOUBLE ('times' | 'times in' time=DOUBLE unit=TimeType | unit=TimeType);
+	public At_mostElements getAt_mostAccess() {
+		return pAt_most;
+	}
+	
+	public ParserRule getAt_mostRule() {
+		return getAt_mostAccess().getRule();
+	}
+	
+	//At_least:
+	//	'at least'
+	//	value=DOUBLE ('times' | 'times in' time=DOUBLE unit=TimeType | unit=TimeType);
+	public At_leastElements getAt_leastAccess() {
+		return pAt_least;
+	}
+	
+	public ParserRule getAt_leastRule() {
+		return getAt_leastAccess().getRule();
 	}
 	
 	////Upper limit

@@ -321,6 +321,33 @@ public interface AdeptnessFactory extends EFactory
   InclusiveBound createInclusiveBound();
 
   /**
+   * Returns a new object of class '<em>Exactly</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Exactly</em>'.
+   * @generated
+   */
+  Exactly createExactly();
+
+  /**
+   * Returns a new object of class '<em>At most</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>At most</em>'.
+   * @generated
+   */
+  At_most createAt_most();
+
+  /**
+   * Returns a new object of class '<em>At least</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>At least</em>'.
+   * @generated
+   */
+  At_least createAt_least();
+
+  /**
    * Returns a new object of class '<em>Bound up</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
