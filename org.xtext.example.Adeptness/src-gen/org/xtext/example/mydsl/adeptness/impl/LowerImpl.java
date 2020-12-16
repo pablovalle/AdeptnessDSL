@@ -7,14 +7,16 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
+import org.xtext.example.mydsl.adeptness.At_least;
+import org.xtext.example.mydsl.adeptness.At_most;
 import org.xtext.example.mydsl.adeptness.Bound_Down;
+import org.xtext.example.mydsl.adeptness.Exactly;
 import org.xtext.example.mydsl.adeptness.Lower;
 
 /**
@@ -26,7 +28,9 @@ import org.xtext.example.mydsl.adeptness.Lower;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.LowerImpl#getBound_lower <em>Bound lower</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.impl.LowerImpl#getTimes <em>Times</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.LowerImpl#getExactly <em>Exactly</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.LowerImpl#getAtmost <em>Atmost</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.LowerImpl#getAtleast <em>Atleast</em>}</li>
  * </ul>
  *
  * @generated
@@ -44,14 +48,34 @@ public class LowerImpl extends MinimalEObjectImpl.Container implements Lower
   protected Bound_Down bound_lower;
 
   /**
-   * The cached value of the '{@link #getTimes() <em>Times</em>}' containment reference.
+   * The cached value of the '{@link #getExactly() <em>Exactly</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTimes()
+   * @see #getExactly()
    * @generated
    * @ordered
    */
-  protected EObject times;
+  protected Exactly exactly;
+
+  /**
+   * The cached value of the '{@link #getAtmost() <em>Atmost</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getAtmost()
+   * @generated
+   * @ordered
+   */
+  protected At_most atmost;
+
+  /**
+   * The cached value of the '{@link #getAtleast() <em>Atleast</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getAtleast()
+   * @generated
+   * @ordered
+   */
+  protected At_least atleast;
 
   /**
    * <!-- begin-user-doc -->
@@ -130,9 +154,9 @@ public class LowerImpl extends MinimalEObjectImpl.Container implements Lower
    * @generated
    */
   @Override
-  public EObject getTimes()
+  public Exactly getExactly()
   {
-    return times;
+    return exactly;
   }
 
   /**
@@ -140,13 +164,13 @@ public class LowerImpl extends MinimalEObjectImpl.Container implements Lower
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetTimes(EObject newTimes, NotificationChain msgs)
+  public NotificationChain basicSetExactly(Exactly newExactly, NotificationChain msgs)
   {
-    EObject oldTimes = times;
-    times = newTimes;
+    Exactly oldExactly = exactly;
+    exactly = newExactly;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.LOWER__TIMES, oldTimes, newTimes);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.LOWER__EXACTLY, oldExactly, newExactly);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -158,20 +182,120 @@ public class LowerImpl extends MinimalEObjectImpl.Container implements Lower
    * @generated
    */
   @Override
-  public void setTimes(EObject newTimes)
+  public void setExactly(Exactly newExactly)
   {
-    if (newTimes != times)
+    if (newExactly != exactly)
     {
       NotificationChain msgs = null;
-      if (times != null)
-        msgs = ((InternalEObject)times).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.LOWER__TIMES, null, msgs);
-      if (newTimes != null)
-        msgs = ((InternalEObject)newTimes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.LOWER__TIMES, null, msgs);
-      msgs = basicSetTimes(newTimes, msgs);
+      if (exactly != null)
+        msgs = ((InternalEObject)exactly).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.LOWER__EXACTLY, null, msgs);
+      if (newExactly != null)
+        msgs = ((InternalEObject)newExactly).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.LOWER__EXACTLY, null, msgs);
+      msgs = basicSetExactly(newExactly, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.LOWER__TIMES, newTimes, newTimes));
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.LOWER__EXACTLY, newExactly, newExactly));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public At_most getAtmost()
+  {
+    return atmost;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetAtmost(At_most newAtmost, NotificationChain msgs)
+  {
+    At_most oldAtmost = atmost;
+    atmost = newAtmost;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.LOWER__ATMOST, oldAtmost, newAtmost);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setAtmost(At_most newAtmost)
+  {
+    if (newAtmost != atmost)
+    {
+      NotificationChain msgs = null;
+      if (atmost != null)
+        msgs = ((InternalEObject)atmost).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.LOWER__ATMOST, null, msgs);
+      if (newAtmost != null)
+        msgs = ((InternalEObject)newAtmost).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.LOWER__ATMOST, null, msgs);
+      msgs = basicSetAtmost(newAtmost, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.LOWER__ATMOST, newAtmost, newAtmost));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public At_least getAtleast()
+  {
+    return atleast;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetAtleast(At_least newAtleast, NotificationChain msgs)
+  {
+    At_least oldAtleast = atleast;
+    atleast = newAtleast;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.LOWER__ATLEAST, oldAtleast, newAtleast);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setAtleast(At_least newAtleast)
+  {
+    if (newAtleast != atleast)
+    {
+      NotificationChain msgs = null;
+      if (atleast != null)
+        msgs = ((InternalEObject)atleast).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.LOWER__ATLEAST, null, msgs);
+      if (newAtleast != null)
+        msgs = ((InternalEObject)newAtleast).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.LOWER__ATLEAST, null, msgs);
+      msgs = basicSetAtleast(newAtleast, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.LOWER__ATLEAST, newAtleast, newAtleast));
   }
 
   /**
@@ -186,8 +310,12 @@ public class LowerImpl extends MinimalEObjectImpl.Container implements Lower
     {
       case AdeptnessPackage.LOWER__BOUND_LOWER:
         return basicSetBound_lower(null, msgs);
-      case AdeptnessPackage.LOWER__TIMES:
-        return basicSetTimes(null, msgs);
+      case AdeptnessPackage.LOWER__EXACTLY:
+        return basicSetExactly(null, msgs);
+      case AdeptnessPackage.LOWER__ATMOST:
+        return basicSetAtmost(null, msgs);
+      case AdeptnessPackage.LOWER__ATLEAST:
+        return basicSetAtleast(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -204,8 +332,12 @@ public class LowerImpl extends MinimalEObjectImpl.Container implements Lower
     {
       case AdeptnessPackage.LOWER__BOUND_LOWER:
         return getBound_lower();
-      case AdeptnessPackage.LOWER__TIMES:
-        return getTimes();
+      case AdeptnessPackage.LOWER__EXACTLY:
+        return getExactly();
+      case AdeptnessPackage.LOWER__ATMOST:
+        return getAtmost();
+      case AdeptnessPackage.LOWER__ATLEAST:
+        return getAtleast();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -223,8 +355,14 @@ public class LowerImpl extends MinimalEObjectImpl.Container implements Lower
       case AdeptnessPackage.LOWER__BOUND_LOWER:
         setBound_lower((Bound_Down)newValue);
         return;
-      case AdeptnessPackage.LOWER__TIMES:
-        setTimes((EObject)newValue);
+      case AdeptnessPackage.LOWER__EXACTLY:
+        setExactly((Exactly)newValue);
+        return;
+      case AdeptnessPackage.LOWER__ATMOST:
+        setAtmost((At_most)newValue);
+        return;
+      case AdeptnessPackage.LOWER__ATLEAST:
+        setAtleast((At_least)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -243,8 +381,14 @@ public class LowerImpl extends MinimalEObjectImpl.Container implements Lower
       case AdeptnessPackage.LOWER__BOUND_LOWER:
         setBound_lower((Bound_Down)null);
         return;
-      case AdeptnessPackage.LOWER__TIMES:
-        setTimes((EObject)null);
+      case AdeptnessPackage.LOWER__EXACTLY:
+        setExactly((Exactly)null);
+        return;
+      case AdeptnessPackage.LOWER__ATMOST:
+        setAtmost((At_most)null);
+        return;
+      case AdeptnessPackage.LOWER__ATLEAST:
+        setAtleast((At_least)null);
         return;
     }
     super.eUnset(featureID);
@@ -262,8 +406,12 @@ public class LowerImpl extends MinimalEObjectImpl.Container implements Lower
     {
       case AdeptnessPackage.LOWER__BOUND_LOWER:
         return bound_lower != null;
-      case AdeptnessPackage.LOWER__TIMES:
-        return times != null;
+      case AdeptnessPackage.LOWER__EXACTLY:
+        return exactly != null;
+      case AdeptnessPackage.LOWER__ATMOST:
+        return atmost != null;
+      case AdeptnessPackage.LOWER__ATLEAST:
+        return atleast != null;
     }
     return super.eIsSet(featureID);
   }

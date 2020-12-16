@@ -7,14 +7,16 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
+import org.xtext.example.mydsl.adeptness.At_least;
+import org.xtext.example.mydsl.adeptness.At_most;
 import org.xtext.example.mydsl.adeptness.Bound_up;
+import org.xtext.example.mydsl.adeptness.Exactly;
 import org.xtext.example.mydsl.adeptness.Same;
 
 /**
@@ -26,7 +28,9 @@ import org.xtext.example.mydsl.adeptness.Same;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SameImpl#getBound_upp <em>Bound upp</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SameImpl#getTimes <em>Times</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SameImpl#getExactly <em>Exactly</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SameImpl#getAtmost <em>Atmost</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.SameImpl#getAtleast <em>Atleast</em>}</li>
  * </ul>
  *
  * @generated
@@ -44,14 +48,34 @@ public class SameImpl extends MinimalEObjectImpl.Container implements Same
   protected Bound_up bound_upp;
 
   /**
-   * The cached value of the '{@link #getTimes() <em>Times</em>}' containment reference.
+   * The cached value of the '{@link #getExactly() <em>Exactly</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTimes()
+   * @see #getExactly()
    * @generated
    * @ordered
    */
-  protected EObject times;
+  protected Exactly exactly;
+
+  /**
+   * The cached value of the '{@link #getAtmost() <em>Atmost</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getAtmost()
+   * @generated
+   * @ordered
+   */
+  protected At_most atmost;
+
+  /**
+   * The cached value of the '{@link #getAtleast() <em>Atleast</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getAtleast()
+   * @generated
+   * @ordered
+   */
+  protected At_least atleast;
 
   /**
    * <!-- begin-user-doc -->
@@ -130,9 +154,9 @@ public class SameImpl extends MinimalEObjectImpl.Container implements Same
    * @generated
    */
   @Override
-  public EObject getTimes()
+  public Exactly getExactly()
   {
-    return times;
+    return exactly;
   }
 
   /**
@@ -140,13 +164,13 @@ public class SameImpl extends MinimalEObjectImpl.Container implements Same
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetTimes(EObject newTimes, NotificationChain msgs)
+  public NotificationChain basicSetExactly(Exactly newExactly, NotificationChain msgs)
   {
-    EObject oldTimes = times;
-    times = newTimes;
+    Exactly oldExactly = exactly;
+    exactly = newExactly;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.SAME__TIMES, oldTimes, newTimes);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.SAME__EXACTLY, oldExactly, newExactly);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -158,20 +182,120 @@ public class SameImpl extends MinimalEObjectImpl.Container implements Same
    * @generated
    */
   @Override
-  public void setTimes(EObject newTimes)
+  public void setExactly(Exactly newExactly)
   {
-    if (newTimes != times)
+    if (newExactly != exactly)
     {
       NotificationChain msgs = null;
-      if (times != null)
-        msgs = ((InternalEObject)times).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.SAME__TIMES, null, msgs);
-      if (newTimes != null)
-        msgs = ((InternalEObject)newTimes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.SAME__TIMES, null, msgs);
-      msgs = basicSetTimes(newTimes, msgs);
+      if (exactly != null)
+        msgs = ((InternalEObject)exactly).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.SAME__EXACTLY, null, msgs);
+      if (newExactly != null)
+        msgs = ((InternalEObject)newExactly).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.SAME__EXACTLY, null, msgs);
+      msgs = basicSetExactly(newExactly, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.SAME__TIMES, newTimes, newTimes));
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.SAME__EXACTLY, newExactly, newExactly));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public At_most getAtmost()
+  {
+    return atmost;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetAtmost(At_most newAtmost, NotificationChain msgs)
+  {
+    At_most oldAtmost = atmost;
+    atmost = newAtmost;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.SAME__ATMOST, oldAtmost, newAtmost);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setAtmost(At_most newAtmost)
+  {
+    if (newAtmost != atmost)
+    {
+      NotificationChain msgs = null;
+      if (atmost != null)
+        msgs = ((InternalEObject)atmost).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.SAME__ATMOST, null, msgs);
+      if (newAtmost != null)
+        msgs = ((InternalEObject)newAtmost).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.SAME__ATMOST, null, msgs);
+      msgs = basicSetAtmost(newAtmost, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.SAME__ATMOST, newAtmost, newAtmost));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public At_least getAtleast()
+  {
+    return atleast;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetAtleast(At_least newAtleast, NotificationChain msgs)
+  {
+    At_least oldAtleast = atleast;
+    atleast = newAtleast;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.SAME__ATLEAST, oldAtleast, newAtleast);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setAtleast(At_least newAtleast)
+  {
+    if (newAtleast != atleast)
+    {
+      NotificationChain msgs = null;
+      if (atleast != null)
+        msgs = ((InternalEObject)atleast).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.SAME__ATLEAST, null, msgs);
+      if (newAtleast != null)
+        msgs = ((InternalEObject)newAtleast).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.SAME__ATLEAST, null, msgs);
+      msgs = basicSetAtleast(newAtleast, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.SAME__ATLEAST, newAtleast, newAtleast));
   }
 
   /**
@@ -186,8 +310,12 @@ public class SameImpl extends MinimalEObjectImpl.Container implements Same
     {
       case AdeptnessPackage.SAME__BOUND_UPP:
         return basicSetBound_upp(null, msgs);
-      case AdeptnessPackage.SAME__TIMES:
-        return basicSetTimes(null, msgs);
+      case AdeptnessPackage.SAME__EXACTLY:
+        return basicSetExactly(null, msgs);
+      case AdeptnessPackage.SAME__ATMOST:
+        return basicSetAtmost(null, msgs);
+      case AdeptnessPackage.SAME__ATLEAST:
+        return basicSetAtleast(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -204,8 +332,12 @@ public class SameImpl extends MinimalEObjectImpl.Container implements Same
     {
       case AdeptnessPackage.SAME__BOUND_UPP:
         return getBound_upp();
-      case AdeptnessPackage.SAME__TIMES:
-        return getTimes();
+      case AdeptnessPackage.SAME__EXACTLY:
+        return getExactly();
+      case AdeptnessPackage.SAME__ATMOST:
+        return getAtmost();
+      case AdeptnessPackage.SAME__ATLEAST:
+        return getAtleast();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -223,8 +355,14 @@ public class SameImpl extends MinimalEObjectImpl.Container implements Same
       case AdeptnessPackage.SAME__BOUND_UPP:
         setBound_upp((Bound_up)newValue);
         return;
-      case AdeptnessPackage.SAME__TIMES:
-        setTimes((EObject)newValue);
+      case AdeptnessPackage.SAME__EXACTLY:
+        setExactly((Exactly)newValue);
+        return;
+      case AdeptnessPackage.SAME__ATMOST:
+        setAtmost((At_most)newValue);
+        return;
+      case AdeptnessPackage.SAME__ATLEAST:
+        setAtleast((At_least)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -243,8 +381,14 @@ public class SameImpl extends MinimalEObjectImpl.Container implements Same
       case AdeptnessPackage.SAME__BOUND_UPP:
         setBound_upp((Bound_up)null);
         return;
-      case AdeptnessPackage.SAME__TIMES:
-        setTimes((EObject)null);
+      case AdeptnessPackage.SAME__EXACTLY:
+        setExactly((Exactly)null);
+        return;
+      case AdeptnessPackage.SAME__ATMOST:
+        setAtmost((At_most)null);
+        return;
+      case AdeptnessPackage.SAME__ATLEAST:
+        setAtleast((At_least)null);
         return;
     }
     super.eUnset(featureID);
@@ -262,8 +406,12 @@ public class SameImpl extends MinimalEObjectImpl.Container implements Same
     {
       case AdeptnessPackage.SAME__BOUND_UPP:
         return bound_upp != null;
-      case AdeptnessPackage.SAME__TIMES:
-        return times != null;
+      case AdeptnessPackage.SAME__EXACTLY:
+        return exactly != null;
+      case AdeptnessPackage.SAME__ATMOST:
+        return atmost != null;
+      case AdeptnessPackage.SAME__ATLEAST:
+        return atleast != null;
     }
     return super.eIsSet(featureID);
   }

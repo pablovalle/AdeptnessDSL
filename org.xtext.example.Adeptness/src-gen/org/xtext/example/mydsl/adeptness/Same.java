@@ -15,7 +15,9 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Same#getBound_upp <em>Bound upp</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.Same#getTimes <em>Times</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Same#getExactly <em>Exactly</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Same#getAtmost <em>Atmost</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Same#getAtleast <em>Atleast</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSame()
@@ -47,25 +49,69 @@ public interface Same extends EObject
   void setBound_upp(Bound_up value);
 
   /**
-   * Returns the value of the '<em><b>Times</b></em>' containment reference.
+   * Returns the value of the '<em><b>Exactly</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Times</em>' containment reference.
-   * @see #setTimes(EObject)
-   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSame_Times()
+   * @return the value of the '<em>Exactly</em>' containment reference.
+   * @see #setExactly(Exactly)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSame_Exactly()
    * @model containment="true"
    * @generated
    */
-  EObject getTimes();
+  Exactly getExactly();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Same#getTimes <em>Times</em>}' containment reference.
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Same#getExactly <em>Exactly</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Times</em>' containment reference.
-   * @see #getTimes()
+   * @param value the new value of the '<em>Exactly</em>' containment reference.
+   * @see #getExactly()
    * @generated
    */
-  void setTimes(EObject value);
+  void setExactly(Exactly value);
+
+  /**
+   * Returns the value of the '<em><b>Atmost</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Atmost</em>' containment reference.
+   * @see #setAtmost(At_most)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSame_Atmost()
+   * @model containment="true"
+   * @generated
+   */
+  At_most getAtmost();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Same#getAtmost <em>Atmost</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Atmost</em>' containment reference.
+   * @see #getAtmost()
+   * @generated
+   */
+  void setAtmost(At_most value);
+
+  /**
+   * Returns the value of the '<em><b>Atleast</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Atleast</em>' containment reference.
+   * @see #setAtleast(At_least)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getSame_Atleast()
+   * @model containment="true"
+   * @generated
+   */
+  At_least getAtleast();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Same#getAtleast <em>Atleast</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Atleast</em>' containment reference.
+   * @see #getAtleast()
+   * @generated
+   */
+  void setAtleast(At_least value);
 
 } // Same

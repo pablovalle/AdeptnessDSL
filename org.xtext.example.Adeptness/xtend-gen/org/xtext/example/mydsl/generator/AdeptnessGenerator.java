@@ -16,14 +16,32 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.xtext.example.mydsl.adeptness.AbstractElement2;
+import org.xtext.example.mydsl.adeptness.AfterWhen;
+import org.xtext.example.mydsl.adeptness.At_least;
+import org.xtext.example.mydsl.adeptness.At_most;
+import org.xtext.example.mydsl.adeptness.CompOp;
+import org.xtext.example.mydsl.adeptness.ConstDeg;
+import org.xtext.example.mydsl.adeptness.DOUBLE;
+import org.xtext.example.mydsl.adeptness.During;
+import org.xtext.example.mydsl.adeptness.Exactly;
+import org.xtext.example.mydsl.adeptness.FailReason;
 import org.xtext.example.mydsl.adeptness.Gap;
+import org.xtext.example.mydsl.adeptness.HighPeak;
+import org.xtext.example.mydsl.adeptness.HighTime;
+import org.xtext.example.mydsl.adeptness.LogicOp;
 import org.xtext.example.mydsl.adeptness.Lower;
 import org.xtext.example.mydsl.adeptness.NotSame;
+import org.xtext.example.mydsl.adeptness.Op;
+import org.xtext.example.mydsl.adeptness.Operators;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Same;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.Upper;
+import org.xtext.example.mydsl.adeptness.Wait;
+import org.xtext.example.mydsl.adeptness.When;
+import org.xtext.example.mydsl.adeptness.While;
+import org.xtext.example.mydsl.adeptness.XPeaks;
 
 /**
  * Generates code from your model files on save.
@@ -40,16 +58,21 @@ public class AdeptnessGenerator extends AbstractGenerator {
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
     Iterable<Signal> _filter = Iterables.<Signal>filter(IteratorExtensions.<EObject>toIterable(resource.getAllContents()), Signal.class);
     for (final Signal e : _filter) {
-      EList<Oracle> _oracle = e.getOracle();
-      for (final Oracle q : _oracle) {
-        {
-          String _string = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
-          String _plus = (_string + ".c");
-          fsa.generateFile(_plus, this.create_oracle_c(q));
-          String _string_1 = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
-          String _plus_1 = (_string_1 + ".h");
-          fsa.generateFile(_plus_1, this.create_oracle_h(q));
+      {
+        EList<Oracle> _oracle = e.getOracle();
+        for (final Oracle q : _oracle) {
+          {
+            String _string = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
+            String _plus = (_string + ".c");
+            fsa.generateFile(_plus, this.create_oracle_c(q));
+            String _string_1 = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
+            String _plus_1 = (_string_1 + ".h");
+            fsa.generateFile(_plus_1, this.create_oracle_h(q));
+          }
         }
+        String _string = this._iQualifiedNameProvider.getFullyQualifiedName(e).toString("/");
+        String _plus = (_string + ".json");
+        fsa.generateFile(_plus, this.create_oracle_json(e));
       }
     }
   }
@@ -67,6 +90,2420 @@ public class AdeptnessGenerator extends AbstractGenerator {
    * exit
    * '''
    */
+  public CharSequence create_oracle_json(final Signal CPS) {
+    StringConcatenation _builder = new StringConcatenation();
+    int cont = 0;
+    _builder.newLineIfNotEmpty();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"Name\":\"");
+    String _name = CPS.getName();
+    _builder.append(_name, "\t");
+    _builder.append("\",");
+    _builder.newLineIfNotEmpty();
+    {
+      EList<Oracle> _oracle = CPS.getOracle();
+      for(final Oracle param : _oracle) {
+        _builder.append("\t");
+        _builder.append("\"");
+        String _name_1 = param.getName();
+        _builder.append(_name_1, "\t");
+        _builder.append("\":{");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t");
+        _builder.append("\"cfileDirectory\":\"");
+        String _string = this._iQualifiedNameProvider.getFullyQualifiedName(param).toString("/");
+        String _plus = (_string + ".c");
+        _builder.append(_plus, "\t\t");
+        _builder.append("\",");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t");
+        _builder.append("\"hfileDirectory\":\"");
+        String _string_1 = this._iQualifiedNameProvider.getFullyQualifiedName(param).toString("/");
+        String _plus_1 = (_string_1 + ".h");
+        _builder.append(_plus_1, "\t\t");
+        _builder.append("\",");
+        _builder.newLineIfNotEmpty();
+        {
+          if (((param.getWhen() != null) && (param.getWhile() != null))) {
+            {
+              String _name_2 = param.getCheck().getName();
+              boolean _tripleNotEquals = (_name_2 != null);
+              if (_tripleNotEquals) {
+                _builder.append("\t\t");
+                _builder.append("\"Inputs\":[\"");
+                String _name_3 = param.getCheck().getName();
+                _builder.append(_name_3);
+                _builder.append("\", ");
+                {
+                  EList<AbstractElement2> _elements = param.getWhen().getEm().getElements();
+                  for(final AbstractElement2 par1 : _elements) {
+                    {
+                      String _name_4 = par1.getName();
+                      boolean _tripleNotEquals_1 = (_name_4 != null);
+                      if (_tripleNotEquals_1) {
+                        _builder.append("\"");
+                        String _name_5 = par1.getName();
+                        _builder.append(_name_5);
+                        _builder.append("\", ");
+                      }
+                    }
+                  }
+                }
+                {
+                  EList<AbstractElement2> _elements_1 = param.getWhile().getEm().getElements();
+                  for(final AbstractElement2 par2 : _elements_1) {
+                    {
+                      String _name_6 = par2.getName();
+                      boolean _tripleNotEquals_2 = (_name_6 != null);
+                      if (_tripleNotEquals_2) {
+                        _builder.append("\"");
+                        String _name_7 = par2.getName();
+                        _builder.append(_name_7);
+                        _builder.append("\", ");
+                      }
+                    }
+                  }
+                }
+                _builder.append("\"timeStamp\"],");
+                _builder.newLineIfNotEmpty();
+              } else {
+                _builder.append("\t\t");
+                _builder.append("\"Inputs\":[");
+                {
+                  EList<AbstractElement2> _elements_2 = param.getCheck().getEm().getElements();
+                  for(final AbstractElement2 par3 : _elements_2) {
+                    {
+                      String _name_8 = par3.getName();
+                      boolean _tripleNotEquals_3 = (_name_8 != null);
+                      if (_tripleNotEquals_3) {
+                        _builder.append("\"");
+                        String _name_9 = par3.getName();
+                        _builder.append(_name_9);
+                        _builder.append("\", ");
+                      }
+                    }
+                  }
+                }
+                {
+                  EList<AbstractElement2> _elements_3 = param.getWhen().getEm().getElements();
+                  for(final AbstractElement2 par1_1 : _elements_3) {
+                    {
+                      String _name_10 = par1_1.getName();
+                      boolean _tripleNotEquals_4 = (_name_10 != null);
+                      if (_tripleNotEquals_4) {
+                        _builder.append("\"");
+                        String _name_11 = par1_1.getName();
+                        _builder.append(_name_11);
+                        _builder.append("\", ");
+                      }
+                    }
+                  }
+                }
+                {
+                  EList<AbstractElement2> _elements_4 = param.getWhile().getEm().getElements();
+                  for(final AbstractElement2 par2_1 : _elements_4) {
+                    {
+                      String _name_12 = par2_1.getName();
+                      boolean _tripleNotEquals_5 = (_name_12 != null);
+                      if (_tripleNotEquals_5) {
+                        _builder.append("\"");
+                        String _name_13 = par2_1.getName();
+                        _builder.append(_name_13);
+                        _builder.append("\", ");
+                      }
+                    }
+                  }
+                }
+                _builder.append("\"timeStamp\"],");
+                _builder.newLineIfNotEmpty();
+              }
+            }
+          } else {
+            if (((param.getWhen() == null) && (param.getWhile() != null))) {
+              {
+                String _name_14 = param.getCheck().getName();
+                boolean _tripleNotEquals_6 = (_name_14 != null);
+                if (_tripleNotEquals_6) {
+                  _builder.append("\t\t");
+                  _builder.append("\"Inputs\":[\"");
+                  String _name_15 = param.getCheck().getName();
+                  _builder.append(_name_15);
+                  _builder.append("\", ");
+                  {
+                    EList<AbstractElement2> _elements_5 = param.getWhile().getEm().getElements();
+                    for(final AbstractElement2 par2_2 : _elements_5) {
+                      {
+                        String _name_16 = par2_2.getName();
+                        boolean _tripleNotEquals_7 = (_name_16 != null);
+                        if (_tripleNotEquals_7) {
+                          _builder.append("\"");
+                          String _name_17 = par2_2.getName();
+                          _builder.append(_name_17);
+                          _builder.append("\", ");
+                        }
+                      }
+                    }
+                  }
+                  _builder.append("\"timeStamp\"],");
+                  _builder.newLineIfNotEmpty();
+                } else {
+                  _builder.append("\t\t");
+                  _builder.append("\"Inputs\":[");
+                  {
+                    EList<AbstractElement2> _elements_6 = param.getCheck().getEm().getElements();
+                    for(final AbstractElement2 par3_1 : _elements_6) {
+                      {
+                        String _name_18 = par3_1.getName();
+                        boolean _tripleNotEquals_8 = (_name_18 != null);
+                        if (_tripleNotEquals_8) {
+                          _builder.append("\"");
+                          String _name_19 = par3_1.getName();
+                          _builder.append(_name_19);
+                          _builder.append("\", ");
+                        }
+                      }
+                    }
+                  }
+                  {
+                    EList<AbstractElement2> _elements_7 = param.getWhile().getEm().getElements();
+                    for(final AbstractElement2 par2_3 : _elements_7) {
+                      {
+                        String _name_20 = par2_3.getName();
+                        boolean _tripleNotEquals_9 = (_name_20 != null);
+                        if (_tripleNotEquals_9) {
+                          _builder.append("\"");
+                          String _name_21 = par2_3.getName();
+                          _builder.append(_name_21);
+                          _builder.append("\", ");
+                        }
+                      }
+                    }
+                  }
+                  _builder.append("\"timeStamp\"],");
+                  _builder.newLineIfNotEmpty();
+                }
+              }
+            } else {
+              if (((param.getWhen() != null) && (param.getWhile() == null))) {
+                {
+                  String _name_22 = param.getCheck().getName();
+                  boolean _tripleNotEquals_10 = (_name_22 != null);
+                  if (_tripleNotEquals_10) {
+                    _builder.append("\t\t");
+                    _builder.append("\"Inputs\":[\"");
+                    String _name_23 = param.getCheck().getName();
+                    _builder.append(_name_23);
+                    _builder.append("\", ");
+                    {
+                      EList<AbstractElement2> _elements_8 = param.getWhen().getEm().getElements();
+                      for(final AbstractElement2 par1_2 : _elements_8) {
+                        {
+                          String _name_24 = par1_2.getName();
+                          boolean _tripleNotEquals_11 = (_name_24 != null);
+                          if (_tripleNotEquals_11) {
+                            _builder.append("\"");
+                            String _name_25 = par1_2.getName();
+                            _builder.append(_name_25);
+                            _builder.append("\", ");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append("\"timeStamp\"],");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    _builder.append("\t\t");
+                    _builder.append("\"Inputs\":[");
+                    {
+                      EList<AbstractElement2> _elements_9 = param.getCheck().getEm().getElements();
+                      for(final AbstractElement2 par3_2 : _elements_9) {
+                        {
+                          String _name_26 = par3_2.getName();
+                          boolean _tripleNotEquals_12 = (_name_26 != null);
+                          if (_tripleNotEquals_12) {
+                            _builder.append("\"");
+                            String _name_27 = par3_2.getName();
+                            _builder.append(_name_27);
+                            _builder.append("\", ");
+                          }
+                        }
+                      }
+                    }
+                    {
+                      EList<AbstractElement2> _elements_10 = param.getWhen().getEm().getElements();
+                      for(final AbstractElement2 par1_3 : _elements_10) {
+                        {
+                          String _name_28 = par1_3.getName();
+                          boolean _tripleNotEquals_13 = (_name_28 != null);
+                          if (_tripleNotEquals_13) {
+                            _builder.append("\"");
+                            String _name_29 = par1_3.getName();
+                            _builder.append(_name_29);
+                            _builder.append("\", ");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append("\"timeStamp\"],");
+                    _builder.newLineIfNotEmpty();
+                  }
+                }
+              } else {
+                {
+                  String _name_30 = param.getCheck().getName();
+                  boolean _tripleNotEquals_14 = (_name_30 != null);
+                  if (_tripleNotEquals_14) {
+                    _builder.append("\t\t");
+                    _builder.append("\"Inputs\":[\"");
+                    String _name_31 = param.getCheck().getName();
+                    _builder.append(_name_31);
+                    _builder.append("\", \"timeStamp\"],");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    _builder.append("\t\t");
+                    _builder.append("\"Inputs\":[");
+                    {
+                      EList<AbstractElement2> _elements_11 = param.getCheck().getEm().getElements();
+                      for(final AbstractElement2 par3_3 : _elements_11) {
+                        {
+                          String _name_32 = par3_3.getName();
+                          boolean _tripleNotEquals_15 = (_name_32 != null);
+                          if (_tripleNotEquals_15) {
+                            _builder.append("\"");
+                            String _name_33 = par3_3.getName();
+                            _builder.append(_name_33);
+                            _builder.append("\", ");
+                          }
+                        }
+                      }
+                    }
+                    _builder.append("\"timeStamp\"],");
+                    _builder.newLineIfNotEmpty();
+                  }
+                }
+              }
+            }
+          }
+        }
+        _builder.append("\t");
+        _builder.append("\t", "\t");
+        _builder.append("\"While\":\"");
+        {
+          While _while = param.getWhile();
+          boolean _tripleNotEquals_16 = (_while != null);
+          if (_tripleNotEquals_16) {
+            {
+              EList<AbstractElement2> _elements_12 = param.getWhile().getEm().getElements();
+              for(final AbstractElement2 param1 : _elements_12) {
+                {
+                  EList<String> _frontParentheses = param1.getFrontParentheses();
+                  for(final String parent : _frontParentheses) {
+                    _builder.append("( ");
+                  }
+                }
+                {
+                  String _name_34 = param1.getName();
+                  boolean _tripleNotEquals_17 = (_name_34 != null);
+                  if (_tripleNotEquals_17) {
+                    String _name_35 = param1.getName();
+                    _builder.append(_name_35, "\t");
+                  } else {
+                    double _dVal = param1.getValue().getDVal();
+                    _builder.append(_dVal, "\t");
+                  }
+                }
+                _builder.append(" ");
+                {
+                  EList<Operators> _op = param1.getOp();
+                  for(final Operators parent_1 : _op) {
+                    {
+                      String _backParentheses = parent_1.getBackParentheses();
+                      boolean _tripleNotEquals_18 = (_backParentheses != null);
+                      if (_tripleNotEquals_18) {
+                        _builder.append(") ");
+                      } else {
+                        CompOp _comparation = parent_1.getComparation();
+                        boolean _tripleNotEquals_19 = (_comparation != null);
+                        if (_tripleNotEquals_19) {
+                          String _op_1 = parent_1.getComparation().getOp();
+                          _builder.append(_op_1, "\t");
+                          _builder.append(" ");
+                        } else {
+                          LogicOp _logicOperator = parent_1.getLogicOperator();
+                          boolean _tripleNotEquals_20 = (_logicOperator != null);
+                          if (_tripleNotEquals_20) {
+                            String _op_2 = parent_1.getLogicOperator().getOp();
+                            _builder.append(_op_2, "\t");
+                            _builder.append(" ");
+                          } else {
+                            Op _operator = parent_1.getOperator();
+                            boolean _tripleNotEquals_21 = (_operator != null);
+                            if (_tripleNotEquals_21) {
+                              String _op_3 = parent_1.getOperator().getOp();
+                              _builder.append(_op_3, "\t");
+                              _builder.append(" ");
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                _builder.append(" ");
+              }
+            }
+            _builder.append("\",");
+          } else {
+            _builder.append("null\",");
+          }
+        }
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.append("\t", "\t");
+        _builder.append("\"When\":{");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t");
+        _builder.append("\t", "\t\t");
+        _builder.append("\"Value\":\"");
+        {
+          When _when = param.getWhen();
+          boolean _tripleNotEquals_22 = (_when != null);
+          if (_tripleNotEquals_22) {
+            {
+              EList<AbstractElement2> _elements_13 = param.getWhen().getEm().getElements();
+              for(final AbstractElement2 param1_1 : _elements_13) {
+                {
+                  EList<String> _frontParentheses_1 = param1_1.getFrontParentheses();
+                  for(final String parent_2 : _frontParentheses_1) {
+                    _builder.append("( ");
+                  }
+                }
+                {
+                  String _name_36 = param1_1.getName();
+                  boolean _tripleNotEquals_23 = (_name_36 != null);
+                  if (_tripleNotEquals_23) {
+                    String _name_37 = param1_1.getName();
+                    _builder.append(_name_37, "\t\t");
+                  } else {
+                    double _dVal_1 = param1_1.getValue().getDVal();
+                    _builder.append(_dVal_1, "\t\t");
+                  }
+                }
+                _builder.append(" ");
+                {
+                  EList<Operators> _op_4 = param1_1.getOp();
+                  for(final Operators parent_3 : _op_4) {
+                    {
+                      String _backParentheses_1 = parent_3.getBackParentheses();
+                      boolean _tripleNotEquals_24 = (_backParentheses_1 != null);
+                      if (_tripleNotEquals_24) {
+                        _builder.append(") ");
+                      } else {
+                        CompOp _comparation_1 = parent_3.getComparation();
+                        boolean _tripleNotEquals_25 = (_comparation_1 != null);
+                        if (_tripleNotEquals_25) {
+                          String _op_5 = parent_3.getComparation().getOp();
+                          _builder.append(_op_5, "\t\t");
+                          _builder.append(" ");
+                        } else {
+                          LogicOp _logicOperator_1 = parent_3.getLogicOperator();
+                          boolean _tripleNotEquals_26 = (_logicOperator_1 != null);
+                          if (_tripleNotEquals_26) {
+                            String _op_6 = parent_3.getLogicOperator().getOp();
+                            _builder.append(_op_6, "\t\t");
+                            _builder.append(" ");
+                          } else {
+                            Op _operator_1 = parent_3.getOperator();
+                            boolean _tripleNotEquals_27 = (_operator_1 != null);
+                            if (_tripleNotEquals_27) {
+                              String _op_7 = parent_3.getOperator().getOp();
+                              _builder.append(_op_7, "\t\t");
+                              _builder.append(" ");
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                _builder.append(" ");
+              }
+            }
+            _builder.append("\",");
+          } else {
+            _builder.append("null\",");
+          }
+        }
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t");
+        _builder.append("\t", "\t\t");
+        _builder.append("\"AfterWhen\":{");
+        _builder.newLineIfNotEmpty();
+        {
+          When _when_1 = param.getWhen();
+          boolean _tripleNotEquals_28 = (_when_1 != null);
+          if (_tripleNotEquals_28) {
+            {
+              AfterWhen _aw = param.getWhen().getAw();
+              boolean _tripleNotEquals_29 = (_aw != null);
+              if (_tripleNotEquals_29) {
+                {
+                  During _during = param.getWhen().getAw().getDuring();
+                  boolean _tripleNotEquals_30 = (_during != null);
+                  if (_tripleNotEquals_30) {
+                    _builder.append("\t");
+                    _builder.append("\"Type\":\"During\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\"Value\":\"");
+                    double _dVal_2 = param.getWhen().getAw().getDuring().getTime().getDVal();
+                    _builder.append(_dVal_2);
+                    _builder.append("\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\"Unit\":\"");
+                    String _time = param.getWhen().getAw().getDuring().getUnit().getTime();
+                    _builder.append(_time);
+                    _builder.append("\"");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    Wait _wait = param.getWhen().getAw().getWait();
+                    boolean _tripleNotEquals_31 = (_wait != null);
+                    if (_tripleNotEquals_31) {
+                      _builder.append("\t");
+                      _builder.append("\"Type\":\"Wait\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\"Value\":\"");
+                      double _dVal_3 = param.getWhen().getAw().getWait().getTime().getDVal();
+                      _builder.append(_dVal_3);
+                      _builder.append("\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\"Unit\":\"");
+                      String _time_1 = param.getWhen().getAw().getWait().getUnit().getTime();
+                      _builder.append(_time_1);
+                      _builder.append("\"");
+                      _builder.newLineIfNotEmpty();
+                    }
+                  }
+                }
+              } else {
+                _builder.append("\t\t");
+                _builder.append("\t", "\t\t");
+                _builder.append("\"Type\":\"null\",");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t", "\t\t");
+                _builder.append("\"Value\":\"null\",");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t", "\t\t");
+                _builder.append("\"Unit\":\"null\"");
+                _builder.newLineIfNotEmpty();
+              }
+            }
+          } else {
+            _builder.append("\t\t");
+            _builder.append("\t", "\t\t");
+            _builder.append("\"Type\":\"null\",");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t");
+            _builder.append("\t", "\t\t");
+            _builder.append("\"Value\":\"null\",");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t");
+            _builder.append("\t", "\t\t");
+            _builder.append("\"Unit\":\"null\"");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        _builder.append("\t\t");
+        _builder.append("\t\t", "\t\t");
+        _builder.append("}");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.append("\t", "\t");
+        _builder.append("},");
+        _builder.newLineIfNotEmpty();
+        {
+          String _name_38 = param.getCheck().getName();
+          boolean _tripleNotEquals_32 = (_name_38 != null);
+          if (_tripleNotEquals_32) {
+            _builder.append("\t\t");
+            _builder.append("\"Check\":\"");
+            String _name_39 = param.getCheck().getName();
+            _builder.append(_name_39);
+            _builder.append(" \",");
+            _builder.newLineIfNotEmpty();
+          } else {
+            _builder.append("\t\t");
+            _builder.append("\"Check\":\" ");
+            {
+              EList<AbstractElement2> _elements_14 = param.getCheck().getEm().getElements();
+              for(final AbstractElement2 param1_2 : _elements_14) {
+                {
+                  EList<String> _frontParentheses_2 = param1_2.getFrontParentheses();
+                  for(final String parent_4 : _frontParentheses_2) {
+                    _builder.append("( ");
+                  }
+                }
+                {
+                  String _name_40 = param1_2.getName();
+                  boolean _tripleNotEquals_33 = (_name_40 != null);
+                  if (_tripleNotEquals_33) {
+                    String _name_41 = param1_2.getName();
+                    _builder.append(_name_41);
+                  } else {
+                    double _dVal_4 = param1_2.getValue().getDVal();
+                    _builder.append(_dVal_4);
+                  }
+                }
+                _builder.append(" ");
+                {
+                  EList<Operators> _op_8 = param1_2.getOp();
+                  for(final Operators parent_5 : _op_8) {
+                    {
+                      String _backParentheses_2 = parent_5.getBackParentheses();
+                      boolean _tripleNotEquals_34 = (_backParentheses_2 != null);
+                      if (_tripleNotEquals_34) {
+                        _builder.append(") ");
+                      } else {
+                        CompOp _comparation_2 = parent_5.getComparation();
+                        boolean _tripleNotEquals_35 = (_comparation_2 != null);
+                        if (_tripleNotEquals_35) {
+                          String _op_9 = parent_5.getComparation().getOp();
+                          _builder.append(_op_9);
+                          _builder.append(" ");
+                        } else {
+                          LogicOp _logicOperator_2 = parent_5.getLogicOperator();
+                          boolean _tripleNotEquals_36 = (_logicOperator_2 != null);
+                          if (_tripleNotEquals_36) {
+                            String _op_10 = parent_5.getLogicOperator().getOp();
+                            _builder.append(_op_10);
+                            _builder.append(" ");
+                          } else {
+                            Op _operator_2 = parent_5.getOperator();
+                            boolean _tripleNotEquals_37 = (_operator_2 != null);
+                            if (_tripleNotEquals_37) {
+                              String _op_11 = parent_5.getOperator().getOp();
+                              _builder.append(_op_11);
+                              _builder.append(" ");
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                _builder.append(" ");
+              }
+            }
+            _builder.append("\",");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        {
+          Lower _lower = param.getCheck().getReference().getLower();
+          boolean _tripleNotEquals_38 = (_lower != null);
+          if (_tripleNotEquals_38) {
+            _builder.append("\t\t");
+            _builder.append("\"Reference\":{");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("\t\t", "\t");
+            _builder.append("\"Type\":\"Above\",");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("\t\t", "\t");
+            _builder.append("\"Value\":[\"");
+            {
+              DOUBLE _value = param.getCheck().getReference().getLower().getBound_lower().getValue();
+              boolean _tripleNotEquals_39 = (_value != null);
+              if (_tripleNotEquals_39) {
+                double _dVal_5 = param.getCheck().getReference().getLower().getBound_lower().getValue().getDVal();
+                _builder.append(_dVal_5, "\t");
+                _builder.append("\"],");
+              } else {
+                {
+                  EList<AbstractElement2> _elements_15 = param.getCheck().getReference().getLower().getBound_lower().getEm().getElements();
+                  for(final AbstractElement2 param1_3 : _elements_15) {
+                    {
+                      EList<String> _frontParentheses_3 = param1_3.getFrontParentheses();
+                      for(final String parent_6 : _frontParentheses_3) {
+                        _builder.append("( ");
+                      }
+                    }
+                    {
+                      String _name_42 = param1_3.getName();
+                      boolean _tripleNotEquals_40 = (_name_42 != null);
+                      if (_tripleNotEquals_40) {
+                        String _name_43 = param1_3.getName();
+                        _builder.append(_name_43, "\t");
+                      } else {
+                        double _dVal_6 = param1_3.getValue().getDVal();
+                        _builder.append(_dVal_6, "\t");
+                      }
+                    }
+                    _builder.append(" ");
+                    {
+                      EList<Operators> _op_12 = param1_3.getOp();
+                      for(final Operators parent_7 : _op_12) {
+                        {
+                          String _backParentheses_3 = parent_7.getBackParentheses();
+                          boolean _tripleNotEquals_41 = (_backParentheses_3 != null);
+                          if (_tripleNotEquals_41) {
+                            _builder.append(") ");
+                          } else {
+                            CompOp _comparation_3 = parent_7.getComparation();
+                            boolean _tripleNotEquals_42 = (_comparation_3 != null);
+                            if (_tripleNotEquals_42) {
+                              String _op_13 = parent_7.getComparation().getOp();
+                              _builder.append(_op_13, "\t");
+                              _builder.append(" ");
+                            } else {
+                              LogicOp _logicOperator_3 = parent_7.getLogicOperator();
+                              boolean _tripleNotEquals_43 = (_logicOperator_3 != null);
+                              if (_tripleNotEquals_43) {
+                                String _op_14 = parent_7.getLogicOperator().getOp();
+                                _builder.append(_op_14, "\t");
+                                _builder.append(" ");
+                              } else {
+                                Op _operator_3 = parent_7.getOperator();
+                                boolean _tripleNotEquals_44 = (_operator_3 != null);
+                                if (_tripleNotEquals_44) {
+                                  String _op_15 = parent_7.getOperator().getOp();
+                                  _builder.append(_op_15, "\t");
+                                  _builder.append(" ");
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    _builder.append(" ");
+                  }
+                }
+                _builder.append("\"],");
+              }
+            }
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("\t\t", "\t");
+            _builder.append("\"Trace\":{");
+            _builder.newLineIfNotEmpty();
+            {
+              Exactly _exactly = param.getCheck().getReference().getLower().getExactly();
+              boolean _tripleNotEquals_45 = (_exactly != null);
+              if (_tripleNotEquals_45) {
+                _builder.append("\t");
+                _builder.append("\t\t\t", "\t");
+                _builder.append("\"Type\":\"exactly\",");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("\t\t\t", "\t");
+                _builder.append("\"Value\":\"");
+                double _dVal_7 = param.getCheck().getReference().getLower().getExactly().getValue().getDVal();
+                _builder.append(_dVal_7, "\t");
+                _builder.append("\",");
+                _builder.newLineIfNotEmpty();
+                {
+                  DOUBLE _time_2 = param.getCheck().getReference().getLower().getExactly().getTime();
+                  boolean _tripleNotEquals_46 = (_time_2 != null);
+                  if (_tripleNotEquals_46) {
+                    _builder.append("\t");
+                    _builder.append("\t\t\t", "\t");
+                    _builder.append("\"Time\":\"");
+                    double _dVal_8 = param.getCheck().getReference().getLower().getExactly().getTime().getDVal();
+                    _builder.append(_dVal_8, "\t");
+                    _builder.append("\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\t\t\t", "\t");
+                    _builder.append("\"Unit\":\"");
+                    String _time_3 = param.getCheck().getReference().getLower().getExactly().getUnit().getTime();
+                    _builder.append(_time_3, "\t");
+                    _builder.append("\"");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    _builder.append("\t");
+                    _builder.append("\t\t", "\t");
+                    _builder.append("\"Time\":\"null\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\t\t\t", "\t");
+                    _builder.append("\"Unit\":\"null\"");
+                    _builder.newLineIfNotEmpty();
+                  }
+                }
+              } else {
+                At_least _atleast = param.getCheck().getReference().getLower().getAtleast();
+                boolean _tripleNotEquals_47 = (_atleast != null);
+                if (_tripleNotEquals_47) {
+                  _builder.append("\t");
+                  _builder.append("\t\t\t", "\t");
+                  _builder.append("\"Type\":\"atLeast\",");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t\t", "\t");
+                  _builder.append("\"Value\":\"");
+                  double _dVal_9 = param.getCheck().getReference().getLower().getAtleast().getValue().getDVal();
+                  _builder.append(_dVal_9, "\t");
+                  _builder.append("\",");
+                  _builder.newLineIfNotEmpty();
+                  {
+                    DOUBLE _time_4 = param.getCheck().getReference().getLower().getAtleast().getTime();
+                    boolean _tripleNotEquals_48 = (_time_4 != null);
+                    if (_tripleNotEquals_48) {
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Time\":\"");
+                      double _dVal_10 = param.getCheck().getReference().getLower().getAtleast().getTime().getDVal();
+                      _builder.append(_dVal_10, "\t");
+                      _builder.append("\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Unit\":\"");
+                      String _time_5 = param.getCheck().getReference().getLower().getAtleast().getUnit().getTime();
+                      _builder.append(_time_5, "\t");
+                      _builder.append("\"");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Time\":\"null\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Unit\":\"null\"");
+                      _builder.newLineIfNotEmpty();
+                    }
+                  }
+                } else {
+                  At_most _atmost = param.getCheck().getReference().getLower().getAtmost();
+                  boolean _tripleNotEquals_49 = (_atmost != null);
+                  if (_tripleNotEquals_49) {
+                    _builder.append("\t");
+                    _builder.append("\t\t\t", "\t");
+                    _builder.append("\"Type\":\"atMost\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\t\t\t", "\t");
+                    _builder.append("\"Value\":\"");
+                    double _dVal_11 = param.getCheck().getReference().getLower().getAtmost().getValue().getDVal();
+                    _builder.append(_dVal_11, "\t");
+                    _builder.append("\",");
+                    _builder.newLineIfNotEmpty();
+                    {
+                      DOUBLE _time_6 = param.getCheck().getReference().getLower().getAtmost().getTime();
+                      boolean _tripleNotEquals_50 = (_time_6 != null);
+                      if (_tripleNotEquals_50) {
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Time\":\"");
+                        double _dVal_12 = param.getCheck().getReference().getLower().getAtmost().getTime().getDVal();
+                        _builder.append(_dVal_12, "\t");
+                        _builder.append("\",");
+                        _builder.newLineIfNotEmpty();
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Unit\":\"");
+                        String _time_7 = param.getCheck().getReference().getLower().getAtmost().getUnit().getTime();
+                        _builder.append(_time_7, "\t");
+                        _builder.append("\"");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Time\":\"null\",");
+                        _builder.newLineIfNotEmpty();
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Unit\":\"null\"");
+                        _builder.newLineIfNotEmpty();
+                      }
+                    }
+                  } else {
+                    _builder.append("\t");
+                    _builder.append("\t\t\t", "\t");
+                    _builder.append("\"Type\":\"null\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\t\t\t", "\t");
+                    _builder.append("\"Time\":\"null\",\t\t\t");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\t\t\t", "\t");
+                    _builder.append("\"Unit\":\"null\"");
+                    _builder.newLineIfNotEmpty();
+                  }
+                }
+              }
+            }
+            _builder.append("\t");
+            _builder.append("\t\t", "\t");
+            _builder.append("}");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t");
+            _builder.append("},");
+            _builder.newLineIfNotEmpty();
+          } else {
+            Upper _upper = param.getCheck().getReference().getUpper();
+            boolean _tripleNotEquals_51 = (_upper != null);
+            if (_tripleNotEquals_51) {
+              _builder.append("\t\t");
+              _builder.append("\"Reference\":{");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t", "\t");
+              _builder.append("\"Type\":\"Below\",");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t", "\t");
+              _builder.append("\"Value\":[\"");
+              {
+                DOUBLE _value_1 = param.getCheck().getReference().getUpper().getBound_upp().getValue();
+                boolean _tripleNotEquals_52 = (_value_1 != null);
+                if (_tripleNotEquals_52) {
+                  double _dVal_13 = param.getCheck().getReference().getUpper().getBound_upp().getValue().getDVal();
+                  _builder.append(_dVal_13, "\t");
+                  _builder.append("\"],");
+                } else {
+                  {
+                    EList<AbstractElement2> _elements_16 = param.getCheck().getReference().getUpper().getBound_upp().getEm().getElements();
+                    for(final AbstractElement2 param1_4 : _elements_16) {
+                      {
+                        EList<String> _frontParentheses_4 = param1_4.getFrontParentheses();
+                        for(final String parent_8 : _frontParentheses_4) {
+                          _builder.append("( ");
+                        }
+                      }
+                      {
+                        String _name_44 = param1_4.getName();
+                        boolean _tripleNotEquals_53 = (_name_44 != null);
+                        if (_tripleNotEquals_53) {
+                          String _name_45 = param1_4.getName();
+                          _builder.append(_name_45, "\t");
+                        } else {
+                          double _dVal_14 = param1_4.getValue().getDVal();
+                          _builder.append(_dVal_14, "\t");
+                        }
+                      }
+                      _builder.append(" ");
+                      {
+                        EList<Operators> _op_16 = param1_4.getOp();
+                        for(final Operators parent_9 : _op_16) {
+                          {
+                            String _backParentheses_4 = parent_9.getBackParentheses();
+                            boolean _tripleNotEquals_54 = (_backParentheses_4 != null);
+                            if (_tripleNotEquals_54) {
+                              _builder.append(") ");
+                            } else {
+                              CompOp _comparation_4 = parent_9.getComparation();
+                              boolean _tripleNotEquals_55 = (_comparation_4 != null);
+                              if (_tripleNotEquals_55) {
+                                String _op_17 = parent_9.getComparation().getOp();
+                                _builder.append(_op_17, "\t");
+                                _builder.append(" ");
+                              } else {
+                                LogicOp _logicOperator_4 = parent_9.getLogicOperator();
+                                boolean _tripleNotEquals_56 = (_logicOperator_4 != null);
+                                if (_tripleNotEquals_56) {
+                                  String _op_18 = parent_9.getLogicOperator().getOp();
+                                  _builder.append(_op_18, "\t");
+                                  _builder.append(" ");
+                                } else {
+                                  Op _operator_4 = parent_9.getOperator();
+                                  boolean _tripleNotEquals_57 = (_operator_4 != null);
+                                  if (_tripleNotEquals_57) {
+                                    String _op_19 = parent_9.getOperator().getOp();
+                                    _builder.append(_op_19, "\t");
+                                    _builder.append(" ");
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                      _builder.append(" ");
+                    }
+                  }
+                  _builder.append("\"],");
+                }
+              }
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t", "\t");
+              _builder.append("\"Trace\":{");
+              _builder.newLineIfNotEmpty();
+              {
+                Exactly _exactly_1 = param.getCheck().getReference().getUpper().getExactly();
+                boolean _tripleNotEquals_58 = (_exactly_1 != null);
+                if (_tripleNotEquals_58) {
+                  _builder.append("\t");
+                  _builder.append("\t\t\t", "\t");
+                  _builder.append("\t\"Type\":\"exactly\",");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t\t", "\t");
+                  _builder.append("\t\"Value\":\"");
+                  double _dVal_15 = param.getCheck().getReference().getUpper().getExactly().getValue().getDVal();
+                  _builder.append(_dVal_15, "\t");
+                  _builder.append("\",");
+                  _builder.newLineIfNotEmpty();
+                  {
+                    DOUBLE _time_8 = param.getCheck().getReference().getUpper().getExactly().getTime();
+                    boolean _tripleNotEquals_59 = (_time_8 != null);
+                    if (_tripleNotEquals_59) {
+                      _builder.append("\t");
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t\t");
+                      _builder.append("\t\"Time\":\"");
+                      double _dVal_16 = param.getCheck().getReference().getUpper().getExactly().getTime().getDVal();
+                      _builder.append(_dVal_16, "\t\t");
+                      _builder.append("\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t\t");
+                      _builder.append("\t\"Unit\":\"");
+                      String _time_9 = param.getCheck().getReference().getUpper().getExactly().getUnit().getTime();
+                      _builder.append(_time_9, "\t\t");
+                      _builder.append("\"");
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      _builder.append("\t");
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t\t");
+                      _builder.append("\"Time\":\"null\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t\t");
+                      _builder.append("\"Unit\":\"null\"");
+                      _builder.newLineIfNotEmpty();
+                    }
+                  }
+                } else {
+                  At_least _atleast_1 = param.getCheck().getReference().getUpper().getAtleast();
+                  boolean _tripleNotEquals_60 = (_atleast_1 != null);
+                  if (_tripleNotEquals_60) {
+                    _builder.append("\t");
+                    _builder.append("\t\t\t", "\t");
+                    _builder.append("\"Type\":\"atLeast\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\t\t\t", "\t");
+                    _builder.append("\"Value\":\"");
+                    double _dVal_17 = param.getCheck().getReference().getUpper().getAtleast().getValue().getDVal();
+                    _builder.append(_dVal_17, "\t");
+                    _builder.append("\",");
+                    _builder.newLineIfNotEmpty();
+                    {
+                      DOUBLE _time_10 = param.getCheck().getReference().getUpper().getAtleast().getTime();
+                      boolean _tripleNotEquals_61 = (_time_10 != null);
+                      if (_tripleNotEquals_61) {
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Time\":\"");
+                        double _dVal_18 = param.getCheck().getReference().getUpper().getAtleast().getTime().getDVal();
+                        _builder.append(_dVal_18, "\t");
+                        _builder.append("\",");
+                        _builder.newLineIfNotEmpty();
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Unit\":\"");
+                        String _time_11 = param.getCheck().getReference().getUpper().getAtleast().getUnit().getTime();
+                        _builder.append(_time_11, "\t");
+                        _builder.append("\"");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Time\":\"null\",");
+                        _builder.newLineIfNotEmpty();
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Unit\":\"null\"");
+                        _builder.newLineIfNotEmpty();
+                      }
+                    }
+                  } else {
+                    At_most _atmost_1 = param.getCheck().getReference().getUpper().getAtmost();
+                    boolean _tripleNotEquals_62 = (_atmost_1 != null);
+                    if (_tripleNotEquals_62) {
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Type\":\"atMost\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Value\":\"");
+                      double _dVal_19 = param.getCheck().getReference().getUpper().getAtmost().getValue().getDVal();
+                      _builder.append(_dVal_19, "\t");
+                      _builder.append("\",");
+                      _builder.newLineIfNotEmpty();
+                      {
+                        DOUBLE _time_12 = param.getCheck().getReference().getUpper().getAtmost().getTime();
+                        boolean _tripleNotEquals_63 = (_time_12 != null);
+                        if (_tripleNotEquals_63) {
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Time\":\"");
+                          double _dVal_20 = param.getCheck().getReference().getUpper().getAtmost().getTime().getDVal();
+                          _builder.append(_dVal_20, "\t");
+                          _builder.append("\",");
+                          _builder.newLineIfNotEmpty();
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Unit\":\"");
+                          String _time_13 = param.getCheck().getReference().getUpper().getAtmost().getUnit().getTime();
+                          _builder.append(_time_13, "\t");
+                          _builder.append("\"");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Time\":\"null\",");
+                          _builder.newLineIfNotEmpty();
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Unit\":\"null\"");
+                          _builder.newLineIfNotEmpty();
+                        }
+                      }
+                    } else {
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Type\":\"null\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Time\":\"null\",\t\t\t");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Unit\":\"null\"");
+                      _builder.newLineIfNotEmpty();
+                    }
+                  }
+                }
+              }
+              _builder.append("\t");
+              _builder.append("\t\t", "\t");
+              _builder.append("}");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t\t");
+              _builder.append("},");
+              _builder.newLineIfNotEmpty();
+            } else {
+              Range _range = param.getCheck().getReference().getRange();
+              boolean _tripleNotEquals_64 = (_range != null);
+              if (_tripleNotEquals_64) {
+                _builder.append("\t\t");
+                _builder.append("\"Reference\":{");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("\t\t", "\t");
+                _builder.append("\"Type\":\"Range\",");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("\t\t", "\t");
+                _builder.append("\"Value\":[\"");
+                {
+                  DOUBLE _value_2 = param.getCheck().getReference().getRange().getBound_lower().getValue();
+                  boolean _tripleNotEquals_65 = (_value_2 != null);
+                  if (_tripleNotEquals_65) {
+                    double _dVal_21 = param.getCheck().getReference().getRange().getBound_lower().getValue().getDVal();
+                    _builder.append(_dVal_21, "\t");
+                    _builder.append("\",");
+                  } else {
+                    {
+                      EList<AbstractElement2> _elements_17 = param.getCheck().getReference().getRange().getBound_lower().getEm().getElements();
+                      for(final AbstractElement2 param1_5 : _elements_17) {
+                        {
+                          EList<String> _frontParentheses_5 = param1_5.getFrontParentheses();
+                          for(final String parent_10 : _frontParentheses_5) {
+                            _builder.append("( ");
+                          }
+                        }
+                        {
+                          String _name_46 = param1_5.getName();
+                          boolean _tripleNotEquals_66 = (_name_46 != null);
+                          if (_tripleNotEquals_66) {
+                            String _name_47 = param1_5.getName();
+                            _builder.append(_name_47, "\t");
+                          } else {
+                            double _dVal_22 = param1_5.getValue().getDVal();
+                            _builder.append(_dVal_22, "\t");
+                          }
+                        }
+                        _builder.append(" ");
+                        {
+                          EList<Operators> _op_20 = param1_5.getOp();
+                          for(final Operators parent_11 : _op_20) {
+                            {
+                              String _backParentheses_5 = parent_11.getBackParentheses();
+                              boolean _tripleNotEquals_67 = (_backParentheses_5 != null);
+                              if (_tripleNotEquals_67) {
+                                _builder.append(") ");
+                              } else {
+                                CompOp _comparation_5 = parent_11.getComparation();
+                                boolean _tripleNotEquals_68 = (_comparation_5 != null);
+                                if (_tripleNotEquals_68) {
+                                  String _op_21 = parent_11.getComparation().getOp();
+                                  _builder.append(_op_21, "\t");
+                                  _builder.append(" ");
+                                } else {
+                                  LogicOp _logicOperator_5 = parent_11.getLogicOperator();
+                                  boolean _tripleNotEquals_69 = (_logicOperator_5 != null);
+                                  if (_tripleNotEquals_69) {
+                                    String _op_22 = parent_11.getLogicOperator().getOp();
+                                    _builder.append(_op_22, "\t");
+                                    _builder.append(" ");
+                                  } else {
+                                    Op _operator_5 = parent_11.getOperator();
+                                    boolean _tripleNotEquals_70 = (_operator_5 != null);
+                                    if (_tripleNotEquals_70) {
+                                      String _op_23 = parent_11.getOperator().getOp();
+                                      _builder.append(_op_23, "\t");
+                                      _builder.append(" ");
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" ");
+                      }
+                    }
+                    _builder.append("\",");
+                  }
+                }
+                {
+                  DOUBLE _value_3 = param.getCheck().getReference().getRange().getBound_upp().getValue();
+                  boolean _tripleNotEquals_71 = (_value_3 != null);
+                  if (_tripleNotEquals_71) {
+                    DOUBLE _value_4 = param.getCheck().getReference().getRange().getBound_upp().getValue();
+                    _builder.append(_value_4, "\t");
+                    _builder.append("\"],");
+                  } else {
+                    {
+                      EList<AbstractElement2> _elements_18 = param.getCheck().getReference().getRange().getBound_upp().getEm().getElements();
+                      for(final AbstractElement2 param1_6 : _elements_18) {
+                        {
+                          EList<String> _frontParentheses_6 = param1_6.getFrontParentheses();
+                          for(final String parent_12 : _frontParentheses_6) {
+                            _builder.append("( ");
+                          }
+                        }
+                        {
+                          String _name_48 = param1_6.getName();
+                          boolean _tripleNotEquals_72 = (_name_48 != null);
+                          if (_tripleNotEquals_72) {
+                            String _name_49 = param1_6.getName();
+                            _builder.append(_name_49, "\t");
+                          } else {
+                            double _dVal_23 = param1_6.getValue().getDVal();
+                            _builder.append(_dVal_23, "\t");
+                          }
+                        }
+                        _builder.append(" ");
+                        {
+                          EList<Operators> _op_24 = param1_6.getOp();
+                          for(final Operators parent_13 : _op_24) {
+                            {
+                              String _backParentheses_6 = parent_13.getBackParentheses();
+                              boolean _tripleNotEquals_73 = (_backParentheses_6 != null);
+                              if (_tripleNotEquals_73) {
+                                _builder.append(") ");
+                              } else {
+                                CompOp _comparation_6 = parent_13.getComparation();
+                                boolean _tripleNotEquals_74 = (_comparation_6 != null);
+                                if (_tripleNotEquals_74) {
+                                  String _op_25 = parent_13.getComparation().getOp();
+                                  _builder.append(_op_25, "\t");
+                                  _builder.append(" ");
+                                } else {
+                                  LogicOp _logicOperator_6 = parent_13.getLogicOperator();
+                                  boolean _tripleNotEquals_75 = (_logicOperator_6 != null);
+                                  if (_tripleNotEquals_75) {
+                                    String _op_26 = parent_13.getLogicOperator().getOp();
+                                    _builder.append(_op_26, "\t");
+                                    _builder.append(" ");
+                                  } else {
+                                    Op _operator_6 = parent_13.getOperator();
+                                    boolean _tripleNotEquals_76 = (_operator_6 != null);
+                                    if (_tripleNotEquals_76) {
+                                      String _op_27 = parent_13.getOperator().getOp();
+                                      _builder.append(_op_27, "\t");
+                                      _builder.append(" ");
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        _builder.append(" ");
+                      }
+                    }
+                    _builder.append("\"],");
+                  }
+                }
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("\t\t", "\t");
+                _builder.append("\"Trace\":{");
+                _builder.newLineIfNotEmpty();
+                {
+                  Exactly _exactly_2 = param.getCheck().getReference().getRange().getExactly();
+                  boolean _tripleNotEquals_77 = (_exactly_2 != null);
+                  if (_tripleNotEquals_77) {
+                    _builder.append("\t");
+                    _builder.append("\t\t\t", "\t");
+                    _builder.append("\"Type\":\"exactly\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\t\t\t", "\t");
+                    _builder.append("\"Value\":\"");
+                    double _dVal_24 = param.getCheck().getReference().getRange().getExactly().getValue().getDVal();
+                    _builder.append(_dVal_24, "\t");
+                    _builder.append("\",");
+                    _builder.newLineIfNotEmpty();
+                    {
+                      DOUBLE _time_14 = param.getCheck().getReference().getRange().getExactly().getTime();
+                      boolean _tripleNotEquals_78 = (_time_14 != null);
+                      if (_tripleNotEquals_78) {
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Time\":\"");
+                        double _dVal_25 = param.getCheck().getReference().getRange().getExactly().getTime().getDVal();
+                        _builder.append(_dVal_25, "\t");
+                        _builder.append("\",");
+                        _builder.newLineIfNotEmpty();
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Unit\":\"");
+                        String _time_15 = param.getCheck().getReference().getRange().getExactly().getUnit().getTime();
+                        _builder.append(_time_15, "\t");
+                        _builder.append("\"");
+                        _builder.newLineIfNotEmpty();
+                      } else {
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Time\":\"null\",");
+                        _builder.newLineIfNotEmpty();
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Unit\":\"null\"");
+                        _builder.newLineIfNotEmpty();
+                      }
+                    }
+                  } else {
+                    At_least _atleast_2 = param.getCheck().getReference().getRange().getAtleast();
+                    boolean _tripleNotEquals_79 = (_atleast_2 != null);
+                    if (_tripleNotEquals_79) {
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Type\":\"atLeast\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Value\":\"");
+                      double _dVal_26 = param.getCheck().getReference().getRange().getAtleast().getValue().getDVal();
+                      _builder.append(_dVal_26, "\t");
+                      _builder.append("\",");
+                      _builder.newLineIfNotEmpty();
+                      {
+                        DOUBLE _time_16 = param.getCheck().getReference().getRange().getAtleast().getTime();
+                        boolean _tripleNotEquals_80 = (_time_16 != null);
+                        if (_tripleNotEquals_80) {
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Time\":\"");
+                          double _dVal_27 = param.getCheck().getReference().getRange().getAtleast().getTime().getDVal();
+                          _builder.append(_dVal_27, "\t");
+                          _builder.append("\",");
+                          _builder.newLineIfNotEmpty();
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Unit\":\"");
+                          String _time_17 = param.getCheck().getReference().getRange().getAtleast().getUnit().getTime();
+                          _builder.append(_time_17, "\t");
+                          _builder.append("\"");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Time\":\"null\",");
+                          _builder.newLineIfNotEmpty();
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Unit\":\"null\"");
+                          _builder.newLineIfNotEmpty();
+                        }
+                      }
+                    } else {
+                      At_most _atmost_2 = param.getCheck().getReference().getRange().getAtmost();
+                      boolean _tripleNotEquals_81 = (_atmost_2 != null);
+                      if (_tripleNotEquals_81) {
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Type\":\"atMost\",");
+                        _builder.newLineIfNotEmpty();
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Value\":\"");
+                        double _dVal_28 = param.getCheck().getReference().getRange().getAtmost().getValue().getDVal();
+                        _builder.append(_dVal_28, "\t");
+                        _builder.append("\",");
+                        _builder.newLineIfNotEmpty();
+                        {
+                          DOUBLE _time_18 = param.getCheck().getReference().getRange().getAtmost().getTime();
+                          boolean _tripleNotEquals_82 = (_time_18 != null);
+                          if (_tripleNotEquals_82) {
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Time\":\"");
+                            double _dVal_29 = param.getCheck().getReference().getRange().getAtmost().getTime().getDVal();
+                            _builder.append(_dVal_29, "\t");
+                            _builder.append("\",");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Unit\":\"");
+                            String _time_19 = param.getCheck().getReference().getRange().getAtmost().getUnit().getTime();
+                            _builder.append(_time_19, "\t");
+                            _builder.append("\"");
+                            _builder.newLineIfNotEmpty();
+                          } else {
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Time\":\"null\",");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Unit\":\"null\"");
+                            _builder.newLineIfNotEmpty();
+                          }
+                        }
+                      } else {
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Type\":\"null\",");
+                        _builder.newLineIfNotEmpty();
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Time\":\"null\",\t\t\t");
+                        _builder.newLineIfNotEmpty();
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Unit\":\"null\"");
+                        _builder.newLineIfNotEmpty();
+                      }
+                    }
+                  }
+                }
+                _builder.append("\t");
+                _builder.append("\t\t", "\t");
+                _builder.append("}");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("},");
+                _builder.newLineIfNotEmpty();
+              } else {
+                Gap _gap = param.getCheck().getReference().getGap();
+                boolean _tripleNotEquals_83 = (_gap != null);
+                if (_tripleNotEquals_83) {
+                  _builder.append("\t\t");
+                  _builder.append("\"Reference\":{");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t", "\t");
+                  _builder.append("\"Type\":\"Gap\",");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t", "\t");
+                  _builder.append("\"Value\":[\"");
+                  {
+                    DOUBLE _value_5 = param.getCheck().getReference().getGap().getBound_lower().getValue();
+                    boolean _tripleNotEquals_84 = (_value_5 != null);
+                    if (_tripleNotEquals_84) {
+                      double _dVal_30 = param.getCheck().getReference().getGap().getBound_lower().getValue().getDVal();
+                      _builder.append(_dVal_30, "\t");
+                      _builder.append("\",");
+                    } else {
+                      {
+                        EList<AbstractElement2> _elements_19 = param.getCheck().getReference().getGap().getBound_lower().getEm().getElements();
+                        for(final AbstractElement2 param1_7 : _elements_19) {
+                          {
+                            EList<String> _frontParentheses_7 = param1_7.getFrontParentheses();
+                            for(final String parent_14 : _frontParentheses_7) {
+                              _builder.append("( ");
+                            }
+                          }
+                          {
+                            String _name_50 = param1_7.getName();
+                            boolean _tripleNotEquals_85 = (_name_50 != null);
+                            if (_tripleNotEquals_85) {
+                              String _name_51 = param1_7.getName();
+                              _builder.append(_name_51, "\t");
+                            } else {
+                              double _dVal_31 = param1_7.getValue().getDVal();
+                              _builder.append(_dVal_31, "\t");
+                            }
+                          }
+                          _builder.append(" ");
+                          {
+                            EList<Operators> _op_28 = param1_7.getOp();
+                            for(final Operators parent_15 : _op_28) {
+                              {
+                                String _backParentheses_7 = parent_15.getBackParentheses();
+                                boolean _tripleNotEquals_86 = (_backParentheses_7 != null);
+                                if (_tripleNotEquals_86) {
+                                  _builder.append(") ");
+                                } else {
+                                  CompOp _comparation_7 = parent_15.getComparation();
+                                  boolean _tripleNotEquals_87 = (_comparation_7 != null);
+                                  if (_tripleNotEquals_87) {
+                                    String _op_29 = parent_15.getComparation().getOp();
+                                    _builder.append(_op_29, "\t");
+                                    _builder.append(" ");
+                                  } else {
+                                    LogicOp _logicOperator_7 = parent_15.getLogicOperator();
+                                    boolean _tripleNotEquals_88 = (_logicOperator_7 != null);
+                                    if (_tripleNotEquals_88) {
+                                      String _op_30 = parent_15.getLogicOperator().getOp();
+                                      _builder.append(_op_30, "\t");
+                                      _builder.append(" ");
+                                    } else {
+                                      Op _operator_7 = parent_15.getOperator();
+                                      boolean _tripleNotEquals_89 = (_operator_7 != null);
+                                      if (_tripleNotEquals_89) {
+                                        String _op_31 = parent_15.getOperator().getOp();
+                                        _builder.append(_op_31, "\t");
+                                        _builder.append(" ");
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" ");
+                        }
+                      }
+                      _builder.append("\",");
+                    }
+                  }
+                  {
+                    DOUBLE _value_6 = param.getCheck().getReference().getGap().getBound_upp().getValue();
+                    boolean _tripleNotEquals_90 = (_value_6 != null);
+                    if (_tripleNotEquals_90) {
+                      DOUBLE _value_7 = param.getCheck().getReference().getGap().getBound_upp().getValue();
+                      _builder.append(_value_7, "\t");
+                      _builder.append("\"],");
+                    } else {
+                      {
+                        EList<AbstractElement2> _elements_20 = param.getCheck().getReference().getGap().getBound_upp().getEm().getElements();
+                        for(final AbstractElement2 param1_8 : _elements_20) {
+                          {
+                            EList<String> _frontParentheses_8 = param1_8.getFrontParentheses();
+                            for(final String parent_16 : _frontParentheses_8) {
+                              _builder.append("( ");
+                            }
+                          }
+                          {
+                            String _name_52 = param1_8.getName();
+                            boolean _tripleNotEquals_91 = (_name_52 != null);
+                            if (_tripleNotEquals_91) {
+                              String _name_53 = param1_8.getName();
+                              _builder.append(_name_53, "\t");
+                            } else {
+                              double _dVal_32 = param1_8.getValue().getDVal();
+                              _builder.append(_dVal_32, "\t");
+                            }
+                          }
+                          _builder.append(" ");
+                          {
+                            EList<Operators> _op_32 = param1_8.getOp();
+                            for(final Operators parent_17 : _op_32) {
+                              {
+                                String _backParentheses_8 = parent_17.getBackParentheses();
+                                boolean _tripleNotEquals_92 = (_backParentheses_8 != null);
+                                if (_tripleNotEquals_92) {
+                                  _builder.append(") ");
+                                } else {
+                                  CompOp _comparation_8 = parent_17.getComparation();
+                                  boolean _tripleNotEquals_93 = (_comparation_8 != null);
+                                  if (_tripleNotEquals_93) {
+                                    String _op_33 = parent_17.getComparation().getOp();
+                                    _builder.append(_op_33, "\t");
+                                    _builder.append(" ");
+                                  } else {
+                                    LogicOp _logicOperator_8 = parent_17.getLogicOperator();
+                                    boolean _tripleNotEquals_94 = (_logicOperator_8 != null);
+                                    if (_tripleNotEquals_94) {
+                                      String _op_34 = parent_17.getLogicOperator().getOp();
+                                      _builder.append(_op_34, "\t");
+                                      _builder.append(" ");
+                                    } else {
+                                      Op _operator_8 = parent_17.getOperator();
+                                      boolean _tripleNotEquals_95 = (_operator_8 != null);
+                                      if (_tripleNotEquals_95) {
+                                        String _op_35 = parent_17.getOperator().getOp();
+                                        _builder.append(_op_35, "\t");
+                                        _builder.append(" ");
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                          _builder.append(" ");
+                        }
+                      }
+                      _builder.append("\"],");
+                    }
+                  }
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t", "\t");
+                  _builder.append("\"Trace\":{");
+                  _builder.newLineIfNotEmpty();
+                  {
+                    Exactly _exactly_3 = param.getCheck().getReference().getGap().getExactly();
+                    boolean _tripleNotEquals_96 = (_exactly_3 != null);
+                    if (_tripleNotEquals_96) {
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Type\":\"exactly\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\t\t\t", "\t");
+                      _builder.append("\"Value\":\"");
+                      double _dVal_33 = param.getCheck().getReference().getGap().getExactly().getValue().getDVal();
+                      _builder.append(_dVal_33, "\t");
+                      _builder.append("\",");
+                      _builder.newLineIfNotEmpty();
+                      {
+                        DOUBLE _time_20 = param.getCheck().getReference().getGap().getExactly().getTime();
+                        boolean _tripleNotEquals_97 = (_time_20 != null);
+                        if (_tripleNotEquals_97) {
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Time\":\"");
+                          double _dVal_34 = param.getCheck().getReference().getGap().getExactly().getTime().getDVal();
+                          _builder.append(_dVal_34, "\t");
+                          _builder.append("\",");
+                          _builder.newLineIfNotEmpty();
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Unit\":\"");
+                          String _time_21 = param.getCheck().getReference().getGap().getExactly().getUnit().getTime();
+                          _builder.append(_time_21, "\t");
+                          _builder.append("\"");
+                          _builder.newLineIfNotEmpty();
+                        } else {
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Time\":\"null\",");
+                          _builder.newLineIfNotEmpty();
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Unit\":\"null\"");
+                          _builder.newLineIfNotEmpty();
+                        }
+                      }
+                    } else {
+                      At_least _atleast_3 = param.getCheck().getReference().getGap().getAtleast();
+                      boolean _tripleNotEquals_98 = (_atleast_3 != null);
+                      if (_tripleNotEquals_98) {
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Type\":\"atLeast\",");
+                        _builder.newLineIfNotEmpty();
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Value\":\"");
+                        double _dVal_35 = param.getCheck().getReference().getGap().getAtleast().getValue().getDVal();
+                        _builder.append(_dVal_35, "\t");
+                        _builder.append("\",");
+                        _builder.newLineIfNotEmpty();
+                        {
+                          DOUBLE _time_22 = param.getCheck().getReference().getGap().getAtleast().getTime();
+                          boolean _tripleNotEquals_99 = (_time_22 != null);
+                          if (_tripleNotEquals_99) {
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Time\":\"");
+                            double _dVal_36 = param.getCheck().getReference().getGap().getAtleast().getTime().getDVal();
+                            _builder.append(_dVal_36, "\t");
+                            _builder.append("\",");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Unit\":\"");
+                            String _time_23 = param.getCheck().getReference().getGap().getAtleast().getUnit().getTime();
+                            _builder.append(_time_23, "\t");
+                            _builder.append("\"");
+                            _builder.newLineIfNotEmpty();
+                          } else {
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Time\":\"null\",");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Unit\":\"null\"");
+                            _builder.newLineIfNotEmpty();
+                          }
+                        }
+                      } else {
+                        At_most _atmost_3 = param.getCheck().getReference().getGap().getAtmost();
+                        boolean _tripleNotEquals_100 = (_atmost_3 != null);
+                        if (_tripleNotEquals_100) {
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Type\":\"atMost\",");
+                          _builder.newLineIfNotEmpty();
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Value\":\"");
+                          double _dVal_37 = param.getCheck().getReference().getGap().getAtmost().getValue().getDVal();
+                          _builder.append(_dVal_37, "\t");
+                          _builder.append("\",");
+                          _builder.newLineIfNotEmpty();
+                          {
+                            DOUBLE _time_24 = param.getCheck().getReference().getGap().getAtmost().getTime();
+                            boolean _tripleNotEquals_101 = (_time_24 != null);
+                            if (_tripleNotEquals_101) {
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Time\":\"");
+                              double _dVal_38 = param.getCheck().getReference().getGap().getAtmost().getTime().getDVal();
+                              _builder.append(_dVal_38, "\t");
+                              _builder.append("\",");
+                              _builder.newLineIfNotEmpty();
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Unit\":\"");
+                              String _time_25 = param.getCheck().getReference().getGap().getAtmost().getUnit().getTime();
+                              _builder.append(_time_25, "\t");
+                              _builder.append("\"");
+                              _builder.newLineIfNotEmpty();
+                            } else {
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Time\":\"null\",");
+                              _builder.newLineIfNotEmpty();
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Unit\":\"null\"");
+                              _builder.newLineIfNotEmpty();
+                            }
+                          }
+                        } else {
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Type\":\"null\",");
+                          _builder.newLineIfNotEmpty();
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Time\":\"null\",\t\t\t");
+                          _builder.newLineIfNotEmpty();
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Unit\":\"null\"");
+                          _builder.newLineIfNotEmpty();
+                        }
+                      }
+                    }
+                  }
+                  _builder.append("\t");
+                  _builder.append("\t\t", "\t");
+                  _builder.append("}");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t\t");
+                  _builder.append("},");
+                  _builder.newLineIfNotEmpty();
+                } else {
+                  Same _same = param.getCheck().getReference().getSame();
+                  boolean _tripleNotEquals_102 = (_same != null);
+                  if (_tripleNotEquals_102) {
+                    _builder.append("\t\t");
+                    _builder.append("\"Reference\":{");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\t\t", "\t");
+                    _builder.append("\"Type\":\"Same\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\t\t", "\t");
+                    _builder.append("\"Value\":[\"");
+                    {
+                      DOUBLE _value_8 = param.getCheck().getReference().getSame().getBound_upp().getValue();
+                      boolean _tripleNotEquals_103 = (_value_8 != null);
+                      if (_tripleNotEquals_103) {
+                        double _dVal_39 = param.getCheck().getReference().getSame().getBound_upp().getValue().getDVal();
+                        _builder.append(_dVal_39, "\t");
+                        _builder.append("\"],");
+                      } else {
+                        {
+                          EList<AbstractElement2> _elements_21 = param.getCheck().getReference().getSame().getBound_upp().getEm().getElements();
+                          for(final AbstractElement2 param1_9 : _elements_21) {
+                            {
+                              EList<String> _frontParentheses_9 = param1_9.getFrontParentheses();
+                              for(final String parent_18 : _frontParentheses_9) {
+                                _builder.append("( ");
+                              }
+                            }
+                            {
+                              String _name_54 = param1_9.getName();
+                              boolean _tripleNotEquals_104 = (_name_54 != null);
+                              if (_tripleNotEquals_104) {
+                                String _name_55 = param1_9.getName();
+                                _builder.append(_name_55, "\t");
+                              } else {
+                                double _dVal_40 = param1_9.getValue().getDVal();
+                                _builder.append(_dVal_40, "\t");
+                              }
+                            }
+                            _builder.append(" ");
+                            {
+                              EList<Operators> _op_36 = param1_9.getOp();
+                              for(final Operators parent_19 : _op_36) {
+                                {
+                                  String _backParentheses_9 = parent_19.getBackParentheses();
+                                  boolean _tripleNotEquals_105 = (_backParentheses_9 != null);
+                                  if (_tripleNotEquals_105) {
+                                    _builder.append(") ");
+                                  } else {
+                                    CompOp _comparation_9 = parent_19.getComparation();
+                                    boolean _tripleNotEquals_106 = (_comparation_9 != null);
+                                    if (_tripleNotEquals_106) {
+                                      String _op_37 = parent_19.getComparation().getOp();
+                                      _builder.append(_op_37, "\t");
+                                      _builder.append(" ");
+                                    } else {
+                                      LogicOp _logicOperator_9 = parent_19.getLogicOperator();
+                                      boolean _tripleNotEquals_107 = (_logicOperator_9 != null);
+                                      if (_tripleNotEquals_107) {
+                                        String _op_38 = parent_19.getLogicOperator().getOp();
+                                        _builder.append(_op_38, "\t");
+                                        _builder.append(" ");
+                                      } else {
+                                        Op _operator_9 = parent_19.getOperator();
+                                        boolean _tripleNotEquals_108 = (_operator_9 != null);
+                                        if (_tripleNotEquals_108) {
+                                          String _op_39 = parent_19.getOperator().getOp();
+                                          _builder.append(_op_39, "\t");
+                                          _builder.append(" ");
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                            _builder.append(" ");
+                          }
+                        }
+                        _builder.append("\"],");
+                      }
+                    }
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\t\t", "\t");
+                    _builder.append("\"Trace\":{");
+                    _builder.newLineIfNotEmpty();
+                    {
+                      Exactly _exactly_4 = param.getCheck().getReference().getSame().getExactly();
+                      boolean _tripleNotEquals_109 = (_exactly_4 != null);
+                      if (_tripleNotEquals_109) {
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Type\":\"exactly\",");
+                        _builder.newLineIfNotEmpty();
+                        _builder.append("\t");
+                        _builder.append("\t\t\t", "\t");
+                        _builder.append("\"Value\":\"");
+                        double _dVal_41 = param.getCheck().getReference().getSame().getExactly().getValue().getDVal();
+                        _builder.append(_dVal_41, "\t");
+                        _builder.append("\",");
+                        _builder.newLineIfNotEmpty();
+                        {
+                          DOUBLE _time_26 = param.getCheck().getReference().getSame().getExactly().getTime();
+                          boolean _tripleNotEquals_110 = (_time_26 != null);
+                          if (_tripleNotEquals_110) {
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Time\":\"");
+                            double _dVal_42 = param.getCheck().getReference().getSame().getExactly().getTime().getDVal();
+                            _builder.append(_dVal_42, "\t");
+                            _builder.append("\",");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Unit\":\"");
+                            String _time_27 = param.getCheck().getReference().getSame().getExactly().getUnit().getTime();
+                            _builder.append(_time_27, "\t");
+                            _builder.append("\"");
+                            _builder.newLineIfNotEmpty();
+                          } else {
+                            _builder.append("\t");
+                            _builder.append("\t\t", "\t");
+                            _builder.append("\"Time\":\"null\",");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Unit\":\"null\"");
+                            _builder.newLineIfNotEmpty();
+                          }
+                        }
+                      } else {
+                        At_least _atleast_4 = param.getCheck().getReference().getSame().getAtleast();
+                        boolean _tripleNotEquals_111 = (_atleast_4 != null);
+                        if (_tripleNotEquals_111) {
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Type\":\"atLeast\",");
+                          _builder.newLineIfNotEmpty();
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Value\":\"");
+                          double _dVal_43 = param.getCheck().getReference().getSame().getAtleast().getValue().getDVal();
+                          _builder.append(_dVal_43, "\t");
+                          _builder.append("\",");
+                          _builder.newLineIfNotEmpty();
+                          {
+                            DOUBLE _time_28 = param.getCheck().getReference().getSame().getAtleast().getTime();
+                            boolean _tripleNotEquals_112 = (_time_28 != null);
+                            if (_tripleNotEquals_112) {
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Time\":\"");
+                              double _dVal_44 = param.getCheck().getReference().getSame().getAtleast().getTime().getDVal();
+                              _builder.append(_dVal_44, "\t");
+                              _builder.append("\",");
+                              _builder.newLineIfNotEmpty();
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Unit\":\"");
+                              String _time_29 = param.getCheck().getReference().getSame().getAtleast().getUnit().getTime();
+                              _builder.append(_time_29, "\t");
+                              _builder.append("\"");
+                              _builder.newLineIfNotEmpty();
+                            } else {
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Time\":\"null\",");
+                              _builder.newLineIfNotEmpty();
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Unit\":\"null\"");
+                              _builder.newLineIfNotEmpty();
+                            }
+                          }
+                        } else {
+                          At_most _atmost_4 = param.getCheck().getReference().getSame().getAtmost();
+                          boolean _tripleNotEquals_113 = (_atmost_4 != null);
+                          if (_tripleNotEquals_113) {
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Type\":\"atMost\",");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Value\":\"");
+                            double _dVal_45 = param.getCheck().getReference().getSame().getAtmost().getValue().getDVal();
+                            _builder.append(_dVal_45, "\t");
+                            _builder.append("\",");
+                            _builder.newLineIfNotEmpty();
+                            {
+                              DOUBLE _time_30 = param.getCheck().getReference().getSame().getAtmost().getTime();
+                              boolean _tripleNotEquals_114 = (_time_30 != null);
+                              if (_tripleNotEquals_114) {
+                                _builder.append("\t");
+                                _builder.append("\t\t\t", "\t");
+                                _builder.append("\"Time\":\"");
+                                double _dVal_46 = param.getCheck().getReference().getSame().getAtmost().getTime().getDVal();
+                                _builder.append(_dVal_46, "\t");
+                                _builder.append("\",");
+                                _builder.newLineIfNotEmpty();
+                                _builder.append("\t");
+                                _builder.append("\t\t\t", "\t");
+                                _builder.append("\"Unit\":\"");
+                                String _time_31 = param.getCheck().getReference().getSame().getAtmost().getUnit().getTime();
+                                _builder.append(_time_31, "\t");
+                                _builder.append("\"");
+                                _builder.newLineIfNotEmpty();
+                              } else {
+                                _builder.append("\t");
+                                _builder.append("\t\t\t", "\t");
+                                _builder.append("\"Time\":\"null\",");
+                                _builder.newLineIfNotEmpty();
+                                _builder.append("\t");
+                                _builder.append("\t\t\t", "\t");
+                                _builder.append("\"Unit\":\"null\"");
+                                _builder.newLineIfNotEmpty();
+                              }
+                            }
+                          } else {
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Type\":\"null\",");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Time\":\"null\",");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Unit\":\"null\"");
+                            _builder.newLineIfNotEmpty();
+                          }
+                        }
+                      }
+                    }
+                    _builder.append("\t");
+                    _builder.append("\t\t", "\t");
+                    _builder.append("}");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t\t");
+                    _builder.append("},");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    NotSame _notsame = param.getCheck().getReference().getNotsame();
+                    boolean _tripleNotEquals_115 = (_notsame != null);
+                    if (_tripleNotEquals_115) {
+                      _builder.append("\t\t");
+                      _builder.append("\"Reference\":{");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\t\t", "\t");
+                      _builder.append("\"Type\":\"NotSame\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\t\t", "\t");
+                      _builder.append("\"Value\":[\"");
+                      {
+                        DOUBLE _value_9 = param.getCheck().getReference().getNotsame().getBound_upp().getValue();
+                        boolean _tripleNotEquals_116 = (_value_9 != null);
+                        if (_tripleNotEquals_116) {
+                          double _dVal_47 = param.getCheck().getReference().getNotsame().getBound_upp().getValue().getDVal();
+                          _builder.append(_dVal_47, "\t");
+                          _builder.append("\"],");
+                        } else {
+                          {
+                            EList<AbstractElement2> _elements_22 = param.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements();
+                            for(final AbstractElement2 param1_10 : _elements_22) {
+                              {
+                                EList<String> _frontParentheses_10 = param1_10.getFrontParentheses();
+                                for(final String parent_20 : _frontParentheses_10) {
+                                  _builder.append("( ");
+                                }
+                              }
+                              {
+                                String _name_56 = param1_10.getName();
+                                boolean _tripleNotEquals_117 = (_name_56 != null);
+                                if (_tripleNotEquals_117) {
+                                  String _name_57 = param1_10.getName();
+                                  _builder.append(_name_57, "\t");
+                                } else {
+                                  double _dVal_48 = param1_10.getValue().getDVal();
+                                  _builder.append(_dVal_48, "\t");
+                                }
+                              }
+                              _builder.append(" ");
+                              {
+                                EList<Operators> _op_40 = param1_10.getOp();
+                                for(final Operators parent_21 : _op_40) {
+                                  {
+                                    String _backParentheses_10 = parent_21.getBackParentheses();
+                                    boolean _tripleNotEquals_118 = (_backParentheses_10 != null);
+                                    if (_tripleNotEquals_118) {
+                                      _builder.append(") ");
+                                    } else {
+                                      CompOp _comparation_10 = parent_21.getComparation();
+                                      boolean _tripleNotEquals_119 = (_comparation_10 != null);
+                                      if (_tripleNotEquals_119) {
+                                        String _op_41 = parent_21.getComparation().getOp();
+                                        _builder.append(_op_41, "\t");
+                                        _builder.append(" ");
+                                      } else {
+                                        LogicOp _logicOperator_10 = parent_21.getLogicOperator();
+                                        boolean _tripleNotEquals_120 = (_logicOperator_10 != null);
+                                        if (_tripleNotEquals_120) {
+                                          String _op_42 = parent_21.getLogicOperator().getOp();
+                                          _builder.append(_op_42, "\t");
+                                          _builder.append(" ");
+                                        } else {
+                                          Op _operator_10 = parent_21.getOperator();
+                                          boolean _tripleNotEquals_121 = (_operator_10 != null);
+                                          if (_tripleNotEquals_121) {
+                                            String _op_43 = parent_21.getOperator().getOp();
+                                            _builder.append(_op_43, "\t");
+                                            _builder.append(" ");
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              _builder.append(" ");
+                            }
+                          }
+                          _builder.append("\",");
+                        }
+                      }
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t");
+                      _builder.append("\t\t", "\t");
+                      _builder.append("\"Trace\":{");
+                      _builder.newLineIfNotEmpty();
+                      {
+                        Exactly _exactly_5 = param.getCheck().getReference().getNotsame().getExactly();
+                        boolean _tripleNotEquals_122 = (_exactly_5 != null);
+                        if (_tripleNotEquals_122) {
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Type\":\"exactly\",");
+                          _builder.newLineIfNotEmpty();
+                          _builder.append("\t");
+                          _builder.append("\t\t\t", "\t");
+                          _builder.append("\"Value\":\"");
+                          double _dVal_49 = param.getCheck().getReference().getNotsame().getExactly().getValue().getDVal();
+                          _builder.append(_dVal_49, "\t");
+                          _builder.append("\"");
+                          _builder.newLineIfNotEmpty();
+                          {
+                            DOUBLE _time_32 = param.getCheck().getReference().getNotsame().getExactly().getTime();
+                            boolean _tripleNotEquals_123 = (_time_32 != null);
+                            if (_tripleNotEquals_123) {
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\t\"Time\":\"");
+                              double _dVal_50 = param.getCheck().getReference().getNotsame().getExactly().getTime().getDVal();
+                              _builder.append(_dVal_50, "\t");
+                              _builder.append("\",");
+                              _builder.newLineIfNotEmpty();
+                              _builder.append("\t");
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t\t");
+                              _builder.append("\"Unit\":\"");
+                              String _time_33 = param.getCheck().getReference().getNotsame().getExactly().getUnit().getTime();
+                              _builder.append(_time_33, "\t\t");
+                              _builder.append("\"");
+                              _builder.newLineIfNotEmpty();
+                            } else {
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Time\":\"null\",");
+                              _builder.newLineIfNotEmpty();
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Unit\":\"null\"");
+                              _builder.newLineIfNotEmpty();
+                            }
+                          }
+                        } else {
+                          At_least _atleast_5 = param.getCheck().getReference().getNotsame().getAtleast();
+                          boolean _tripleNotEquals_124 = (_atleast_5 != null);
+                          if (_tripleNotEquals_124) {
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Type\":\"atLeast\",");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("\t");
+                            _builder.append("\t\t\t", "\t");
+                            _builder.append("\"Value\":\"");
+                            double _dVal_51 = param.getCheck().getReference().getNotsame().getAtleast().getValue().getDVal();
+                            _builder.append(_dVal_51, "\t");
+                            _builder.append("\"");
+                            _builder.newLineIfNotEmpty();
+                            {
+                              DOUBLE _time_34 = param.getCheck().getReference().getNotsame().getAtleast().getTime();
+                              boolean _tripleNotEquals_125 = (_time_34 != null);
+                              if (_tripleNotEquals_125) {
+                                _builder.append("\t");
+                                _builder.append("\t\t\t", "\t");
+                                _builder.append("\"Time\":\"");
+                                double _dVal_52 = param.getCheck().getReference().getNotsame().getAtleast().getTime().getDVal();
+                                _builder.append(_dVal_52, "\t");
+                                _builder.append("\",");
+                                _builder.newLineIfNotEmpty();
+                                _builder.append("\t");
+                                _builder.append("\t\t\t", "\t");
+                                _builder.append("\"Unit\":\"");
+                                String _time_35 = param.getCheck().getReference().getNotsame().getAtleast().getUnit().getTime();
+                                _builder.append(_time_35, "\t");
+                                _builder.append("\"");
+                                _builder.newLineIfNotEmpty();
+                              } else {
+                                _builder.append("\t");
+                                _builder.append("\t\t\t", "\t");
+                                _builder.append("\"Time\":\"null\",");
+                                _builder.newLineIfNotEmpty();
+                                _builder.append("\t");
+                                _builder.append("\t\t\t", "\t");
+                                _builder.append("\"Unit\":\"null\"");
+                                _builder.newLineIfNotEmpty();
+                              }
+                            }
+                          } else {
+                            At_most _atmost_5 = param.getCheck().getReference().getNotsame().getAtmost();
+                            boolean _tripleNotEquals_126 = (_atmost_5 != null);
+                            if (_tripleNotEquals_126) {
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Type\":\"atMost\",");
+                              _builder.newLineIfNotEmpty();
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Value\":\"");
+                              double _dVal_53 = param.getCheck().getReference().getNotsame().getAtmost().getValue().getDVal();
+                              _builder.append(_dVal_53, "\t");
+                              _builder.append("\"");
+                              _builder.newLineIfNotEmpty();
+                              {
+                                DOUBLE _time_36 = param.getCheck().getReference().getNotsame().getAtmost().getTime();
+                                boolean _tripleNotEquals_127 = (_time_36 != null);
+                                if (_tripleNotEquals_127) {
+                                  _builder.append("\t");
+                                  _builder.append("\t\t\t", "\t");
+                                  _builder.append("\"Time\":\"");
+                                  double _dVal_54 = param.getCheck().getReference().getNotsame().getAtmost().getTime().getDVal();
+                                  _builder.append(_dVal_54, "\t");
+                                  _builder.append("\",");
+                                  _builder.newLineIfNotEmpty();
+                                  _builder.append("\t");
+                                  _builder.append("\t\t\t", "\t");
+                                  _builder.append("\"Unit\":\"");
+                                  String _time_37 = param.getCheck().getReference().getNotsame().getAtmost().getUnit().getTime();
+                                  _builder.append(_time_37, "\t");
+                                  _builder.append("\"");
+                                  _builder.newLineIfNotEmpty();
+                                } else {
+                                  _builder.append("\t");
+                                  _builder.append("\t\t\t", "\t");
+                                  _builder.append("\"Time\":\"null\",");
+                                  _builder.newLineIfNotEmpty();
+                                  _builder.append("\t");
+                                  _builder.append("\t\t\t", "\t");
+                                  _builder.append("\"Unit\":\"null\"");
+                                  _builder.newLineIfNotEmpty();
+                                }
+                              }
+                            } else {
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Type\":\"null\",");
+                              _builder.newLineIfNotEmpty();
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Time\":\"null\",\t\t\t");
+                              _builder.newLineIfNotEmpty();
+                              _builder.append("\t");
+                              _builder.append("\t\t\t", "\t");
+                              _builder.append("\"Unit\":\"null\"");
+                              _builder.newLineIfNotEmpty();
+                            }
+                          }
+                        }
+                      }
+                      _builder.append("\t");
+                      _builder.append("\t\t", "\t");
+                      _builder.append("}");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t\t");
+                      _builder.append("},");
+                      _builder.newLineIfNotEmpty();
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        {
+          EList<FailReason> _failReason = param.getCheck().getFailReason();
+          for(final FailReason failreason : _failReason) {
+            _builder.append("\t\t");
+            _builder.append("\"FailReason\":{");
+            _builder.newLineIfNotEmpty();
+            {
+              HighPeak _highPeak = failreason.getReason().getHighPeak();
+              boolean _tripleNotEquals_128 = (_highPeak != null);
+              if (_tripleNotEquals_128) {
+                _builder.append("\t\t");
+                _builder.append("\t", "\t\t");
+                _builder.append("\"Type\":\"HighPeak\",");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t", "\t\t");
+                _builder.append("\"Cant\":\"");
+                double _dVal_55 = failreason.getReason().getHighPeak().getCant().getDVal();
+                _builder.append(_dVal_55, "\t\t");
+                _builder.append("\",");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t", "\t\t");
+                _builder.append("\"NPeaks\":\"null\",");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t", "\t\t");
+                _builder.append("\"Time\":\"null\",");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\t", "\t\t");
+                _builder.append("\"Unit\":\"null\"");
+                _builder.newLineIfNotEmpty();
+              } else {
+                HighTime _highTime = failreason.getReason().getHighTime();
+                boolean _tripleNotEquals_129 = (_highTime != null);
+                if (_tripleNotEquals_129) {
+                  _builder.append("\t\t");
+                  _builder.append("\t", "\t\t");
+                  _builder.append("\"Type\":\"HighTime\",");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t\t");
+                  _builder.append("\t", "\t\t");
+                  _builder.append("\"Cant\":\"");
+                  double _dVal_56 = failreason.getReason().getHighTime().getCant().getDVal();
+                  _builder.append(_dVal_56, "\t\t");
+                  _builder.append("\",");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t\t");
+                  _builder.append("\t", "\t\t");
+                  _builder.append("\"NPeaks\":\"null\",");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t\t");
+                  _builder.append("\t", "\t\t");
+                  _builder.append("\"Time\":\"");
+                  double _dVal_57 = failreason.getReason().getHighTime().getTime().getDVal();
+                  _builder.append(_dVal_57, "\t\t");
+                  _builder.append("\",");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t\t");
+                  _builder.append("\t", "\t\t");
+                  _builder.append("\"Unit\":\"");
+                  String _time_38 = failreason.getReason().getHighTime().getUnit().getTime();
+                  _builder.append(_time_38, "\t\t");
+                  _builder.append("\"");
+                  _builder.newLineIfNotEmpty();
+                } else {
+                  XPeaks _xPeaks = failreason.getReason().getXPeaks();
+                  boolean _tripleNotEquals_130 = (_xPeaks != null);
+                  if (_tripleNotEquals_130) {
+                    _builder.append("\t\t");
+                    _builder.append("\t", "\t\t");
+                    _builder.append("\"Type\":\"XPeaks\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t\t");
+                    _builder.append("\t", "\t\t");
+                    _builder.append("\"Cant\":\"");
+                    double _dVal_58 = failreason.getReason().getXPeaks().getCant().getDVal();
+                    _builder.append(_dVal_58, "\t\t");
+                    _builder.append("\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t\t");
+                    _builder.append("\t", "\t\t");
+                    _builder.append("\"NPeaks\":\"");
+                    double _dVal_59 = failreason.getReason().getXPeaks().getNPeaks().getDVal();
+                    _builder.append(_dVal_59, "\t\t");
+                    _builder.append("\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t\t");
+                    _builder.append("\t", "\t\t");
+                    _builder.append("\"Time\":\"");
+                    double _dVal_60 = failreason.getReason().getXPeaks().getTime().getDVal();
+                    _builder.append(_dVal_60, "\t\t");
+                    _builder.append("\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t\t");
+                    _builder.append("\t", "\t\t");
+                    _builder.append("\"Unit\":\"");
+                    String _time_39 = failreason.getReason().getXPeaks().getUnit().getTime();
+                    _builder.append(_time_39, "\t\t");
+                    _builder.append("\"");
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    ConstDeg _constDeg = failreason.getReason().getConstDeg();
+                    boolean _tripleNotEquals_131 = (_constDeg != null);
+                    if (_tripleNotEquals_131) {
+                      _builder.append("\t\t");
+                      _builder.append("\t", "\t\t");
+                      _builder.append("\"Type\":\"ConstantDegradation\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t\t");
+                      _builder.append("\t", "\t\t");
+                      _builder.append("\"Cant\":\"");
+                      double _dVal_61 = failreason.getReason().getConstDeg().getCant().getDVal();
+                      _builder.append(_dVal_61, "\t\t");
+                      _builder.append("\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t\t");
+                      _builder.append("\t", "\t\t");
+                      _builder.append("\"NPeaks\":\"null\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t\t");
+                      _builder.append("\t", "\t\t");
+                      _builder.append("\"Time\":\"null\",");
+                      _builder.newLineIfNotEmpty();
+                      _builder.append("\t\t");
+                      _builder.append("\t", "\t\t");
+                      _builder.append("\"Unit\":\"null\"");
+                      _builder.newLineIfNotEmpty();
+                    }
+                  }
+                }
+              }
+            }
+            _builder.append("\t\t");
+            _builder.append("},");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        _builder.append("\t");
+        _builder.append("\t", "\t");
+        _builder.append("\"Description\":\"");
+        String _value_10 = param.getCheck().getDescription().getValue();
+        _builder.append(_value_10, "\t");
+        _builder.append("\"");
+        _builder.newLineIfNotEmpty();
+        {
+          int _plusPlus = cont++;
+          int _size = CPS.getOracle().size();
+          int _minus = (_size - 1);
+          boolean _notEquals = (_plusPlus != _minus);
+          if (_notEquals) {
+            _builder.append("\t");
+            _builder.append("},");
+            _builder.newLineIfNotEmpty();
+          } else {
+            _builder.append("\t");
+            _builder.append("}");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+      }
+    }
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    return _builder;
+  }
+  
   public CharSequence create_oracle_h(final Oracle param) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("#ifndef ");

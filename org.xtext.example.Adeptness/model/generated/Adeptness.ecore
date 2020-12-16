@@ -158,25 +158,41 @@
   <eClassifiers xsi:type="ecore:EClass" name="Same">
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="times" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exactly" eType="#//Exactly"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="atmost" eType="#//At_most"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="atleast" eType="#//At_least"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NotSame">
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="times" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exactly" eType="#//Exactly"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="atmost" eType="#//At_most"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="atleast" eType="#//At_least"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Upper">
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="times" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exactly" eType="#//Exactly"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="atmost" eType="#//At_most"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="atleast" eType="#//At_least"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Lower">
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_lower" eType="#//Bound_Down"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="times" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exactly" eType="#//Exactly"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="atmost" eType="#//At_most"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="atleast" eType="#//At_least"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Range">
@@ -184,7 +200,11 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="times" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exactly" eType="#//Exactly"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="atmost" eType="#//At_most"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="atleast" eType="#//At_least"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Gap">
@@ -192,7 +212,11 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound_upp" eType="#//Bound_up"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="times" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exactly" eType="#//Exactly"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="atmost" eType="#//At_most"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="atleast" eType="#//At_least"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="InclusiveBound">

@@ -1437,9 +1437,31 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getSame_Times()
+  public EReference getSame_Exactly()
   {
     return (EReference)sameEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSame_Atmost()
+  {
+    return (EReference)sameEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSame_Atleast()
+  {
+    return (EReference)sameEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1470,9 +1492,31 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getNotSame_Times()
+  public EReference getNotSame_Exactly()
   {
     return (EReference)notSameEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getNotSame_Atmost()
+  {
+    return (EReference)notSameEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getNotSame_Atleast()
+  {
+    return (EReference)notSameEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1503,9 +1547,31 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getUpper_Times()
+  public EReference getUpper_Exactly()
   {
     return (EReference)upperEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getUpper_Atmost()
+  {
+    return (EReference)upperEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getUpper_Atleast()
+  {
+    return (EReference)upperEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1536,9 +1602,31 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getLower_Times()
+  public EReference getLower_Exactly()
   {
     return (EReference)lowerEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getLower_Atmost()
+  {
+    return (EReference)lowerEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getLower_Atleast()
+  {
+    return (EReference)lowerEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1580,9 +1668,31 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getRange_Times()
+  public EReference getRange_Exactly()
   {
     return (EReference)rangeEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getRange_Atmost()
+  {
+    return (EReference)rangeEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getRange_Atleast()
+  {
+    return (EReference)rangeEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -1624,9 +1734,31 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
-  public EReference getGap_Times()
+  public EReference getGap_Exactly()
   {
     return (EReference)gapEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getGap_Atmost()
+  {
+    return (EReference)gapEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getGap_Atleast()
+  {
+    return (EReference)gapEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -2312,29 +2444,41 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
 
     sameEClass = createEClass(SAME);
     createEReference(sameEClass, SAME__BOUND_UPP);
-    createEReference(sameEClass, SAME__TIMES);
+    createEReference(sameEClass, SAME__EXACTLY);
+    createEReference(sameEClass, SAME__ATMOST);
+    createEReference(sameEClass, SAME__ATLEAST);
 
     notSameEClass = createEClass(NOT_SAME);
     createEReference(notSameEClass, NOT_SAME__BOUND_UPP);
-    createEReference(notSameEClass, NOT_SAME__TIMES);
+    createEReference(notSameEClass, NOT_SAME__EXACTLY);
+    createEReference(notSameEClass, NOT_SAME__ATMOST);
+    createEReference(notSameEClass, NOT_SAME__ATLEAST);
 
     upperEClass = createEClass(UPPER);
     createEReference(upperEClass, UPPER__BOUND_UPP);
-    createEReference(upperEClass, UPPER__TIMES);
+    createEReference(upperEClass, UPPER__EXACTLY);
+    createEReference(upperEClass, UPPER__ATMOST);
+    createEReference(upperEClass, UPPER__ATLEAST);
 
     lowerEClass = createEClass(LOWER);
     createEReference(lowerEClass, LOWER__BOUND_LOWER);
-    createEReference(lowerEClass, LOWER__TIMES);
+    createEReference(lowerEClass, LOWER__EXACTLY);
+    createEReference(lowerEClass, LOWER__ATMOST);
+    createEReference(lowerEClass, LOWER__ATLEAST);
 
     rangeEClass = createEClass(RANGE);
     createEReference(rangeEClass, RANGE__BOUND_LOWER);
     createEReference(rangeEClass, RANGE__BOUND_UPP);
-    createEReference(rangeEClass, RANGE__TIMES);
+    createEReference(rangeEClass, RANGE__EXACTLY);
+    createEReference(rangeEClass, RANGE__ATMOST);
+    createEReference(rangeEClass, RANGE__ATLEAST);
 
     gapEClass = createEClass(GAP);
     createEReference(gapEClass, GAP__BOUND_LOWER);
     createEReference(gapEClass, GAP__BOUND_UPP);
-    createEReference(gapEClass, GAP__TIMES);
+    createEReference(gapEClass, GAP__EXACTLY);
+    createEReference(gapEClass, GAP__ATMOST);
+    createEReference(gapEClass, GAP__ATLEAST);
 
     inclusiveBoundEClass = createEClass(INCLUSIVE_BOUND);
     createEAttribute(inclusiveBoundEClass, INCLUSIVE_BOUND__NAME);
@@ -2553,29 +2697,41 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
 
     initEClass(sameEClass, Same.class, "Same", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getSame_Bound_upp(), this.getBound_up(), null, "bound_upp", null, 0, 1, Same.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getSame_Times(), ecorePackage.getEObject(), null, "times", null, 0, 1, Same.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSame_Exactly(), this.getExactly(), null, "exactly", null, 0, 1, Same.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSame_Atmost(), this.getAt_most(), null, "atmost", null, 0, 1, Same.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSame_Atleast(), this.getAt_least(), null, "atleast", null, 0, 1, Same.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(notSameEClass, NotSame.class, "NotSame", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getNotSame_Bound_upp(), this.getBound_up(), null, "bound_upp", null, 0, 1, NotSame.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getNotSame_Times(), ecorePackage.getEObject(), null, "times", null, 0, 1, NotSame.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getNotSame_Exactly(), this.getExactly(), null, "exactly", null, 0, 1, NotSame.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getNotSame_Atmost(), this.getAt_most(), null, "atmost", null, 0, 1, NotSame.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getNotSame_Atleast(), this.getAt_least(), null, "atleast", null, 0, 1, NotSame.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(upperEClass, Upper.class, "Upper", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getUpper_Bound_upp(), this.getBound_up(), null, "bound_upp", null, 0, 1, Upper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getUpper_Times(), ecorePackage.getEObject(), null, "times", null, 0, 1, Upper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getUpper_Exactly(), this.getExactly(), null, "exactly", null, 0, 1, Upper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getUpper_Atmost(), this.getAt_most(), null, "atmost", null, 0, 1, Upper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getUpper_Atleast(), this.getAt_least(), null, "atleast", null, 0, 1, Upper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(lowerEClass, Lower.class, "Lower", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getLower_Bound_lower(), this.getBound_Down(), null, "bound_lower", null, 0, 1, Lower.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getLower_Times(), ecorePackage.getEObject(), null, "times", null, 0, 1, Lower.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getLower_Exactly(), this.getExactly(), null, "exactly", null, 0, 1, Lower.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getLower_Atmost(), this.getAt_most(), null, "atmost", null, 0, 1, Lower.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getLower_Atleast(), this.getAt_least(), null, "atleast", null, 0, 1, Lower.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(rangeEClass, Range.class, "Range", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getRange_Bound_lower(), this.getBound_Down(), null, "bound_lower", null, 0, 1, Range.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRange_Bound_upp(), this.getBound_up(), null, "bound_upp", null, 0, 1, Range.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRange_Times(), ecorePackage.getEObject(), null, "times", null, 0, 1, Range.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRange_Exactly(), this.getExactly(), null, "exactly", null, 0, 1, Range.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRange_Atmost(), this.getAt_most(), null, "atmost", null, 0, 1, Range.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRange_Atleast(), this.getAt_least(), null, "atleast", null, 0, 1, Range.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(gapEClass, Gap.class, "Gap", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getGap_Bound_lower(), this.getBound_Down(), null, "bound_lower", null, 0, 1, Gap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getGap_Bound_upp(), this.getBound_up(), null, "bound_upp", null, 0, 1, Gap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getGap_Times(), ecorePackage.getEObject(), null, "times", null, 0, 1, Gap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getGap_Exactly(), this.getExactly(), null, "exactly", null, 0, 1, Gap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getGap_Atmost(), this.getAt_most(), null, "atmost", null, 0, 1, Gap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getGap_Atleast(), this.getAt_least(), null, "atleast", null, 0, 1, Gap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(inclusiveBoundEClass, InclusiveBound.class, "InclusiveBound", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getInclusiveBound_Name(), ecorePackage.getEString(), "name", null, 0, 1, InclusiveBound.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

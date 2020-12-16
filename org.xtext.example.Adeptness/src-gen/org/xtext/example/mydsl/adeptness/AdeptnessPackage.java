@@ -1120,13 +1120,31 @@ public interface AdeptnessPackage extends EPackage
   int SAME__BOUND_UPP = 0;
 
   /**
-   * The feature id for the '<em><b>Times</b></em>' containment reference.
+   * The feature id for the '<em><b>Exactly</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SAME__TIMES = 1;
+  int SAME__EXACTLY = 1;
+
+  /**
+   * The feature id for the '<em><b>Atmost</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SAME__ATMOST = 2;
+
+  /**
+   * The feature id for the '<em><b>Atleast</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SAME__ATLEAST = 3;
 
   /**
    * The number of structural features of the '<em>Same</em>' class.
@@ -1135,7 +1153,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SAME_FEATURE_COUNT = 2;
+  int SAME_FEATURE_COUNT = 4;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.NotSameImpl <em>Not Same</em>}' class.
@@ -1157,13 +1175,31 @@ public interface AdeptnessPackage extends EPackage
   int NOT_SAME__BOUND_UPP = 0;
 
   /**
-   * The feature id for the '<em><b>Times</b></em>' containment reference.
+   * The feature id for the '<em><b>Exactly</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int NOT_SAME__TIMES = 1;
+  int NOT_SAME__EXACTLY = 1;
+
+  /**
+   * The feature id for the '<em><b>Atmost</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NOT_SAME__ATMOST = 2;
+
+  /**
+   * The feature id for the '<em><b>Atleast</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NOT_SAME__ATLEAST = 3;
 
   /**
    * The number of structural features of the '<em>Not Same</em>' class.
@@ -1172,7 +1208,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int NOT_SAME_FEATURE_COUNT = 2;
+  int NOT_SAME_FEATURE_COUNT = 4;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.UpperImpl <em>Upper</em>}' class.
@@ -1194,13 +1230,31 @@ public interface AdeptnessPackage extends EPackage
   int UPPER__BOUND_UPP = 0;
 
   /**
-   * The feature id for the '<em><b>Times</b></em>' containment reference.
+   * The feature id for the '<em><b>Exactly</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int UPPER__TIMES = 1;
+  int UPPER__EXACTLY = 1;
+
+  /**
+   * The feature id for the '<em><b>Atmost</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UPPER__ATMOST = 2;
+
+  /**
+   * The feature id for the '<em><b>Atleast</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UPPER__ATLEAST = 3;
 
   /**
    * The number of structural features of the '<em>Upper</em>' class.
@@ -1209,7 +1263,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int UPPER_FEATURE_COUNT = 2;
+  int UPPER_FEATURE_COUNT = 4;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.LowerImpl <em>Lower</em>}' class.
@@ -1231,13 +1285,31 @@ public interface AdeptnessPackage extends EPackage
   int LOWER__BOUND_LOWER = 0;
 
   /**
-   * The feature id for the '<em><b>Times</b></em>' containment reference.
+   * The feature id for the '<em><b>Exactly</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int LOWER__TIMES = 1;
+  int LOWER__EXACTLY = 1;
+
+  /**
+   * The feature id for the '<em><b>Atmost</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LOWER__ATMOST = 2;
+
+  /**
+   * The feature id for the '<em><b>Atleast</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LOWER__ATLEAST = 3;
 
   /**
    * The number of structural features of the '<em>Lower</em>' class.
@@ -1246,7 +1318,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int LOWER_FEATURE_COUNT = 2;
+  int LOWER_FEATURE_COUNT = 4;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.RangeImpl <em>Range</em>}' class.
@@ -1277,13 +1349,31 @@ public interface AdeptnessPackage extends EPackage
   int RANGE__BOUND_UPP = 1;
 
   /**
-   * The feature id for the '<em><b>Times</b></em>' containment reference.
+   * The feature id for the '<em><b>Exactly</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RANGE__TIMES = 2;
+  int RANGE__EXACTLY = 2;
+
+  /**
+   * The feature id for the '<em><b>Atmost</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RANGE__ATMOST = 3;
+
+  /**
+   * The feature id for the '<em><b>Atleast</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RANGE__ATLEAST = 4;
 
   /**
    * The number of structural features of the '<em>Range</em>' class.
@@ -1292,7 +1382,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int RANGE_FEATURE_COUNT = 3;
+  int RANGE_FEATURE_COUNT = 5;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.GapImpl <em>Gap</em>}' class.
@@ -1323,13 +1413,31 @@ public interface AdeptnessPackage extends EPackage
   int GAP__BOUND_UPP = 1;
 
   /**
-   * The feature id for the '<em><b>Times</b></em>' containment reference.
+   * The feature id for the '<em><b>Exactly</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int GAP__TIMES = 2;
+  int GAP__EXACTLY = 2;
+
+  /**
+   * The feature id for the '<em><b>Atmost</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GAP__ATMOST = 3;
+
+  /**
+   * The feature id for the '<em><b>Atleast</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GAP__ATLEAST = 4;
 
   /**
    * The number of structural features of the '<em>Gap</em>' class.
@@ -1338,7 +1446,7 @@ public interface AdeptnessPackage extends EPackage
    * @generated
    * @ordered
    */
-  int GAP_FEATURE_COUNT = 3;
+  int GAP_FEATURE_COUNT = 5;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.InclusiveBoundImpl <em>Inclusive Bound</em>}' class.
@@ -2892,15 +3000,37 @@ public interface AdeptnessPackage extends EPackage
   EReference getSame_Bound_upp();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Same#getTimes <em>Times</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Same#getExactly <em>Exactly</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Times</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Same#getTimes()
+   * @return the meta object for the containment reference '<em>Exactly</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Same#getExactly()
    * @see #getSame()
    * @generated
    */
-  EReference getSame_Times();
+  EReference getSame_Exactly();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Same#getAtmost <em>Atmost</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Atmost</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Same#getAtmost()
+   * @see #getSame()
+   * @generated
+   */
+  EReference getSame_Atmost();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Same#getAtleast <em>Atleast</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Atleast</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Same#getAtleast()
+   * @see #getSame()
+   * @generated
+   */
+  EReference getSame_Atleast();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.NotSame <em>Not Same</em>}'.
@@ -2924,15 +3054,37 @@ public interface AdeptnessPackage extends EPackage
   EReference getNotSame_Bound_upp();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.NotSame#getTimes <em>Times</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.NotSame#getExactly <em>Exactly</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Times</em>'.
-   * @see org.xtext.example.mydsl.adeptness.NotSame#getTimes()
+   * @return the meta object for the containment reference '<em>Exactly</em>'.
+   * @see org.xtext.example.mydsl.adeptness.NotSame#getExactly()
    * @see #getNotSame()
    * @generated
    */
-  EReference getNotSame_Times();
+  EReference getNotSame_Exactly();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.NotSame#getAtmost <em>Atmost</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Atmost</em>'.
+   * @see org.xtext.example.mydsl.adeptness.NotSame#getAtmost()
+   * @see #getNotSame()
+   * @generated
+   */
+  EReference getNotSame_Atmost();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.NotSame#getAtleast <em>Atleast</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Atleast</em>'.
+   * @see org.xtext.example.mydsl.adeptness.NotSame#getAtleast()
+   * @see #getNotSame()
+   * @generated
+   */
+  EReference getNotSame_Atleast();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Upper <em>Upper</em>}'.
@@ -2956,15 +3108,37 @@ public interface AdeptnessPackage extends EPackage
   EReference getUpper_Bound_upp();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Upper#getTimes <em>Times</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Upper#getExactly <em>Exactly</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Times</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Upper#getTimes()
+   * @return the meta object for the containment reference '<em>Exactly</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Upper#getExactly()
    * @see #getUpper()
    * @generated
    */
-  EReference getUpper_Times();
+  EReference getUpper_Exactly();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Upper#getAtmost <em>Atmost</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Atmost</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Upper#getAtmost()
+   * @see #getUpper()
+   * @generated
+   */
+  EReference getUpper_Atmost();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Upper#getAtleast <em>Atleast</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Atleast</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Upper#getAtleast()
+   * @see #getUpper()
+   * @generated
+   */
+  EReference getUpper_Atleast();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Lower <em>Lower</em>}'.
@@ -2988,15 +3162,37 @@ public interface AdeptnessPackage extends EPackage
   EReference getLower_Bound_lower();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Lower#getTimes <em>Times</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Lower#getExactly <em>Exactly</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Times</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Lower#getTimes()
+   * @return the meta object for the containment reference '<em>Exactly</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Lower#getExactly()
    * @see #getLower()
    * @generated
    */
-  EReference getLower_Times();
+  EReference getLower_Exactly();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Lower#getAtmost <em>Atmost</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Atmost</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Lower#getAtmost()
+   * @see #getLower()
+   * @generated
+   */
+  EReference getLower_Atmost();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Lower#getAtleast <em>Atleast</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Atleast</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Lower#getAtleast()
+   * @see #getLower()
+   * @generated
+   */
+  EReference getLower_Atleast();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Range <em>Range</em>}'.
@@ -3031,15 +3227,37 @@ public interface AdeptnessPackage extends EPackage
   EReference getRange_Bound_upp();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Range#getTimes <em>Times</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Range#getExactly <em>Exactly</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Times</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Range#getTimes()
+   * @return the meta object for the containment reference '<em>Exactly</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Range#getExactly()
    * @see #getRange()
    * @generated
    */
-  EReference getRange_Times();
+  EReference getRange_Exactly();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Range#getAtmost <em>Atmost</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Atmost</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Range#getAtmost()
+   * @see #getRange()
+   * @generated
+   */
+  EReference getRange_Atmost();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Range#getAtleast <em>Atleast</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Atleast</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Range#getAtleast()
+   * @see #getRange()
+   * @generated
+   */
+  EReference getRange_Atleast();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Gap <em>Gap</em>}'.
@@ -3074,15 +3292,37 @@ public interface AdeptnessPackage extends EPackage
   EReference getGap_Bound_upp();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Gap#getTimes <em>Times</em>}'.
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Gap#getExactly <em>Exactly</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Times</em>'.
-   * @see org.xtext.example.mydsl.adeptness.Gap#getTimes()
+   * @return the meta object for the containment reference '<em>Exactly</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Gap#getExactly()
    * @see #getGap()
    * @generated
    */
-  EReference getGap_Times();
+  EReference getGap_Exactly();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Gap#getAtmost <em>Atmost</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Atmost</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Gap#getAtmost()
+   * @see #getGap()
+   * @generated
+   */
+  EReference getGap_Atmost();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Gap#getAtleast <em>Atleast</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Atleast</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Gap#getAtleast()
+   * @see #getGap()
+   * @generated
+   */
+  EReference getGap_Atleast();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.InclusiveBound <em>Inclusive Bound</em>}'.
@@ -4380,12 +4620,28 @@ public interface AdeptnessPackage extends EPackage
     EReference SAME__BOUND_UPP = eINSTANCE.getSame_Bound_upp();
 
     /**
-     * The meta object literal for the '<em><b>Times</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Exactly</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference SAME__TIMES = eINSTANCE.getSame_Times();
+    EReference SAME__EXACTLY = eINSTANCE.getSame_Exactly();
+
+    /**
+     * The meta object literal for the '<em><b>Atmost</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference SAME__ATMOST = eINSTANCE.getSame_Atmost();
+
+    /**
+     * The meta object literal for the '<em><b>Atleast</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference SAME__ATLEAST = eINSTANCE.getSame_Atleast();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.NotSameImpl <em>Not Same</em>}' class.
@@ -4406,12 +4662,28 @@ public interface AdeptnessPackage extends EPackage
     EReference NOT_SAME__BOUND_UPP = eINSTANCE.getNotSame_Bound_upp();
 
     /**
-     * The meta object literal for the '<em><b>Times</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Exactly</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference NOT_SAME__TIMES = eINSTANCE.getNotSame_Times();
+    EReference NOT_SAME__EXACTLY = eINSTANCE.getNotSame_Exactly();
+
+    /**
+     * The meta object literal for the '<em><b>Atmost</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference NOT_SAME__ATMOST = eINSTANCE.getNotSame_Atmost();
+
+    /**
+     * The meta object literal for the '<em><b>Atleast</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference NOT_SAME__ATLEAST = eINSTANCE.getNotSame_Atleast();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.UpperImpl <em>Upper</em>}' class.
@@ -4432,12 +4704,28 @@ public interface AdeptnessPackage extends EPackage
     EReference UPPER__BOUND_UPP = eINSTANCE.getUpper_Bound_upp();
 
     /**
-     * The meta object literal for the '<em><b>Times</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Exactly</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference UPPER__TIMES = eINSTANCE.getUpper_Times();
+    EReference UPPER__EXACTLY = eINSTANCE.getUpper_Exactly();
+
+    /**
+     * The meta object literal for the '<em><b>Atmost</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference UPPER__ATMOST = eINSTANCE.getUpper_Atmost();
+
+    /**
+     * The meta object literal for the '<em><b>Atleast</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference UPPER__ATLEAST = eINSTANCE.getUpper_Atleast();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.LowerImpl <em>Lower</em>}' class.
@@ -4458,12 +4746,28 @@ public interface AdeptnessPackage extends EPackage
     EReference LOWER__BOUND_LOWER = eINSTANCE.getLower_Bound_lower();
 
     /**
-     * The meta object literal for the '<em><b>Times</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Exactly</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference LOWER__TIMES = eINSTANCE.getLower_Times();
+    EReference LOWER__EXACTLY = eINSTANCE.getLower_Exactly();
+
+    /**
+     * The meta object literal for the '<em><b>Atmost</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference LOWER__ATMOST = eINSTANCE.getLower_Atmost();
+
+    /**
+     * The meta object literal for the '<em><b>Atleast</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference LOWER__ATLEAST = eINSTANCE.getLower_Atleast();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.RangeImpl <em>Range</em>}' class.
@@ -4492,12 +4796,28 @@ public interface AdeptnessPackage extends EPackage
     EReference RANGE__BOUND_UPP = eINSTANCE.getRange_Bound_upp();
 
     /**
-     * The meta object literal for the '<em><b>Times</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Exactly</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RANGE__TIMES = eINSTANCE.getRange_Times();
+    EReference RANGE__EXACTLY = eINSTANCE.getRange_Exactly();
+
+    /**
+     * The meta object literal for the '<em><b>Atmost</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference RANGE__ATMOST = eINSTANCE.getRange_Atmost();
+
+    /**
+     * The meta object literal for the '<em><b>Atleast</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference RANGE__ATLEAST = eINSTANCE.getRange_Atleast();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.GapImpl <em>Gap</em>}' class.
@@ -4526,12 +4846,28 @@ public interface AdeptnessPackage extends EPackage
     EReference GAP__BOUND_UPP = eINSTANCE.getGap_Bound_upp();
 
     /**
-     * The meta object literal for the '<em><b>Times</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Exactly</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference GAP__TIMES = eINSTANCE.getGap_Times();
+    EReference GAP__EXACTLY = eINSTANCE.getGap_Exactly();
+
+    /**
+     * The meta object literal for the '<em><b>Atmost</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference GAP__ATMOST = eINSTANCE.getGap_Atmost();
+
+    /**
+     * The meta object literal for the '<em><b>Atleast</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference GAP__ATLEAST = eINSTANCE.getGap_Atleast();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.InclusiveBoundImpl <em>Inclusive Bound</em>}' class.

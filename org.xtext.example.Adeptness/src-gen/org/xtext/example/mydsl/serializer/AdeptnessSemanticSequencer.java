@@ -499,7 +499,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Gap returns Gap
 	 *
 	 * Constraint:
-	 *     (bound_lower=Bound_Down bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?)
+	 *     (bound_lower=Bound_Down bound_upp=Bound_up (exactly=Exactly | atmost=At_most | atleast=At_least)?)
 	 */
 	protected void sequence_Gap(ISerializationContext context, Gap semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -623,7 +623,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Lower returns Lower
 	 *
 	 * Constraint:
-	 *     (bound_lower=Bound_Down (times=Exactly | times=At_most | times=At_least)?)
+	 *     (bound_lower=Bound_Down (exactly=Exactly | atmost=At_most | atleast=At_least)?)
 	 */
 	protected void sequence_Lower(ISerializationContext context, Lower semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -679,7 +679,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     NotSame returns NotSame
 	 *
 	 * Constraint:
-	 *     (bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?)
+	 *     (bound_upp=Bound_up (exactly=Exactly | atmost=At_most | atleast=At_least)?)
 	 */
 	protected void sequence_NotSame(ISerializationContext context, NotSame semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -759,7 +759,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Range returns Range
 	 *
 	 * Constraint:
-	 *     (bound_lower=Bound_Down bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?)
+	 *     (bound_lower=Bound_Down bound_upp=Bound_up (exactly=Exactly | atmost=At_most | atleast=At_least)?)
 	 */
 	protected void sequence_Range(ISerializationContext context, Range semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -802,7 +802,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Same returns Same
 	 *
 	 * Constraint:
-	 *     (bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?)
+	 *     (bound_upp=Bound_up (exactly=Exactly | atmost=At_most | atleast=At_least)?)
 	 */
 	protected void sequence_Same(ISerializationContext context, Same semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -852,7 +852,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Upper returns Upper
 	 *
 	 * Constraint:
-	 *     (bound_upp=Bound_up (times=Exactly | times=At_most | times=At_least)?)
+	 *     (bound_upp=Bound_up (exactly=Exactly | atmost=At_most | atleast=At_least)?)
 	 */
 	protected void sequence_Upper(ISerializationContext context, Upper semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

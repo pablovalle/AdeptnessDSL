@@ -56,15 +56,20 @@ class AdeptnessGenerator extends AbstractGenerator {
 				fsa.generateFile(d.fullyQualifiedName.toString("/")+".m", d.create_up_m())
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
 			}*/
+			
 			for(q: e.oracle){
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".c", q.create_oracle_c())
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".h", q.create_oracle_h())
+				//fsa.generateFile(q.fullyQualifiedName.toString("/")+".json", q.create_oracle_json())
 				//fsa.generateFile(q.fullyQualifiedName.toString("/")+".m", q.create_oracle_m())
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
 			}
+			fsa.generateFile(e.fullyQualifiedName.toString("/")+".json", e.create_oracle_json())
 			
 		}
     }
+	
+	
 	
 	/*def createXML(Iterable<Signal> signals)'''
 	<?xml version='1.0' encoding="UTF-8"?>
@@ -130,6 +135,364 @@ class AdeptnessGenerator extends AbstractGenerator {
 	legacy_code('compile' ,def)
 	exit
 	'''*/
+	//Expresions in values check
+	def CharSequence create_oracle_json(Signal CPS)'''
+	«var cont=0»
+	{
+		"Name":"«CPS.name»",
+	«FOR param: CPS.oracle»
+			"«param.name»":{
+				"cfileDirectory":"«param.fullyQualifiedName.toString("/")+".c"»",
+				"hfileDirectory":"«param.fullyQualifiedName.toString("/")+".h"»",
+		«IF param.when!==null && param.^while!==null»
+			«IF param.check.name!==null»
+				«"\t\t"»"Inputs":["«param.check.name»", «FOR par1:param.when.em.elements»«IF par1.name!==null»"«par1.name»", «ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»"«par2.name»", «ENDIF»«ENDFOR»"timeStamp"],
+			«ELSE»
+				«"\t\t"»"Inputs":[«FOR par3: param.check.em.elements»«IF par3.name!==null»"«par3.name»", «ENDIF»«ENDFOR»«FOR par1:param.when.em.elements»«IF par1.name!==null»"«par1.name»", «ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»"«par2.name»", «ENDIF»«ENDFOR»"timeStamp"],
+			«ENDIF»
+		«ELSEIF param.when===null && param.^while!==null»
+			«IF param.check.name!==null»
+				«"\t\t"»"Inputs":["«param.check.name»", «FOR par2: param.^while.em.elements»«IF par2.name!==null»"«par2.name»", «ENDIF»«ENDFOR»"timeStamp"],
+			«ELSE»
+				«"\t\t"»"Inputs":[«FOR par3: param.check.em.elements»«IF par3.name!==null»"«par3.name»", «ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null»"«par2.name»", «ENDIF»«ENDFOR»"timeStamp"],
+			«ENDIF»
+		«ELSEIF param.when!==null && param.^while===null»
+			«IF param.check.name!==null»
+				«"\t\t"»"Inputs":["«param.check.name»", «FOR par1:param.when.em.elements»«IF par1.name!==null»"«par1.name»", «ENDIF»«ENDFOR»"timeStamp"],
+			«ELSE»
+				«"\t\t"»"Inputs":[«FOR par3: param.check.em.elements»«IF par3.name!==null»"«par3.name»", «ENDIF»«ENDFOR»«FOR par1:param.when.em.elements»«IF par1.name!==null»"«par1.name»", «ENDIF»«ENDFOR»"timeStamp"],
+			«ENDIF»
+		«ELSE»
+			«IF param.check.name!==null»
+				«"\t\t"»"Inputs":["«param.check.name»", "timeStamp"],
+			«ELSE»
+				«"\t\t"»"Inputs":[«FOR par3: param.check.em.elements»«IF par3.name!==null»"«par3.name»", «ENDIF»«ENDFOR»"timeStamp"],
+			«ENDIF»
+		«ENDIF»
+			«"\t"»"While":"«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»",«ELSE»null",«ENDIF»
+			«"\t"»"When":{
+				«"\t"»"Value":"«IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»",«ELSE»null",«ENDIF»
+				«"\t"»"AfterWhen":{
+				«IF param.when!==null»
+					«IF param.when.aw!==null»
+						«IF param.when.aw.during!==null»
+					«"\t"»"Type":"During",
+					«"\t"»"Value":"«param.when.aw.during.time.DVal»",
+					«"\t"»"Unit":"«param.when.aw.during.unit.time»"
+						«ELSEIF param.when.aw.getWait!==null»
+					«"\t"»"Type":"Wait",
+					«"\t"»"Value":"«param.when.aw.getWait.time.DVal»",
+					«"\t"»"Unit":"«param.when.aw.getWait.unit.time»"
+						«ENDIF»
+					«ELSE»
+					«"\t"»"Type":"null",
+					«"\t"»"Value":"null",
+					«"\t"»"Unit":"null"
+					«ENDIF»
+				«ELSE»
+					«"\t"»"Type":"null",
+					«"\t"»"Value":"null",
+					«"\t"»"Unit":"null"
+				«ENDIF»
+				«"\t\t"»}
+			«"\t"»},
+		«IF param.check.name!==null»
+			«"\t\t"»"Check":"«param.check.name» ",
+		«ELSE»
+			«"\t\t"»"Check":" «FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»",
+		«ENDIF»
+		«IF param.check.reference.lower!==null»
+			«"\t\t"»"Reference":{
+				«"\t\t"»"Type":"Above",
+				«"\t\t"»"Value":["«IF param.check.reference.lower.bound_lower.value!==null»«param.check.reference.lower.bound_lower.value.DVal»"],«ELSE»«FOR param1: param.check.reference.lower.bound_lower.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»"],«ENDIF»
+				«"\t\t"»"Trace":{
+				«IF param.check.reference.lower.exactly!==null»
+					«"\t\t\t"»"Type":"exactly",
+					«"\t\t\t"»"Value":"«param.check.reference.lower.exactly.value.DVal»",
+					«IF param.check.reference.lower.exactly.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.lower.exactly.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.lower.exactly.unit.time»"
+					«ELSE»
+							«"\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSEIF param.check.reference.lower.atleast!==null»
+					«"\t\t\t"»"Type":"atLeast",
+					«"\t\t\t"»"Value":"«param.check.reference.lower.atleast.value.DVal»",
+					«IF param.check.reference.lower.atleast.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.lower.atleast.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.lower.atleast.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSEIF param.check.reference.lower.atmost!==null»
+					«"\t\t\t"»"Type":"atMost",
+					«"\t\t\t"»"Value":"«param.check.reference.lower.atmost.value.DVal»",
+					«IF param.check.reference.lower.atmost.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.lower.atmost.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.lower.atmost.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSE»
+					«"\t\t\t"»"Type":"null",
+					«"\t\t\t"»"Time":"null",			
+					«"\t\t\t"»"Unit":"null"
+				«ENDIF»
+				«"\t\t"»}
+			«"\t\t"»},
+		«ELSEIF param.check.reference.upper!==null»
+			«"\t\t"»"Reference":{
+				«"\t\t"»"Type":"Below",
+				«"\t\t"»"Value":["«IF param.check.reference.upper.bound_upp.value!==null»«param.check.reference.upper.bound_upp.value.DVal»"],«ELSE»«FOR param1: param.check.reference.upper.bound_upp.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»"],«ENDIF»
+				«"\t\t"»"Trace":{
+				«IF param.check.reference.upper.exactly!==null»
+				«"\t\t\t"»	"Type":"exactly",
+				«"\t\t\t"»	"Value":"«param.check.reference.upper.exactly.value.DVal»",
+					«IF param.check.reference.upper.exactly.time!==null»
+						«"\t\t\t"»	"Time":"«param.check.reference.upper.exactly.time.DVal»",
+						«"\t\t\t"»	"Unit":"«param.check.reference.upper.exactly.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSEIF param.check.reference.upper.atleast!==null»
+					«"\t\t\t"»"Type":"atLeast",
+					«"\t\t\t"»"Value":"«param.check.reference.upper.atleast.value.DVal»",
+					«IF param.check.reference.upper.atleast.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.upper.atleast.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.upper.atleast.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSEIF param.check.reference.upper.atmost!==null»
+					«"\t\t\t"»"Type":"atMost",
+					«"\t\t\t"»"Value":"«param.check.reference.upper.atmost.value.DVal»",
+					«IF param.check.reference.upper.atmost.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.upper.atmost.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.upper.atmost.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSE»
+					«"\t\t\t"»"Type":"null",
+					«"\t\t\t"»"Time":"null",			
+					«"\t\t\t"»"Unit":"null"
+				«ENDIF»
+				«"\t\t"»}
+			«"\t\t"»},
+		«ELSEIF param.check.reference.range!==null»
+			«"\t\t"»"Reference":{
+				«"\t\t"»"Type":"Range",
+				«"\t\t"»"Value":["«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»",«ELSE»«FOR param1: param.check.reference.range.bound_lower.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»",«ENDIF»«IF param.check.reference.range.bound_upp.value!==null»«param.check.reference.range.bound_upp.value»"],«ELSE»«FOR param1: param.check.reference.range.bound_upp.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»"],«ENDIF»
+				«"\t\t"»"Trace":{
+				«IF param.check.reference.range.exactly!==null»
+					«"\t\t\t"»"Type":"exactly",
+					«"\t\t\t"»"Value":"«param.check.reference.range.exactly.value.DVal»",
+					«IF param.check.reference.range.exactly.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.range.exactly.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.range.exactly.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSEIF param.check.reference.range.atleast!==null»
+					«"\t\t\t"»"Type":"atLeast",
+					«"\t\t\t"»"Value":"«param.check.reference.range.atleast.value.DVal»",
+					«IF param.check.reference.range.atleast.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.range.atleast.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.range.atleast.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSEIF param.check.reference.range.atmost!==null»
+					«"\t\t\t"»"Type":"atMost",
+					«"\t\t\t"»"Value":"«param.check.reference.range.atmost.value.DVal»",
+					«IF param.check.reference.range.atmost.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.range.atmost.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.range.atmost.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSE»
+					«"\t\t\t"»"Type":"null",
+					«"\t\t\t"»"Time":"null",			
+					«"\t\t\t"»"Unit":"null"
+				«ENDIF»
+				«"\t\t"»}
+			«"\t\t"»},
+		«ELSEIF param.check.reference.gap!==null»
+			«"\t\t"»"Reference":{
+				«"\t\t"»"Type":"Gap",
+				«"\t\t"»"Value":["«IF param.check.reference.gap.bound_lower.value!==null»«param.check.reference.gap.bound_lower.value.DVal»",«ELSE»«FOR param1: param.check.reference.gap.bound_lower.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»",«ENDIF»«IF param.check.reference.gap.bound_upp.value!==null»«param.check.reference.gap.bound_upp.value»"],«ELSE»«FOR param1: param.check.reference.gap.bound_upp.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»"],«ENDIF»
+				«"\t\t"»"Trace":{
+				«IF param.check.reference.gap.exactly!==null»
+					«"\t\t\t"»"Type":"exactly",
+					«"\t\t\t"»"Value":"«param.check.reference.gap.exactly.value.DVal»",
+					«IF param.check.reference.gap.exactly.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.gap.exactly.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.gap.exactly.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSEIF param.check.reference.gap.atleast!==null»
+					«"\t\t\t"»"Type":"atLeast",
+					«"\t\t\t"»"Value":"«param.check.reference.gap.atleast.value.DVal»",
+					«IF param.check.reference.gap.atleast.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.gap.atleast.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.gap.atleast.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSEIF param.check.reference.gap.atmost!==null»
+					«"\t\t\t"»"Type":"atMost",
+					«"\t\t\t"»"Value":"«param.check.reference.gap.atmost.value.DVal»",
+					«IF param.check.reference.gap.atmost.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.gap.atmost.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.gap.atmost.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSE»
+					«"\t\t\t"»"Type":"null",
+					«"\t\t\t"»"Time":"null",			
+					«"\t\t\t"»"Unit":"null"
+				«ENDIF»
+				«"\t\t"»}
+			«"\t\t"»},
+		«ELSEIF param.check.reference.same!==null»
+			«"\t\t"»"Reference":{
+				«"\t\t"»"Type":"Same",
+				«"\t\t"»"Value":["«IF param.check.reference.same.bound_upp.value!==null»«param.check.reference.same.bound_upp.value.DVal»"],«ELSE»«FOR param1: param.check.reference.same.bound_upp.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»"],«ENDIF»
+				«"\t\t"»"Trace":{
+				«IF param.check.reference.same.exactly!==null»
+					«"\t\t\t"»"Type":"exactly",
+					«"\t\t\t"»"Value":"«param.check.reference.same.exactly.value.DVal»",
+					«IF param.check.reference.same.exactly.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.same.exactly.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.same.exactly.unit.time»"
+					«ELSE»
+							«"\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSEIF param.check.reference.same.atleast!==null»
+					«"\t\t\t"»"Type":"atLeast",
+					«"\t\t\t"»"Value":"«param.check.reference.same.atleast.value.DVal»",
+					«IF param.check.reference.same.atleast.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.same.atleast.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.same.atleast.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSEIF param.check.reference.same.atmost!==null»
+					«"\t\t\t"»"Type":"atMost",
+					«"\t\t\t"»"Value":"«param.check.reference.same.atmost.value.DVal»",
+					«IF param.check.reference.same.atmost.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.same.atmost.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.same.atmost.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSE»
+					«"\t\t\t"»"Type":"null",
+					«"\t\t\t"»"Time":"null",
+					«"\t\t\t"»"Unit":"null"
+				«ENDIF»
+				«"\t\t"»}
+			«"\t\t"»},
+		«ELSEIF param.check.reference.notsame!==null»
+			«"\t\t"»"Reference":{
+				«"\t\t"»"Type":"NotSame",
+				«"\t\t"»"Value":["«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»"],«ELSE»«FOR param1: param.check.reference.notsame.bound_upp.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»",«ENDIF»
+				«"\t\t"»"Trace":{
+				«IF param.check.reference.notsame.exactly!==null»
+					«"\t\t\t"»"Type":"exactly",
+					«"\t\t\t"»"Value":"«param.check.reference.notsame.exactly.value.DVal»"
+					«IF param.check.reference.notsame.exactly.time!==null»
+						«"\t\t\t"»	"Time":"«param.check.reference.notsame.exactly.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.notsame.exactly.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSEIF param.check.reference.notsame.atleast!==null»
+					«"\t\t\t"»"Type":"atLeast",
+					«"\t\t\t"»"Value":"«param.check.reference.notsame.atleast.value.DVal»"
+					«IF param.check.reference.notsame.atleast.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.notsame.atleast.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.notsame.atleast.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSEIF param.check.reference.notsame.atmost!==null»
+					«"\t\t\t"»"Type":"atMost",
+					«"\t\t\t"»"Value":"«param.check.reference.notsame.atmost.value.DVal»"
+					«IF param.check.reference.notsame.atmost.time!==null»
+							«"\t\t\t"»"Time":"«param.check.reference.notsame.atmost.time.DVal»",
+							«"\t\t\t"»"Unit":"«param.check.reference.notsame.atmost.unit.time»"
+					«ELSE»
+							«"\t\t\t"»"Time":"null",
+							«"\t\t\t"»"Unit":"null"
+					«ENDIF»
+				«ELSE»
+					«"\t\t\t"»"Type":"null",
+					«"\t\t\t"»"Time":"null",			
+					«"\t\t\t"»"Unit":"null"
+				«ENDIF»
+				«"\t\t"»}
+			«"\t\t"»},
+		«ENDIF»
+		«FOR failreason: param.check.failReason»
+			«"\t\t"»"FailReason":{
+		«IF failreason.reason.highPeak!==null»
+				«"\t"»"Type":"HighPeak",
+				«"\t"»"Cant":"«failreason.reason.highPeak.cant.DVal»",
+				«"\t"»"NPeaks":"null",
+				«"\t"»"Time":"null",
+				«"\t"»"Unit":"null"
+		«ELSEIF failreason.reason.highTime!==null»
+				«"\t"»"Type":"HighTime",
+				«"\t"»"Cant":"«failreason.reason.highTime.cant.DVal»",
+				«"\t"»"NPeaks":"null",
+				«"\t"»"Time":"«failreason.reason.highTime.time.DVal»",
+				«"\t"»"Unit":"«failreason.reason.highTime.unit.time»"
+		«ELSEIF failreason.reason.XPeaks!==null»
+				«"\t"»"Type":"XPeaks",
+				«"\t"»"Cant":"«failreason.reason.XPeaks.cant.DVal»",
+				«"\t"»"NPeaks":"«failreason.reason.XPeaks.NPeaks.DVal»",
+				«"\t"»"Time":"«failreason.reason.XPeaks.time.DVal»",
+				«"\t"»"Unit":"«failreason.reason.XPeaks.unit.time»"
+		«ELSEIF failreason.reason.constDeg!==null»
+				«"\t"»"Type":"ConstantDegradation",
+				«"\t"»"Cant":"«failreason.reason.constDeg.cant.DVal»",
+				«"\t"»"NPeaks":"null",
+				«"\t"»"Time":"null",
+				«"\t"»"Unit":"null"
+		«ENDIF»
+			«"\t\t"»},
+		«ENDFOR»
+			«"\t"»"Description":"«param.check.description.value»"
+		«IF (cont++)!=CPS.oracle.size-1»
+			«"\t"»},
+		«ELSE»
+			«"\t"»}
+		«ENDIF»
+	«ENDFOR»
+	}
+	
+	'''
 	def create_oracle_h(Oracle param)'''
 	#ifndef «param.name.toString().toUpperCase»_H
 	#define «param.name.toString().toUpperCase»_H

@@ -1898,17 +1898,17 @@ ruleSame returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getSameAccess().getTimesExactlyParserRuleCall_2_0_0());
+						newCompositeNode(grammarAccess.getSameAccess().getExactlyExactlyParserRuleCall_2_0_0());
 					}
-					lv_times_2_0=ruleExactly
+					lv_exactly_2_0=ruleExactly
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getSameRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_2_0,
+							"exactly",
+							lv_exactly_2_0,
 							"org.xtext.example.mydsl.Adeptness.Exactly");
 						afterParserOrEnumRuleCall();
 					}
@@ -1918,17 +1918,17 @@ ruleSame returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getSameAccess().getTimesAt_mostParserRuleCall_2_1_0());
+						newCompositeNode(grammarAccess.getSameAccess().getAtmostAt_mostParserRuleCall_2_1_0());
 					}
-					lv_times_3_0=ruleAt_most
+					lv_atmost_3_0=ruleAt_most
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getSameRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_3_0,
+							"atmost",
+							lv_atmost_3_0,
 							"org.xtext.example.mydsl.Adeptness.At_most");
 						afterParserOrEnumRuleCall();
 					}
@@ -1938,17 +1938,17 @@ ruleSame returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getSameAccess().getTimesAt_leastParserRuleCall_2_2_0());
+						newCompositeNode(grammarAccess.getSameAccess().getAtleastAt_leastParserRuleCall_2_2_0());
 					}
-					lv_times_4_0=ruleAt_least
+					lv_atleast_4_0=ruleAt_least
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getSameRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_4_0,
+							"atleast",
+							lv_atleast_4_0,
 							"org.xtext.example.mydsl.Adeptness.At_least");
 						afterParserOrEnumRuleCall();
 					}
@@ -2001,17 +2001,17 @@ ruleNotSame returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getNotSameAccess().getTimesExactlyParserRuleCall_2_0_0());
+						newCompositeNode(grammarAccess.getNotSameAccess().getExactlyExactlyParserRuleCall_2_0_0());
 					}
-					lv_times_2_0=ruleExactly
+					lv_exactly_2_0=ruleExactly
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getNotSameRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_2_0,
+							"exactly",
+							lv_exactly_2_0,
 							"org.xtext.example.mydsl.Adeptness.Exactly");
 						afterParserOrEnumRuleCall();
 					}
@@ -2021,17 +2021,17 @@ ruleNotSame returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getNotSameAccess().getTimesAt_mostParserRuleCall_2_1_0());
+						newCompositeNode(grammarAccess.getNotSameAccess().getAtmostAt_mostParserRuleCall_2_1_0());
 					}
-					lv_times_3_0=ruleAt_most
+					lv_atmost_3_0=ruleAt_most
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getNotSameRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_3_0,
+							"atmost",
+							lv_atmost_3_0,
 							"org.xtext.example.mydsl.Adeptness.At_most");
 						afterParserOrEnumRuleCall();
 					}
@@ -2041,17 +2041,17 @@ ruleNotSame returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getNotSameAccess().getTimesAt_leastParserRuleCall_2_2_0());
+						newCompositeNode(grammarAccess.getNotSameAccess().getAtleastAt_leastParserRuleCall_2_2_0());
 					}
-					lv_times_4_0=ruleAt_least
+					lv_atleast_4_0=ruleAt_least
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getNotSameRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_4_0,
+							"atleast",
+							lv_atleast_4_0,
 							"org.xtext.example.mydsl.Adeptness.At_least");
 						afterParserOrEnumRuleCall();
 					}
@@ -2104,17 +2104,17 @@ ruleUpper returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getUpperAccess().getTimesExactlyParserRuleCall_2_0_0());
+						newCompositeNode(grammarAccess.getUpperAccess().getExactlyExactlyParserRuleCall_2_0_0());
 					}
-					lv_times_2_0=ruleExactly
+					lv_exactly_2_0=ruleExactly
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getUpperRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_2_0,
+							"exactly",
+							lv_exactly_2_0,
 							"org.xtext.example.mydsl.Adeptness.Exactly");
 						afterParserOrEnumRuleCall();
 					}
@@ -2124,17 +2124,17 @@ ruleUpper returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getUpperAccess().getTimesAt_mostParserRuleCall_2_1_0());
+						newCompositeNode(grammarAccess.getUpperAccess().getAtmostAt_mostParserRuleCall_2_1_0());
 					}
-					lv_times_3_0=ruleAt_most
+					lv_atmost_3_0=ruleAt_most
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getUpperRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_3_0,
+							"atmost",
+							lv_atmost_3_0,
 							"org.xtext.example.mydsl.Adeptness.At_most");
 						afterParserOrEnumRuleCall();
 					}
@@ -2144,17 +2144,17 @@ ruleUpper returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getUpperAccess().getTimesAt_leastParserRuleCall_2_2_0());
+						newCompositeNode(grammarAccess.getUpperAccess().getAtleastAt_leastParserRuleCall_2_2_0());
 					}
-					lv_times_4_0=ruleAt_least
+					lv_atleast_4_0=ruleAt_least
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getUpperRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_4_0,
+							"atleast",
+							lv_atleast_4_0,
 							"org.xtext.example.mydsl.Adeptness.At_least");
 						afterParserOrEnumRuleCall();
 					}
@@ -2207,17 +2207,17 @@ ruleLower returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getLowerAccess().getTimesExactlyParserRuleCall_2_0_0());
+						newCompositeNode(grammarAccess.getLowerAccess().getExactlyExactlyParserRuleCall_2_0_0());
 					}
-					lv_times_2_0=ruleExactly
+					lv_exactly_2_0=ruleExactly
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getLowerRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_2_0,
+							"exactly",
+							lv_exactly_2_0,
 							"org.xtext.example.mydsl.Adeptness.Exactly");
 						afterParserOrEnumRuleCall();
 					}
@@ -2227,17 +2227,17 @@ ruleLower returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getLowerAccess().getTimesAt_mostParserRuleCall_2_1_0());
+						newCompositeNode(grammarAccess.getLowerAccess().getAtmostAt_mostParserRuleCall_2_1_0());
 					}
-					lv_times_3_0=ruleAt_most
+					lv_atmost_3_0=ruleAt_most
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getLowerRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_3_0,
+							"atmost",
+							lv_atmost_3_0,
 							"org.xtext.example.mydsl.Adeptness.At_most");
 						afterParserOrEnumRuleCall();
 					}
@@ -2247,17 +2247,17 @@ ruleLower returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getLowerAccess().getTimesAt_leastParserRuleCall_2_2_0());
+						newCompositeNode(grammarAccess.getLowerAccess().getAtleastAt_leastParserRuleCall_2_2_0());
 					}
-					lv_times_4_0=ruleAt_least
+					lv_atleast_4_0=ruleAt_least
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getLowerRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_4_0,
+							"atleast",
+							lv_atleast_4_0,
 							"org.xtext.example.mydsl.Adeptness.At_least");
 						afterParserOrEnumRuleCall();
 					}
@@ -2333,17 +2333,17 @@ ruleRange returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getRangeAccess().getTimesExactlyParserRuleCall_4_0_0());
+						newCompositeNode(grammarAccess.getRangeAccess().getExactlyExactlyParserRuleCall_4_0_0());
 					}
-					lv_times_4_0=ruleExactly
+					lv_exactly_4_0=ruleExactly
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getRangeRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_4_0,
+							"exactly",
+							lv_exactly_4_0,
 							"org.xtext.example.mydsl.Adeptness.Exactly");
 						afterParserOrEnumRuleCall();
 					}
@@ -2353,17 +2353,17 @@ ruleRange returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getRangeAccess().getTimesAt_mostParserRuleCall_4_1_0());
+						newCompositeNode(grammarAccess.getRangeAccess().getAtmostAt_mostParserRuleCall_4_1_0());
 					}
-					lv_times_5_0=ruleAt_most
+					lv_atmost_5_0=ruleAt_most
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getRangeRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_5_0,
+							"atmost",
+							lv_atmost_5_0,
 							"org.xtext.example.mydsl.Adeptness.At_most");
 						afterParserOrEnumRuleCall();
 					}
@@ -2373,17 +2373,17 @@ ruleRange returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getRangeAccess().getTimesAt_leastParserRuleCall_4_2_0());
+						newCompositeNode(grammarAccess.getRangeAccess().getAtleastAt_leastParserRuleCall_4_2_0());
 					}
-					lv_times_6_0=ruleAt_least
+					lv_atleast_6_0=ruleAt_least
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getRangeRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_6_0,
+							"atleast",
+							lv_atleast_6_0,
 							"org.xtext.example.mydsl.Adeptness.At_least");
 						afterParserOrEnumRuleCall();
 					}
@@ -2459,17 +2459,17 @@ ruleGap returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getGapAccess().getTimesExactlyParserRuleCall_4_0_0());
+						newCompositeNode(grammarAccess.getGapAccess().getExactlyExactlyParserRuleCall_4_0_0());
 					}
-					lv_times_4_0=ruleExactly
+					lv_exactly_4_0=ruleExactly
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getGapRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_4_0,
+							"exactly",
+							lv_exactly_4_0,
 							"org.xtext.example.mydsl.Adeptness.Exactly");
 						afterParserOrEnumRuleCall();
 					}
@@ -2479,17 +2479,17 @@ ruleGap returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getGapAccess().getTimesAt_mostParserRuleCall_4_1_0());
+						newCompositeNode(grammarAccess.getGapAccess().getAtmostAt_mostParserRuleCall_4_1_0());
 					}
-					lv_times_5_0=ruleAt_most
+					lv_atmost_5_0=ruleAt_most
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getGapRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_5_0,
+							"atmost",
+							lv_atmost_5_0,
 							"org.xtext.example.mydsl.Adeptness.At_most");
 						afterParserOrEnumRuleCall();
 					}
@@ -2499,17 +2499,17 @@ ruleGap returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getGapAccess().getTimesAt_leastParserRuleCall_4_2_0());
+						newCompositeNode(grammarAccess.getGapAccess().getAtleastAt_leastParserRuleCall_4_2_0());
 					}
-					lv_times_6_0=ruleAt_least
+					lv_atleast_6_0=ruleAt_least
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getGapRule());
 						}
 						set(
 							$current,
-							"times",
-							lv_times_6_0,
+							"atleast",
+							lv_atleast_6_0,
 							"org.xtext.example.mydsl.Adeptness.At_least");
 						afterParserOrEnumRuleCall();
 					}

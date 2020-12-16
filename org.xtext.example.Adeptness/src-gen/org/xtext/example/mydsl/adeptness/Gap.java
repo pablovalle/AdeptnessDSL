@@ -16,7 +16,9 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Gap#getBound_lower <em>Bound lower</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Gap#getBound_upp <em>Bound upp</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.adeptness.Gap#getTimes <em>Times</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Gap#getExactly <em>Exactly</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Gap#getAtmost <em>Atmost</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Gap#getAtleast <em>Atleast</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getGap()
@@ -70,25 +72,69 @@ public interface Gap extends EObject
   void setBound_upp(Bound_up value);
 
   /**
-   * Returns the value of the '<em><b>Times</b></em>' containment reference.
+   * Returns the value of the '<em><b>Exactly</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Times</em>' containment reference.
-   * @see #setTimes(EObject)
-   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getGap_Times()
+   * @return the value of the '<em>Exactly</em>' containment reference.
+   * @see #setExactly(Exactly)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getGap_Exactly()
    * @model containment="true"
    * @generated
    */
-  EObject getTimes();
+  Exactly getExactly();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Gap#getTimes <em>Times</em>}' containment reference.
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Gap#getExactly <em>Exactly</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Times</em>' containment reference.
-   * @see #getTimes()
+   * @param value the new value of the '<em>Exactly</em>' containment reference.
+   * @see #getExactly()
    * @generated
    */
-  void setTimes(EObject value);
+  void setExactly(Exactly value);
+
+  /**
+   * Returns the value of the '<em><b>Atmost</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Atmost</em>' containment reference.
+   * @see #setAtmost(At_most)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getGap_Atmost()
+   * @model containment="true"
+   * @generated
+   */
+  At_most getAtmost();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Gap#getAtmost <em>Atmost</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Atmost</em>' containment reference.
+   * @see #getAtmost()
+   * @generated
+   */
+  void setAtmost(At_most value);
+
+  /**
+   * Returns the value of the '<em><b>Atleast</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Atleast</em>' containment reference.
+   * @see #setAtleast(At_least)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getGap_Atleast()
+   * @model containment="true"
+   * @generated
+   */
+  At_least getAtleast();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Gap#getAtleast <em>Atleast</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Atleast</em>' containment reference.
+   * @see #getAtleast()
+   * @generated
+   */
+  void setAtleast(At_least value);
 
 } // Gap
