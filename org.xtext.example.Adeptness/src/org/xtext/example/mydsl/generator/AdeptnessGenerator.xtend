@@ -833,6 +833,7 @@ class AdeptnessGenerator extends AbstractGenerator {
 	'''	
 	def create_oracle_c(Oracle param)'''
 	#include "«param.name.toString()».h"
+	//«param.check.description»
 	«IF param.when!==null && param.^while!==null»
 		«IF param.check.name!==null»
 			«IF param.check.reference.upper!==null»

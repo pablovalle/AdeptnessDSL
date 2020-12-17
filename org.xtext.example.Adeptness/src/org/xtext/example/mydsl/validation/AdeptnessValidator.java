@@ -635,43 +635,43 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	@Check
 	public void checkEmptyLowerValue(Upper upper) {
 		if(upper.getBound_upp().getValue()==null && upper.getBound_upp().getEm()==null) {
-			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
+			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
 			
 		}
 	}
 	@Check
 	public void checkEmptyLowerValue(Range range) {
 		if(range.getBound_lower().getValue()==null && range.getBound_lower().getEm()==null) {
-			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.LOWER__BOUND_LOWER);
+			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.RANGE__BOUND_LOWER);
 			
 		}
 		if(range.getBound_upp().getValue()==null && range.getBound_upp().getEm()==null) {
-			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
+			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.RANGE__BOUND_UPP);
 			
 		}
 	}
 	@Check
 	public void checkEmptyLowerValue(Gap gap) {
 		if(gap.getBound_lower().getValue()==null && gap.getBound_lower().getEm()==null) {
-			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.LOWER__BOUND_LOWER);
+			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.GAP__BOUND_LOWER);
 			
 		}
 		if(gap.getBound_upp().getValue()==null && gap.getBound_upp().getEm()==null) {
-			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
+			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.GAP__BOUND_UPP);
 			
 		}
 	}
 	@Check
 	public void checkEmptyLowerValue(Same same) {
 		if(same.getBound_upp().getValue()==null && same.getBound_upp().getEm()==null) {
-			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
+			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.SAME__BOUND_UPP);
 			
 		}
 	}
 	@Check
 	public void checkEmptyLowerValue(NotSame notSame) {
 		if(notSame.getBound_upp().getValue()==null && notSame.getBound_upp().getEm()==null) {
-			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
+			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.NOT_SAME__BOUND_UPP);
 			
 		}
 	}

@@ -1,0 +1,420 @@
+{
+	"Name":"Finite_State_Machine",
+	"R1":{
+		"cfileDirectory":"Finite_State_Machine/R1.c",
+		"hfileDirectory":"Finite_State_Machine/R1.h",
+		"Inputs":["Pullup", "Standby", "Apfail", "Supported", "Limits", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( Standby !=  1.0 &&  Apfail !=  1.0 &&  Supported ==  1.0 &&  Limits ==  1.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"Pullup ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["1.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"Exceeding sensor  Limits shall latch an autopilot pullup when the pilot is not in control (not Standby) and the system is Supported without failures (not Apfail)."
+	},
+	"R2":{
+		"cfileDirectory":"Finite_State_Machine/R2.c",
+		"hfileDirectory":"Finite_State_Machine/R2.h",
+		"Inputs":["State", "State", "Standby", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( State ==  0.0 &&  Standby ==  1.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"State ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["3.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"The autopilot shall change states from TRANSITION to STANDBY when the pilot is in control (Standby)"
+	},
+	"R3":{
+		"cfileDirectory":"Finite_State_Machine/R3.c",
+		"hfileDirectory":"Finite_State_Machine/R3.h",
+		"Inputs":["State", "State", "Supported", "good", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( State ==  0.0 &&  Supported ==  1.0 &&  good ==  1.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"State ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["1.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"The autopilot shall change states from TRANSITION to NOMINAL when the system is Supported and sensor data is good."
+	},
+	"R4":{
+		"cfileDirectory":"Finite_State_Machine/R4.c",
+		"hfileDirectory":"Finite_State_Machine/R4.h",
+		"Inputs":["State", "State", "good", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( State ==  1.0 &&  good !=  1.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"State ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["2.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"The autopilot shall change states from NOMINAL to MANEUVER when the sensor data is not good"
+	},
+	"R5":{
+		"cfileDirectory":"Finite_State_Machine/R5.c",
+		"hfileDirectory":"Finite_State_Machine/R5.h",
+		"Inputs":["State", "State", "Standby", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( State ==  1.0 &&  Standby ==  1.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"State ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["3.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"The autopilot shall change states from NOMINAL to STANDBY when the pilot is in control (Standby)"
+	},
+	"R6":{
+		"cfileDirectory":"Finite_State_Machine/R6.c",
+		"hfileDirectory":"Finite_State_Machine/R6.h",
+		"Inputs":["State", "State", "good", "Standby", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( State ==  2.0 &&  good ==  1.0 &&  Standby ==  1.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"State ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["3.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	},
+	"R7":{
+		"cfileDirectory":"Finite_State_Machine/R7.c",
+		"hfileDirectory":"Finite_State_Machine/R7.h",
+		"Inputs":["State", "State", "Supported", "good", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( State ==  2.0 &&  Supported ==  1.0 &&  good ==  1.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"State ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["0.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	},
+	"R8":{
+		"cfileDirectory":"Finite_State_Machine/R8.c",
+		"hfileDirectory":"Finite_State_Machine/R8.h",
+		"Inputs":["State", "State", "Standby", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( State ==  3.0 &&  Standby ==  0.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"State ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["0.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	},
+	"R9":{
+		"cfileDirectory":"Finite_State_Machine/R9.c",
+		"hfileDirectory":"Finite_State_Machine/R9.h",
+		"Inputs":["State", "State", "Apfail", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( State ==  3.0 &&  Apfail ==  1.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"State ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["2.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	},
+	"R10":{
+		"cfileDirectory":"Finite_State_Machine/R10.c",
+		"hfileDirectory":"Finite_State_Machine/R10.h",
+		"Inputs":["Senstate", "Senstate", "Limits", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( Senstate ==  0.0 &&  Limits ==  1.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"Senstate ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["2.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	},
+	"R11":{
+		"cfileDirectory":"Finite_State_Machine/R11.c",
+		"hfileDirectory":"Finite_State_Machine/R11.h",
+		"Inputs":["Senstate", "Senstate", "Request", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( Senstate ==  0.0 &&  Request ==  0.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"Senstate ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["1.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	},
+	"R12":{
+		"cfileDirectory":"Finite_State_Machine/R12.c",
+		"hfileDirectory":"Finite_State_Machine/R12.h",
+		"Inputs":["Senstate", "Senstate", "Request", "Limits", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( Senstate ==  2.0 &&  Request ==  0.0 &&  Limits ==  0.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"Senstate ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["1.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	},
+	"R13":{
+		"cfileDirectory":"Finite_State_Machine/R13.c",
+		"hfileDirectory":"Finite_State_Machine/R13.h",
+		"Inputs":["Senstate", "Senstate", "Request", "Mode", "timeStamp"],
+		"While":"null",
+		"When":{
+			"Value":"( Senstate ==  1.0 &&  Request ==  1.0 &&  Mode ==  1.0 )  ",
+			"AfterWhen":{
+			"Type":"null",
+			"Value":"null",
+			"Unit":"null"
+				}
+		},
+		"Check":"Senstate ",
+		"Reference":{
+			"Type":"Same",
+			"Value":["0.0"],
+			"Trace":{
+				"Type":"null",
+				"Time":"null",
+				"Unit":"null"
+			}
+		},
+		"FailReason":{
+			"Type":"HighPeak",
+			"Cant":"0.0",
+			"NPeaks":"null",
+			"Time":"null",
+			"Unit":"null"
+		},
+		"Description":"The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	}
+}
+

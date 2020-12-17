@@ -22,6 +22,7 @@ import org.xtext.example.mydsl.adeptness.At_most;
 import org.xtext.example.mydsl.adeptness.CompOp;
 import org.xtext.example.mydsl.adeptness.ConstDeg;
 import org.xtext.example.mydsl.adeptness.DOUBLE;
+import org.xtext.example.mydsl.adeptness.Description;
 import org.xtext.example.mydsl.adeptness.During;
 import org.xtext.example.mydsl.adeptness.Exactly;
 import org.xtext.example.mydsl.adeptness.FailReason;
@@ -4801,6 +4802,10 @@ public class AdeptnessGenerator extends AbstractGenerator {
     String _string = param.getName().toString();
     _builder.append(_string);
     _builder.append(".h\"");
+    _builder.newLineIfNotEmpty();
+    _builder.append("//");
+    Description _description = param.getCheck().getDescription();
+    _builder.append(_description);
     _builder.newLineIfNotEmpty();
     {
       if (((param.getWhen() != null) && (param.getWhile() != null))) {
