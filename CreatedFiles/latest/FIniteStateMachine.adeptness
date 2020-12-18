@@ -1,0 +1,95 @@
+import FiniteStateMachine_Monitoring.adeptness
+
+CPS Finite_State_Machine: implements MONITORING_PLAN_FINITE_STATE_MACHINE
+
+	ORACLE R1:
+		when: (Standby!=1 && Apfail!=1 && Supported==1 && Limits==1)
+		checks: Pullup should be 1;
+		fails if : confidence is below 0;
+		Description: "Exceeding sensor  Limits shall latch an autopilot pullup when the pilot is not in control (not Standby) and the system is Supported without failures (not Apfail)."
+	ENDORACLE
+	
+	ORACLE R2:
+		when: (State==0 && Standby==1)
+		checks: State should be 3;
+		fails if : confidence is below 0;
+		Description: "The autopilot shall change states from TRANSITION to STANDBY when the pilot is in control (Standby)"
+	ENDORACLE
+	
+	ORACLE R3:
+		when: (State==0 && Supported==1 && good==1)
+		checks: State should be 1;
+		fails if : confidence is below 0;
+		Description: "The autopilot shall change states from TRANSITION to NOMINAL when the system is Supported and sensor data is good."
+	ENDORACLE
+	
+	ORACLE R4:
+		when: (State==1 && good!=1)
+		checks: State should be 2;
+		fails if : confidence is below 0;
+		Description: "The autopilot shall change states from NOMINAL to MANEUVER when the sensor data is not good"
+	ENDORACLE
+	
+	ORACLE R5:
+		when: (State==1 && Standby==1)
+		checks: State should be 3;
+		fails if : confidence is below 0;
+		Description: "The autopilot shall change states from NOMINAL to STANDBY when the pilot is in control (Standby)"
+	ENDORACLE
+	
+	ORACLE R6:
+		when: (State==2 && good==1 && Standby==1)
+		checks: State should be 3;
+		fails if : confidence is below 0;
+		Description: "The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	ENDORACLE
+	
+	ORACLE R7:
+		when: (State==2 && Supported==1 && good==1)
+		checks: State should be 0;
+		fails if : confidence is below 0;
+		Description: "The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	ENDORACLE
+	
+	ORACLE R8:
+		when: (State==3 && Standby==0)
+		checks: State should be 0;
+		fails if : confidence is below 0;
+		Description: "The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	ENDORACLE
+	
+	ORACLE R9:
+		when: (State==3 && Apfail==1)
+		checks: State should be 2;
+		fails if : confidence is below 0;
+		Description: "The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	ENDORACLE
+	
+	ORACLE R10:
+		when: (Senstate==0 && Limits==1)
+		checks: Senstate should be 2;
+		fails if : confidence is below 0;
+		Description: "The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	ENDORACLE
+	
+	ORACLE R11:
+		when: (Senstate==0 && Request==0)
+		checks: Senstate should be 1;
+		fails if : confidence is below 0;
+		Description: "The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	ENDORACLE
+	
+	ORACLE R12:
+		when: (Senstate==2 && Request==0 && Limits==0)
+		checks: Senstate should be 1;
+		fails if : confidence is below 0;
+		Description: "The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	ENDORACLE
+	
+	ORACLE R13:
+		when: (Senstate==1 && Request==1 && Mode==1)
+		checks: Senstate should be 0;
+		fails if : confidence is below 0;
+		Description: "The autopilot shall change states from MANEUVER to STANDBY when the pilot is in control (Standby) and sensor data is good"
+	ENDORACLE
+ENDCPS

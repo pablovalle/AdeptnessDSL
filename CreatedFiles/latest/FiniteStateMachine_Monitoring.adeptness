@@ -1,0 +1,36 @@
+MONITORINGPLAN MONITORING_PLAN_FINITE_STATE_MACHINE:
+	MONITOR Standby:
+		type : boolean
+	ENDMONITOR
+	MONITOR Apfail:
+		type: boolean
+	ENDMONITOR
+	MONITOR Supported:
+		type:boolean
+	ENDMONITOR
+	MONITOR Limits:
+		type:boolean
+	ENDMONITOR
+	MONITOR Pullup:
+		type: boolean
+	ENDMONITOR
+	MONITOR State:
+		type : int
+		max : 10
+		min : 0
+	ENDMONITOR
+	MONITOR good:
+		type:boolean
+	ENDMONITOR
+	MONITOR Senstate:
+		type : int
+		max : 10
+		min : 0
+	ENDMONITOR
+	MONITOR Request:
+		type: boolean
+	ENDMONITOR
+	MONITOR Mode:
+		type : boolean
+	ENDMONITOR
+ENDMONITORINGPLAN 

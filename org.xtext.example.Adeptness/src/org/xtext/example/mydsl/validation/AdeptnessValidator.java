@@ -512,22 +512,11 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			AbstractElement2 elements=data.getElements().get(i);
 			conOpenPar=conOpenPar+elements.getFrontParentheses().size();
 			if(i>0 && (elements.getName()!=null || elements.getValue()!=null) && (data.getElements().get(i-1).getName()!=null || data.getElements().get(i-1).getValue()!=null)) {
-				if(data.getElements().get(i-1).getOp().size()==0) {
+				if(data.getElements().get(i-1).getOp().size()==0 && data.getElements().get(i).getFrontParentheses().size()==0) {
+					System.out.println("error");
 					error("Two values or signals can't be concatenated without an operator:", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 				}
-				else {
-					for(int j=0; j<data.getElements().get(i-1).getOp().size(); j++) {
-						if(data.getElements().get(i-1).getOp().get(j).getComparation()!=null || data.getElements().get(i-1).getOp().get(j).getLogicOperator()!=null || data.getElements().get(i-1).getOp().get(j).getOperator()!=null) {
-							is=true;
-						}
-					}
-					if(!is) {
-						error("Two values or signals can't be concatenated without an operator", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-					}
-					is=false;
-				}
-				
-				
+								
 			}
 			for(int j=0 ; j< elements.getOp().size(); j++) {
 				if(elements.getOp().get(j).getBackParentheses()!=null) {
