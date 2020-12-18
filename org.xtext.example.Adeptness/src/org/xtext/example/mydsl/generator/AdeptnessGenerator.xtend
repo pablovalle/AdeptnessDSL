@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.EList
 import org.xtext.example.mydsl.adeptness.Checks
 import java.util.ArrayList
 import java.util.List
+import java.util.HashMap
 
 /**
  * Generates code from your model files on save.
@@ -27,7 +28,7 @@ class AdeptnessGenerator extends AbstractGenerator {
 
 	//Poner el directorio de la seinal, donde se van a generar los .c y .h para poder compilarlo en matlab y generar el .mex file
 	//String directory="C:\\Users\\hazibek02\\runtime-EclipseXtext\\Matlab\\src-gen\\lehenengoa\\"; 
-
+var HashMap<String, List<String>> nameMap;
     override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
     	//fsa.generateFile("adeptness.xml", resource.allContents.toIterable.filter(Signal).createXML());
       		for(e: resource.allContents.toIterable.filter(Signal)){
@@ -56,10 +57,11 @@ class AdeptnessGenerator extends AbstractGenerator {
 				fsa.generateFile(d.fullyQualifiedName.toString("/")+".m", d.create_up_m())
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
 			}*/
-			
+			nameMap= new HashMap();
+			getAllNames(e);
 			for(q: e.oracle){
-				fsa.generateFile(q.fullyQualifiedName.toString("/")+".c", q.create_oracle_c())
-				fsa.generateFile(q.fullyQualifiedName.toString("/")+".h", q.create_oracle_h())
+				fsa.generateFile(q.fullyQualifiedName.toString("/")+".c", q.create_oracle_c(nameMap.get(q.name)))
+				fsa.generateFile(q.fullyQualifiedName.toString("/")+".h", q.create_oracle_h(nameMap.get(q.name)))
 				//fsa.generateFile(q.fullyQualifiedName.toString("/")+".json", q.create_oracle_json())
 				//fsa.generateFile(q.fullyQualifiedName.toString("/")+".m", q.create_oracle_m())
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
@@ -69,8 +71,71 @@ class AdeptnessGenerator extends AbstractGenerator {
 		}
     }
 	
-	
-	
+	def getAllNames(Signal signal) {
+		var List<String> namelists;
+		var Oracle oracle;
+		var boolean is;
+		for(var z=0; z< signal.oracle.size; z++){
+			oracle=signal.oracle.get(z);
+			namelists=new ArrayList();
+			is=false;
+			if(oracle.check.em!==null){
+				for(var i=0; i< oracle.check.em.elements.size; i++){
+					for(var j=0; j<namelists.size;j++){
+						println(i);
+						println(oracle.check.em.elements.get(i).name);
+						if(oracle.check.em.elements.get(i).name===null ||namelists.get(j).equals(oracle.check.em.elements.get(i).name) || oracle.check.em.elements.get(i).name.equals("timeStamp")){
+							is=true;
+						}
+					}
+					if(!is){
+						namelists.add(oracle.check.em.elements.get(i).name);
+					}
+					else{
+						is=false;
+					}
+				}
+			}
+			else{
+				namelists.add(oracle.check.name);
+			}
+			is=false;
+			if(oracle.^while!==null){
+				var wile=oracle.^while;
+				for (var i=0; i<wile.em.elements.size; i++){
+					for(var j=0; j<namelists.size;j++){
+						if(wile.em.elements.get(i).name===null || namelists.get(j).equals(wile.em.elements.get(i).name) || wile.em.elements.get(i).name.equals("timeStamp")){
+							is=true;
+						}
+					}
+					if(!is){
+						namelists.add(wile.em.elements.get(i).name);
+					}
+					else{
+						is=false;
+					}
+				}
+			}
+			if(oracle.when!==null){
+				var when=oracle.when;
+				for (var i=0; i<when.em.elements.size; i++){
+					for(var j=0; j<namelists.size;j++){
+						if(when.em.elements.get(i).name===null || namelists.get(j).equals(when.em.elements.get(i).name) || when.em.elements.get(i).name.equals("timeStamp")){
+							is=true;
+						}
+					}
+					if(!is){
+						namelists.add(when.em.elements.get(i).name);
+					}
+					else{
+						is=false;
+					}
+				}
+			}
+			nameMap.put(oracle.name, namelists);
+		}
+	}
+		
 	/*def createXML(Iterable<Signal> signals)'''
 	<?xml version='1.0' encoding="UTF-8"?>
 		«FOR s : signals»
@@ -144,31 +209,7 @@ class AdeptnessGenerator extends AbstractGenerator {
 			"«param.name»":{
 				"cfileDirectory":"«param.fullyQualifiedName.toString("/")+".c"»",
 				"hfileDirectory":"«param.fullyQualifiedName.toString("/")+".h"»",
-		«IF param.when!==null && param.^while!==null»
-			«IF param.check.name!==null»
-				«"\t\t"»"Inputs":[«IF !param.check.name.equals("timeStamp")»"«param.check.name»",«ENDIF»«FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»"«par1.name»", «ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»"«par2.name»", «ENDIF»«ENDFOR»"timeStamp"],
-			«ELSE»
-				«"\t\t"»"Inputs":[«FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»"«par3.name»", «ENDIF»«ENDFOR»«FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»"«par1.name»", «ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»"«par2.name»", «ENDIF»«ENDFOR»"timeStamp"],
-			«ENDIF»
-		«ELSEIF param.when===null && param.^while!==null»
-			«IF param.check.name!==null»
-				«"\t\t"»"Inputs":[«IF !param.check.name.equals("timeStamp")»"«param.check.name»",«ENDIF»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»"«par2.name»", «ENDIF»«ENDFOR»"timeStamp"],
-			«ELSE»
-				«"\t\t"»"Inputs":[«FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»"«par3.name»", «ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»"«par2.name»", «ENDIF»«ENDFOR»"timeStamp"],
-			«ENDIF»
-		«ELSEIF param.when!==null && param.^while===null»
-			«IF param.check.name!==null»
-				«"\t\t"»"Inputs":[«IF !param.check.name.equals("timeStamp")»"«param.check.name»",«ENDIF»«FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»"«par1.name»", «ENDIF»«ENDFOR»"timeStamp"],
-			«ELSE»
-				«"\t\t"»"Inputs":[«FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»"«par3.name»", «ENDIF»«ENDFOR»«FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»"«par1.name»", «ENDIF»«ENDFOR»"timeStamp"],
-			«ENDIF»
-		«ELSE»
-			«IF param.check.name!==null»
-				«"\t\t"»"Inputs":[«IF !param.check.name.equals("timeStamp")»"«param.check.name»",«ENDIF» "timeStamp"],
-			«ELSE»
-				«"\t\t"»"Inputs":[«FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»"«par3.name»", «ENDIF»«ENDFOR»"timeStamp"],
-			«ENDIF»
-		«ENDIF»
+				«"\t\t"»"Inputs":[«FOR name:nameMap.get(param.name)»"«name»", «ENDFOR»"timeStamp"],
 			«"\t"»"While":"«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»",«ELSE»null",«ENDIF»
 			«"\t"»"When":{
 				«"\t"»"Value":"«IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR» «ENDFOR»",«ELSE»null",«ENDIF»
@@ -493,10 +534,53 @@ class AdeptnessGenerator extends AbstractGenerator {
 	}
 	
 	'''
-	def create_oracle_h(Oracle param)'''
+	def create_oracle_h(Oracle param, List<String> nameList)'''
 	#ifndef «param.name.toString().toUpperCase»_H
 	#define «param.name.toString().toUpperCase»_H
-	«IF param.when!==null && param.^while!==null»
+	«IF param.check.reference.upper!==null»
+	struct Ret{
+		int assert;
+		double diff;
+	};
+	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]);
+	«ELSEIF param.check.reference.lower!==null»
+	struct Ret{
+		int assert;
+		double diff;
+	};
+	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]);
+		«ELSEIF param.check.reference.same!==null»
+	struct Ret{
+		int assert;
+		double diff;
+	};
+	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]);
+		«ELSEIF param.check.reference.notsame!==null»
+	struct Ret{
+		int assert;
+		double diff;
+	};
+	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]);
+		«ELSEIF param.check.reference.range!==null»
+	struct Ret{
+		int assert;
+		double diff_up;
+		double diff_down;
+	};
+	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]);
+		«ELSEIF param.check.reference.gap!==null»
+	struct Ret{
+		int assert;
+		double diff_up;
+		double diff_down;
+	};
+	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]);
+		«ENDIF»
+		
+	
+	#endif
+	'''	
+	/*«IF param.when!==null && param.^while!==null»
 		«IF param.check.name!==null»
 			«IF param.check.reference.upper!==null»
 			struct Ret{
@@ -827,14 +911,30 @@ class AdeptnessGenerator extends AbstractGenerator {
 			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]);
 			«ENDIF»
 		«ENDIF»
-	«ENDIF»
-	
-	#endif
-	'''	
-	def create_oracle_c(Oracle param)'''
+	«ENDIF» */
+	def create_oracle_c(Oracle param,List<String> nameList)'''
 	#include "«param.name.toString()».h"
 	//«param.check.description.value»
-	«IF param.when!==null && param.^while!==null»
+	«IF param.check.reference.upper!==null»
+	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
+	«ELSEIF param.check.reference.lower!==null»
+	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
+	«ELSEIF param.check.reference.same!==null»
+	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
+	«ELSEIF param.check.reference.notsame!==null»
+	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
+	«ELSEIF param.check.reference.range!==null»
+	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
+	«ELSEIF param.check.reference.gap!==null»
+	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
+	«ENDIF»
+		struct Ret ret;
+		return ret;
+	}
+	'''
+	
+	/*
+	 «IF param.when!==null && param.^while!==null»
 		«IF param.check.name!==null»
 			«IF param.check.reference.upper!==null»
 			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
@@ -954,13 +1054,10 @@ class AdeptnessGenerator extends AbstractGenerator {
 			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){
 			«ENDIF»
 		«ENDIF»
-	«ENDIF»
-		struct Ret ret;
-		return ret;
-	}
-	'''
-	
-	/*def create_oracle_c(Oracle param)'''
+	«ENDIF» 
+	 
+	 
+	 def create_oracle_c(Oracle param)'''
 	#include "«param.name.toString()».h"
 	«FOR param1: param.check»
 		//Comment: «param1.description.value.toString»'''
