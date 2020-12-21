@@ -82,13 +82,11 @@ var HashMap<String, List<String>> nameMap;
 			if(oracle.check.em!==null){
 				for(var i=0; i< oracle.check.em.elements.size; i++){
 					for(var j=0; j<namelists.size;j++){
-						println(i);
-						println(oracle.check.em.elements.get(i).name);
-						if(oracle.check.em.elements.get(i).name===null ||namelists.get(j).equals(oracle.check.em.elements.get(i).name) || oracle.check.em.elements.get(i).name.equals("timeStamp")){
+						if(oracle.check.em.elements.get(i).name===null ||(namelists.get(j)!==null && namelists.get(j).equals(oracle.check.em.elements.get(i).name)) || oracle.check.em.elements.get(i).name.equals("timeStamp")){
 							is=true;
 						}
 					}
-					if(!is){
+					if(!is && oracle.check.em.elements.get(i).name!==null){
 						namelists.add(oracle.check.em.elements.get(i).name);
 					}
 					else{
@@ -116,6 +114,7 @@ var HashMap<String, List<String>> nameMap;
 					}
 				}
 			}
+			is=false;
 			if(oracle.when!==null){
 				var when=oracle.when;
 				for (var i=0; i<when.em.elements.size; i++){
@@ -132,6 +131,135 @@ var HashMap<String, List<String>> nameMap;
 					}
 				}
 			}
+			is=false;
+			if(oracle.check.reference!==null){
+				if(oracle.check.reference.gap!==null && oracle.check.reference.gap.bound_lower.em!==null){
+					for(var i=0; i<oracle.check.reference.gap.bound_lower.em.elements.size; i++){
+						for(var j=0; j<namelists.size;j++){
+							if(oracle.check.reference.gap.bound_lower.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.gap.bound_lower.em.elements.get(i).name) || oracle.check.reference.gap.bound_lower.em.elements.get(i).name.equals("timeStamp")){
+								is=true;
+							}
+						}
+						if(!is){
+						namelists.add(oracle.check.reference.gap.bound_lower.em.elements.get(i).name);
+						}
+						else{
+							is=false;
+						}
+					}
+				}
+			
+				else if(oracle.check.reference.gap!==null && oracle.check.reference.gap.bound_upp.em!==null){
+					for(var i=0; i<oracle.check.reference.gap.bound_upp.em.elements.size; i++){
+						for(var j=0; j<namelists.size;j++){
+							if(oracle.check.reference.gap.bound_upp.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.gap.bound_upp.em.elements.get(i).name) || oracle.check.reference.gap.bound_upp.em.elements.get(i).name.equals("timeStamp")){
+								is=true;
+							}
+						}
+						if(!is){
+						namelists.add(oracle.check.reference.gap.bound_upp.em.elements.get(i).name);
+						}
+						else{
+							is=false;
+						}
+					}
+				}
+				else if(oracle.check.reference.range!==null && oracle.check.reference.range.bound_lower.em!==null){
+					for(var i=0; i<oracle.check.reference.range.bound_lower.em.elements.size; i++){
+						for(var j=0; j<namelists.size;j++){
+							if(oracle.check.reference.range.bound_lower.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.range.bound_lower.em.elements.get(i).name) || oracle.check.reference.range.bound_lower.em.elements.get(i).name.equals("timeStamp")){
+								is=true;
+							}
+						}
+						if(!is){
+						namelists.add(oracle.check.reference.range.bound_lower.em.elements.get(i).name);
+						}
+						else{
+							is=false;
+						}
+					}
+				}
+				else if(oracle.check.reference.range!==null && oracle.check.reference.range.bound_upp.em!==null){
+					for(var i=0; i<oracle.check.reference.range.bound_upp.em.elements.size; i++){
+						for(var j=0; j<namelists.size;j++){
+							if(oracle.check.reference.range.bound_upp.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.range.bound_upp.em.elements.get(i).name) || oracle.check.reference.range.bound_upp.em.elements.get(i).name.equals("timeStamp")){
+								is=true;
+							}
+						}
+						if(!is){
+						namelists.add(oracle.check.reference.range.bound_upp.em.elements.get(i).name);
+						}
+						else{
+							is=false;
+						}
+					}
+				}
+				else if(oracle.check.reference.upper!==null && oracle.check.reference.upper.bound_upp.em!==null){
+					for(var i=0; i<oracle.check.reference.upper.bound_upp.em.elements.size; i++){
+						println(oracle.name);
+						for(var j=0; j<namelists.size;j++){
+							if(oracle.check.reference.upper.bound_upp.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.upper.bound_upp.em.elements.get(i).name) || oracle.check.reference.upper.bound_upp.em.elements.get(i).name.equals("timeStamp")){
+								is=true;
+							}
+						}
+						if(!is){
+						namelists.add(oracle.check.reference.upper.bound_upp.em.elements.get(i).name);
+						}
+						else{
+							is=false;
+						}
+					}
+				}
+				else if(oracle.check.reference.same!==null && oracle.check.reference.same.bound_upp.em!==null){
+					for(var i=0; i<oracle.check.reference.same.bound_upp.em.elements.size; i++){
+						for(var j=0; j<namelists.size;j++){
+							if(oracle.check.reference.same.bound_upp.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.same.bound_upp.em.elements.get(i).name) || oracle.check.reference.same.bound_upp.em.elements.get(i).name.equals("timeStamp")){
+								is=true;
+							}
+						}
+						if(!is){
+						namelists.add(oracle.check.reference.same.bound_upp.em.elements.get(i).name);
+						}
+						else{
+							is=false;
+						}
+					}
+				}
+				else if(oracle.check.reference.notsame!==null && oracle.check.reference.notsame.bound_upp.em!==null){
+					for(var i=0; i<oracle.check.reference.notsame.bound_upp.em.elements.size; i++){
+						for(var j=0; j<namelists.size;j++){
+							if(oracle.check.reference.notsame.bound_upp.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.notsame.bound_upp.em.elements.get(i).name) || oracle.check.reference.notsame.bound_upp.em.elements.get(i).name.equals("timeStamp")){
+								is=true;
+							}
+						}
+						if(!is){
+						namelists.add(oracle.check.reference.notsame.bound_upp.em.elements.get(i).name);
+						}
+						else{
+							is=false;
+						}
+					}
+				}
+				else if(oracle.check.reference!==null){
+					if(oracle.check.reference.lower!==null && oracle.check.reference.lower.bound_lower.em!==null){
+						for(var i=0; i<oracle.check.reference.lower.bound_lower.em.elements.size; i++){
+							for(var j=0; j<namelists.size;j++){
+								if(oracle.check.reference.lower.bound_lower.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.lower.bound_lower.em.elements.get(i).name) || oracle.check.reference.lower.bound_lower.em.elements.get(i).name.equals("timeStamp")){
+									is=true;
+								}
+							}
+							if(!is){
+							namelists.add(oracle.check.reference.lower.bound_lower.em.elements.get(i).name);
+							}
+							else{
+								is=false;
+							}
+						}
+					}
+				}
+				
+			}
+				
 			nameMap.put(oracle.name, namelists);
 		}
 	}

@@ -40,6 +40,7 @@ import org.xtext.example.mydsl.adeptness.Op;
 import org.xtext.example.mydsl.adeptness.Operators;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.Range;
+import org.xtext.example.mydsl.adeptness.Reference;
 import org.xtext.example.mydsl.adeptness.Same;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.Upper;
@@ -103,15 +104,11 @@ public class AdeptnessGenerator extends AbstractGenerator {
           for (int i = 0; (i < oracle.getCheck().getEm().getElements().size()); i++) {
             {
               for (int j = 0; (j < namelists.size()); j++) {
-                {
-                  InputOutput.<Integer>println(Integer.valueOf(i));
-                  InputOutput.<String>println(oracle.getCheck().getEm().getElements().get(i).getName());
-                  if ((((oracle.getCheck().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getEm().getElements().get(i).getName())) || oracle.getCheck().getEm().getElements().get(i).getName().equals("timeStamp"))) {
-                    is = true;
-                  }
+                if ((((oracle.getCheck().getEm().getElements().get(i).getName() == null) || ((namelists.get(j) != null) && namelists.get(j).equals(oracle.getCheck().getEm().getElements().get(i).getName()))) || oracle.getCheck().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                  is = true;
                 }
               }
-              if ((!is)) {
+              if (((!is) && (oracle.getCheck().getEm().getElements().get(i).getName() != null))) {
                 namelists.add(oracle.getCheck().getEm().getElements().get(i).getName());
               } else {
                 is = false;
@@ -141,6 +138,7 @@ public class AdeptnessGenerator extends AbstractGenerator {
             }
           }
         }
+        is = false;
         When _when = oracle.getWhen();
         boolean _tripleNotEquals_2 = (_when != null);
         if (_tripleNotEquals_2) {
@@ -156,6 +154,151 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 namelists.add(when.getEm().getElements().get(i).getName());
               } else {
                 is = false;
+              }
+            }
+          }
+        }
+        is = false;
+        Reference _reference = oracle.getCheck().getReference();
+        boolean _tripleNotEquals_3 = (_reference != null);
+        if (_tripleNotEquals_3) {
+          if (((oracle.getCheck().getReference().getGap() != null) && (oracle.getCheck().getReference().getGap().getBound_lower().getEm() != null))) {
+            for (int i = 0; (i < oracle.getCheck().getReference().getGap().getBound_lower().getEm().getElements().size()); i++) {
+              {
+                for (int j = 0; (j < namelists.size()); j++) {
+                  if ((((oracle.getCheck().getReference().getGap().getBound_lower().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getGap().getBound_lower().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getGap().getBound_lower().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                    is = true;
+                  }
+                }
+                if ((!is)) {
+                  namelists.add(oracle.getCheck().getReference().getGap().getBound_lower().getEm().getElements().get(i).getName());
+                } else {
+                  is = false;
+                }
+              }
+            }
+          } else {
+            if (((oracle.getCheck().getReference().getGap() != null) && (oracle.getCheck().getReference().getGap().getBound_upp().getEm() != null))) {
+              for (int i = 0; (i < oracle.getCheck().getReference().getGap().getBound_upp().getEm().getElements().size()); i++) {
+                {
+                  for (int j = 0; (j < namelists.size()); j++) {
+                    if ((((oracle.getCheck().getReference().getGap().getBound_upp().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getGap().getBound_upp().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getGap().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                      is = true;
+                    }
+                  }
+                  if ((!is)) {
+                    namelists.add(oracle.getCheck().getReference().getGap().getBound_upp().getEm().getElements().get(i).getName());
+                  } else {
+                    is = false;
+                  }
+                }
+              }
+            } else {
+              if (((oracle.getCheck().getReference().getRange() != null) && (oracle.getCheck().getReference().getRange().getBound_lower().getEm() != null))) {
+                for (int i = 0; (i < oracle.getCheck().getReference().getRange().getBound_lower().getEm().getElements().size()); i++) {
+                  {
+                    for (int j = 0; (j < namelists.size()); j++) {
+                      if ((((oracle.getCheck().getReference().getRange().getBound_lower().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getRange().getBound_lower().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getRange().getBound_lower().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                        is = true;
+                      }
+                    }
+                    if ((!is)) {
+                      namelists.add(oracle.getCheck().getReference().getRange().getBound_lower().getEm().getElements().get(i).getName());
+                    } else {
+                      is = false;
+                    }
+                  }
+                }
+              } else {
+                if (((oracle.getCheck().getReference().getRange() != null) && (oracle.getCheck().getReference().getRange().getBound_upp().getEm() != null))) {
+                  for (int i = 0; (i < oracle.getCheck().getReference().getRange().getBound_upp().getEm().getElements().size()); i++) {
+                    {
+                      for (int j = 0; (j < namelists.size()); j++) {
+                        if ((((oracle.getCheck().getReference().getRange().getBound_upp().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getRange().getBound_upp().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getRange().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                          is = true;
+                        }
+                      }
+                      if ((!is)) {
+                        namelists.add(oracle.getCheck().getReference().getRange().getBound_upp().getEm().getElements().get(i).getName());
+                      } else {
+                        is = false;
+                      }
+                    }
+                  }
+                } else {
+                  if (((oracle.getCheck().getReference().getUpper() != null) && (oracle.getCheck().getReference().getUpper().getBound_upp().getEm() != null))) {
+                    for (int i = 0; (i < oracle.getCheck().getReference().getUpper().getBound_upp().getEm().getElements().size()); i++) {
+                      {
+                        InputOutput.<String>println(oracle.getName());
+                        for (int j = 0; (j < namelists.size()); j++) {
+                          if ((((oracle.getCheck().getReference().getUpper().getBound_upp().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getUpper().getBound_upp().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getUpper().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                            is = true;
+                          }
+                        }
+                        if ((!is)) {
+                          namelists.add(oracle.getCheck().getReference().getUpper().getBound_upp().getEm().getElements().get(i).getName());
+                        } else {
+                          is = false;
+                        }
+                      }
+                    }
+                  } else {
+                    if (((oracle.getCheck().getReference().getSame() != null) && (oracle.getCheck().getReference().getSame().getBound_upp().getEm() != null))) {
+                      for (int i = 0; (i < oracle.getCheck().getReference().getSame().getBound_upp().getEm().getElements().size()); i++) {
+                        {
+                          for (int j = 0; (j < namelists.size()); j++) {
+                            if ((((oracle.getCheck().getReference().getSame().getBound_upp().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getSame().getBound_upp().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getSame().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                              is = true;
+                            }
+                          }
+                          if ((!is)) {
+                            namelists.add(oracle.getCheck().getReference().getSame().getBound_upp().getEm().getElements().get(i).getName());
+                          } else {
+                            is = false;
+                          }
+                        }
+                      }
+                    } else {
+                      if (((oracle.getCheck().getReference().getNotsame() != null) && (oracle.getCheck().getReference().getNotsame().getBound_upp().getEm() != null))) {
+                        for (int i = 0; (i < oracle.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements().size()); i++) {
+                          {
+                            for (int j = 0; (j < namelists.size()); j++) {
+                              if ((((oracle.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                                is = true;
+                              }
+                            }
+                            if ((!is)) {
+                              namelists.add(oracle.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements().get(i).getName());
+                            } else {
+                              is = false;
+                            }
+                          }
+                        }
+                      } else {
+                        Reference _reference_1 = oracle.getCheck().getReference();
+                        boolean _tripleNotEquals_4 = (_reference_1 != null);
+                        if (_tripleNotEquals_4) {
+                          if (((oracle.getCheck().getReference().getLower() != null) && (oracle.getCheck().getReference().getLower().getBound_lower().getEm() != null))) {
+                            for (int i = 0; (i < oracle.getCheck().getReference().getLower().getBound_lower().getEm().getElements().size()); i++) {
+                              {
+                                for (int j = 0; (j < namelists.size()); j++) {
+                                  if ((((oracle.getCheck().getReference().getLower().getBound_lower().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getLower().getBound_lower().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getLower().getBound_lower().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                                    is = true;
+                                  }
+                                }
+                                if ((!is)) {
+                                  namelists.add(oracle.getCheck().getReference().getLower().getBound_lower().getEm().getElements().get(i).getName());
+                                } else {
+                                  is = false;
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
