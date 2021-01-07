@@ -237,7 +237,7 @@ d returns ecore::EDouble : ('-')? INT('.'INT)?;
 
 
 TimeType:
-	((time='miliseconds')|(time='seconds')|(time='minutes')|(time='hours'))
+	((time='milliseconds')|(time='seconds')|(time='minutes')|(time='hours'))
 ;
 
 //DataType declaration
