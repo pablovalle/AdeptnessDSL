@@ -1272,8 +1272,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   DOUBLE _value_3 = param.getCheck().getReference().getRange().getBound_upp().getValue();
                   boolean _tripleNotEquals_55 = (_value_3 != null);
                   if (_tripleNotEquals_55) {
-                    DOUBLE _value_4 = param.getCheck().getReference().getRange().getBound_upp().getValue();
-                    _builder.append(_value_4, "\t");
+                    double _dVal_23 = param.getCheck().getReference().getRange().getBound_upp().getValue().getDVal();
+                    _builder.append(_dVal_23, "\t");
                     _builder.append("\"],");
                   } else {
                     {
@@ -1292,8 +1292,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                             String _name_17 = param1_6.getName();
                             _builder.append(_name_17, "\t");
                           } else {
-                            double _dVal_23 = param1_6.getValue().getDVal();
-                            _builder.append(_dVal_23, "\t");
+                            double _dVal_24 = param1_6.getValue().getDVal();
+                            _builder.append(_dVal_24, "\t");
                           }
                         }
                         _builder.append(" ");
@@ -1355,8 +1355,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.append("\t");
                     _builder.append("\t\t\t", "\t");
                     _builder.append("\"Value\":\"");
-                    double _dVal_24 = param.getCheck().getReference().getRange().getExactly().getValue().getDVal();
-                    _builder.append(_dVal_24, "\t");
+                    double _dVal_25 = param.getCheck().getReference().getRange().getExactly().getValue().getDVal();
+                    _builder.append(_dVal_25, "\t");
                     _builder.append("\",");
                     _builder.newLineIfNotEmpty();
                     {
@@ -1366,8 +1366,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         _builder.append("\t");
                         _builder.append("\t\t\t", "\t");
                         _builder.append("\"Time\":\"");
-                        double _dVal_25 = param.getCheck().getReference().getRange().getExactly().getTime().getDVal();
-                        _builder.append(_dVal_25, "\t");
+                        double _dVal_26 = param.getCheck().getReference().getRange().getExactly().getTime().getDVal();
+                        _builder.append(_dVal_26, "\t");
                         _builder.append("\",");
                         _builder.newLineIfNotEmpty();
                         _builder.append("\t");
@@ -1399,8 +1399,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       _builder.append("\t");
                       _builder.append("\t\t\t", "\t");
                       _builder.append("\"Value\":\"");
-                      double _dVal_26 = param.getCheck().getReference().getRange().getAtleast().getValue().getDVal();
-                      _builder.append(_dVal_26, "\t");
+                      double _dVal_27 = param.getCheck().getReference().getRange().getAtleast().getValue().getDVal();
+                      _builder.append(_dVal_27, "\t");
                       _builder.append("\",");
                       _builder.newLineIfNotEmpty();
                       {
@@ -1410,8 +1410,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           _builder.append("\t");
                           _builder.append("\t\t\t", "\t");
                           _builder.append("\"Time\":\"");
-                          double _dVal_27 = param.getCheck().getReference().getRange().getAtleast().getTime().getDVal();
-                          _builder.append(_dVal_27, "\t");
+                          double _dVal_28 = param.getCheck().getReference().getRange().getAtleast().getTime().getDVal();
+                          _builder.append(_dVal_28, "\t");
                           _builder.append("\",");
                           _builder.newLineIfNotEmpty();
                           _builder.append("\t");
@@ -1443,8 +1443,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         _builder.append("\t");
                         _builder.append("\t\t\t", "\t");
                         _builder.append("\"Value\":\"");
-                        double _dVal_28 = param.getCheck().getReference().getRange().getAtmost().getValue().getDVal();
-                        _builder.append(_dVal_28, "\t");
+                        double _dVal_29 = param.getCheck().getReference().getRange().getAtmost().getValue().getDVal();
+                        _builder.append(_dVal_29, "\t");
                         _builder.append("\",");
                         _builder.newLineIfNotEmpty();
                         {
@@ -1454,8 +1454,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                             _builder.append("\t");
                             _builder.append("\t\t\t", "\t");
                             _builder.append("\"Time\":\"");
-                            double _dVal_29 = param.getCheck().getReference().getRange().getAtmost().getTime().getDVal();
-                            _builder.append(_dVal_29, "\t");
+                            double _dVal_30 = param.getCheck().getReference().getRange().getAtmost().getTime().getDVal();
+                            _builder.append(_dVal_30, "\t");
                             _builder.append("\",");
                             _builder.newLineIfNotEmpty();
                             _builder.append("\t");
@@ -1515,11 +1515,11 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.append("\t\t", "\t");
                   _builder.append("\"Value\":[\"");
                   {
-                    DOUBLE _value_5 = param.getCheck().getReference().getGap().getBound_lower().getValue();
-                    boolean _tripleNotEquals_68 = (_value_5 != null);
+                    DOUBLE _value_4 = param.getCheck().getReference().getGap().getBound_lower().getValue();
+                    boolean _tripleNotEquals_68 = (_value_4 != null);
                     if (_tripleNotEquals_68) {
-                      double _dVal_30 = param.getCheck().getReference().getGap().getBound_lower().getValue().getDVal();
-                      _builder.append(_dVal_30, "\t");
+                      double _dVal_31 = param.getCheck().getReference().getGap().getBound_lower().getValue().getDVal();
+                      _builder.append(_dVal_31, "\t");
                       _builder.append("\",");
                     } else {
                       {
@@ -1538,8 +1538,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                               String _name_19 = param1_7.getName();
                               _builder.append(_name_19, "\t");
                             } else {
-                              double _dVal_31 = param1_7.getValue().getDVal();
-                              _builder.append(_dVal_31, "\t");
+                              double _dVal_32 = param1_7.getValue().getDVal();
+                              _builder.append(_dVal_32, "\t");
                             }
                           }
                           _builder.append(" ");
@@ -1586,11 +1586,11 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     }
                   }
                   {
-                    DOUBLE _value_6 = param.getCheck().getReference().getGap().getBound_upp().getValue();
-                    boolean _tripleNotEquals_74 = (_value_6 != null);
+                    DOUBLE _value_5 = param.getCheck().getReference().getGap().getBound_upp().getValue();
+                    boolean _tripleNotEquals_74 = (_value_5 != null);
                     if (_tripleNotEquals_74) {
-                      DOUBLE _value_7 = param.getCheck().getReference().getGap().getBound_upp().getValue();
-                      _builder.append(_value_7, "\t");
+                      DOUBLE _value_6 = param.getCheck().getReference().getGap().getBound_upp().getValue();
+                      _builder.append(_value_6, "\t");
                       _builder.append("\"],");
                     } else {
                       {
@@ -1609,8 +1609,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                               String _name_21 = param1_8.getName();
                               _builder.append(_name_21, "\t");
                             } else {
-                              double _dVal_32 = param1_8.getValue().getDVal();
-                              _builder.append(_dVal_32, "\t");
+                              double _dVal_33 = param1_8.getValue().getDVal();
+                              _builder.append(_dVal_33, "\t");
                             }
                           }
                           _builder.append(" ");
@@ -1672,8 +1672,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       _builder.append("\t");
                       _builder.append("\t\t\t", "\t");
                       _builder.append("\"Value\":\"");
-                      double _dVal_33 = param.getCheck().getReference().getGap().getExactly().getValue().getDVal();
-                      _builder.append(_dVal_33, "\t");
+                      double _dVal_34 = param.getCheck().getReference().getGap().getExactly().getValue().getDVal();
+                      _builder.append(_dVal_34, "\t");
                       _builder.append("\",");
                       _builder.newLineIfNotEmpty();
                       {
@@ -1683,8 +1683,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           _builder.append("\t");
                           _builder.append("\t\t\t", "\t");
                           _builder.append("\"Time\":\"");
-                          double _dVal_34 = param.getCheck().getReference().getGap().getExactly().getTime().getDVal();
-                          _builder.append(_dVal_34, "\t");
+                          double _dVal_35 = param.getCheck().getReference().getGap().getExactly().getTime().getDVal();
+                          _builder.append(_dVal_35, "\t");
                           _builder.append("\",");
                           _builder.newLineIfNotEmpty();
                           _builder.append("\t");
@@ -1716,8 +1716,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         _builder.append("\t");
                         _builder.append("\t\t\t", "\t");
                         _builder.append("\"Value\":\"");
-                        double _dVal_35 = param.getCheck().getReference().getGap().getAtleast().getValue().getDVal();
-                        _builder.append(_dVal_35, "\t");
+                        double _dVal_36 = param.getCheck().getReference().getGap().getAtleast().getValue().getDVal();
+                        _builder.append(_dVal_36, "\t");
                         _builder.append("\",");
                         _builder.newLineIfNotEmpty();
                         {
@@ -1727,8 +1727,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                             _builder.append("\t");
                             _builder.append("\t\t\t", "\t");
                             _builder.append("\"Time\":\"");
-                            double _dVal_36 = param.getCheck().getReference().getGap().getAtleast().getTime().getDVal();
-                            _builder.append(_dVal_36, "\t");
+                            double _dVal_37 = param.getCheck().getReference().getGap().getAtleast().getTime().getDVal();
+                            _builder.append(_dVal_37, "\t");
                             _builder.append("\",");
                             _builder.newLineIfNotEmpty();
                             _builder.append("\t");
@@ -1760,8 +1760,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           _builder.append("\t");
                           _builder.append("\t\t\t", "\t");
                           _builder.append("\"Value\":\"");
-                          double _dVal_37 = param.getCheck().getReference().getGap().getAtmost().getValue().getDVal();
-                          _builder.append(_dVal_37, "\t");
+                          double _dVal_38 = param.getCheck().getReference().getGap().getAtmost().getValue().getDVal();
+                          _builder.append(_dVal_38, "\t");
                           _builder.append("\",");
                           _builder.newLineIfNotEmpty();
                           {
@@ -1771,8 +1771,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                               _builder.append("\t");
                               _builder.append("\t\t\t", "\t");
                               _builder.append("\"Time\":\"");
-                              double _dVal_38 = param.getCheck().getReference().getGap().getAtmost().getTime().getDVal();
-                              _builder.append(_dVal_38, "\t");
+                              double _dVal_39 = param.getCheck().getReference().getGap().getAtmost().getTime().getDVal();
+                              _builder.append(_dVal_39, "\t");
                               _builder.append("\",");
                               _builder.newLineIfNotEmpty();
                               _builder.append("\t");
@@ -1832,11 +1832,11 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.append("\t\t", "\t");
                     _builder.append("\"Value\":[\"");
                     {
-                      DOUBLE _value_8 = param.getCheck().getReference().getSame().getBound_upp().getValue();
-                      boolean _tripleNotEquals_87 = (_value_8 != null);
+                      DOUBLE _value_7 = param.getCheck().getReference().getSame().getBound_upp().getValue();
+                      boolean _tripleNotEquals_87 = (_value_7 != null);
                       if (_tripleNotEquals_87) {
-                        double _dVal_39 = param.getCheck().getReference().getSame().getBound_upp().getValue().getDVal();
-                        _builder.append(_dVal_39, "\t");
+                        double _dVal_40 = param.getCheck().getReference().getSame().getBound_upp().getValue().getDVal();
+                        _builder.append(_dVal_40, "\t");
                         _builder.append("\"],");
                       } else {
                         {
@@ -1855,8 +1855,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                                 String _name_23 = param1_9.getName();
                                 _builder.append(_name_23, "\t");
                               } else {
-                                double _dVal_40 = param1_9.getValue().getDVal();
-                                _builder.append(_dVal_40, "\t");
+                                double _dVal_41 = param1_9.getValue().getDVal();
+                                _builder.append(_dVal_41, "\t");
                               }
                             }
                             _builder.append(" ");
@@ -1918,8 +1918,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         _builder.append("\t");
                         _builder.append("\t\t\t", "\t");
                         _builder.append("\"Value\":\"");
-                        double _dVal_41 = param.getCheck().getReference().getSame().getExactly().getValue().getDVal();
-                        _builder.append(_dVal_41, "\t");
+                        double _dVal_42 = param.getCheck().getReference().getSame().getExactly().getValue().getDVal();
+                        _builder.append(_dVal_42, "\t");
                         _builder.append("\",");
                         _builder.newLineIfNotEmpty();
                         {
@@ -1929,8 +1929,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                             _builder.append("\t");
                             _builder.append("\t\t\t", "\t");
                             _builder.append("\"Time\":\"");
-                            double _dVal_42 = param.getCheck().getReference().getSame().getExactly().getTime().getDVal();
-                            _builder.append(_dVal_42, "\t");
+                            double _dVal_43 = param.getCheck().getReference().getSame().getExactly().getTime().getDVal();
+                            _builder.append(_dVal_43, "\t");
                             _builder.append("\",");
                             _builder.newLineIfNotEmpty();
                             _builder.append("\t");
@@ -1962,8 +1962,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           _builder.append("\t");
                           _builder.append("\t\t\t", "\t");
                           _builder.append("\"Value\":\"");
-                          double _dVal_43 = param.getCheck().getReference().getSame().getAtleast().getValue().getDVal();
-                          _builder.append(_dVal_43, "\t");
+                          double _dVal_44 = param.getCheck().getReference().getSame().getAtleast().getValue().getDVal();
+                          _builder.append(_dVal_44, "\t");
                           _builder.append("\",");
                           _builder.newLineIfNotEmpty();
                           {
@@ -1973,8 +1973,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                               _builder.append("\t");
                               _builder.append("\t\t\t", "\t");
                               _builder.append("\"Time\":\"");
-                              double _dVal_44 = param.getCheck().getReference().getSame().getAtleast().getTime().getDVal();
-                              _builder.append(_dVal_44, "\t");
+                              double _dVal_45 = param.getCheck().getReference().getSame().getAtleast().getTime().getDVal();
+                              _builder.append(_dVal_45, "\t");
                               _builder.append("\",");
                               _builder.newLineIfNotEmpty();
                               _builder.append("\t");
@@ -2006,8 +2006,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                             _builder.append("\t");
                             _builder.append("\t\t\t", "\t");
                             _builder.append("\"Value\":\"");
-                            double _dVal_45 = param.getCheck().getReference().getSame().getAtmost().getValue().getDVal();
-                            _builder.append(_dVal_45, "\t");
+                            double _dVal_46 = param.getCheck().getReference().getSame().getAtmost().getValue().getDVal();
+                            _builder.append(_dVal_46, "\t");
                             _builder.append("\",");
                             _builder.newLineIfNotEmpty();
                             {
@@ -2017,8 +2017,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                                 _builder.append("\t");
                                 _builder.append("\t\t\t", "\t");
                                 _builder.append("\"Time\":\"");
-                                double _dVal_46 = param.getCheck().getReference().getSame().getAtmost().getTime().getDVal();
-                                _builder.append(_dVal_46, "\t");
+                                double _dVal_47 = param.getCheck().getReference().getSame().getAtmost().getTime().getDVal();
+                                _builder.append(_dVal_47, "\t");
                                 _builder.append("\",");
                                 _builder.newLineIfNotEmpty();
                                 _builder.append("\t");
@@ -2078,11 +2078,11 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       _builder.append("\t\t", "\t");
                       _builder.append("\"Value\":[\"");
                       {
-                        DOUBLE _value_9 = param.getCheck().getReference().getNotsame().getBound_upp().getValue();
-                        boolean _tripleNotEquals_100 = (_value_9 != null);
+                        DOUBLE _value_8 = param.getCheck().getReference().getNotsame().getBound_upp().getValue();
+                        boolean _tripleNotEquals_100 = (_value_8 != null);
                         if (_tripleNotEquals_100) {
-                          double _dVal_47 = param.getCheck().getReference().getNotsame().getBound_upp().getValue().getDVal();
-                          _builder.append(_dVal_47, "\t");
+                          double _dVal_48 = param.getCheck().getReference().getNotsame().getBound_upp().getValue().getDVal();
+                          _builder.append(_dVal_48, "\t");
                           _builder.append("\"],");
                         } else {
                           {
@@ -2101,8 +2101,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                                   String _name_25 = param1_10.getName();
                                   _builder.append(_name_25, "\t");
                                 } else {
-                                  double _dVal_48 = param1_10.getValue().getDVal();
-                                  _builder.append(_dVal_48, "\t");
+                                  double _dVal_49 = param1_10.getValue().getDVal();
+                                  _builder.append(_dVal_49, "\t");
                                 }
                               }
                               _builder.append(" ");
@@ -2164,8 +2164,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           _builder.append("\t");
                           _builder.append("\t\t\t", "\t");
                           _builder.append("\"Value\":\"");
-                          double _dVal_49 = param.getCheck().getReference().getNotsame().getExactly().getValue().getDVal();
-                          _builder.append(_dVal_49, "\t");
+                          double _dVal_50 = param.getCheck().getReference().getNotsame().getExactly().getValue().getDVal();
+                          _builder.append(_dVal_50, "\t");
                           _builder.append("\"");
                           _builder.newLineIfNotEmpty();
                           {
@@ -2175,8 +2175,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                               _builder.append("\t");
                               _builder.append("\t\t\t", "\t");
                               _builder.append("\t\"Time\":\"");
-                              double _dVal_50 = param.getCheck().getReference().getNotsame().getExactly().getTime().getDVal();
-                              _builder.append(_dVal_50, "\t");
+                              double _dVal_51 = param.getCheck().getReference().getNotsame().getExactly().getTime().getDVal();
+                              _builder.append(_dVal_51, "\t");
                               _builder.append("\",");
                               _builder.newLineIfNotEmpty();
                               _builder.append("\t");
@@ -2209,8 +2209,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                             _builder.append("\t");
                             _builder.append("\t\t\t", "\t");
                             _builder.append("\"Value\":\"");
-                            double _dVal_51 = param.getCheck().getReference().getNotsame().getAtleast().getValue().getDVal();
-                            _builder.append(_dVal_51, "\t");
+                            double _dVal_52 = param.getCheck().getReference().getNotsame().getAtleast().getValue().getDVal();
+                            _builder.append(_dVal_52, "\t");
                             _builder.append("\"");
                             _builder.newLineIfNotEmpty();
                             {
@@ -2220,8 +2220,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                                 _builder.append("\t");
                                 _builder.append("\t\t\t", "\t");
                                 _builder.append("\"Time\":\"");
-                                double _dVal_52 = param.getCheck().getReference().getNotsame().getAtleast().getTime().getDVal();
-                                _builder.append(_dVal_52, "\t");
+                                double _dVal_53 = param.getCheck().getReference().getNotsame().getAtleast().getTime().getDVal();
+                                _builder.append(_dVal_53, "\t");
                                 _builder.append("\",");
                                 _builder.newLineIfNotEmpty();
                                 _builder.append("\t");
@@ -2253,8 +2253,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                               _builder.append("\t");
                               _builder.append("\t\t\t", "\t");
                               _builder.append("\"Value\":\"");
-                              double _dVal_53 = param.getCheck().getReference().getNotsame().getAtmost().getValue().getDVal();
-                              _builder.append(_dVal_53, "\t");
+                              double _dVal_54 = param.getCheck().getReference().getNotsame().getAtmost().getValue().getDVal();
+                              _builder.append(_dVal_54, "\t");
                               _builder.append("\"");
                               _builder.newLineIfNotEmpty();
                               {
@@ -2264,8 +2264,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                                   _builder.append("\t");
                                   _builder.append("\t\t\t", "\t");
                                   _builder.append("\"Time\":\"");
-                                  double _dVal_54 = param.getCheck().getReference().getNotsame().getAtmost().getTime().getDVal();
-                                  _builder.append(_dVal_54, "\t");
+                                  double _dVal_55 = param.getCheck().getReference().getNotsame().getAtmost().getTime().getDVal();
+                                  _builder.append(_dVal_55, "\t");
                                   _builder.append("\",");
                                   _builder.newLineIfNotEmpty();
                                   _builder.append("\t");
@@ -2334,8 +2334,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.append("\t\t");
                 _builder.append("\t", "\t\t");
                 _builder.append("\"Cant\":\"");
-                double _dVal_55 = failreason.getReason().getHighPeak().getCant().getDVal();
-                _builder.append(_dVal_55, "\t\t");
+                double _dVal_56 = failreason.getReason().getHighPeak().getCant().getDVal();
+                _builder.append(_dVal_56, "\t\t");
                 _builder.append("\",");
                 _builder.newLineIfNotEmpty();
                 _builder.append("\t\t");
@@ -2361,8 +2361,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.append("\t\t");
                   _builder.append("\t", "\t\t");
                   _builder.append("\"Cant\":\"");
-                  double _dVal_56 = failreason.getReason().getHighTime().getCant().getDVal();
-                  _builder.append(_dVal_56, "\t\t");
+                  double _dVal_57 = failreason.getReason().getHighTime().getCant().getDVal();
+                  _builder.append(_dVal_57, "\t\t");
                   _builder.append("\",");
                   _builder.newLineIfNotEmpty();
                   _builder.append("\t\t");
@@ -2372,8 +2372,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.append("\t\t");
                   _builder.append("\t", "\t\t");
                   _builder.append("\"Time\":\"");
-                  double _dVal_57 = failreason.getReason().getHighTime().getTime().getDVal();
-                  _builder.append(_dVal_57, "\t\t");
+                  double _dVal_58 = failreason.getReason().getHighTime().getTime().getDVal();
+                  _builder.append(_dVal_58, "\t\t");
                   _builder.append("\",");
                   _builder.newLineIfNotEmpty();
                   _builder.append("\t\t");
@@ -2394,22 +2394,22 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.append("\t\t");
                     _builder.append("\t", "\t\t");
                     _builder.append("\"Cant\":\"");
-                    double _dVal_58 = failreason.getReason().getXPeaks().getCant().getDVal();
-                    _builder.append(_dVal_58, "\t\t");
-                    _builder.append("\",");
-                    _builder.newLineIfNotEmpty();
-                    _builder.append("\t\t");
-                    _builder.append("\t", "\t\t");
-                    _builder.append("\"NPeaks\":\"");
-                    double _dVal_59 = failreason.getReason().getXPeaks().getNPeaks().getDVal();
+                    double _dVal_59 = failreason.getReason().getXPeaks().getCant().getDVal();
                     _builder.append(_dVal_59, "\t\t");
                     _builder.append("\",");
                     _builder.newLineIfNotEmpty();
                     _builder.append("\t\t");
                     _builder.append("\t", "\t\t");
-                    _builder.append("\"Time\":\"");
-                    double _dVal_60 = failreason.getReason().getXPeaks().getTime().getDVal();
+                    _builder.append("\"NPeaks\":\"");
+                    double _dVal_60 = failreason.getReason().getXPeaks().getNPeaks().getDVal();
                     _builder.append(_dVal_60, "\t\t");
+                    _builder.append("\",");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t\t");
+                    _builder.append("\t", "\t\t");
+                    _builder.append("\"Time\":\"");
+                    double _dVal_61 = failreason.getReason().getXPeaks().getTime().getDVal();
+                    _builder.append(_dVal_61, "\t\t");
                     _builder.append("\",");
                     _builder.newLineIfNotEmpty();
                     _builder.append("\t\t");
@@ -2430,8 +2430,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       _builder.append("\t\t");
                       _builder.append("\t", "\t\t");
                       _builder.append("\"Cant\":\"");
-                      double _dVal_61 = failreason.getReason().getConstDeg().getCant().getDVal();
-                      _builder.append(_dVal_61, "\t\t");
+                      double _dVal_62 = failreason.getReason().getConstDeg().getCant().getDVal();
+                      _builder.append(_dVal_62, "\t\t");
                       _builder.append("\",");
                       _builder.newLineIfNotEmpty();
                       _builder.append("\t\t");
@@ -2459,8 +2459,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
         _builder.append("\t");
         _builder.append("\t", "\t");
         _builder.append("\"Description\":\"");
-        String _value_10 = param.getCheck().getDescription().getValue();
-        _builder.append(_value_10, "\t");
+        String _value_9 = param.getCheck().getDescription().getValue();
+        _builder.append(_value_9, "\t");
         _builder.append("\"");
         _builder.newLineIfNotEmpty();
         {
