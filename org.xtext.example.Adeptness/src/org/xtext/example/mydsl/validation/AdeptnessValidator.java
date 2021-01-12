@@ -18,6 +18,7 @@ import org.xtext.example.mydsl.adeptness.Bound_Down;
 import org.xtext.example.mydsl.adeptness.Bound_up;
 import org.xtext.example.mydsl.adeptness.Checks;
 import org.xtext.example.mydsl.adeptness.ConstDeg;
+import org.xtext.example.mydsl.adeptness.DOUBLE;
 import org.xtext.example.mydsl.adeptness.Exactly;
 import org.xtext.example.mydsl.adeptness.ExpressionsModel;
 import org.xtext.example.mydsl.adeptness.Gap;
@@ -662,6 +663,12 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		if(notSame.getBound_upp().getValue()==null && notSame.getBound_upp().getEm()==null) {
 			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.NOT_SAME__BOUND_UPP);
 			
+		}
+	}
+	@Check
+	public void checkValues(DOUBLE value) {
+		if(value.getDVal()>9999999 || value.getDVal()<-9999999) {
+			error("This is an invalid value, must be bigger than -9999999 and lower than 9999999", AdeptnessPackage.Literals.DOUBLE__DVAL);
 		}
 	}
 	

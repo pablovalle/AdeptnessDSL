@@ -33,17 +33,22 @@ import org.xtext.example.mydsl.adeptness.FailReason;
 import org.xtext.example.mydsl.adeptness.Gap;
 import org.xtext.example.mydsl.adeptness.HighPeak;
 import org.xtext.example.mydsl.adeptness.HighTime;
+import org.xtext.example.mydsl.adeptness.Inputs;
 import org.xtext.example.mydsl.adeptness.LogicOp;
 import org.xtext.example.mydsl.adeptness.Lower;
 import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.Op;
 import org.xtext.example.mydsl.adeptness.Operators;
 import org.xtext.example.mydsl.adeptness.Oracle;
+import org.xtext.example.mydsl.adeptness.Parameters;
 import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Reference;
 import org.xtext.example.mydsl.adeptness.Same;
 import org.xtext.example.mydsl.adeptness.Signal;
+import org.xtext.example.mydsl.adeptness.Test;
+import org.xtext.example.mydsl.adeptness.TestingOracle;
 import org.xtext.example.mydsl.adeptness.Upper;
+import org.xtext.example.mydsl.adeptness.ValidationPlan;
 import org.xtext.example.mydsl.adeptness.Wait;
 import org.xtext.example.mydsl.adeptness.When;
 import org.xtext.example.mydsl.adeptness.While;
@@ -64,8 +69,14 @@ public class AdeptnessGenerator extends AbstractGenerator {
   
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
-    Iterable<Signal> _filter = Iterables.<Signal>filter(IteratorExtensions.<EObject>toIterable(resource.getAllContents()), Signal.class);
-    for (final Signal e : _filter) {
+    Iterable<ValidationPlan> _filter = Iterables.<ValidationPlan>filter(IteratorExtensions.<EObject>toIterable(resource.getAllContents()), ValidationPlan.class);
+    for (final ValidationPlan a : _filter) {
+      String _string = this._iQualifiedNameProvider.getFullyQualifiedName(a).toString("/");
+      String _plus = (_string + ".json");
+      fsa.generateFile(_plus, this.create_VP_json(a));
+    }
+    Iterable<Signal> _filter_1 = Iterables.<Signal>filter(IteratorExtensions.<EObject>toIterable(resource.getAllContents()), Signal.class);
+    for (final Signal e : _filter_1) {
       {
         HashMap<String, List<String>> _hashMap = new HashMap<String, List<String>>();
         this.nameMap = _hashMap;
@@ -73,19 +84,168 @@ public class AdeptnessGenerator extends AbstractGenerator {
         EList<Oracle> _oracle = e.getOracle();
         for (final Oracle q : _oracle) {
           {
-            String _string = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
-            String _plus = (_string + ".c");
-            fsa.generateFile(_plus, this.create_oracle_c(q, this.nameMap.get(q.getName())));
             String _string_1 = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
-            String _plus_1 = (_string_1 + ".h");
-            fsa.generateFile(_plus_1, this.create_oracle_h(q, this.nameMap.get(q.getName())));
+            String _plus_1 = (_string_1 + ".c");
+            fsa.generateFile(_plus_1, this.create_oracle_c(q, this.nameMap.get(q.getName())));
+            String _string_2 = this._iQualifiedNameProvider.getFullyQualifiedName(q).toString("/");
+            String _plus_2 = (_string_2 + ".h");
+            fsa.generateFile(_plus_2, this.create_oracle_h(q, this.nameMap.get(q.getName())));
           }
         }
-        String _string = this._iQualifiedNameProvider.getFullyQualifiedName(e).toString("/");
-        String _plus = (_string + ".json");
-        fsa.generateFile(_plus, this.create_oracle_json(e));
+        String _string_1 = this._iQualifiedNameProvider.getFullyQualifiedName(e).toString("/");
+        String _plus_1 = (_string_1 + ".json");
+        fsa.generateFile(_plus_1, this.create_oracle_json(e));
       }
     }
+  }
+  
+  public CharSequence create_VP_json(final ValidationPlan plan) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"tests\" : {");
+    _builder.newLineIfNotEmpty();
+    {
+      EList<Test> _test = plan.getTest();
+      for(final Test test : _test) {
+        _builder.append("\t\t");
+        _builder.append("\"");
+        String _name = test.getName();
+        _builder.append(_name);
+        _builder.append("\" : {");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t");
+        _builder.append("\"SUT\": \"");
+        String _sut = test.getSut();
+        _builder.append(_sut);
+        _builder.append("\" ,");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t");
+        _builder.append("\"TestLevel\": \"");
+        String _testLevel = test.getTestLevel();
+        _builder.append(_testLevel);
+        _builder.append("\" ,");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t");
+        _builder.append("\"inputs\": ");
+        {
+          EList<Inputs> _inputs = test.getInputs();
+          for(final Inputs input : _inputs) {
+            _builder.append(" \"");
+            String _value = input.getValue();
+            _builder.append(_value);
+            _builder.append("\", ");
+          }
+        }
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t");
+        _builder.append("\"oracles\": {");
+        {
+          EList<TestingOracle> _oracles = test.getOracles();
+          for(final TestingOracle oracle : _oracles) {
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t\t\t");
+            _builder.append("\"");
+            String _name_1 = oracle.getName();
+            _builder.append(_name_1);
+            _builder.append("\" :{");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t\t\t\t");
+            _builder.append("\"type\": \"");
+            String _type = oracle.getType();
+            _builder.append(_type);
+            _builder.append("\",");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t\t\t\t");
+            _builder.append("\"prams\": ");
+            {
+              EList<Parameters> _parameters = oracle.getParameters();
+              for(final Parameters param : _parameters) {
+                _builder.append("\"");
+                {
+                  EList<AbstractElement2> _elements = param.getValue().getElements();
+                  for(final AbstractElement2 param1 : _elements) {
+                    _builder.append(" ");
+                    {
+                      EList<String> _frontParentheses = param1.getFrontParentheses();
+                      for(final String parent : _frontParentheses) {
+                        _builder.append("( ");
+                      }
+                    }
+                    {
+                      String _name_2 = param1.getName();
+                      boolean _tripleNotEquals = (_name_2 != null);
+                      if (_tripleNotEquals) {
+                        String _name_3 = param1.getName();
+                        _builder.append(_name_3);
+                      } else {
+                        double _dVal = param1.getValue().getDVal();
+                        _builder.append(_dVal);
+                      }
+                    }
+                    _builder.append(" ");
+                    {
+                      EList<Operators> _op = param1.getOp();
+                      for(final Operators parent_1 : _op) {
+                        {
+                          String _backParentheses = parent_1.getBackParentheses();
+                          boolean _tripleNotEquals_1 = (_backParentheses != null);
+                          if (_tripleNotEquals_1) {
+                            _builder.append(") ");
+                          } else {
+                            CompOp _comparation = parent_1.getComparation();
+                            boolean _tripleNotEquals_2 = (_comparation != null);
+                            if (_tripleNotEquals_2) {
+                              String _op_1 = parent_1.getComparation().getOp();
+                              _builder.append(_op_1);
+                              _builder.append(" ");
+                            } else {
+                              LogicOp _logicOperator = parent_1.getLogicOperator();
+                              boolean _tripleNotEquals_3 = (_logicOperator != null);
+                              if (_tripleNotEquals_3) {
+                                String _op_2 = parent_1.getLogicOperator().getOp();
+                                _builder.append(_op_2);
+                                _builder.append(" ");
+                              } else {
+                                Op _operator = parent_1.getOperator();
+                                boolean _tripleNotEquals_4 = (_operator != null);
+                                if (_tripleNotEquals_4) {
+                                  String _op_3 = parent_1.getOperator().getOp();
+                                  _builder.append(_op_3);
+                                  _builder.append(" ");
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                _builder.append(",\"");
+              }
+            }
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t\t\t");
+            _builder.append("},");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        _builder.append("\t\t\t");
+        _builder.append("},");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t");
+        _builder.append("},");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
   }
   
   public void getAllNames(final Signal signal) {

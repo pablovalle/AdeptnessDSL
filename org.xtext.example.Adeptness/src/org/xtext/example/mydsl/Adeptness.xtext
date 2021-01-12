@@ -24,7 +24,37 @@ QualifiedName:
 ;
 
 Type:
-	DataType | Signal | MonitoringFile
+	DataType | Signal | MonitoringFile | ValidationPlan
+;
+
+ValidationPlan:
+	'VALIDATIONPLAN' name=ID ':' ('implements'superType=[MonitoringFile|QualifiedName])?
+	(test+=Test)+ 'ENDVALIDATIONPLAN'
+;
+
+Test:
+	'TEST' name=ID ':'
+	'SUT:' sut=STRING ','
+	'TestLevel:' testLevel=STRING ','
+	"Inputs:" (inputs+=Inputs)+
+	(oracles+=TestingOracle)+
+	'ENDTEST'
+;
+
+TestingOracle:
+	"TESTINGORACLE" name=ID ':'
+	'Type:' type=STRING ','
+	'Params:' (parameters+=Parameters)+
+	'ENDTESTINGORACLE'
+	
+;
+
+Parameters:
+	value=ExpressionsModel ','
+;
+
+Inputs:
+	(value=STRING) ','
 ;
 
 MonitoringFile:
