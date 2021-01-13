@@ -67,6 +67,14 @@ public class AdeptnessGenerator extends AbstractGenerator {
   
   private HashMap<String, List<String>> nameMap;
   
+  private HashMap<String, String> whenMap;
+  
+  private HashMap<String, String> whileMap;
+  
+  private HashMap<String, String> whenMap_preconds;
+  
+  private HashMap<String, String> whileMap_preconds;
+  
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
     Iterable<ValidationPlan> _filter = Iterables.<ValidationPlan>filter(IteratorExtensions.<EObject>toIterable(resource.getAllContents()), ValidationPlan.class);
@@ -80,6 +88,14 @@ public class AdeptnessGenerator extends AbstractGenerator {
       {
         HashMap<String, List<String>> _hashMap = new HashMap<String, List<String>>();
         this.nameMap = _hashMap;
+        HashMap<String, String> _hashMap_1 = new HashMap<String, String>();
+        this.whenMap = _hashMap_1;
+        HashMap<String, String> _hashMap_2 = new HashMap<String, String>();
+        this.whileMap = _hashMap_2;
+        HashMap<String, String> _hashMap_3 = new HashMap<String, String>();
+        this.whileMap_preconds = _hashMap_3;
+        HashMap<String, String> _hashMap_4 = new HashMap<String, String>();
+        this.whenMap_preconds = _hashMap_4;
         this.getAllNames(e);
         EList<Oracle> _oracle = e.getOracle();
         for (final Oracle q : _oracle) {
@@ -250,6 +266,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
   
   public void getAllNames(final Signal signal) {
     List<String> namelists = null;
+    List<String> whileNames = null;
+    List<String> whenNames = null;
     Oracle oracle = null;
     boolean is = false;
     for (int z = 0; (z < signal.getOracle().size()); z++) {
@@ -282,11 +300,14 @@ public class AdeptnessGenerator extends AbstractGenerator {
         While _while = oracle.getWhile();
         boolean _tripleNotEquals_1 = (_while != null);
         if (_tripleNotEquals_1) {
+          ArrayList<String> _arrayList_1 = new ArrayList<String>();
+          whileNames = _arrayList_1;
           While wile = oracle.getWhile();
+          boolean isWHile = false;
           for (int i = 0; (i < wile.getEm().getElements().size()); i++) {
             {
               for (int j = 0; (j < namelists.size()); j++) {
-                if ((((wile.getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(wile.getEm().getElements().get(i).getName())) || wile.getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                if ((((wile.getEm().getElements().get(i).getName() == null) || ((namelists.get(j) != null) && namelists.get(j).equals(wile.getEm().getElements().get(i).getName()))) || wile.getEm().getElements().get(i).getName().equals("timeStamp"))) {
                   is = true;
                 }
               }
@@ -295,18 +316,59 @@ public class AdeptnessGenerator extends AbstractGenerator {
               } else {
                 is = false;
               }
+              for (int j = 0; (j < whileNames.size()); j++) {
+                if ((((wile.getEm().getElements().get(i).getName() == null) || ((whileNames.get(j) != null) && whileNames.get(j).equals(wile.getEm().getElements().get(i).getName()))) || wile.getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                  isWHile = true;
+                }
+              }
+              if ((!isWHile)) {
+                whileNames.add(wile.getEm().getElements().get(i).getName());
+              } else {
+                isWHile = false;
+              }
             }
           }
+          String a = "";
+          String b = "";
+          for (int i = 0; (i < whileNames.size()); i++) {
+            int _size = whileNames.size();
+            int _minus = (_size - 1);
+            boolean _notEquals = (i != _minus);
+            if (_notEquals) {
+              String _get = whileNames.get(i);
+              String _plus = ((a + "int ") + _get);
+              String _plus_1 = (_plus + ", ");
+              a = _plus_1;
+              String _get_1 = whileNames.get(i);
+              String _plus_2 = (b + _get_1);
+              String _plus_3 = (_plus_2 + "[cycle], ");
+              b = _plus_3;
+            } else {
+              String _get_2 = whileNames.get(i);
+              String _plus_4 = ((a + "int ") + _get_2);
+              a = _plus_4;
+              String _get_3 = whileNames.get(i);
+              String _plus_5 = (b + _get_3);
+              String _plus_6 = (_plus_5 + "[cycle] ");
+              b = _plus_6;
+            }
+          }
+          InputOutput.<String>println(a);
+          this.whileMap.put(oracle.getName(), a);
+          this.whileMap_preconds.put(oracle.getName(), b);
         }
         is = false;
         When _when = oracle.getWhen();
         boolean _tripleNotEquals_2 = (_when != null);
         if (_tripleNotEquals_2) {
+          ArrayList<String> _arrayList_2 = new ArrayList<String>();
+          whenNames = _arrayList_2;
+          boolean isWhen = false;
           When when = oracle.getWhen();
           for (int i = 0; (i < when.getEm().getElements().size()); i++) {
             {
               for (int j = 0; (j < namelists.size()); j++) {
-                if ((((when.getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(when.getEm().getElements().get(i).getName())) || when.getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                if ((((when.getEm().getElements().get(i).getName() == null) || ((namelists.get(j) != null) && namelists.get(j).equals(when.getEm().getElements().get(i).getName()))) || when.getEm().getElements().get(i).getName().equals("timeStamp"))) {
                   is = true;
                 }
               }
@@ -315,8 +377,45 @@ public class AdeptnessGenerator extends AbstractGenerator {
               } else {
                 is = false;
               }
+              for (int j = 0; (j < whenNames.size()); j++) {
+                if ((((when.getEm().getElements().get(i).getName() == null) || ((whenNames.get(j) != null) && whenNames.get(j).equals(when.getEm().getElements().get(i).getName()))) || when.getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                  isWhen = true;
+                }
+              }
+              if ((!isWhen)) {
+                whenNames.add(when.getEm().getElements().get(i).getName());
+              } else {
+                isWhen = false;
+              }
             }
           }
+          String a_1 = "";
+          String b_1 = "";
+          for (int i = 0; (i < whenNames.size()); i++) {
+            int _size = whenNames.size();
+            int _minus = (_size - 1);
+            boolean _notEquals = (i != _minus);
+            if (_notEquals) {
+              String _get = whenNames.get(i);
+              String _plus = ((a_1 + "int ") + _get);
+              String _plus_1 = (_plus + ", ");
+              a_1 = _plus_1;
+              String _get_1 = whenNames.get(i);
+              String _plus_2 = (b_1 + _get_1);
+              String _plus_3 = (_plus_2 + "[cycle], ");
+              b_1 = _plus_3;
+            } else {
+              String _get_2 = whenNames.get(i);
+              String _plus_4 = ((a_1 + "int ") + _get_2);
+              a_1 = _plus_4;
+              String _get_3 = whenNames.get(i);
+              String _plus_5 = (b_1 + _get_3);
+              String _plus_6 = (_plus_5 + "[cycle]");
+              b_1 = _plus_6;
+            }
+          }
+          this.whenMap.put(oracle.getName(), a_1);
+          this.whenMap_preconds.put(oracle.getName(), b_1);
         }
         is = false;
         Reference _reference = oracle.getCheck().getReference();
@@ -326,7 +425,7 @@ public class AdeptnessGenerator extends AbstractGenerator {
             for (int i = 0; (i < oracle.getCheck().getReference().getGap().getBound_lower().getEm().getElements().size()); i++) {
               {
                 for (int j = 0; (j < namelists.size()); j++) {
-                  if ((((oracle.getCheck().getReference().getGap().getBound_lower().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getGap().getBound_lower().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getGap().getBound_lower().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                  if ((((oracle.getCheck().getReference().getGap().getBound_lower().getEm().getElements().get(i).getName() == null) || ((namelists.get(j) != null) && namelists.get(j).equals(oracle.getCheck().getReference().getGap().getBound_lower().getEm().getElements().get(i).getName()))) || oracle.getCheck().getReference().getGap().getBound_lower().getEm().getElements().get(i).getName().equals("timeStamp"))) {
                     is = true;
                   }
                 }
@@ -342,7 +441,7 @@ public class AdeptnessGenerator extends AbstractGenerator {
               for (int i = 0; (i < oracle.getCheck().getReference().getGap().getBound_upp().getEm().getElements().size()); i++) {
                 {
                   for (int j = 0; (j < namelists.size()); j++) {
-                    if ((((oracle.getCheck().getReference().getGap().getBound_upp().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getGap().getBound_upp().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getGap().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                    if ((((oracle.getCheck().getReference().getGap().getBound_upp().getEm().getElements().get(i).getName() == null) || ((namelists.get(j) != null) && namelists.get(j).equals(oracle.getCheck().getReference().getGap().getBound_upp().getEm().getElements().get(i).getName()))) || oracle.getCheck().getReference().getGap().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
                       is = true;
                     }
                   }
@@ -358,7 +457,7 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 for (int i = 0; (i < oracle.getCheck().getReference().getRange().getBound_lower().getEm().getElements().size()); i++) {
                   {
                     for (int j = 0; (j < namelists.size()); j++) {
-                      if ((((oracle.getCheck().getReference().getRange().getBound_lower().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getRange().getBound_lower().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getRange().getBound_lower().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                      if ((((oracle.getCheck().getReference().getRange().getBound_lower().getEm().getElements().get(i).getName() == null) || ((namelists.get(j) != null) && namelists.get(j).equals(oracle.getCheck().getReference().getRange().getBound_lower().getEm().getElements().get(i).getName()))) || oracle.getCheck().getReference().getRange().getBound_lower().getEm().getElements().get(i).getName().equals("timeStamp"))) {
                         is = true;
                       }
                     }
@@ -374,7 +473,7 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   for (int i = 0; (i < oracle.getCheck().getReference().getRange().getBound_upp().getEm().getElements().size()); i++) {
                     {
                       for (int j = 0; (j < namelists.size()); j++) {
-                        if ((((oracle.getCheck().getReference().getRange().getBound_upp().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getRange().getBound_upp().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getRange().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                        if ((((oracle.getCheck().getReference().getRange().getBound_upp().getEm().getElements().get(i).getName() == null) || ((namelists.get(j) != null) && namelists.get(j).equals(oracle.getCheck().getReference().getRange().getBound_upp().getEm().getElements().get(i).getName()))) || oracle.getCheck().getReference().getRange().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
                           is = true;
                         }
                       }
@@ -389,9 +488,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   if (((oracle.getCheck().getReference().getUpper() != null) && (oracle.getCheck().getReference().getUpper().getBound_upp().getEm() != null))) {
                     for (int i = 0; (i < oracle.getCheck().getReference().getUpper().getBound_upp().getEm().getElements().size()); i++) {
                       {
-                        InputOutput.<String>println(oracle.getName());
                         for (int j = 0; (j < namelists.size()); j++) {
-                          if ((((oracle.getCheck().getReference().getUpper().getBound_upp().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getUpper().getBound_upp().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getUpper().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                          if ((((oracle.getCheck().getReference().getUpper().getBound_upp().getEm().getElements().get(i).getName() == null) || ((namelists.get(j) != null) && namelists.get(j).equals(oracle.getCheck().getReference().getUpper().getBound_upp().getEm().getElements().get(i).getName()))) || oracle.getCheck().getReference().getUpper().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
                             is = true;
                           }
                         }
@@ -407,7 +505,7 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       for (int i = 0; (i < oracle.getCheck().getReference().getSame().getBound_upp().getEm().getElements().size()); i++) {
                         {
                           for (int j = 0; (j < namelists.size()); j++) {
-                            if ((((oracle.getCheck().getReference().getSame().getBound_upp().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getSame().getBound_upp().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getSame().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                            if ((((oracle.getCheck().getReference().getSame().getBound_upp().getEm().getElements().get(i).getName() == null) || ((namelists.get(j) != null) && namelists.get(j).equals(oracle.getCheck().getReference().getSame().getBound_upp().getEm().getElements().get(i).getName()))) || oracle.getCheck().getReference().getSame().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
                               is = true;
                             }
                           }
@@ -423,7 +521,7 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         for (int i = 0; (i < oracle.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements().size()); i++) {
                           {
                             for (int j = 0; (j < namelists.size()); j++) {
-                              if ((((oracle.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                              if ((((oracle.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements().get(i).getName() == null) || ((namelists.get(j) != null) && namelists.get(j).equals(oracle.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements().get(i).getName()))) || oracle.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements().get(i).getName().equals("timeStamp"))) {
                                 is = true;
                               }
                             }
@@ -442,7 +540,7 @@ public class AdeptnessGenerator extends AbstractGenerator {
                             for (int i = 0; (i < oracle.getCheck().getReference().getLower().getBound_lower().getEm().getElements().size()); i++) {
                               {
                                 for (int j = 0; (j < namelists.size()); j++) {
-                                  if ((((oracle.getCheck().getReference().getLower().getBound_lower().getEm().getElements().get(i).getName() == null) || namelists.get(j).equals(oracle.getCheck().getReference().getLower().getBound_lower().getEm().getElements().get(i).getName())) || oracle.getCheck().getReference().getLower().getBound_lower().getEm().getElements().get(i).getName().equals("timeStamp"))) {
+                                  if ((((oracle.getCheck().getReference().getLower().getBound_lower().getEm().getElements().get(i).getName() == null) || ((namelists.get(j) != null) && namelists.get(j).equals(oracle.getCheck().getReference().getLower().getBound_lower().getEm().getElements().get(i).getName()))) || oracle.getCheck().getReference().getLower().getBound_lower().getEm().getElements().get(i).getName().equals("timeStamp"))) {
                                     is = true;
                                   }
                                 }
@@ -2658,10 +2756,60 @@ public class AdeptnessGenerator extends AbstractGenerator {
     _builder.append(_upperCase_1);
     _builder.append("_H");
     _builder.newLineIfNotEmpty();
+    _builder.append("struct Verdict{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("}VERDICT;");
+    _builder.newLine();
+    _builder.append("struct SensorInput{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("}SENSOR_INPUT, *SENSOR_INPUT;");
+    _builder.newLine();
+    _builder.append("int preprocessInputs(SensorInput *inputs, int inputQty);");
+    _builder.newLine();
+    {
+      if (((param.getWhen() != null) || (param.getWhile() != null))) {
+        _builder.append("int evaluatePreConditions_");
+        String _name = param.getName();
+        _builder.append(_name);
+        _builder.append("(");
+        {
+          When _when = param.getWhen();
+          boolean _tripleNotEquals = (_when != null);
+          if (_tripleNotEquals) {
+            String _string = this.whenMap.get(param.getName()).toString();
+            _builder.append(_string);
+          } else {
+            While _while = param.getWhile();
+            boolean _tripleNotEquals_1 = (_while != null);
+            if (_tripleNotEquals_1) {
+              String _string_1 = this.whileMap.get(param.getName()).toString();
+              _builder.append(_string_1);
+            }
+          }
+        }
+        _builder.append(");");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("Verdict evaluatePostConditions_");
+    String _name_1 = param.getName();
+    _builder.append(_name_1);
+    _builder.append("(Verdict verdict, SensorInput *inputs, int inputQty);");
+    _builder.newLineIfNotEmpty();
+    _builder.append("Verdict performEvaluation_");
+    String _name_2 = param.getName();
+    _builder.append(_name_2);
+    _builder.append("(SensorInput *inputs, int inputQty, double timeStamp);");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
     {
       Upper _upper = param.getCheck().getReference().getUpper();
-      boolean _tripleNotEquals = (_upper != null);
-      if (_tripleNotEquals) {
+      boolean _tripleNotEquals_2 = (_upper != null);
+      if (_tripleNotEquals_2) {
         _builder.append("struct Ret{");
         _builder.newLine();
         _builder.append("\t");
@@ -2673,8 +2821,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
         _builder.append("};");
         _builder.newLine();
         _builder.append("struct Ret ");
-        String _string = param.getName().toString();
-        _builder.append(_string);
+        String _string_2 = param.getName().toString();
+        _builder.append(_string_2);
         _builder.append(" (");
         {
           for(final String name : nameList) {
@@ -2687,8 +2835,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
         _builder.newLineIfNotEmpty();
       } else {
         Lower _lower = param.getCheck().getReference().getLower();
-        boolean _tripleNotEquals_1 = (_lower != null);
-        if (_tripleNotEquals_1) {
+        boolean _tripleNotEquals_3 = (_lower != null);
+        if (_tripleNotEquals_3) {
           _builder.append("struct Ret{");
           _builder.newLine();
           _builder.append("\t");
@@ -2700,8 +2848,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
           _builder.append("};");
           _builder.newLine();
           _builder.append("struct Ret ");
-          String _string_1 = param.getName().toString();
-          _builder.append(_string_1);
+          String _string_3 = param.getName().toString();
+          _builder.append(_string_3);
           _builder.append(" (");
           {
             for(final String name_1 : nameList) {
@@ -2714,8 +2862,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
           _builder.newLineIfNotEmpty();
         } else {
           Same _same = param.getCheck().getReference().getSame();
-          boolean _tripleNotEquals_2 = (_same != null);
-          if (_tripleNotEquals_2) {
+          boolean _tripleNotEquals_4 = (_same != null);
+          if (_tripleNotEquals_4) {
             _builder.append("struct Ret{");
             _builder.newLine();
             _builder.append("\t");
@@ -2727,8 +2875,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
             _builder.append("};");
             _builder.newLine();
             _builder.append("struct Ret ");
-            String _string_2 = param.getName().toString();
-            _builder.append(_string_2);
+            String _string_4 = param.getName().toString();
+            _builder.append(_string_4);
             _builder.append(" (");
             {
               for(final String name_2 : nameList) {
@@ -2741,8 +2889,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
             _builder.newLineIfNotEmpty();
           } else {
             NotSame _notsame = param.getCheck().getReference().getNotsame();
-            boolean _tripleNotEquals_3 = (_notsame != null);
-            if (_tripleNotEquals_3) {
+            boolean _tripleNotEquals_5 = (_notsame != null);
+            if (_tripleNotEquals_5) {
               _builder.append("struct Ret{");
               _builder.newLine();
               _builder.append("\t");
@@ -2754,8 +2902,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
               _builder.append("};");
               _builder.newLine();
               _builder.append("struct Ret ");
-              String _string_3 = param.getName().toString();
-              _builder.append(_string_3);
+              String _string_5 = param.getName().toString();
+              _builder.append(_string_5);
               _builder.append(" (");
               {
                 for(final String name_3 : nameList) {
@@ -2768,8 +2916,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
               _builder.newLineIfNotEmpty();
             } else {
               Range _range = param.getCheck().getReference().getRange();
-              boolean _tripleNotEquals_4 = (_range != null);
-              if (_tripleNotEquals_4) {
+              boolean _tripleNotEquals_6 = (_range != null);
+              if (_tripleNotEquals_6) {
                 _builder.append("struct Ret{");
                 _builder.newLine();
                 _builder.append("\t");
@@ -2784,8 +2932,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.append("};");
                 _builder.newLine();
                 _builder.append("struct Ret ");
-                String _string_4 = param.getName().toString();
-                _builder.append(_string_4);
+                String _string_6 = param.getName().toString();
+                _builder.append(_string_6);
                 _builder.append(" (");
                 {
                   for(final String name_4 : nameList) {
@@ -2798,8 +2946,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.newLineIfNotEmpty();
               } else {
                 Gap _gap = param.getCheck().getReference().getGap();
-                boolean _tripleNotEquals_5 = (_gap != null);
-                if (_tripleNotEquals_5) {
+                boolean _tripleNotEquals_7 = (_gap != null);
+                if (_tripleNotEquals_7) {
                   _builder.append("struct Ret{");
                   _builder.newLine();
                   _builder.append("\t");
@@ -2814,8 +2962,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.append("};");
                   _builder.newLine();
                   _builder.append("struct Ret ");
-                  String _string_5 = param.getName().toString();
-                  _builder.append(_string_5);
+                  String _string_7 = param.getName().toString();
+                  _builder.append(_string_7);
                   _builder.append(" (");
                   {
                     for(final String name_5 : nameList) {
@@ -3186,13 +3334,336 @@ public class AdeptnessGenerator extends AbstractGenerator {
     String _value = param.getCheck().getDescription().getValue();
     _builder.append(_value);
     _builder.newLineIfNotEmpty();
+    _builder.append("int preprocessInputs(SensorInput *inputs, int inputQty) {");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("//TODO.");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("return inputQty;");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    {
+      if (((param.getWhen() != null) || (param.getWhile() != null))) {
+        _builder.append("int evaluatePreConditions_");
+        String _name = param.getName();
+        _builder.append(_name);
+        _builder.append("(");
+        {
+          When _when = param.getWhen();
+          boolean _tripleNotEquals = (_when != null);
+          if (_tripleNotEquals) {
+            String _string_1 = this.whenMap.get(param.getName()).toString();
+            _builder.append(_string_1);
+          } else {
+            While _while = param.getWhile();
+            boolean _tripleNotEquals_1 = (_while != null);
+            if (_tripleNotEquals_1) {
+              String _string_2 = this.whileMap.get(param.getName()).toString();
+              _builder.append(_string_2);
+            }
+          }
+        }
+        _builder.append(") {");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.append("return ");
+        {
+          When _when_1 = param.getWhen();
+          boolean _tripleNotEquals_2 = (_when_1 != null);
+          if (_tripleNotEquals_2) {
+            {
+              EList<AbstractElement2> _elements = param.getWhen().getEm().getElements();
+              for(final AbstractElement2 param1 : _elements) {
+                {
+                  EList<String> _frontParentheses = param1.getFrontParentheses();
+                  for(final String parent : _frontParentheses) {
+                    _builder.append("( ");
+                  }
+                }
+                {
+                  String _name_1 = param1.getName();
+                  boolean _tripleNotEquals_3 = (_name_1 != null);
+                  if (_tripleNotEquals_3) {
+                    String _name_2 = param1.getName();
+                    _builder.append(_name_2, "\t");
+                  } else {
+                    double _dVal = param1.getValue().getDVal();
+                    _builder.append(_dVal, "\t");
+                  }
+                }
+                _builder.append(" ");
+                {
+                  EList<Operators> _op = param1.getOp();
+                  for(final Operators parent_1 : _op) {
+                    {
+                      String _backParentheses = parent_1.getBackParentheses();
+                      boolean _tripleNotEquals_4 = (_backParentheses != null);
+                      if (_tripleNotEquals_4) {
+                        _builder.append(") ");
+                      } else {
+                        CompOp _comparation = parent_1.getComparation();
+                        boolean _tripleNotEquals_5 = (_comparation != null);
+                        if (_tripleNotEquals_5) {
+                          String _op_1 = parent_1.getComparation().getOp();
+                          _builder.append(_op_1, "\t");
+                          _builder.append(" ");
+                        } else {
+                          LogicOp _logicOperator = parent_1.getLogicOperator();
+                          boolean _tripleNotEquals_6 = (_logicOperator != null);
+                          if (_tripleNotEquals_6) {
+                            String _op_2 = parent_1.getLogicOperator().getOp();
+                            _builder.append(_op_2, "\t");
+                            _builder.append(" ");
+                          } else {
+                            Op _operator = parent_1.getOperator();
+                            boolean _tripleNotEquals_7 = (_operator != null);
+                            if (_tripleNotEquals_7) {
+                              String _op_3 = parent_1.getOperator().getOp();
+                              _builder.append(_op_3, "\t");
+                              _builder.append(" ");
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        {
+          While _while_1 = param.getWhile();
+          boolean _tripleNotEquals_8 = (_while_1 != null);
+          if (_tripleNotEquals_8) {
+            {
+              EList<AbstractElement2> _elements_1 = param.getWhile().getEm().getElements();
+              for(final AbstractElement2 param1_1 : _elements_1) {
+                {
+                  EList<String> _frontParentheses_1 = param1_1.getFrontParentheses();
+                  for(final String parent_2 : _frontParentheses_1) {
+                    _builder.append("( ");
+                  }
+                }
+                {
+                  String _name_3 = param1_1.getName();
+                  boolean _tripleNotEquals_9 = (_name_3 != null);
+                  if (_tripleNotEquals_9) {
+                    String _name_4 = param1_1.getName();
+                    _builder.append(_name_4, "\t");
+                  } else {
+                    double _dVal_1 = param1_1.getValue().getDVal();
+                    _builder.append(_dVal_1, "\t");
+                  }
+                }
+                _builder.append(" ");
+                {
+                  EList<Operators> _op_4 = param1_1.getOp();
+                  for(final Operators parent_3 : _op_4) {
+                    {
+                      String _backParentheses_1 = parent_3.getBackParentheses();
+                      boolean _tripleNotEquals_10 = (_backParentheses_1 != null);
+                      if (_tripleNotEquals_10) {
+                        _builder.append(") ");
+                      } else {
+                        CompOp _comparation_1 = parent_3.getComparation();
+                        boolean _tripleNotEquals_11 = (_comparation_1 != null);
+                        if (_tripleNotEquals_11) {
+                          String _op_5 = parent_3.getComparation().getOp();
+                          _builder.append(_op_5, "\t");
+                          _builder.append(" ");
+                        } else {
+                          LogicOp _logicOperator_1 = parent_3.getLogicOperator();
+                          boolean _tripleNotEquals_12 = (_logicOperator_1 != null);
+                          if (_tripleNotEquals_12) {
+                            String _op_6 = parent_3.getLogicOperator().getOp();
+                            _builder.append(_op_6, "\t");
+                            _builder.append(" ");
+                          } else {
+                            Op _operator_1 = parent_3.getOperator();
+                            boolean _tripleNotEquals_13 = (_operator_1 != null);
+                            if (_tripleNotEquals_13) {
+                              String _op_7 = parent_3.getOperator().getOp();
+                              _builder.append(_op_7, "\t");
+                              _builder.append(" ");
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        _builder.append(";");
+        _builder.newLineIfNotEmpty();
+        _builder.append("}");
+        _builder.newLine();
+      }
+    }
+    _builder.append("Verdict evaluatePostConditions_");
+    String _name_5 = param.getName();
+    _builder.append(_name_5);
+    _builder.append("(Verdict verdict, SensorInput *inputs, int inputQty) {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("    ");
+    _builder.append("verdict.verdict = VERDICT_PASSED;");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("verdict.confidence = 1;");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("return verdict;");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("Verdict performEvaluation_");
+    String _name_6 = param.getName();
+    _builder.append(_name_6);
+    _builder.append("(SensorInput *inputs, int inputQty, double timeStamp){");
+    _builder.newLineIfNotEmpty();
+    _builder.append("    ");
+    _builder.append("Verdict verdict;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("//Step 1: inicializacion");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("Static int cycle = -1;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("Static double[] timeStampOracle; ");
+    _builder.newLine();
+    {
+      List<String> _get = this.nameMap.get(param.getName());
+      for(final String param1_2 : _get) {
+        _builder.append("\t");
+        _builder.append("Static int[] ");
+        _builder.append(param1_2, "\t");
+        _builder.append(";");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("\t");
+    _builder.append("Static double[] conf;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("Static int[] preconditionGiven;");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("//Step 2: meter variables en array");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("cycle++;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("timeStampOracle[cycle] = timeStamp;");
+    _builder.newLine();
+    {
+      List<String> _get_1 = this.nameMap.get(param.getName());
+      for(final String param1_3 : _get_1) {
+        _builder.append("\t");
+        _builder.append(param1_3, "\t");
+        _builder.append("[cycle]=getCurrentIntValueFromInputs(inputs,\"");
+        _builder.append(param1_3, "\t");
+        _builder.append("\");");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    {
+      if (((param.getWhen() != null) || (param.getWhile() != null))) {
+        _builder.append("\t");
+        _builder.append("preconditionGiven[cycle] = evaluatePreConditions_");
+        String _name_7 = param.getName();
+        _builder.append(_name_7, "\t");
+        _builder.append("(");
+        {
+          When _when_2 = param.getWhen();
+          boolean _tripleNotEquals_14 = (_when_2 != null);
+          if (_tripleNotEquals_14) {
+            String _string_3 = this.whenMap_preconds.get(param.getName()).toString();
+            _builder.append(_string_3, "\t");
+          } else {
+            While _while_2 = param.getWhile();
+            boolean _tripleNotEquals_15 = (_while_2 != null);
+            if (_tripleNotEquals_15) {
+              String _string_4 = this.whileMap_preconds.get(param.getName()).toString();
+              _builder.append(_string_4, "\t");
+            }
+          }
+        }
+        _builder.append(");\t");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("if(preconditionGiven[cycle]){");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("//--During balidn bada, TimeStamp erabili, horretarako timeStamp-a beti ms-tan satru ezkero kalkulatu daiteke zenbat timeStamp behar ditugu honen konfidentzia jakiteko.");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("//Adibidea: timeStamp= 2 ms (timeStampOracle[1]-timeStampOracle[0])=timeStamp. IterazioKopurua=During/timeStamp eta horrarte kalkulatu conf-a.");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("//if(preconditionGiven[cycle] && during>0) during baldin bada hasieratuta 1-era egongo da, bestela 0-ra. Kasuistika baten during ez bada erabiltzen 1-era hasieratu ta listo.");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("conf[cycle] = llamadaAFuncionParaComprobarEsto(preconditionGiven[cycle]);//--funcion global y pasarle los valores y referencia a checkear con el tipo de check?");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}else{");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("conf[cycle] = 2;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("//Step 4: Sacar confidence");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("//GLOBAL?");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("verdict = checkGlobalVerdict(conf/*failureType, refValue*/); ");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("return verdict;");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
     {
       Upper _upper = param.getCheck().getReference().getUpper();
-      boolean _tripleNotEquals = (_upper != null);
-      if (_tripleNotEquals) {
+      boolean _tripleNotEquals_16 = (_upper != null);
+      if (_tripleNotEquals_16) {
         _builder.append("struct Ret ");
-        String _string_1 = param.getName().toString();
-        _builder.append(_string_1);
+        String _string_5 = param.getName().toString();
+        _builder.append(_string_5);
         _builder.append(" (");
         {
           for(final String name : nameList) {
@@ -3205,11 +3676,11 @@ public class AdeptnessGenerator extends AbstractGenerator {
         _builder.newLineIfNotEmpty();
       } else {
         Lower _lower = param.getCheck().getReference().getLower();
-        boolean _tripleNotEquals_1 = (_lower != null);
-        if (_tripleNotEquals_1) {
+        boolean _tripleNotEquals_17 = (_lower != null);
+        if (_tripleNotEquals_17) {
           _builder.append("struct Ret ");
-          String _string_2 = param.getName().toString();
-          _builder.append(_string_2);
+          String _string_6 = param.getName().toString();
+          _builder.append(_string_6);
           _builder.append(" (");
           {
             for(final String name_1 : nameList) {
@@ -3222,11 +3693,11 @@ public class AdeptnessGenerator extends AbstractGenerator {
           _builder.newLineIfNotEmpty();
         } else {
           Same _same = param.getCheck().getReference().getSame();
-          boolean _tripleNotEquals_2 = (_same != null);
-          if (_tripleNotEquals_2) {
+          boolean _tripleNotEquals_18 = (_same != null);
+          if (_tripleNotEquals_18) {
             _builder.append("struct Ret ");
-            String _string_3 = param.getName().toString();
-            _builder.append(_string_3);
+            String _string_7 = param.getName().toString();
+            _builder.append(_string_7);
             _builder.append(" (");
             {
               for(final String name_2 : nameList) {
@@ -3239,11 +3710,11 @@ public class AdeptnessGenerator extends AbstractGenerator {
             _builder.newLineIfNotEmpty();
           } else {
             NotSame _notsame = param.getCheck().getReference().getNotsame();
-            boolean _tripleNotEquals_3 = (_notsame != null);
-            if (_tripleNotEquals_3) {
+            boolean _tripleNotEquals_19 = (_notsame != null);
+            if (_tripleNotEquals_19) {
               _builder.append("struct Ret ");
-              String _string_4 = param.getName().toString();
-              _builder.append(_string_4);
+              String _string_8 = param.getName().toString();
+              _builder.append(_string_8);
               _builder.append(" (");
               {
                 for(final String name_3 : nameList) {
@@ -3256,11 +3727,11 @@ public class AdeptnessGenerator extends AbstractGenerator {
               _builder.newLineIfNotEmpty();
             } else {
               Range _range = param.getCheck().getReference().getRange();
-              boolean _tripleNotEquals_4 = (_range != null);
-              if (_tripleNotEquals_4) {
+              boolean _tripleNotEquals_20 = (_range != null);
+              if (_tripleNotEquals_20) {
                 _builder.append("struct Ret ");
-                String _string_5 = param.getName().toString();
-                _builder.append(_string_5);
+                String _string_9 = param.getName().toString();
+                _builder.append(_string_9);
                 _builder.append(" (");
                 {
                   for(final String name_4 : nameList) {
@@ -3273,11 +3744,11 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.newLineIfNotEmpty();
               } else {
                 Gap _gap = param.getCheck().getReference().getGap();
-                boolean _tripleNotEquals_5 = (_gap != null);
-                if (_tripleNotEquals_5) {
+                boolean _tripleNotEquals_21 = (_gap != null);
+                if (_tripleNotEquals_21) {
                   _builder.append("struct Ret ");
-                  String _string_6 = param.getName().toString();
-                  _builder.append(_string_6);
+                  String _string_10 = param.getName().toString();
+                  _builder.append(_string_10);
                   _builder.append(" (");
                   {
                     for(final String name_5 : nameList) {

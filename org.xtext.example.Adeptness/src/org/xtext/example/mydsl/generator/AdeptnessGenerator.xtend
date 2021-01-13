@@ -27,6 +27,10 @@ class AdeptnessGenerator extends AbstractGenerator {
 	//Poner el directorio de la seinal, donde se van a generar los .c y .h para poder compilarlo en matlab y generar el .mex file
 	//String directory="C:\\Users\\hazibek02\\runtime-EclipseXtext\\Matlab\\src-gen\\lehenengoa\\"; 
 var HashMap<String, List<String>> nameMap;
+var HashMap<String, String> whenMap;
+var HashMap<String, String> whileMap;
+var HashMap<String, String> whenMap_preconds;
+var HashMap<String, String> whileMap_preconds;
     override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
     	//fsa.generateFile("adeptness.xml", resource.allContents.toIterable.filter(Signal).createXML());
     		for(a: resource.allContents.toIterable.filter(ValidationPlan)){
@@ -59,6 +63,10 @@ var HashMap<String, List<String>> nameMap;
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
 			}*/
 			nameMap= new HashMap();
+			whenMap=new HashMap();
+			whileMap= new HashMap();
+			whileMap_preconds= new HashMap();
+			whenMap_preconds= new HashMap();
 			getAllNames(e);
 			for(q: e.oracle){
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".c", q.create_oracle_c(nameMap.get(q.name)))
@@ -95,6 +103,8 @@ var HashMap<String, List<String>> nameMap;
 	
 	def getAllNames(Signal signal) {
 		var List<String> namelists;
+		var List<String> whileNames;
+		var List<String> whenNames;
 		var Oracle oracle;
 		var boolean is;
 		for(var z=0; z< signal.oracle.size; z++){
@@ -103,6 +113,7 @@ var HashMap<String, List<String>> nameMap;
 			is=false;
 			if(oracle.check.em!==null){
 				for(var i=0; i< oracle.check.em.elements.size; i++){
+					
 					for(var j=0; j<namelists.size;j++){
 						if(oracle.check.em.elements.get(i).name===null ||(namelists.get(j)!==null && namelists.get(j).equals(oracle.check.em.elements.get(i).name)) || oracle.check.em.elements.get(i).name.equals("timeStamp")){
 							is=true;
@@ -121,27 +132,59 @@ var HashMap<String, List<String>> nameMap;
 			}
 			is=false;
 			if(oracle.^while!==null){
+				whileNames= new ArrayList();
 				var wile=oracle.^while;
+				var isWHile=false;
 				for (var i=0; i<wile.em.elements.size; i++){
 					for(var j=0; j<namelists.size;j++){
-						if(wile.em.elements.get(i).name===null || namelists.get(j).equals(wile.em.elements.get(i).name) || wile.em.elements.get(i).name.equals("timeStamp")){
+						if(wile.em.elements.get(i).name===null || (namelists.get(j)!==null && namelists.get(j).equals(wile.em.elements.get(i).name)) || wile.em.elements.get(i).name.equals("timeStamp")){
 							is=true;
 						}
 					}
 					if(!is){
 						namelists.add(wile.em.elements.get(i).name);
+						
 					}
 					else{
 						is=false;
 					}
+					for(var j=0; j<whileNames.size;j++){
+						if(wile.em.elements.get(i).name===null || (whileNames.get(j)!==null && whileNames.get(j).equals(wile.em.elements.get(i).name)) || wile.em.elements.get(i).name.equals("timeStamp")){
+							isWHile=true;
+						}
+					}
+					if(!isWHile){
+						whileNames.add(wile.em.elements.get(i).name);
+						
+					}
+					else{
+						isWHile=false;
+					}
 				}
+				var a="";
+				var b="";
+				for(var i=0; i< whileNames.size; i++){
+					if(i!=whileNames.size-1){
+						a=a+"int "+whileNames.get(i)+", ";
+						b=b+whileNames.get(i)+"[cycle], ";
+					}
+					else{
+						a=a+"int "+whileNames.get(i);
+						b=b+whileNames.get(i)+"[cycle] ";
+					}
+				}
+				println(a);
+				whileMap.put(oracle.name,a);
+				whileMap_preconds.put(oracle.name,b);
 			}
 			is=false;
 			if(oracle.when!==null){
+				whenNames= new ArrayList();
+				var isWhen= false;
 				var when=oracle.when;
 				for (var i=0; i<when.em.elements.size; i++){
 					for(var j=0; j<namelists.size;j++){
-						if(when.em.elements.get(i).name===null || namelists.get(j).equals(when.em.elements.get(i).name) || when.em.elements.get(i).name.equals("timeStamp")){
+						if(when.em.elements.get(i).name===null || (namelists.get(j)!==null && namelists.get(j).equals(when.em.elements.get(i).name)) || when.em.elements.get(i).name.equals("timeStamp")){
 							is=true;
 						}
 					}
@@ -151,14 +194,39 @@ var HashMap<String, List<String>> nameMap;
 					else{
 						is=false;
 					}
+					for(var j=0; j<whenNames.size;j++){
+						if(when.em.elements.get(i).name===null || (whenNames.get(j)!==null && whenNames.get(j).equals(when.em.elements.get(i).name)) || when.em.elements.get(i).name.equals("timeStamp")){
+							isWhen=true;
+						}
+					}
+					if(!isWhen){
+						whenNames.add(when.em.elements.get(i).name);
+					}
+					else{
+						isWhen=false;
+					}
 				}
+				var a="";
+				var b="";
+				for(var i=0; i< whenNames.size; i++){
+					if(i!=whenNames.size-1){
+						a=a+"int "+whenNames.get(i)+", ";
+						b=b+whenNames.get(i)+"[cycle], ";
+					}
+					else{
+						a=a+"int "+whenNames.get(i);
+						b=b+whenNames.get(i)+"[cycle]";
+					}
+				}
+				whenMap.put(oracle.name,a);
+				whenMap_preconds.put(oracle.name,b);
 			}
 			is=false;
 			if(oracle.check.reference!==null){
 				if(oracle.check.reference.gap!==null && oracle.check.reference.gap.bound_lower.em!==null){
 					for(var i=0; i<oracle.check.reference.gap.bound_lower.em.elements.size; i++){
 						for(var j=0; j<namelists.size;j++){
-							if(oracle.check.reference.gap.bound_lower.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.gap.bound_lower.em.elements.get(i).name) || oracle.check.reference.gap.bound_lower.em.elements.get(i).name.equals("timeStamp")){
+							if(oracle.check.reference.gap.bound_lower.em.elements.get(i).name===null || (namelists.get(j)!==null && namelists.get(j).equals(oracle.check.reference.gap.bound_lower.em.elements.get(i).name)) || oracle.check.reference.gap.bound_lower.em.elements.get(i).name.equals("timeStamp")){
 								is=true;
 							}
 						}
@@ -174,7 +242,7 @@ var HashMap<String, List<String>> nameMap;
 				else if(oracle.check.reference.gap!==null && oracle.check.reference.gap.bound_upp.em!==null){
 					for(var i=0; i<oracle.check.reference.gap.bound_upp.em.elements.size; i++){
 						for(var j=0; j<namelists.size;j++){
-							if(oracle.check.reference.gap.bound_upp.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.gap.bound_upp.em.elements.get(i).name) || oracle.check.reference.gap.bound_upp.em.elements.get(i).name.equals("timeStamp")){
+							if(oracle.check.reference.gap.bound_upp.em.elements.get(i).name===null || (namelists.get(j)!==null && namelists.get(j).equals(oracle.check.reference.gap.bound_upp.em.elements.get(i).name)) || oracle.check.reference.gap.bound_upp.em.elements.get(i).name.equals("timeStamp")){
 								is=true;
 							}
 						}
@@ -189,7 +257,7 @@ var HashMap<String, List<String>> nameMap;
 				else if(oracle.check.reference.range!==null && oracle.check.reference.range.bound_lower.em!==null){
 					for(var i=0; i<oracle.check.reference.range.bound_lower.em.elements.size; i++){
 						for(var j=0; j<namelists.size;j++){
-							if(oracle.check.reference.range.bound_lower.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.range.bound_lower.em.elements.get(i).name) || oracle.check.reference.range.bound_lower.em.elements.get(i).name.equals("timeStamp")){
+							if(oracle.check.reference.range.bound_lower.em.elements.get(i).name===null || (namelists.get(j)!==null && namelists.get(j).equals(oracle.check.reference.range.bound_lower.em.elements.get(i).name)) || oracle.check.reference.range.bound_lower.em.elements.get(i).name.equals("timeStamp")){
 								is=true;
 							}
 						}
@@ -204,7 +272,7 @@ var HashMap<String, List<String>> nameMap;
 				else if(oracle.check.reference.range!==null && oracle.check.reference.range.bound_upp.em!==null){
 					for(var i=0; i<oracle.check.reference.range.bound_upp.em.elements.size; i++){
 						for(var j=0; j<namelists.size;j++){
-							if(oracle.check.reference.range.bound_upp.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.range.bound_upp.em.elements.get(i).name) || oracle.check.reference.range.bound_upp.em.elements.get(i).name.equals("timeStamp")){
+							if(oracle.check.reference.range.bound_upp.em.elements.get(i).name===null || (namelists.get(j)!==null && namelists.get(j).equals(oracle.check.reference.range.bound_upp.em.elements.get(i).name)) || oracle.check.reference.range.bound_upp.em.elements.get(i).name.equals("timeStamp")){
 								is=true;
 							}
 						}
@@ -218,9 +286,9 @@ var HashMap<String, List<String>> nameMap;
 				}
 				else if(oracle.check.reference.upper!==null && oracle.check.reference.upper.bound_upp.em!==null){
 					for(var i=0; i<oracle.check.reference.upper.bound_upp.em.elements.size; i++){
-						println(oracle.name);
+						
 						for(var j=0; j<namelists.size;j++){
-							if(oracle.check.reference.upper.bound_upp.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.upper.bound_upp.em.elements.get(i).name) || oracle.check.reference.upper.bound_upp.em.elements.get(i).name.equals("timeStamp")){
+							if(oracle.check.reference.upper.bound_upp.em.elements.get(i).name===null || (namelists.get(j)!==null && namelists.get(j).equals(oracle.check.reference.upper.bound_upp.em.elements.get(i).name)) || oracle.check.reference.upper.bound_upp.em.elements.get(i).name.equals("timeStamp")){
 								is=true;
 							}
 						}
@@ -235,7 +303,7 @@ var HashMap<String, List<String>> nameMap;
 				else if(oracle.check.reference.same!==null && oracle.check.reference.same.bound_upp.em!==null){
 					for(var i=0; i<oracle.check.reference.same.bound_upp.em.elements.size; i++){
 						for(var j=0; j<namelists.size;j++){
-							if(oracle.check.reference.same.bound_upp.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.same.bound_upp.em.elements.get(i).name) || oracle.check.reference.same.bound_upp.em.elements.get(i).name.equals("timeStamp")){
+							if(oracle.check.reference.same.bound_upp.em.elements.get(i).name===null || (namelists.get(j)!==null && namelists.get(j).equals(oracle.check.reference.same.bound_upp.em.elements.get(i).name)) || oracle.check.reference.same.bound_upp.em.elements.get(i).name.equals("timeStamp")){
 								is=true;
 							}
 						}
@@ -250,7 +318,7 @@ var HashMap<String, List<String>> nameMap;
 				else if(oracle.check.reference.notsame!==null && oracle.check.reference.notsame.bound_upp.em!==null){
 					for(var i=0; i<oracle.check.reference.notsame.bound_upp.em.elements.size; i++){
 						for(var j=0; j<namelists.size;j++){
-							if(oracle.check.reference.notsame.bound_upp.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.notsame.bound_upp.em.elements.get(i).name) || oracle.check.reference.notsame.bound_upp.em.elements.get(i).name.equals("timeStamp")){
+							if(oracle.check.reference.notsame.bound_upp.em.elements.get(i).name===null || (namelists.get(j)!==null && namelists.get(j).equals(oracle.check.reference.notsame.bound_upp.em.elements.get(i).name)) || oracle.check.reference.notsame.bound_upp.em.elements.get(i).name.equals("timeStamp")){
 								is=true;
 							}
 						}
@@ -266,7 +334,7 @@ var HashMap<String, List<String>> nameMap;
 					if(oracle.check.reference.lower!==null && oracle.check.reference.lower.bound_lower.em!==null){
 						for(var i=0; i<oracle.check.reference.lower.bound_lower.em.elements.size; i++){
 							for(var j=0; j<namelists.size;j++){
-								if(oracle.check.reference.lower.bound_lower.em.elements.get(i).name===null || namelists.get(j).equals(oracle.check.reference.lower.bound_lower.em.elements.get(i).name) || oracle.check.reference.lower.bound_lower.em.elements.get(i).name.equals("timeStamp")){
+								if(oracle.check.reference.lower.bound_lower.em.elements.get(i).name===null || (namelists.get(j)!==null && namelists.get(j).equals(oracle.check.reference.lower.bound_lower.em.elements.get(i).name)) || oracle.check.reference.lower.bound_lower.em.elements.get(i).name.equals("timeStamp")){
 									is=true;
 								}
 							}
@@ -687,6 +755,19 @@ var HashMap<String, List<String>> nameMap;
 	def create_oracle_h(Oracle param, List<String> nameList)'''
 	#ifndef «param.name.toString().toUpperCase»_H
 	#define «param.name.toString().toUpperCase»_H
+	struct Verdict{
+		
+	}VERDICT;
+	struct SensorInput{
+		
+	}SENSOR_INPUT, *SENSOR_INPUT;
+	int preprocessInputs(SensorInput *inputs, int inputQty);
+	«IF param.when!==null || param.^while!==null»
+	int evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap.get(param.name).toString»«ENDIF»);
+	«ENDIF»
+	Verdict evaluatePostConditions_«param.name»(Verdict verdict, SensorInput *inputs, int inputQty);
+	Verdict performEvaluation_«param.name»(SensorInput *inputs, int inputQty, double timeStamp);
+	
 	«IF param.check.reference.upper!==null»
 	struct Ret{
 		int assert;
@@ -1062,9 +1143,66 @@ var HashMap<String, List<String>> nameMap;
 			«ENDIF»
 		«ENDIF»
 	«ENDIF» */
-	def create_oracle_c(Oracle param,List<String> nameList)'''
+	def create_oracle_c(Oracle param,List<String> nameList)
+	'''
 	#include "«param.name.toString()».h"
 	//«param.check.description.value»
+	int preprocessInputs(SensorInput *inputs, int inputQty) {
+		//TODO.
+	    return inputQty;
+	}
+	«IF param.when!==null || param.^while!==null»
+	int evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap.get(param.name).toString»«ENDIF») {
+		return «IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»;
+	}
+	«ENDIF»
+	Verdict evaluatePostConditions_«param.name»(Verdict verdict, SensorInput *inputs, int inputQty) {
+	    verdict.verdict = VERDICT_PASSED;
+	    verdict.confidence = 1;
+	    return verdict;
+	}
+	Verdict performEvaluation_«param.name»(SensorInput *inputs, int inputQty, double timeStamp){
+	    Verdict verdict;
+		//Step 1: inicializacion
+	    Static int cycle = -1;
+		Static double[] timeStampOracle; 
+		«FOR param1: nameMap.get(param.name)»
+		Static int[] «param1»;
+		«ENDFOR»
+		Static double[] conf;
+		Static int[] preconditionGiven;
+	
+		//Step 2: meter variables en array
+		cycle++;
+		timeStampOracle[cycle] = timeStamp;
+		«FOR param1: nameMap.get(param.name)»
+		«param1»[cycle]=getCurrentIntValueFromInputs(inputs,"«param1»");
+		«ENDFOR»
+		«IF param.when!==null || param.^while!==null»
+		preconditionGiven[cycle] = evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap_preconds.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap_preconds.get(param.name).toString»«ENDIF»);	
+		«ENDIF»
+		
+		//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
+		if(preconditionGiven[cycle]){
+			
+			//--During balidn bada, TimeStamp erabili, horretarako timeStamp-a beti ms-tan satru ezkero kalkulatu daiteke zenbat timeStamp behar ditugu honen konfidentzia jakiteko.
+			//Adibidea: timeStamp= 2 ms (timeStampOracle[1]-timeStampOracle[0])=timeStamp. IterazioKopurua=During/timeStamp eta horrarte kalkulatu conf-a.
+			//if(preconditionGiven[cycle] && during>0) during baldin bada hasieratuta 1-era egongo da, bestela 0-ra. Kasuistika baten during ez bada erabiltzen 1-era hasieratu ta listo.
+			conf[cycle] = llamadaAFuncionParaComprobarEsto(preconditionGiven[cycle]);//--funcion global y pasarle los valores y referencia a checkear con el tipo de check?
+		}else{
+			
+			conf[cycle] = 2;
+		}
+		
+		//Step 4: Sacar confidence
+		
+		//GLOBAL?
+		verdict = checkGlobalVerdict(conf/*failureType, refValue*/); 
+		
+		
+	    return verdict;
+	}
+	
 	«IF param.check.reference.upper!==null»
 	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
 	«ELSEIF param.check.reference.lower!==null»
