@@ -245,6 +245,8 @@ public class AdeptnessParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getOperatorsAccess().getComparationAssignment_1(), "rule__Operators__ComparationAssignment_1");
 			builder.put(grammarAccess.getOperatorsAccess().getLogicOperatorAssignment_2(), "rule__Operators__LogicOperatorAssignment_2");
 			builder.put(grammarAccess.getOperatorsAccess().getBackParenthesesAssignment_3(), "rule__Operators__BackParenthesesAssignment_3");
+			builder.put(grammarAccess.getOperatorsAccess().getElementsAssignment_4(), "rule__Operators__ElementsAssignment_4");
+			builder.put(grammarAccess.getComasAccess().getOpAssignment(), "rule__Comas__OpAssignment");
 			builder.put(grammarAccess.getCompOpAccess().getOpAssignment(), "rule__CompOp__OpAssignment");
 			builder.put(grammarAccess.getLogicOpAccess().getOpAssignment(), "rule__LogicOp__OpAssignment");
 			builder.put(grammarAccess.getOpAccess().getOpAssignment(), "rule__Op__OpAssignment");

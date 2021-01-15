@@ -331,6 +331,11 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
         return createOperatorsAdapter();
       }
       @Override
+      public Adapter caseComas(Comas object)
+      {
+        return createComasAdapter();
+      }
+      @Override
       public Adapter caseCompOp(CompOp object)
       {
         return createCompOpAdapter();
@@ -1128,6 +1133,21 @@ public class AdeptnessAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createOperatorsAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.adeptness.Comas <em>Comas</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.adeptness.Comas
+   * @generated
+   */
+  public Adapter createComasAdapter()
   {
     return null;
   }

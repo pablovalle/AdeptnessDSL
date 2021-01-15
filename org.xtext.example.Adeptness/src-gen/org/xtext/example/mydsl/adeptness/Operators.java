@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.xtext.example.mydsl.adeptness.Operators#getComparation <em>Comparation</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Operators#getLogicOperator <em>Logic Operator</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.Operators#getBackParentheses <em>Back Parentheses</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.Operators#getElements <em>Elements</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getOperators()
@@ -113,5 +114,27 @@ public interface Operators extends EObject
    * @generated
    */
   void setBackParentheses(String value);
+
+  /**
+   * Returns the value of the '<em><b>Elements</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Elements</em>' containment reference.
+   * @see #setElements(Comas)
+   * @see org.xtext.example.mydsl.adeptness.AdeptnessPackage#getOperators_Elements()
+   * @model containment="true"
+   * @generated
+   */
+  Comas getElements();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.adeptness.Operators#getElements <em>Elements</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Elements</em>' containment reference.
+   * @see #getElements()
+   * @generated
+   */
+  void setElements(Comas value);
 
 } // Operators

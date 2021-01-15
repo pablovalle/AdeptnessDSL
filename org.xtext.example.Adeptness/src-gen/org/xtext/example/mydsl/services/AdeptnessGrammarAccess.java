@@ -2291,12 +2291,14 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cLogicOperatorLogicOpParserRuleCall_2_0 = (RuleCall)cLogicOperatorAssignment_2.eContents().get(0);
 		private final Assignment cBackParenthesesAssignment_3 = (Assignment)cAlternatives.eContents().get(3);
 		private final RuleCall cBackParenthesesBackParenthesesParserRuleCall_3_0 = (RuleCall)cBackParenthesesAssignment_3.eContents().get(0);
+		private final Assignment cElementsAssignment_4 = (Assignment)cAlternatives.eContents().get(4);
+		private final RuleCall cElementsComasParserRuleCall_4_0 = (RuleCall)cElementsAssignment_4.eContents().get(0);
 		
 		//Operators:
-		//	operator=Op | comparation=CompOp | logicOperator=LogicOp | backParentheses=BackParentheses;
+		//	operator=Op | comparation=CompOp | logicOperator=LogicOp | backParentheses=BackParentheses | elements=Comas;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//operator=Op | comparation=CompOp | logicOperator=LogicOp | backParentheses=BackParentheses
+		//operator=Op | comparation=CompOp | logicOperator=LogicOp | backParentheses=BackParentheses | elements=Comas
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//operator=Op
@@ -2322,6 +2324,27 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//BackParentheses
 		public RuleCall getBackParenthesesBackParenthesesParserRuleCall_3_0() { return cBackParenthesesBackParenthesesParserRuleCall_3_0; }
+		
+		//elements=Comas
+		public Assignment getElementsAssignment_4() { return cElementsAssignment_4; }
+		
+		//Comas
+		public RuleCall getElementsComasParserRuleCall_4_0() { return cElementsComasParserRuleCall_4_0; }
+	}
+	public class ComasElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.Comas");
+		private final Assignment cOpAssignment = (Assignment)rule.eContents().get(1);
+		private final Keyword cOpCommaKeyword_0 = (Keyword)cOpAssignment.eContents().get(0);
+		
+		//Comas:
+		//	op=",";
+		@Override public ParserRule getRule() { return rule; }
+		
+		//op=","
+		public Assignment getOpAssignment() { return cOpAssignment; }
+		
+		//","
+		public Keyword getOpCommaKeyword_0() { return cOpCommaKeyword_0; }
 	}
 	public class CompOpElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Adeptness.CompOp");
@@ -2475,6 +2498,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	private final FrontParenthesesElements pFrontParentheses;
 	private final BackParenthesesElements pBackParentheses;
 	private final OperatorsElements pOperators;
+	private final ComasElements pComas;
 	private final CompOpElements pCompOp;
 	private final LogicOpElements pLogicOp;
 	private final OpElements pOp;
@@ -2545,6 +2569,7 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 		this.pFrontParentheses = new FrontParenthesesElements();
 		this.pBackParentheses = new BackParenthesesElements();
 		this.pOperators = new OperatorsElements();
+		this.pComas = new ComasElements();
 		this.pCompOp = new CompOpElements();
 		this.pLogicOp = new LogicOpElements();
 		this.pOp = new OpElements();
@@ -3202,13 +3227,23 @@ public class AdeptnessGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Operators:
-	//	operator=Op | comparation=CompOp | logicOperator=LogicOp | backParentheses=BackParentheses;
+	//	operator=Op | comparation=CompOp | logicOperator=LogicOp | backParentheses=BackParentheses | elements=Comas;
 	public OperatorsElements getOperatorsAccess() {
 		return pOperators;
 	}
 	
 	public ParserRule getOperatorsRule() {
 		return getOperatorsAccess().getRule();
+	}
+	
+	//Comas:
+	//	op=",";
+	public ComasElements getComasAccess() {
+		return pComas;
+	}
+	
+	public ParserRule getComasRule() {
+		return getComasAccess().getRule();
 	}
 	
 	//CompOp:

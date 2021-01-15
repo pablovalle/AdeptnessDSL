@@ -23,6 +23,7 @@ import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.AfterWhen;
 import org.xtext.example.mydsl.adeptness.At_least;
 import org.xtext.example.mydsl.adeptness.At_most;
+import org.xtext.example.mydsl.adeptness.Comas;
 import org.xtext.example.mydsl.adeptness.CompOp;
 import org.xtext.example.mydsl.adeptness.ConstDeg;
 import org.xtext.example.mydsl.adeptness.DOUBLE;
@@ -230,6 +231,14 @@ public class AdeptnessGenerator extends AbstractGenerator {
                                   String _op_3 = parent_1.getOperator().getOp();
                                   _builder.append(_op_3);
                                   _builder.append(" ");
+                                } else {
+                                  Comas _elements_1 = parent_1.getElements();
+                                  boolean _tripleNotEquals_5 = (_elements_1 != null);
+                                  if (_tripleNotEquals_5) {
+                                    _builder.append(" ");
+                                    String _op_4 = parent_1.getElements().getOp();
+                                    _builder.append(_op_4);
+                                  }
                                 }
                               }
                             }
@@ -664,26 +673,34 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       if (_tripleNotEquals_2) {
                         _builder.append(") ");
                       } else {
-                        CompOp _comparation = parent_1.getComparation();
-                        boolean _tripleNotEquals_3 = (_comparation != null);
+                        Comas _elements_1 = parent_1.getElements();
+                        boolean _tripleNotEquals_3 = (_elements_1 != null);
                         if (_tripleNotEquals_3) {
-                          String _op_1 = parent_1.getComparation().getOp();
-                          _builder.append(_op_1, "\t");
                           _builder.append(" ");
+                          String _op_1 = parent_1.getElements().getOp();
+                          _builder.append(_op_1, "\t");
                         } else {
-                          LogicOp _logicOperator = parent_1.getLogicOperator();
-                          boolean _tripleNotEquals_4 = (_logicOperator != null);
+                          CompOp _comparation = parent_1.getComparation();
+                          boolean _tripleNotEquals_4 = (_comparation != null);
                           if (_tripleNotEquals_4) {
-                            String _op_2 = parent_1.getLogicOperator().getOp();
+                            String _op_2 = parent_1.getComparation().getOp();
                             _builder.append(_op_2, "\t");
                             _builder.append(" ");
                           } else {
-                            Op _operator = parent_1.getOperator();
-                            boolean _tripleNotEquals_5 = (_operator != null);
+                            LogicOp _logicOperator = parent_1.getLogicOperator();
+                            boolean _tripleNotEquals_5 = (_logicOperator != null);
                             if (_tripleNotEquals_5) {
-                              String _op_3 = parent_1.getOperator().getOp();
+                              String _op_3 = parent_1.getLogicOperator().getOp();
                               _builder.append(_op_3, "\t");
                               _builder.append(" ");
+                            } else {
+                              Op _operator = parent_1.getOperator();
+                              boolean _tripleNotEquals_6 = (_operator != null);
+                              if (_tripleNotEquals_6) {
+                                String _op_4 = parent_1.getOperator().getOp();
+                                _builder.append(_op_4, "\t");
+                                _builder.append(" ");
+                              }
                             }
                           }
                         }
@@ -709,11 +726,11 @@ public class AdeptnessGenerator extends AbstractGenerator {
         _builder.append("\"Value\":\"");
         {
           When _when = param.getWhen();
-          boolean _tripleNotEquals_6 = (_when != null);
-          if (_tripleNotEquals_6) {
+          boolean _tripleNotEquals_7 = (_when != null);
+          if (_tripleNotEquals_7) {
             {
-              EList<AbstractElement2> _elements_1 = param.getWhen().getEm().getElements();
-              for(final AbstractElement2 param1_1 : _elements_1) {
+              EList<AbstractElement2> _elements_2 = param.getWhen().getEm().getElements();
+              for(final AbstractElement2 param1_1 : _elements_2) {
                 {
                   EList<String> _frontParentheses_1 = param1_1.getFrontParentheses();
                   for(final String parent_2 : _frontParentheses_1) {
@@ -722,8 +739,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 }
                 {
                   String _name_4 = param1_1.getName();
-                  boolean _tripleNotEquals_7 = (_name_4 != null);
-                  if (_tripleNotEquals_7) {
+                  boolean _tripleNotEquals_8 = (_name_4 != null);
+                  if (_tripleNotEquals_8) {
                     String _name_5 = param1_1.getName();
                     _builder.append(_name_5, "\t\t");
                   } else {
@@ -733,34 +750,42 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 }
                 _builder.append(" ");
                 {
-                  EList<Operators> _op_4 = param1_1.getOp();
-                  for(final Operators parent_3 : _op_4) {
+                  EList<Operators> _op_5 = param1_1.getOp();
+                  for(final Operators parent_3 : _op_5) {
                     {
                       String _backParentheses_1 = parent_3.getBackParentheses();
-                      boolean _tripleNotEquals_8 = (_backParentheses_1 != null);
-                      if (_tripleNotEquals_8) {
+                      boolean _tripleNotEquals_9 = (_backParentheses_1 != null);
+                      if (_tripleNotEquals_9) {
                         _builder.append(") ");
                       } else {
-                        CompOp _comparation_1 = parent_3.getComparation();
-                        boolean _tripleNotEquals_9 = (_comparation_1 != null);
-                        if (_tripleNotEquals_9) {
-                          String _op_5 = parent_3.getComparation().getOp();
-                          _builder.append(_op_5, "\t\t");
+                        Comas _elements_3 = parent_3.getElements();
+                        boolean _tripleNotEquals_10 = (_elements_3 != null);
+                        if (_tripleNotEquals_10) {
                           _builder.append(" ");
+                          String _op_6 = parent_3.getElements().getOp();
+                          _builder.append(_op_6, "\t\t");
                         } else {
-                          LogicOp _logicOperator_1 = parent_3.getLogicOperator();
-                          boolean _tripleNotEquals_10 = (_logicOperator_1 != null);
-                          if (_tripleNotEquals_10) {
-                            String _op_6 = parent_3.getLogicOperator().getOp();
-                            _builder.append(_op_6, "\t\t");
+                          CompOp _comparation_1 = parent_3.getComparation();
+                          boolean _tripleNotEquals_11 = (_comparation_1 != null);
+                          if (_tripleNotEquals_11) {
+                            String _op_7 = parent_3.getComparation().getOp();
+                            _builder.append(_op_7, "\t\t");
                             _builder.append(" ");
                           } else {
-                            Op _operator_1 = parent_3.getOperator();
-                            boolean _tripleNotEquals_11 = (_operator_1 != null);
-                            if (_tripleNotEquals_11) {
-                              String _op_7 = parent_3.getOperator().getOp();
-                              _builder.append(_op_7, "\t\t");
+                            LogicOp _logicOperator_1 = parent_3.getLogicOperator();
+                            boolean _tripleNotEquals_12 = (_logicOperator_1 != null);
+                            if (_tripleNotEquals_12) {
+                              String _op_8 = parent_3.getLogicOperator().getOp();
+                              _builder.append(_op_8, "\t\t");
                               _builder.append(" ");
+                            } else {
+                              Op _operator_1 = parent_3.getOperator();
+                              boolean _tripleNotEquals_13 = (_operator_1 != null);
+                              if (_tripleNotEquals_13) {
+                                String _op_9 = parent_3.getOperator().getOp();
+                                _builder.append(_op_9, "\t\t");
+                                _builder.append(" ");
+                              }
                             }
                           }
                         }
@@ -783,16 +808,16 @@ public class AdeptnessGenerator extends AbstractGenerator {
         _builder.newLineIfNotEmpty();
         {
           When _when_1 = param.getWhen();
-          boolean _tripleNotEquals_12 = (_when_1 != null);
-          if (_tripleNotEquals_12) {
+          boolean _tripleNotEquals_14 = (_when_1 != null);
+          if (_tripleNotEquals_14) {
             {
               AfterWhen _aw = param.getWhen().getAw();
-              boolean _tripleNotEquals_13 = (_aw != null);
-              if (_tripleNotEquals_13) {
+              boolean _tripleNotEquals_15 = (_aw != null);
+              if (_tripleNotEquals_15) {
                 {
                   During _during = param.getWhen().getAw().getDuring();
-                  boolean _tripleNotEquals_14 = (_during != null);
-                  if (_tripleNotEquals_14) {
+                  boolean _tripleNotEquals_16 = (_during != null);
+                  if (_tripleNotEquals_16) {
                     _builder.append("\t");
                     _builder.append("\"Type\":\"During\",");
                     _builder.newLineIfNotEmpty();
@@ -810,8 +835,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.newLineIfNotEmpty();
                   } else {
                     Wait _wait = param.getWhen().getAw().getWait();
-                    boolean _tripleNotEquals_15 = (_wait != null);
-                    if (_tripleNotEquals_15) {
+                    boolean _tripleNotEquals_17 = (_wait != null);
+                    if (_tripleNotEquals_17) {
                       _builder.append("\t");
                       _builder.append("\"Type\":\"Wait\",");
                       _builder.newLineIfNotEmpty();
@@ -870,8 +895,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
         _builder.newLineIfNotEmpty();
         {
           String _name_6 = param.getCheck().getName();
-          boolean _tripleNotEquals_16 = (_name_6 != null);
-          if (_tripleNotEquals_16) {
+          boolean _tripleNotEquals_18 = (_name_6 != null);
+          if (_tripleNotEquals_18) {
             _builder.append("\t\t");
             _builder.append("\"Check\":\"");
             String _name_7 = param.getCheck().getName();
@@ -882,8 +907,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
             _builder.append("\t\t");
             _builder.append("\"Check\":\" ");
             {
-              EList<AbstractElement2> _elements_2 = param.getCheck().getEm().getElements();
-              for(final AbstractElement2 param1_2 : _elements_2) {
+              EList<AbstractElement2> _elements_4 = param.getCheck().getEm().getElements();
+              for(final AbstractElement2 param1_2 : _elements_4) {
                 {
                   EList<String> _frontParentheses_2 = param1_2.getFrontParentheses();
                   for(final String parent_4 : _frontParentheses_2) {
@@ -892,8 +917,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 }
                 {
                   String _name_8 = param1_2.getName();
-                  boolean _tripleNotEquals_17 = (_name_8 != null);
-                  if (_tripleNotEquals_17) {
+                  boolean _tripleNotEquals_19 = (_name_8 != null);
+                  if (_tripleNotEquals_19) {
                     String _name_9 = param1_2.getName();
                     _builder.append(_name_9);
                   } else {
@@ -903,34 +928,41 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 }
                 _builder.append(" ");
                 {
-                  EList<Operators> _op_8 = param1_2.getOp();
-                  for(final Operators parent_5 : _op_8) {
+                  EList<Operators> _op_10 = param1_2.getOp();
+                  for(final Operators parent_5 : _op_10) {
                     {
                       String _backParentheses_2 = parent_5.getBackParentheses();
-                      boolean _tripleNotEquals_18 = (_backParentheses_2 != null);
-                      if (_tripleNotEquals_18) {
+                      boolean _tripleNotEquals_20 = (_backParentheses_2 != null);
+                      if (_tripleNotEquals_20) {
                         _builder.append(") ");
                       } else {
                         CompOp _comparation_2 = parent_5.getComparation();
-                        boolean _tripleNotEquals_19 = (_comparation_2 != null);
-                        if (_tripleNotEquals_19) {
-                          String _op_9 = parent_5.getComparation().getOp();
-                          _builder.append(_op_9);
+                        boolean _tripleNotEquals_21 = (_comparation_2 != null);
+                        if (_tripleNotEquals_21) {
+                          String _op_11 = parent_5.getComparation().getOp();
+                          _builder.append(_op_11);
                           _builder.append(" ");
                         } else {
                           LogicOp _logicOperator_2 = parent_5.getLogicOperator();
-                          boolean _tripleNotEquals_20 = (_logicOperator_2 != null);
-                          if (_tripleNotEquals_20) {
-                            String _op_10 = parent_5.getLogicOperator().getOp();
-                            _builder.append(_op_10);
+                          boolean _tripleNotEquals_22 = (_logicOperator_2 != null);
+                          if (_tripleNotEquals_22) {
+                            String _op_12 = parent_5.getLogicOperator().getOp();
+                            _builder.append(_op_12);
                             _builder.append(" ");
                           } else {
                             Op _operator_2 = parent_5.getOperator();
-                            boolean _tripleNotEquals_21 = (_operator_2 != null);
-                            if (_tripleNotEquals_21) {
-                              String _op_11 = parent_5.getOperator().getOp();
-                              _builder.append(_op_11);
-                              _builder.append(" ");
+                            boolean _tripleNotEquals_23 = (_operator_2 != null);
+                            if (_tripleNotEquals_23) {
+                              String _op_13 = parent_5.getOperator().getOp();
+                              _builder.append(_op_13);
+                            } else {
+                              Comas _elements_5 = parent_5.getElements();
+                              boolean _tripleNotEquals_24 = (_elements_5 != null);
+                              if (_tripleNotEquals_24) {
+                                String _op_14 = parent_5.getElements().getOp();
+                                _builder.append(_op_14);
+                                _builder.append(" ");
+                              }
                             }
                           }
                         }
@@ -947,8 +979,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
         }
         {
           Lower _lower = param.getCheck().getReference().getLower();
-          boolean _tripleNotEquals_22 = (_lower != null);
-          if (_tripleNotEquals_22) {
+          boolean _tripleNotEquals_25 = (_lower != null);
+          if (_tripleNotEquals_25) {
             _builder.append("\t\t");
             _builder.append("\"Reference\":{");
             _builder.newLineIfNotEmpty();
@@ -961,15 +993,15 @@ public class AdeptnessGenerator extends AbstractGenerator {
             _builder.append("\"Value\":[\"");
             {
               DOUBLE _value = param.getCheck().getReference().getLower().getBound_lower().getValue();
-              boolean _tripleNotEquals_23 = (_value != null);
-              if (_tripleNotEquals_23) {
+              boolean _tripleNotEquals_26 = (_value != null);
+              if (_tripleNotEquals_26) {
                 double _dVal_5 = param.getCheck().getReference().getLower().getBound_lower().getValue().getDVal();
                 _builder.append(_dVal_5, "\t");
                 _builder.append("\"],");
               } else {
                 {
-                  EList<AbstractElement2> _elements_3 = param.getCheck().getReference().getLower().getBound_lower().getEm().getElements();
-                  for(final AbstractElement2 param1_3 : _elements_3) {
+                  EList<AbstractElement2> _elements_6 = param.getCheck().getReference().getLower().getBound_lower().getEm().getElements();
+                  for(final AbstractElement2 param1_3 : _elements_6) {
                     {
                       EList<String> _frontParentheses_3 = param1_3.getFrontParentheses();
                       for(final String parent_6 : _frontParentheses_3) {
@@ -978,8 +1010,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     }
                     {
                       String _name_10 = param1_3.getName();
-                      boolean _tripleNotEquals_24 = (_name_10 != null);
-                      if (_tripleNotEquals_24) {
+                      boolean _tripleNotEquals_27 = (_name_10 != null);
+                      if (_tripleNotEquals_27) {
                         String _name_11 = param1_3.getName();
                         _builder.append(_name_11, "\t");
                       } else {
@@ -989,34 +1021,41 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     }
                     _builder.append(" ");
                     {
-                      EList<Operators> _op_12 = param1_3.getOp();
-                      for(final Operators parent_7 : _op_12) {
+                      EList<Operators> _op_15 = param1_3.getOp();
+                      for(final Operators parent_7 : _op_15) {
                         {
                           String _backParentheses_3 = parent_7.getBackParentheses();
-                          boolean _tripleNotEquals_25 = (_backParentheses_3 != null);
-                          if (_tripleNotEquals_25) {
+                          boolean _tripleNotEquals_28 = (_backParentheses_3 != null);
+                          if (_tripleNotEquals_28) {
                             _builder.append(") ");
                           } else {
                             CompOp _comparation_3 = parent_7.getComparation();
-                            boolean _tripleNotEquals_26 = (_comparation_3 != null);
-                            if (_tripleNotEquals_26) {
-                              String _op_13 = parent_7.getComparation().getOp();
-                              _builder.append(_op_13, "\t");
+                            boolean _tripleNotEquals_29 = (_comparation_3 != null);
+                            if (_tripleNotEquals_29) {
+                              String _op_16 = parent_7.getComparation().getOp();
+                              _builder.append(_op_16, "\t");
                               _builder.append(" ");
                             } else {
                               LogicOp _logicOperator_3 = parent_7.getLogicOperator();
-                              boolean _tripleNotEquals_27 = (_logicOperator_3 != null);
-                              if (_tripleNotEquals_27) {
-                                String _op_14 = parent_7.getLogicOperator().getOp();
-                                _builder.append(_op_14, "\t");
+                              boolean _tripleNotEquals_30 = (_logicOperator_3 != null);
+                              if (_tripleNotEquals_30) {
+                                String _op_17 = parent_7.getLogicOperator().getOp();
+                                _builder.append(_op_17, "\t");
                                 _builder.append(" ");
                               } else {
                                 Op _operator_3 = parent_7.getOperator();
-                                boolean _tripleNotEquals_28 = (_operator_3 != null);
-                                if (_tripleNotEquals_28) {
-                                  String _op_15 = parent_7.getOperator().getOp();
-                                  _builder.append(_op_15, "\t");
+                                boolean _tripleNotEquals_31 = (_operator_3 != null);
+                                if (_tripleNotEquals_31) {
+                                  String _op_18 = parent_7.getOperator().getOp();
+                                  _builder.append(_op_18, "\t");
                                   _builder.append(" ");
+                                } else {
+                                  Comas _elements_7 = parent_7.getElements();
+                                  boolean _tripleNotEquals_32 = (_elements_7 != null);
+                                  if (_tripleNotEquals_32) {
+                                    String _op_19 = parent_7.getElements().getOp();
+                                    _builder.append(_op_19, "\t");
+                                  }
                                 }
                               }
                             }
@@ -1037,8 +1076,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
             _builder.newLineIfNotEmpty();
             {
               Exactly _exactly = param.getCheck().getReference().getLower().getExactly();
-              boolean _tripleNotEquals_29 = (_exactly != null);
-              if (_tripleNotEquals_29) {
+              boolean _tripleNotEquals_33 = (_exactly != null);
+              if (_tripleNotEquals_33) {
                 _builder.append("\t");
                 _builder.append("\t\t\t", "\t");
                 _builder.append("\"Type\":\"exactly\",");
@@ -1052,8 +1091,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.newLineIfNotEmpty();
                 {
                   DOUBLE _time_2 = param.getCheck().getReference().getLower().getExactly().getTime();
-                  boolean _tripleNotEquals_30 = (_time_2 != null);
-                  if (_tripleNotEquals_30) {
+                  boolean _tripleNotEquals_34 = (_time_2 != null);
+                  if (_tripleNotEquals_34) {
                     _builder.append("\t");
                     _builder.append("\t\t\t", "\t");
                     _builder.append("\"Time\":\"");
@@ -1081,8 +1120,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 }
               } else {
                 At_least _atleast = param.getCheck().getReference().getLower().getAtleast();
-                boolean _tripleNotEquals_31 = (_atleast != null);
-                if (_tripleNotEquals_31) {
+                boolean _tripleNotEquals_35 = (_atleast != null);
+                if (_tripleNotEquals_35) {
                   _builder.append("\t");
                   _builder.append("\t\t\t", "\t");
                   _builder.append("\"Type\":\"atLeast\",");
@@ -1096,8 +1135,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.newLineIfNotEmpty();
                   {
                     DOUBLE _time_4 = param.getCheck().getReference().getLower().getAtleast().getTime();
-                    boolean _tripleNotEquals_32 = (_time_4 != null);
-                    if (_tripleNotEquals_32) {
+                    boolean _tripleNotEquals_36 = (_time_4 != null);
+                    if (_tripleNotEquals_36) {
                       _builder.append("\t");
                       _builder.append("\t\t\t", "\t");
                       _builder.append("\"Time\":\"");
@@ -1125,8 +1164,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   }
                 } else {
                   At_most _atmost = param.getCheck().getReference().getLower().getAtmost();
-                  boolean _tripleNotEquals_33 = (_atmost != null);
-                  if (_tripleNotEquals_33) {
+                  boolean _tripleNotEquals_37 = (_atmost != null);
+                  if (_tripleNotEquals_37) {
                     _builder.append("\t");
                     _builder.append("\t\t\t", "\t");
                     _builder.append("\"Type\":\"atMost\",");
@@ -1140,8 +1179,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.newLineIfNotEmpty();
                     {
                       DOUBLE _time_6 = param.getCheck().getReference().getLower().getAtmost().getTime();
-                      boolean _tripleNotEquals_34 = (_time_6 != null);
-                      if (_tripleNotEquals_34) {
+                      boolean _tripleNotEquals_38 = (_time_6 != null);
+                      if (_tripleNotEquals_38) {
                         _builder.append("\t");
                         _builder.append("\t\t\t", "\t");
                         _builder.append("\"Time\":\"");
@@ -1193,8 +1232,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
             _builder.newLineIfNotEmpty();
           } else {
             Upper _upper = param.getCheck().getReference().getUpper();
-            boolean _tripleNotEquals_35 = (_upper != null);
-            if (_tripleNotEquals_35) {
+            boolean _tripleNotEquals_39 = (_upper != null);
+            if (_tripleNotEquals_39) {
               _builder.append("\t\t");
               _builder.append("\"Reference\":{");
               _builder.newLineIfNotEmpty();
@@ -1207,15 +1246,15 @@ public class AdeptnessGenerator extends AbstractGenerator {
               _builder.append("\"Value\":[\"");
               {
                 DOUBLE _value_1 = param.getCheck().getReference().getUpper().getBound_upp().getValue();
-                boolean _tripleNotEquals_36 = (_value_1 != null);
-                if (_tripleNotEquals_36) {
+                boolean _tripleNotEquals_40 = (_value_1 != null);
+                if (_tripleNotEquals_40) {
                   double _dVal_13 = param.getCheck().getReference().getUpper().getBound_upp().getValue().getDVal();
                   _builder.append(_dVal_13, "\t");
                   _builder.append("\"],");
                 } else {
                   {
-                    EList<AbstractElement2> _elements_4 = param.getCheck().getReference().getUpper().getBound_upp().getEm().getElements();
-                    for(final AbstractElement2 param1_4 : _elements_4) {
+                    EList<AbstractElement2> _elements_8 = param.getCheck().getReference().getUpper().getBound_upp().getEm().getElements();
+                    for(final AbstractElement2 param1_4 : _elements_8) {
                       {
                         EList<String> _frontParentheses_4 = param1_4.getFrontParentheses();
                         for(final String parent_8 : _frontParentheses_4) {
@@ -1224,8 +1263,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       }
                       {
                         String _name_12 = param1_4.getName();
-                        boolean _tripleNotEquals_37 = (_name_12 != null);
-                        if (_tripleNotEquals_37) {
+                        boolean _tripleNotEquals_41 = (_name_12 != null);
+                        if (_tripleNotEquals_41) {
                           String _name_13 = param1_4.getName();
                           _builder.append(_name_13, "\t");
                         } else {
@@ -1235,34 +1274,42 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       }
                       _builder.append(" ");
                       {
-                        EList<Operators> _op_16 = param1_4.getOp();
-                        for(final Operators parent_9 : _op_16) {
+                        EList<Operators> _op_20 = param1_4.getOp();
+                        for(final Operators parent_9 : _op_20) {
                           {
                             String _backParentheses_4 = parent_9.getBackParentheses();
-                            boolean _tripleNotEquals_38 = (_backParentheses_4 != null);
-                            if (_tripleNotEquals_38) {
+                            boolean _tripleNotEquals_42 = (_backParentheses_4 != null);
+                            if (_tripleNotEquals_42) {
                               _builder.append(") ");
                             } else {
-                              CompOp _comparation_4 = parent_9.getComparation();
-                              boolean _tripleNotEquals_39 = (_comparation_4 != null);
-                              if (_tripleNotEquals_39) {
-                                String _op_17 = parent_9.getComparation().getOp();
-                                _builder.append(_op_17, "\t");
+                              Comas _elements_9 = parent_9.getElements();
+                              boolean _tripleNotEquals_43 = (_elements_9 != null);
+                              if (_tripleNotEquals_43) {
                                 _builder.append(" ");
+                                String _op_21 = parent_9.getElements().getOp();
+                                _builder.append(_op_21, "\t");
                               } else {
-                                LogicOp _logicOperator_4 = parent_9.getLogicOperator();
-                                boolean _tripleNotEquals_40 = (_logicOperator_4 != null);
-                                if (_tripleNotEquals_40) {
-                                  String _op_18 = parent_9.getLogicOperator().getOp();
-                                  _builder.append(_op_18, "\t");
+                                CompOp _comparation_4 = parent_9.getComparation();
+                                boolean _tripleNotEquals_44 = (_comparation_4 != null);
+                                if (_tripleNotEquals_44) {
+                                  String _op_22 = parent_9.getComparation().getOp();
+                                  _builder.append(_op_22, "\t");
                                   _builder.append(" ");
                                 } else {
-                                  Op _operator_4 = parent_9.getOperator();
-                                  boolean _tripleNotEquals_41 = (_operator_4 != null);
-                                  if (_tripleNotEquals_41) {
-                                    String _op_19 = parent_9.getOperator().getOp();
-                                    _builder.append(_op_19, "\t");
+                                  LogicOp _logicOperator_4 = parent_9.getLogicOperator();
+                                  boolean _tripleNotEquals_45 = (_logicOperator_4 != null);
+                                  if (_tripleNotEquals_45) {
+                                    String _op_23 = parent_9.getLogicOperator().getOp();
+                                    _builder.append(_op_23, "\t");
                                     _builder.append(" ");
+                                  } else {
+                                    Op _operator_4 = parent_9.getOperator();
+                                    boolean _tripleNotEquals_46 = (_operator_4 != null);
+                                    if (_tripleNotEquals_46) {
+                                      String _op_24 = parent_9.getOperator().getOp();
+                                      _builder.append(_op_24, "\t");
+                                      _builder.append(" ");
+                                    }
                                   }
                                 }
                               }
@@ -1283,8 +1330,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
               _builder.newLineIfNotEmpty();
               {
                 Exactly _exactly_1 = param.getCheck().getReference().getUpper().getExactly();
-                boolean _tripleNotEquals_42 = (_exactly_1 != null);
-                if (_tripleNotEquals_42) {
+                boolean _tripleNotEquals_47 = (_exactly_1 != null);
+                if (_tripleNotEquals_47) {
                   _builder.append("\t");
                   _builder.append("\t\t\t", "\t");
                   _builder.append("\t\"Type\":\"exactly\",");
@@ -1298,8 +1345,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.newLineIfNotEmpty();
                   {
                     DOUBLE _time_8 = param.getCheck().getReference().getUpper().getExactly().getTime();
-                    boolean _tripleNotEquals_43 = (_time_8 != null);
-                    if (_tripleNotEquals_43) {
+                    boolean _tripleNotEquals_48 = (_time_8 != null);
+                    if (_tripleNotEquals_48) {
                       _builder.append("\t");
                       _builder.append("\t");
                       _builder.append("\t\t\t", "\t\t");
@@ -1331,8 +1378,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   }
                 } else {
                   At_least _atleast_1 = param.getCheck().getReference().getUpper().getAtleast();
-                  boolean _tripleNotEquals_44 = (_atleast_1 != null);
-                  if (_tripleNotEquals_44) {
+                  boolean _tripleNotEquals_49 = (_atleast_1 != null);
+                  if (_tripleNotEquals_49) {
                     _builder.append("\t");
                     _builder.append("\t\t\t", "\t");
                     _builder.append("\"Type\":\"atLeast\",");
@@ -1346,8 +1393,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.newLineIfNotEmpty();
                     {
                       DOUBLE _time_10 = param.getCheck().getReference().getUpper().getAtleast().getTime();
-                      boolean _tripleNotEquals_45 = (_time_10 != null);
-                      if (_tripleNotEquals_45) {
+                      boolean _tripleNotEquals_50 = (_time_10 != null);
+                      if (_tripleNotEquals_50) {
                         _builder.append("\t");
                         _builder.append("\t\t\t", "\t");
                         _builder.append("\"Time\":\"");
@@ -1375,8 +1422,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     }
                   } else {
                     At_most _atmost_1 = param.getCheck().getReference().getUpper().getAtmost();
-                    boolean _tripleNotEquals_46 = (_atmost_1 != null);
-                    if (_tripleNotEquals_46) {
+                    boolean _tripleNotEquals_51 = (_atmost_1 != null);
+                    if (_tripleNotEquals_51) {
                       _builder.append("\t");
                       _builder.append("\t\t\t", "\t");
                       _builder.append("\"Type\":\"atMost\",");
@@ -1390,8 +1437,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       _builder.newLineIfNotEmpty();
                       {
                         DOUBLE _time_12 = param.getCheck().getReference().getUpper().getAtmost().getTime();
-                        boolean _tripleNotEquals_47 = (_time_12 != null);
-                        if (_tripleNotEquals_47) {
+                        boolean _tripleNotEquals_52 = (_time_12 != null);
+                        if (_tripleNotEquals_52) {
                           _builder.append("\t");
                           _builder.append("\t\t\t", "\t");
                           _builder.append("\"Time\":\"");
@@ -1443,8 +1490,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
               _builder.newLineIfNotEmpty();
             } else {
               Range _range = param.getCheck().getReference().getRange();
-              boolean _tripleNotEquals_48 = (_range != null);
-              if (_tripleNotEquals_48) {
+              boolean _tripleNotEquals_53 = (_range != null);
+              if (_tripleNotEquals_53) {
                 _builder.append("\t\t");
                 _builder.append("\"Reference\":{");
                 _builder.newLineIfNotEmpty();
@@ -1457,15 +1504,15 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.append("\"Value\":[\"");
                 {
                   DOUBLE _value_2 = param.getCheck().getReference().getRange().getBound_lower().getValue();
-                  boolean _tripleNotEquals_49 = (_value_2 != null);
-                  if (_tripleNotEquals_49) {
+                  boolean _tripleNotEquals_54 = (_value_2 != null);
+                  if (_tripleNotEquals_54) {
                     double _dVal_21 = param.getCheck().getReference().getRange().getBound_lower().getValue().getDVal();
                     _builder.append(_dVal_21, "\t");
                     _builder.append("\",");
                   } else {
                     {
-                      EList<AbstractElement2> _elements_5 = param.getCheck().getReference().getRange().getBound_lower().getEm().getElements();
-                      for(final AbstractElement2 param1_5 : _elements_5) {
+                      EList<AbstractElement2> _elements_10 = param.getCheck().getReference().getRange().getBound_lower().getEm().getElements();
+                      for(final AbstractElement2 param1_5 : _elements_10) {
                         {
                           EList<String> _frontParentheses_5 = param1_5.getFrontParentheses();
                           for(final String parent_10 : _frontParentheses_5) {
@@ -1474,8 +1521,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         }
                         {
                           String _name_14 = param1_5.getName();
-                          boolean _tripleNotEquals_50 = (_name_14 != null);
-                          if (_tripleNotEquals_50) {
+                          boolean _tripleNotEquals_55 = (_name_14 != null);
+                          if (_tripleNotEquals_55) {
                             String _name_15 = param1_5.getName();
                             _builder.append(_name_15, "\t");
                           } else {
@@ -1485,34 +1532,42 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         }
                         _builder.append(" ");
                         {
-                          EList<Operators> _op_20 = param1_5.getOp();
-                          for(final Operators parent_11 : _op_20) {
+                          EList<Operators> _op_25 = param1_5.getOp();
+                          for(final Operators parent_11 : _op_25) {
                             {
                               String _backParentheses_5 = parent_11.getBackParentheses();
-                              boolean _tripleNotEquals_51 = (_backParentheses_5 != null);
-                              if (_tripleNotEquals_51) {
+                              boolean _tripleNotEquals_56 = (_backParentheses_5 != null);
+                              if (_tripleNotEquals_56) {
                                 _builder.append(") ");
                               } else {
-                                CompOp _comparation_5 = parent_11.getComparation();
-                                boolean _tripleNotEquals_52 = (_comparation_5 != null);
-                                if (_tripleNotEquals_52) {
-                                  String _op_21 = parent_11.getComparation().getOp();
-                                  _builder.append(_op_21, "\t");
+                                Comas _elements_11 = parent_11.getElements();
+                                boolean _tripleNotEquals_57 = (_elements_11 != null);
+                                if (_tripleNotEquals_57) {
                                   _builder.append(" ");
+                                  String _op_26 = parent_11.getElements().getOp();
+                                  _builder.append(_op_26, "\t");
                                 } else {
-                                  LogicOp _logicOperator_5 = parent_11.getLogicOperator();
-                                  boolean _tripleNotEquals_53 = (_logicOperator_5 != null);
-                                  if (_tripleNotEquals_53) {
-                                    String _op_22 = parent_11.getLogicOperator().getOp();
-                                    _builder.append(_op_22, "\t");
+                                  CompOp _comparation_5 = parent_11.getComparation();
+                                  boolean _tripleNotEquals_58 = (_comparation_5 != null);
+                                  if (_tripleNotEquals_58) {
+                                    String _op_27 = parent_11.getComparation().getOp();
+                                    _builder.append(_op_27, "\t");
                                     _builder.append(" ");
                                   } else {
-                                    Op _operator_5 = parent_11.getOperator();
-                                    boolean _tripleNotEquals_54 = (_operator_5 != null);
-                                    if (_tripleNotEquals_54) {
-                                      String _op_23 = parent_11.getOperator().getOp();
-                                      _builder.append(_op_23, "\t");
+                                    LogicOp _logicOperator_5 = parent_11.getLogicOperator();
+                                    boolean _tripleNotEquals_59 = (_logicOperator_5 != null);
+                                    if (_tripleNotEquals_59) {
+                                      String _op_28 = parent_11.getLogicOperator().getOp();
+                                      _builder.append(_op_28, "\t");
                                       _builder.append(" ");
+                                    } else {
+                                      Op _operator_5 = parent_11.getOperator();
+                                      boolean _tripleNotEquals_60 = (_operator_5 != null);
+                                      if (_tripleNotEquals_60) {
+                                        String _op_29 = parent_11.getOperator().getOp();
+                                        _builder.append(_op_29, "\t");
+                                        _builder.append(" ");
+                                      }
                                     }
                                   }
                                 }
@@ -1528,15 +1583,15 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 }
                 {
                   DOUBLE _value_3 = param.getCheck().getReference().getRange().getBound_upp().getValue();
-                  boolean _tripleNotEquals_55 = (_value_3 != null);
-                  if (_tripleNotEquals_55) {
+                  boolean _tripleNotEquals_61 = (_value_3 != null);
+                  if (_tripleNotEquals_61) {
                     double _dVal_23 = param.getCheck().getReference().getRange().getBound_upp().getValue().getDVal();
                     _builder.append(_dVal_23, "\t");
                     _builder.append("\"],");
                   } else {
                     {
-                      EList<AbstractElement2> _elements_6 = param.getCheck().getReference().getRange().getBound_upp().getEm().getElements();
-                      for(final AbstractElement2 param1_6 : _elements_6) {
+                      EList<AbstractElement2> _elements_12 = param.getCheck().getReference().getRange().getBound_upp().getEm().getElements();
+                      for(final AbstractElement2 param1_6 : _elements_12) {
                         {
                           EList<String> _frontParentheses_6 = param1_6.getFrontParentheses();
                           for(final String parent_12 : _frontParentheses_6) {
@@ -1545,8 +1600,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         }
                         {
                           String _name_16 = param1_6.getName();
-                          boolean _tripleNotEquals_56 = (_name_16 != null);
-                          if (_tripleNotEquals_56) {
+                          boolean _tripleNotEquals_62 = (_name_16 != null);
+                          if (_tripleNotEquals_62) {
                             String _name_17 = param1_6.getName();
                             _builder.append(_name_17, "\t");
                           } else {
@@ -1556,33 +1611,33 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         }
                         _builder.append(" ");
                         {
-                          EList<Operators> _op_24 = param1_6.getOp();
-                          for(final Operators parent_13 : _op_24) {
+                          EList<Operators> _op_30 = param1_6.getOp();
+                          for(final Operators parent_13 : _op_30) {
                             {
                               String _backParentheses_6 = parent_13.getBackParentheses();
-                              boolean _tripleNotEquals_57 = (_backParentheses_6 != null);
-                              if (_tripleNotEquals_57) {
+                              boolean _tripleNotEquals_63 = (_backParentheses_6 != null);
+                              if (_tripleNotEquals_63) {
                                 _builder.append(") ");
                               } else {
                                 CompOp _comparation_6 = parent_13.getComparation();
-                                boolean _tripleNotEquals_58 = (_comparation_6 != null);
-                                if (_tripleNotEquals_58) {
-                                  String _op_25 = parent_13.getComparation().getOp();
-                                  _builder.append(_op_25, "\t");
+                                boolean _tripleNotEquals_64 = (_comparation_6 != null);
+                                if (_tripleNotEquals_64) {
+                                  String _op_31 = parent_13.getComparation().getOp();
+                                  _builder.append(_op_31, "\t");
                                   _builder.append(" ");
                                 } else {
                                   LogicOp _logicOperator_6 = parent_13.getLogicOperator();
-                                  boolean _tripleNotEquals_59 = (_logicOperator_6 != null);
-                                  if (_tripleNotEquals_59) {
-                                    String _op_26 = parent_13.getLogicOperator().getOp();
-                                    _builder.append(_op_26, "\t");
+                                  boolean _tripleNotEquals_65 = (_logicOperator_6 != null);
+                                  if (_tripleNotEquals_65) {
+                                    String _op_32 = parent_13.getLogicOperator().getOp();
+                                    _builder.append(_op_32, "\t");
                                     _builder.append(" ");
                                   } else {
                                     Op _operator_6 = parent_13.getOperator();
-                                    boolean _tripleNotEquals_60 = (_operator_6 != null);
-                                    if (_tripleNotEquals_60) {
-                                      String _op_27 = parent_13.getOperator().getOp();
-                                      _builder.append(_op_27, "\t");
+                                    boolean _tripleNotEquals_66 = (_operator_6 != null);
+                                    if (_tripleNotEquals_66) {
+                                      String _op_33 = parent_13.getOperator().getOp();
+                                      _builder.append(_op_33, "\t");
                                       _builder.append(" ");
                                     }
                                   }
@@ -1604,8 +1659,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.newLineIfNotEmpty();
                 {
                   Exactly _exactly_2 = param.getCheck().getReference().getRange().getExactly();
-                  boolean _tripleNotEquals_61 = (_exactly_2 != null);
-                  if (_tripleNotEquals_61) {
+                  boolean _tripleNotEquals_67 = (_exactly_2 != null);
+                  if (_tripleNotEquals_67) {
                     _builder.append("\t");
                     _builder.append("\t\t\t", "\t");
                     _builder.append("\"Type\":\"exactly\",");
@@ -1619,8 +1674,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.newLineIfNotEmpty();
                     {
                       DOUBLE _time_14 = param.getCheck().getReference().getRange().getExactly().getTime();
-                      boolean _tripleNotEquals_62 = (_time_14 != null);
-                      if (_tripleNotEquals_62) {
+                      boolean _tripleNotEquals_68 = (_time_14 != null);
+                      if (_tripleNotEquals_68) {
                         _builder.append("\t");
                         _builder.append("\t\t\t", "\t");
                         _builder.append("\"Time\":\"");
@@ -1648,8 +1703,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     }
                   } else {
                     At_least _atleast_2 = param.getCheck().getReference().getRange().getAtleast();
-                    boolean _tripleNotEquals_63 = (_atleast_2 != null);
-                    if (_tripleNotEquals_63) {
+                    boolean _tripleNotEquals_69 = (_atleast_2 != null);
+                    if (_tripleNotEquals_69) {
                       _builder.append("\t");
                       _builder.append("\t\t\t", "\t");
                       _builder.append("\"Type\":\"atLeast\",");
@@ -1663,8 +1718,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       _builder.newLineIfNotEmpty();
                       {
                         DOUBLE _time_16 = param.getCheck().getReference().getRange().getAtleast().getTime();
-                        boolean _tripleNotEquals_64 = (_time_16 != null);
-                        if (_tripleNotEquals_64) {
+                        boolean _tripleNotEquals_70 = (_time_16 != null);
+                        if (_tripleNotEquals_70) {
                           _builder.append("\t");
                           _builder.append("\t\t\t", "\t");
                           _builder.append("\"Time\":\"");
@@ -1692,8 +1747,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       }
                     } else {
                       At_most _atmost_2 = param.getCheck().getReference().getRange().getAtmost();
-                      boolean _tripleNotEquals_65 = (_atmost_2 != null);
-                      if (_tripleNotEquals_65) {
+                      boolean _tripleNotEquals_71 = (_atmost_2 != null);
+                      if (_tripleNotEquals_71) {
                         _builder.append("\t");
                         _builder.append("\t\t\t", "\t");
                         _builder.append("\"Type\":\"atMost\",");
@@ -1707,8 +1762,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         _builder.newLineIfNotEmpty();
                         {
                           DOUBLE _time_18 = param.getCheck().getReference().getRange().getAtmost().getTime();
-                          boolean _tripleNotEquals_66 = (_time_18 != null);
-                          if (_tripleNotEquals_66) {
+                          boolean _tripleNotEquals_72 = (_time_18 != null);
+                          if (_tripleNotEquals_72) {
                             _builder.append("\t");
                             _builder.append("\t\t\t", "\t");
                             _builder.append("\"Time\":\"");
@@ -1760,8 +1815,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.newLineIfNotEmpty();
               } else {
                 Gap _gap = param.getCheck().getReference().getGap();
-                boolean _tripleNotEquals_67 = (_gap != null);
-                if (_tripleNotEquals_67) {
+                boolean _tripleNotEquals_73 = (_gap != null);
+                if (_tripleNotEquals_73) {
                   _builder.append("\t\t");
                   _builder.append("\"Reference\":{");
                   _builder.newLineIfNotEmpty();
@@ -1774,15 +1829,15 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.append("\"Value\":[\"");
                   {
                     DOUBLE _value_4 = param.getCheck().getReference().getGap().getBound_lower().getValue();
-                    boolean _tripleNotEquals_68 = (_value_4 != null);
-                    if (_tripleNotEquals_68) {
+                    boolean _tripleNotEquals_74 = (_value_4 != null);
+                    if (_tripleNotEquals_74) {
                       double _dVal_31 = param.getCheck().getReference().getGap().getBound_lower().getValue().getDVal();
                       _builder.append(_dVal_31, "\t");
                       _builder.append("\",");
                     } else {
                       {
-                        EList<AbstractElement2> _elements_7 = param.getCheck().getReference().getGap().getBound_lower().getEm().getElements();
-                        for(final AbstractElement2 param1_7 : _elements_7) {
+                        EList<AbstractElement2> _elements_13 = param.getCheck().getReference().getGap().getBound_lower().getEm().getElements();
+                        for(final AbstractElement2 param1_7 : _elements_13) {
                           {
                             EList<String> _frontParentheses_7 = param1_7.getFrontParentheses();
                             for(final String parent_14 : _frontParentheses_7) {
@@ -1791,8 +1846,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           }
                           {
                             String _name_18 = param1_7.getName();
-                            boolean _tripleNotEquals_69 = (_name_18 != null);
-                            if (_tripleNotEquals_69) {
+                            boolean _tripleNotEquals_75 = (_name_18 != null);
+                            if (_tripleNotEquals_75) {
                               String _name_19 = param1_7.getName();
                               _builder.append(_name_19, "\t");
                             } else {
@@ -1802,34 +1857,42 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           }
                           _builder.append(" ");
                           {
-                            EList<Operators> _op_28 = param1_7.getOp();
-                            for(final Operators parent_15 : _op_28) {
+                            EList<Operators> _op_34 = param1_7.getOp();
+                            for(final Operators parent_15 : _op_34) {
                               {
                                 String _backParentheses_7 = parent_15.getBackParentheses();
-                                boolean _tripleNotEquals_70 = (_backParentheses_7 != null);
-                                if (_tripleNotEquals_70) {
+                                boolean _tripleNotEquals_76 = (_backParentheses_7 != null);
+                                if (_tripleNotEquals_76) {
                                   _builder.append(") ");
                                 } else {
-                                  CompOp _comparation_7 = parent_15.getComparation();
-                                  boolean _tripleNotEquals_71 = (_comparation_7 != null);
-                                  if (_tripleNotEquals_71) {
-                                    String _op_29 = parent_15.getComparation().getOp();
-                                    _builder.append(_op_29, "\t");
+                                  Comas _elements_14 = parent_15.getElements();
+                                  boolean _tripleNotEquals_77 = (_elements_14 != null);
+                                  if (_tripleNotEquals_77) {
                                     _builder.append(" ");
+                                    String _op_35 = parent_15.getElements().getOp();
+                                    _builder.append(_op_35, "\t");
                                   } else {
-                                    LogicOp _logicOperator_7 = parent_15.getLogicOperator();
-                                    boolean _tripleNotEquals_72 = (_logicOperator_7 != null);
-                                    if (_tripleNotEquals_72) {
-                                      String _op_30 = parent_15.getLogicOperator().getOp();
-                                      _builder.append(_op_30, "\t");
+                                    CompOp _comparation_7 = parent_15.getComparation();
+                                    boolean _tripleNotEquals_78 = (_comparation_7 != null);
+                                    if (_tripleNotEquals_78) {
+                                      String _op_36 = parent_15.getComparation().getOp();
+                                      _builder.append(_op_36, "\t");
                                       _builder.append(" ");
                                     } else {
-                                      Op _operator_7 = parent_15.getOperator();
-                                      boolean _tripleNotEquals_73 = (_operator_7 != null);
-                                      if (_tripleNotEquals_73) {
-                                        String _op_31 = parent_15.getOperator().getOp();
-                                        _builder.append(_op_31, "\t");
+                                      LogicOp _logicOperator_7 = parent_15.getLogicOperator();
+                                      boolean _tripleNotEquals_79 = (_logicOperator_7 != null);
+                                      if (_tripleNotEquals_79) {
+                                        String _op_37 = parent_15.getLogicOperator().getOp();
+                                        _builder.append(_op_37, "\t");
                                         _builder.append(" ");
+                                      } else {
+                                        Op _operator_7 = parent_15.getOperator();
+                                        boolean _tripleNotEquals_80 = (_operator_7 != null);
+                                        if (_tripleNotEquals_80) {
+                                          String _op_38 = parent_15.getOperator().getOp();
+                                          _builder.append(_op_38, "\t");
+                                          _builder.append(" ");
+                                        }
                                       }
                                     }
                                   }
@@ -1845,15 +1908,15 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   }
                   {
                     DOUBLE _value_5 = param.getCheck().getReference().getGap().getBound_upp().getValue();
-                    boolean _tripleNotEquals_74 = (_value_5 != null);
-                    if (_tripleNotEquals_74) {
+                    boolean _tripleNotEquals_81 = (_value_5 != null);
+                    if (_tripleNotEquals_81) {
                       DOUBLE _value_6 = param.getCheck().getReference().getGap().getBound_upp().getValue();
                       _builder.append(_value_6, "\t");
                       _builder.append("\"],");
                     } else {
                       {
-                        EList<AbstractElement2> _elements_8 = param.getCheck().getReference().getGap().getBound_upp().getEm().getElements();
-                        for(final AbstractElement2 param1_8 : _elements_8) {
+                        EList<AbstractElement2> _elements_15 = param.getCheck().getReference().getGap().getBound_upp().getEm().getElements();
+                        for(final AbstractElement2 param1_8 : _elements_15) {
                           {
                             EList<String> _frontParentheses_8 = param1_8.getFrontParentheses();
                             for(final String parent_16 : _frontParentheses_8) {
@@ -1862,8 +1925,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           }
                           {
                             String _name_20 = param1_8.getName();
-                            boolean _tripleNotEquals_75 = (_name_20 != null);
-                            if (_tripleNotEquals_75) {
+                            boolean _tripleNotEquals_82 = (_name_20 != null);
+                            if (_tripleNotEquals_82) {
                               String _name_21 = param1_8.getName();
                               _builder.append(_name_21, "\t");
                             } else {
@@ -1873,33 +1936,33 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           }
                           _builder.append(" ");
                           {
-                            EList<Operators> _op_32 = param1_8.getOp();
-                            for(final Operators parent_17 : _op_32) {
+                            EList<Operators> _op_39 = param1_8.getOp();
+                            for(final Operators parent_17 : _op_39) {
                               {
                                 String _backParentheses_8 = parent_17.getBackParentheses();
-                                boolean _tripleNotEquals_76 = (_backParentheses_8 != null);
-                                if (_tripleNotEquals_76) {
+                                boolean _tripleNotEquals_83 = (_backParentheses_8 != null);
+                                if (_tripleNotEquals_83) {
                                   _builder.append(") ");
                                 } else {
                                   CompOp _comparation_8 = parent_17.getComparation();
-                                  boolean _tripleNotEquals_77 = (_comparation_8 != null);
-                                  if (_tripleNotEquals_77) {
-                                    String _op_33 = parent_17.getComparation().getOp();
-                                    _builder.append(_op_33, "\t");
+                                  boolean _tripleNotEquals_84 = (_comparation_8 != null);
+                                  if (_tripleNotEquals_84) {
+                                    String _op_40 = parent_17.getComparation().getOp();
+                                    _builder.append(_op_40, "\t");
                                     _builder.append(" ");
                                   } else {
                                     LogicOp _logicOperator_8 = parent_17.getLogicOperator();
-                                    boolean _tripleNotEquals_78 = (_logicOperator_8 != null);
-                                    if (_tripleNotEquals_78) {
-                                      String _op_34 = parent_17.getLogicOperator().getOp();
-                                      _builder.append(_op_34, "\t");
+                                    boolean _tripleNotEquals_85 = (_logicOperator_8 != null);
+                                    if (_tripleNotEquals_85) {
+                                      String _op_41 = parent_17.getLogicOperator().getOp();
+                                      _builder.append(_op_41, "\t");
                                       _builder.append(" ");
                                     } else {
                                       Op _operator_8 = parent_17.getOperator();
-                                      boolean _tripleNotEquals_79 = (_operator_8 != null);
-                                      if (_tripleNotEquals_79) {
-                                        String _op_35 = parent_17.getOperator().getOp();
-                                        _builder.append(_op_35, "\t");
+                                      boolean _tripleNotEquals_86 = (_operator_8 != null);
+                                      if (_tripleNotEquals_86) {
+                                        String _op_42 = parent_17.getOperator().getOp();
+                                        _builder.append(_op_42, "\t");
                                         _builder.append(" ");
                                       }
                                     }
@@ -1921,8 +1984,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.newLineIfNotEmpty();
                   {
                     Exactly _exactly_3 = param.getCheck().getReference().getGap().getExactly();
-                    boolean _tripleNotEquals_80 = (_exactly_3 != null);
-                    if (_tripleNotEquals_80) {
+                    boolean _tripleNotEquals_87 = (_exactly_3 != null);
+                    if (_tripleNotEquals_87) {
                       _builder.append("\t");
                       _builder.append("\t\t\t", "\t");
                       _builder.append("\"Type\":\"exactly\",");
@@ -1936,8 +1999,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       _builder.newLineIfNotEmpty();
                       {
                         DOUBLE _time_20 = param.getCheck().getReference().getGap().getExactly().getTime();
-                        boolean _tripleNotEquals_81 = (_time_20 != null);
-                        if (_tripleNotEquals_81) {
+                        boolean _tripleNotEquals_88 = (_time_20 != null);
+                        if (_tripleNotEquals_88) {
                           _builder.append("\t");
                           _builder.append("\t\t\t", "\t");
                           _builder.append("\"Time\":\"");
@@ -1965,8 +2028,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       }
                     } else {
                       At_least _atleast_3 = param.getCheck().getReference().getGap().getAtleast();
-                      boolean _tripleNotEquals_82 = (_atleast_3 != null);
-                      if (_tripleNotEquals_82) {
+                      boolean _tripleNotEquals_89 = (_atleast_3 != null);
+                      if (_tripleNotEquals_89) {
                         _builder.append("\t");
                         _builder.append("\t\t\t", "\t");
                         _builder.append("\"Type\":\"atLeast\",");
@@ -1980,8 +2043,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         _builder.newLineIfNotEmpty();
                         {
                           DOUBLE _time_22 = param.getCheck().getReference().getGap().getAtleast().getTime();
-                          boolean _tripleNotEquals_83 = (_time_22 != null);
-                          if (_tripleNotEquals_83) {
+                          boolean _tripleNotEquals_90 = (_time_22 != null);
+                          if (_tripleNotEquals_90) {
                             _builder.append("\t");
                             _builder.append("\t\t\t", "\t");
                             _builder.append("\"Time\":\"");
@@ -2009,8 +2072,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         }
                       } else {
                         At_most _atmost_3 = param.getCheck().getReference().getGap().getAtmost();
-                        boolean _tripleNotEquals_84 = (_atmost_3 != null);
-                        if (_tripleNotEquals_84) {
+                        boolean _tripleNotEquals_91 = (_atmost_3 != null);
+                        if (_tripleNotEquals_91) {
                           _builder.append("\t");
                           _builder.append("\t\t\t", "\t");
                           _builder.append("\"Type\":\"atMost\",");
@@ -2024,8 +2087,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           _builder.newLineIfNotEmpty();
                           {
                             DOUBLE _time_24 = param.getCheck().getReference().getGap().getAtmost().getTime();
-                            boolean _tripleNotEquals_85 = (_time_24 != null);
-                            if (_tripleNotEquals_85) {
+                            boolean _tripleNotEquals_92 = (_time_24 != null);
+                            if (_tripleNotEquals_92) {
                               _builder.append("\t");
                               _builder.append("\t\t\t", "\t");
                               _builder.append("\"Time\":\"");
@@ -2077,8 +2140,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.newLineIfNotEmpty();
                 } else {
                   Same _same = param.getCheck().getReference().getSame();
-                  boolean _tripleNotEquals_86 = (_same != null);
-                  if (_tripleNotEquals_86) {
+                  boolean _tripleNotEquals_93 = (_same != null);
+                  if (_tripleNotEquals_93) {
                     _builder.append("\t\t");
                     _builder.append("\"Reference\":{");
                     _builder.newLineIfNotEmpty();
@@ -2091,15 +2154,15 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.append("\"Value\":[\"");
                     {
                       DOUBLE _value_7 = param.getCheck().getReference().getSame().getBound_upp().getValue();
-                      boolean _tripleNotEquals_87 = (_value_7 != null);
-                      if (_tripleNotEquals_87) {
+                      boolean _tripleNotEquals_94 = (_value_7 != null);
+                      if (_tripleNotEquals_94) {
                         double _dVal_40 = param.getCheck().getReference().getSame().getBound_upp().getValue().getDVal();
                         _builder.append(_dVal_40, "\t");
                         _builder.append("\"],");
                       } else {
                         {
-                          EList<AbstractElement2> _elements_9 = param.getCheck().getReference().getSame().getBound_upp().getEm().getElements();
-                          for(final AbstractElement2 param1_9 : _elements_9) {
+                          EList<AbstractElement2> _elements_16 = param.getCheck().getReference().getSame().getBound_upp().getEm().getElements();
+                          for(final AbstractElement2 param1_9 : _elements_16) {
                             {
                               EList<String> _frontParentheses_9 = param1_9.getFrontParentheses();
                               for(final String parent_18 : _frontParentheses_9) {
@@ -2108,8 +2171,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                             }
                             {
                               String _name_22 = param1_9.getName();
-                              boolean _tripleNotEquals_88 = (_name_22 != null);
-                              if (_tripleNotEquals_88) {
+                              boolean _tripleNotEquals_95 = (_name_22 != null);
+                              if (_tripleNotEquals_95) {
                                 String _name_23 = param1_9.getName();
                                 _builder.append(_name_23, "\t");
                               } else {
@@ -2119,34 +2182,42 @@ public class AdeptnessGenerator extends AbstractGenerator {
                             }
                             _builder.append(" ");
                             {
-                              EList<Operators> _op_36 = param1_9.getOp();
-                              for(final Operators parent_19 : _op_36) {
+                              EList<Operators> _op_43 = param1_9.getOp();
+                              for(final Operators parent_19 : _op_43) {
                                 {
                                   String _backParentheses_9 = parent_19.getBackParentheses();
-                                  boolean _tripleNotEquals_89 = (_backParentheses_9 != null);
-                                  if (_tripleNotEquals_89) {
+                                  boolean _tripleNotEquals_96 = (_backParentheses_9 != null);
+                                  if (_tripleNotEquals_96) {
                                     _builder.append(") ");
                                   } else {
-                                    CompOp _comparation_9 = parent_19.getComparation();
-                                    boolean _tripleNotEquals_90 = (_comparation_9 != null);
-                                    if (_tripleNotEquals_90) {
-                                      String _op_37 = parent_19.getComparation().getOp();
-                                      _builder.append(_op_37, "\t");
+                                    Comas _elements_17 = parent_19.getElements();
+                                    boolean _tripleNotEquals_97 = (_elements_17 != null);
+                                    if (_tripleNotEquals_97) {
                                       _builder.append(" ");
+                                      String _op_44 = parent_19.getElements().getOp();
+                                      _builder.append(_op_44, "\t");
                                     } else {
-                                      LogicOp _logicOperator_9 = parent_19.getLogicOperator();
-                                      boolean _tripleNotEquals_91 = (_logicOperator_9 != null);
-                                      if (_tripleNotEquals_91) {
-                                        String _op_38 = parent_19.getLogicOperator().getOp();
-                                        _builder.append(_op_38, "\t");
+                                      CompOp _comparation_9 = parent_19.getComparation();
+                                      boolean _tripleNotEquals_98 = (_comparation_9 != null);
+                                      if (_tripleNotEquals_98) {
+                                        String _op_45 = parent_19.getComparation().getOp();
+                                        _builder.append(_op_45, "\t");
                                         _builder.append(" ");
                                       } else {
-                                        Op _operator_9 = parent_19.getOperator();
-                                        boolean _tripleNotEquals_92 = (_operator_9 != null);
-                                        if (_tripleNotEquals_92) {
-                                          String _op_39 = parent_19.getOperator().getOp();
-                                          _builder.append(_op_39, "\t");
+                                        LogicOp _logicOperator_9 = parent_19.getLogicOperator();
+                                        boolean _tripleNotEquals_99 = (_logicOperator_9 != null);
+                                        if (_tripleNotEquals_99) {
+                                          String _op_46 = parent_19.getLogicOperator().getOp();
+                                          _builder.append(_op_46, "\t");
                                           _builder.append(" ");
+                                        } else {
+                                          Op _operator_9 = parent_19.getOperator();
+                                          boolean _tripleNotEquals_100 = (_operator_9 != null);
+                                          if (_tripleNotEquals_100) {
+                                            String _op_47 = parent_19.getOperator().getOp();
+                                            _builder.append(_op_47, "\t");
+                                            _builder.append(" ");
+                                          }
                                         }
                                       }
                                     }
@@ -2167,8 +2238,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.newLineIfNotEmpty();
                     {
                       Exactly _exactly_4 = param.getCheck().getReference().getSame().getExactly();
-                      boolean _tripleNotEquals_93 = (_exactly_4 != null);
-                      if (_tripleNotEquals_93) {
+                      boolean _tripleNotEquals_101 = (_exactly_4 != null);
+                      if (_tripleNotEquals_101) {
                         _builder.append("\t");
                         _builder.append("\t\t\t", "\t");
                         _builder.append("\"Type\":\"exactly\",");
@@ -2182,8 +2253,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         _builder.newLineIfNotEmpty();
                         {
                           DOUBLE _time_26 = param.getCheck().getReference().getSame().getExactly().getTime();
-                          boolean _tripleNotEquals_94 = (_time_26 != null);
-                          if (_tripleNotEquals_94) {
+                          boolean _tripleNotEquals_102 = (_time_26 != null);
+                          if (_tripleNotEquals_102) {
                             _builder.append("\t");
                             _builder.append("\t\t\t", "\t");
                             _builder.append("\"Time\":\"");
@@ -2211,8 +2282,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                         }
                       } else {
                         At_least _atleast_4 = param.getCheck().getReference().getSame().getAtleast();
-                        boolean _tripleNotEquals_95 = (_atleast_4 != null);
-                        if (_tripleNotEquals_95) {
+                        boolean _tripleNotEquals_103 = (_atleast_4 != null);
+                        if (_tripleNotEquals_103) {
                           _builder.append("\t");
                           _builder.append("\t\t\t", "\t");
                           _builder.append("\"Type\":\"atLeast\",");
@@ -2226,8 +2297,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           _builder.newLineIfNotEmpty();
                           {
                             DOUBLE _time_28 = param.getCheck().getReference().getSame().getAtleast().getTime();
-                            boolean _tripleNotEquals_96 = (_time_28 != null);
-                            if (_tripleNotEquals_96) {
+                            boolean _tripleNotEquals_104 = (_time_28 != null);
+                            if (_tripleNotEquals_104) {
                               _builder.append("\t");
                               _builder.append("\t\t\t", "\t");
                               _builder.append("\"Time\":\"");
@@ -2255,8 +2326,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           }
                         } else {
                           At_most _atmost_4 = param.getCheck().getReference().getSame().getAtmost();
-                          boolean _tripleNotEquals_97 = (_atmost_4 != null);
-                          if (_tripleNotEquals_97) {
+                          boolean _tripleNotEquals_105 = (_atmost_4 != null);
+                          if (_tripleNotEquals_105) {
                             _builder.append("\t");
                             _builder.append("\t\t\t", "\t");
                             _builder.append("\"Type\":\"atMost\",");
@@ -2270,8 +2341,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                             _builder.newLineIfNotEmpty();
                             {
                               DOUBLE _time_30 = param.getCheck().getReference().getSame().getAtmost().getTime();
-                              boolean _tripleNotEquals_98 = (_time_30 != null);
-                              if (_tripleNotEquals_98) {
+                              boolean _tripleNotEquals_106 = (_time_30 != null);
+                              if (_tripleNotEquals_106) {
                                 _builder.append("\t");
                                 _builder.append("\t\t\t", "\t");
                                 _builder.append("\"Time\":\"");
@@ -2323,8 +2394,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.newLineIfNotEmpty();
                   } else {
                     NotSame _notsame = param.getCheck().getReference().getNotsame();
-                    boolean _tripleNotEquals_99 = (_notsame != null);
-                    if (_tripleNotEquals_99) {
+                    boolean _tripleNotEquals_107 = (_notsame != null);
+                    if (_tripleNotEquals_107) {
                       _builder.append("\t\t");
                       _builder.append("\"Reference\":{");
                       _builder.newLineIfNotEmpty();
@@ -2337,15 +2408,15 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       _builder.append("\"Value\":[\"");
                       {
                         DOUBLE _value_8 = param.getCheck().getReference().getNotsame().getBound_upp().getValue();
-                        boolean _tripleNotEquals_100 = (_value_8 != null);
-                        if (_tripleNotEquals_100) {
+                        boolean _tripleNotEquals_108 = (_value_8 != null);
+                        if (_tripleNotEquals_108) {
                           double _dVal_48 = param.getCheck().getReference().getNotsame().getBound_upp().getValue().getDVal();
                           _builder.append(_dVal_48, "\t");
                           _builder.append("\"],");
                         } else {
                           {
-                            EList<AbstractElement2> _elements_10 = param.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements();
-                            for(final AbstractElement2 param1_10 : _elements_10) {
+                            EList<AbstractElement2> _elements_18 = param.getCheck().getReference().getNotsame().getBound_upp().getEm().getElements();
+                            for(final AbstractElement2 param1_10 : _elements_18) {
                               {
                                 EList<String> _frontParentheses_10 = param1_10.getFrontParentheses();
                                 for(final String parent_20 : _frontParentheses_10) {
@@ -2354,8 +2425,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                               }
                               {
                                 String _name_24 = param1_10.getName();
-                                boolean _tripleNotEquals_101 = (_name_24 != null);
-                                if (_tripleNotEquals_101) {
+                                boolean _tripleNotEquals_109 = (_name_24 != null);
+                                if (_tripleNotEquals_109) {
                                   String _name_25 = param1_10.getName();
                                   _builder.append(_name_25, "\t");
                                 } else {
@@ -2365,34 +2436,42 @@ public class AdeptnessGenerator extends AbstractGenerator {
                               }
                               _builder.append(" ");
                               {
-                                EList<Operators> _op_40 = param1_10.getOp();
-                                for(final Operators parent_21 : _op_40) {
+                                EList<Operators> _op_48 = param1_10.getOp();
+                                for(final Operators parent_21 : _op_48) {
                                   {
                                     String _backParentheses_10 = parent_21.getBackParentheses();
-                                    boolean _tripleNotEquals_102 = (_backParentheses_10 != null);
-                                    if (_tripleNotEquals_102) {
+                                    boolean _tripleNotEquals_110 = (_backParentheses_10 != null);
+                                    if (_tripleNotEquals_110) {
                                       _builder.append(") ");
                                     } else {
-                                      CompOp _comparation_10 = parent_21.getComparation();
-                                      boolean _tripleNotEquals_103 = (_comparation_10 != null);
-                                      if (_tripleNotEquals_103) {
-                                        String _op_41 = parent_21.getComparation().getOp();
-                                        _builder.append(_op_41, "\t");
+                                      Comas _elements_19 = parent_21.getElements();
+                                      boolean _tripleNotEquals_111 = (_elements_19 != null);
+                                      if (_tripleNotEquals_111) {
                                         _builder.append(" ");
+                                        String _op_49 = parent_21.getElements().getOp();
+                                        _builder.append(_op_49, "\t");
                                       } else {
-                                        LogicOp _logicOperator_10 = parent_21.getLogicOperator();
-                                        boolean _tripleNotEquals_104 = (_logicOperator_10 != null);
-                                        if (_tripleNotEquals_104) {
-                                          String _op_42 = parent_21.getLogicOperator().getOp();
-                                          _builder.append(_op_42, "\t");
+                                        CompOp _comparation_10 = parent_21.getComparation();
+                                        boolean _tripleNotEquals_112 = (_comparation_10 != null);
+                                        if (_tripleNotEquals_112) {
+                                          String _op_50 = parent_21.getComparation().getOp();
+                                          _builder.append(_op_50, "\t");
                                           _builder.append(" ");
                                         } else {
-                                          Op _operator_10 = parent_21.getOperator();
-                                          boolean _tripleNotEquals_105 = (_operator_10 != null);
-                                          if (_tripleNotEquals_105) {
-                                            String _op_43 = parent_21.getOperator().getOp();
-                                            _builder.append(_op_43, "\t");
+                                          LogicOp _logicOperator_10 = parent_21.getLogicOperator();
+                                          boolean _tripleNotEquals_113 = (_logicOperator_10 != null);
+                                          if (_tripleNotEquals_113) {
+                                            String _op_51 = parent_21.getLogicOperator().getOp();
+                                            _builder.append(_op_51, "\t");
                                             _builder.append(" ");
+                                          } else {
+                                            Op _operator_10 = parent_21.getOperator();
+                                            boolean _tripleNotEquals_114 = (_operator_10 != null);
+                                            if (_tripleNotEquals_114) {
+                                              String _op_52 = parent_21.getOperator().getOp();
+                                              _builder.append(_op_52, "\t");
+                                              _builder.append(" ");
+                                            }
                                           }
                                         }
                                       }
@@ -2413,8 +2492,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       _builder.newLineIfNotEmpty();
                       {
                         Exactly _exactly_5 = param.getCheck().getReference().getNotsame().getExactly();
-                        boolean _tripleNotEquals_106 = (_exactly_5 != null);
-                        if (_tripleNotEquals_106) {
+                        boolean _tripleNotEquals_115 = (_exactly_5 != null);
+                        if (_tripleNotEquals_115) {
                           _builder.append("\t");
                           _builder.append("\t\t\t", "\t");
                           _builder.append("\"Type\":\"exactly\",");
@@ -2428,8 +2507,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           _builder.newLineIfNotEmpty();
                           {
                             DOUBLE _time_32 = param.getCheck().getReference().getNotsame().getExactly().getTime();
-                            boolean _tripleNotEquals_107 = (_time_32 != null);
-                            if (_tripleNotEquals_107) {
+                            boolean _tripleNotEquals_116 = (_time_32 != null);
+                            if (_tripleNotEquals_116) {
                               _builder.append("\t");
                               _builder.append("\t\t\t", "\t");
                               _builder.append("\t\"Time\":\"");
@@ -2458,8 +2537,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                           }
                         } else {
                           At_least _atleast_5 = param.getCheck().getReference().getNotsame().getAtleast();
-                          boolean _tripleNotEquals_108 = (_atleast_5 != null);
-                          if (_tripleNotEquals_108) {
+                          boolean _tripleNotEquals_117 = (_atleast_5 != null);
+                          if (_tripleNotEquals_117) {
                             _builder.append("\t");
                             _builder.append("\t\t\t", "\t");
                             _builder.append("\"Type\":\"atLeast\",");
@@ -2473,8 +2552,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                             _builder.newLineIfNotEmpty();
                             {
                               DOUBLE _time_34 = param.getCheck().getReference().getNotsame().getAtleast().getTime();
-                              boolean _tripleNotEquals_109 = (_time_34 != null);
-                              if (_tripleNotEquals_109) {
+                              boolean _tripleNotEquals_118 = (_time_34 != null);
+                              if (_tripleNotEquals_118) {
                                 _builder.append("\t");
                                 _builder.append("\t\t\t", "\t");
                                 _builder.append("\"Time\":\"");
@@ -2502,8 +2581,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                             }
                           } else {
                             At_most _atmost_5 = param.getCheck().getReference().getNotsame().getAtmost();
-                            boolean _tripleNotEquals_110 = (_atmost_5 != null);
-                            if (_tripleNotEquals_110) {
+                            boolean _tripleNotEquals_119 = (_atmost_5 != null);
+                            if (_tripleNotEquals_119) {
                               _builder.append("\t");
                               _builder.append("\t\t\t", "\t");
                               _builder.append("\"Type\":\"atMost\",");
@@ -2517,8 +2596,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                               _builder.newLineIfNotEmpty();
                               {
                                 DOUBLE _time_36 = param.getCheck().getReference().getNotsame().getAtmost().getTime();
-                                boolean _tripleNotEquals_111 = (_time_36 != null);
-                                if (_tripleNotEquals_111) {
+                                boolean _tripleNotEquals_120 = (_time_36 != null);
+                                if (_tripleNotEquals_120) {
                                   _builder.append("\t");
                                   _builder.append("\t\t\t", "\t");
                                   _builder.append("\"Time\":\"");
@@ -2583,8 +2662,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
             _builder.newLineIfNotEmpty();
             {
               HighPeak _highPeak = failreason.getReason().getHighPeak();
-              boolean _tripleNotEquals_112 = (_highPeak != null);
-              if (_tripleNotEquals_112) {
+              boolean _tripleNotEquals_121 = (_highPeak != null);
+              if (_tripleNotEquals_121) {
                 _builder.append("\t\t");
                 _builder.append("\t", "\t\t");
                 _builder.append("\"Type\":\"HighPeak\",");
@@ -2610,8 +2689,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.newLineIfNotEmpty();
               } else {
                 HighTime _highTime = failreason.getReason().getHighTime();
-                boolean _tripleNotEquals_113 = (_highTime != null);
-                if (_tripleNotEquals_113) {
+                boolean _tripleNotEquals_122 = (_highTime != null);
+                if (_tripleNotEquals_122) {
                   _builder.append("\t\t");
                   _builder.append("\t", "\t\t");
                   _builder.append("\"Type\":\"HighTime\",");
@@ -2643,8 +2722,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                   _builder.newLineIfNotEmpty();
                 } else {
                   XPeaks _xPeaks = failreason.getReason().getXPeaks();
-                  boolean _tripleNotEquals_114 = (_xPeaks != null);
-                  if (_tripleNotEquals_114) {
+                  boolean _tripleNotEquals_123 = (_xPeaks != null);
+                  if (_tripleNotEquals_123) {
                     _builder.append("\t\t");
                     _builder.append("\t", "\t\t");
                     _builder.append("\"Type\":\"XPeaks\",");
@@ -2679,8 +2758,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                     _builder.newLineIfNotEmpty();
                   } else {
                     ConstDeg _constDeg = failreason.getReason().getConstDeg();
-                    boolean _tripleNotEquals_115 = (_constDeg != null);
-                    if (_tripleNotEquals_115) {
+                    boolean _tripleNotEquals_124 = (_constDeg != null);
+                    if (_tripleNotEquals_124) {
                       _builder.append("\t\t");
                       _builder.append("\t", "\t\t");
                       _builder.append("\"Type\":\"ConstantDegradation\",");
@@ -3403,26 +3482,34 @@ public class AdeptnessGenerator extends AbstractGenerator {
                       if (_tripleNotEquals_4) {
                         _builder.append(") ");
                       } else {
-                        CompOp _comparation = parent_1.getComparation();
-                        boolean _tripleNotEquals_5 = (_comparation != null);
+                        Comas _elements_1 = parent_1.getElements();
+                        boolean _tripleNotEquals_5 = (_elements_1 != null);
                         if (_tripleNotEquals_5) {
-                          String _op_1 = parent_1.getComparation().getOp();
-                          _builder.append(_op_1, "\t");
                           _builder.append(" ");
+                          String _op_1 = parent_1.getElements().getOp();
+                          _builder.append(_op_1, "\t");
                         } else {
-                          LogicOp _logicOperator = parent_1.getLogicOperator();
-                          boolean _tripleNotEquals_6 = (_logicOperator != null);
+                          CompOp _comparation = parent_1.getComparation();
+                          boolean _tripleNotEquals_6 = (_comparation != null);
                           if (_tripleNotEquals_6) {
-                            String _op_2 = parent_1.getLogicOperator().getOp();
+                            String _op_2 = parent_1.getComparation().getOp();
                             _builder.append(_op_2, "\t");
                             _builder.append(" ");
                           } else {
-                            Op _operator = parent_1.getOperator();
-                            boolean _tripleNotEquals_7 = (_operator != null);
+                            LogicOp _logicOperator = parent_1.getLogicOperator();
+                            boolean _tripleNotEquals_7 = (_logicOperator != null);
                             if (_tripleNotEquals_7) {
-                              String _op_3 = parent_1.getOperator().getOp();
+                              String _op_3 = parent_1.getLogicOperator().getOp();
                               _builder.append(_op_3, "\t");
                               _builder.append(" ");
+                            } else {
+                              Op _operator = parent_1.getOperator();
+                              boolean _tripleNotEquals_8 = (_operator != null);
+                              if (_tripleNotEquals_8) {
+                                String _op_4 = parent_1.getOperator().getOp();
+                                _builder.append(_op_4, "\t");
+                                _builder.append(" ");
+                              }
                             }
                           }
                         }
@@ -3436,11 +3523,11 @@ public class AdeptnessGenerator extends AbstractGenerator {
         }
         {
           While _while_1 = param.getWhile();
-          boolean _tripleNotEquals_8 = (_while_1 != null);
-          if (_tripleNotEquals_8) {
+          boolean _tripleNotEquals_9 = (_while_1 != null);
+          if (_tripleNotEquals_9) {
             {
-              EList<AbstractElement2> _elements_1 = param.getWhile().getEm().getElements();
-              for(final AbstractElement2 param1_1 : _elements_1) {
+              EList<AbstractElement2> _elements_2 = param.getWhile().getEm().getElements();
+              for(final AbstractElement2 param1_1 : _elements_2) {
                 {
                   EList<String> _frontParentheses_1 = param1_1.getFrontParentheses();
                   for(final String parent_2 : _frontParentheses_1) {
@@ -3449,8 +3536,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 }
                 {
                   String _name_3 = param1_1.getName();
-                  boolean _tripleNotEquals_9 = (_name_3 != null);
-                  if (_tripleNotEquals_9) {
+                  boolean _tripleNotEquals_10 = (_name_3 != null);
+                  if (_tripleNotEquals_10) {
                     String _name_4 = param1_1.getName();
                     _builder.append(_name_4, "\t");
                   } else {
@@ -3460,33 +3547,33 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 }
                 _builder.append(" ");
                 {
-                  EList<Operators> _op_4 = param1_1.getOp();
-                  for(final Operators parent_3 : _op_4) {
+                  EList<Operators> _op_5 = param1_1.getOp();
+                  for(final Operators parent_3 : _op_5) {
                     {
                       String _backParentheses_1 = parent_3.getBackParentheses();
-                      boolean _tripleNotEquals_10 = (_backParentheses_1 != null);
-                      if (_tripleNotEquals_10) {
+                      boolean _tripleNotEquals_11 = (_backParentheses_1 != null);
+                      if (_tripleNotEquals_11) {
                         _builder.append(") ");
                       } else {
                         CompOp _comparation_1 = parent_3.getComparation();
-                        boolean _tripleNotEquals_11 = (_comparation_1 != null);
-                        if (_tripleNotEquals_11) {
-                          String _op_5 = parent_3.getComparation().getOp();
-                          _builder.append(_op_5, "\t");
+                        boolean _tripleNotEquals_12 = (_comparation_1 != null);
+                        if (_tripleNotEquals_12) {
+                          String _op_6 = parent_3.getComparation().getOp();
+                          _builder.append(_op_6, "\t");
                           _builder.append(" ");
                         } else {
                           LogicOp _logicOperator_1 = parent_3.getLogicOperator();
-                          boolean _tripleNotEquals_12 = (_logicOperator_1 != null);
-                          if (_tripleNotEquals_12) {
-                            String _op_6 = parent_3.getLogicOperator().getOp();
-                            _builder.append(_op_6, "\t");
+                          boolean _tripleNotEquals_13 = (_logicOperator_1 != null);
+                          if (_tripleNotEquals_13) {
+                            String _op_7 = parent_3.getLogicOperator().getOp();
+                            _builder.append(_op_7, "\t");
                             _builder.append(" ");
                           } else {
                             Op _operator_1 = parent_3.getOperator();
-                            boolean _tripleNotEquals_13 = (_operator_1 != null);
-                            if (_tripleNotEquals_13) {
-                              String _op_7 = parent_3.getOperator().getOp();
-                              _builder.append(_op_7, "\t");
+                            boolean _tripleNotEquals_14 = (_operator_1 != null);
+                            if (_tripleNotEquals_14) {
+                              String _op_8 = parent_3.getOperator().getOp();
+                              _builder.append(_op_8, "\t");
                               _builder.append(" ");
                             }
                           }
@@ -3584,14 +3671,14 @@ public class AdeptnessGenerator extends AbstractGenerator {
         _builder.append("(");
         {
           When _when_2 = param.getWhen();
-          boolean _tripleNotEquals_14 = (_when_2 != null);
-          if (_tripleNotEquals_14) {
+          boolean _tripleNotEquals_15 = (_when_2 != null);
+          if (_tripleNotEquals_15) {
             String _string_3 = this.whenMap_preconds.get(param.getName()).toString();
             _builder.append(_string_3, "\t");
           } else {
             While _while_2 = param.getWhile();
-            boolean _tripleNotEquals_15 = (_while_2 != null);
-            if (_tripleNotEquals_15) {
+            boolean _tripleNotEquals_16 = (_while_2 != null);
+            if (_tripleNotEquals_16) {
               String _string_4 = this.whileMap_preconds.get(param.getName()).toString();
               _builder.append(_string_4, "\t");
             }
@@ -3659,8 +3746,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
     _builder.newLine();
     {
       Upper _upper = param.getCheck().getReference().getUpper();
-      boolean _tripleNotEquals_16 = (_upper != null);
-      if (_tripleNotEquals_16) {
+      boolean _tripleNotEquals_17 = (_upper != null);
+      if (_tripleNotEquals_17) {
         _builder.append("struct Ret ");
         String _string_5 = param.getName().toString();
         _builder.append(_string_5);
@@ -3676,8 +3763,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
         _builder.newLineIfNotEmpty();
       } else {
         Lower _lower = param.getCheck().getReference().getLower();
-        boolean _tripleNotEquals_17 = (_lower != null);
-        if (_tripleNotEquals_17) {
+        boolean _tripleNotEquals_18 = (_lower != null);
+        if (_tripleNotEquals_18) {
           _builder.append("struct Ret ");
           String _string_6 = param.getName().toString();
           _builder.append(_string_6);
@@ -3693,8 +3780,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
           _builder.newLineIfNotEmpty();
         } else {
           Same _same = param.getCheck().getReference().getSame();
-          boolean _tripleNotEquals_18 = (_same != null);
-          if (_tripleNotEquals_18) {
+          boolean _tripleNotEquals_19 = (_same != null);
+          if (_tripleNotEquals_19) {
             _builder.append("struct Ret ");
             String _string_7 = param.getName().toString();
             _builder.append(_string_7);
@@ -3710,8 +3797,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
             _builder.newLineIfNotEmpty();
           } else {
             NotSame _notsame = param.getCheck().getReference().getNotsame();
-            boolean _tripleNotEquals_19 = (_notsame != null);
-            if (_tripleNotEquals_19) {
+            boolean _tripleNotEquals_20 = (_notsame != null);
+            if (_tripleNotEquals_20) {
               _builder.append("struct Ret ");
               String _string_8 = param.getName().toString();
               _builder.append(_string_8);
@@ -3727,8 +3814,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
               _builder.newLineIfNotEmpty();
             } else {
               Range _range = param.getCheck().getReference().getRange();
-              boolean _tripleNotEquals_20 = (_range != null);
-              if (_tripleNotEquals_20) {
+              boolean _tripleNotEquals_21 = (_range != null);
+              if (_tripleNotEquals_21) {
                 _builder.append("struct Ret ");
                 String _string_9 = param.getName().toString();
                 _builder.append(_string_9);
@@ -3744,8 +3831,8 @@ public class AdeptnessGenerator extends AbstractGenerator {
                 _builder.newLineIfNotEmpty();
               } else {
                 Gap _gap = param.getCheck().getReference().getGap();
-                boolean _tripleNotEquals_21 = (_gap != null);
-                if (_tripleNotEquals_21) {
+                boolean _tripleNotEquals_22 = (_gap != null);
+                if (_tripleNotEquals_22) {
                   _builder.append("struct Ret ");
                   String _string_10 = param.getName().toString();
                   _builder.append(_string_10);

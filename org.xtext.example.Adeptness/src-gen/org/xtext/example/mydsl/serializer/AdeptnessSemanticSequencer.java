@@ -24,6 +24,7 @@ import org.xtext.example.mydsl.adeptness.BOOLEAN;
 import org.xtext.example.mydsl.adeptness.Bound_Down;
 import org.xtext.example.mydsl.adeptness.Bound_up;
 import org.xtext.example.mydsl.adeptness.Checks;
+import org.xtext.example.mydsl.adeptness.Comas;
 import org.xtext.example.mydsl.adeptness.CompOp;
 import org.xtext.example.mydsl.adeptness.ConstDeg;
 import org.xtext.example.mydsl.adeptness.DOUBLE;
@@ -109,6 +110,9 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 				return; 
 			case AdeptnessPackage.CHECKS:
 				sequence_Checks(context, (Checks) semanticObject); 
+				return; 
+			case AdeptnessPackage.COMAS:
+				sequence_Comas(context, (Comas) semanticObject); 
 				return; 
 			case AdeptnessPackage.COMP_OP:
 				sequence_CompOp(context, (CompOp) semanticObject); 
@@ -355,6 +359,24 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 */
 	protected void sequence_Checks(ISerializationContext context, Checks semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Comas returns Comas
+	 *
+	 * Constraint:
+	 *     op=','
+	 */
+	protected void sequence_Comas(ISerializationContext context, Comas semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, AdeptnessPackage.Literals.COMAS__OP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, AdeptnessPackage.Literals.COMAS__OP));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getComasAccess().getOpCommaKeyword_0(), semanticObject.getOp());
+		feeder.finish();
 	}
 	
 	
@@ -741,7 +763,7 @@ public class AdeptnessSemanticSequencer extends AbstractDelegatingSemanticSequen
 	 *     Operators returns Operators
 	 *
 	 * Constraint:
-	 *     (operator=Op | comparation=CompOp | logicOperator=LogicOp | backParentheses=BackParentheses)
+	 *     (operator=Op | comparation=CompOp | logicOperator=LogicOp | backParentheses=BackParentheses | elements=Comas)
 	 */
 	protected void sequence_Operators(ISerializationContext context, Operators semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

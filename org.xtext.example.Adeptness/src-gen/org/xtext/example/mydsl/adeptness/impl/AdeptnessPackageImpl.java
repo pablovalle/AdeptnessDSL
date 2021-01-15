@@ -21,6 +21,7 @@ import org.xtext.example.mydsl.adeptness.At_most;
 import org.xtext.example.mydsl.adeptness.Bound_Down;
 import org.xtext.example.mydsl.adeptness.Bound_up;
 import org.xtext.example.mydsl.adeptness.Checks;
+import org.xtext.example.mydsl.adeptness.Comas;
 import org.xtext.example.mydsl.adeptness.CompOp;
 import org.xtext.example.mydsl.adeptness.ConstDeg;
 import org.xtext.example.mydsl.adeptness.DataType;
@@ -429,6 +430,13 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   private EClass operatorsEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass comasEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -2467,6 +2475,39 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
    * @generated
    */
   @Override
+  public EReference getOperators_Elements()
+  {
+    return (EReference)operatorsEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getComas()
+  {
+    return comasEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getComas_Op()
+  {
+    return (EAttribute)comasEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getCompOp()
   {
     return compOpEClass;
@@ -2785,6 +2826,10 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     createEReference(operatorsEClass, OPERATORS__COMPARATION);
     createEReference(operatorsEClass, OPERATORS__LOGIC_OPERATOR);
     createEAttribute(operatorsEClass, OPERATORS__BACK_PARENTHESES);
+    createEReference(operatorsEClass, OPERATORS__ELEMENTS);
+
+    comasEClass = createEClass(COMAS);
+    createEAttribute(comasEClass, COMAS__OP);
 
     compOpEClass = createEClass(COMP_OP);
     createEAttribute(compOpEClass, COMP_OP__OP);
@@ -3061,6 +3106,10 @@ public class AdeptnessPackageImpl extends EPackageImpl implements AdeptnessPacka
     initEReference(getOperators_Comparation(), this.getCompOp(), null, "comparation", null, 0, 1, Operators.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getOperators_LogicOperator(), this.getLogicOp(), null, "logicOperator", null, 0, 1, Operators.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getOperators_BackParentheses(), ecorePackage.getEString(), "backParentheses", null, 0, 1, Operators.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getOperators_Elements(), this.getComas(), null, "elements", null, 0, 1, Operators.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(comasEClass, Comas.class, "Comas", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getComas_Op(), ecorePackage.getEString(), "op", null, 0, 1, Comas.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(compOpEClass, CompOp.class, "CompOp", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getCompOp_Op(), ecorePackage.getEString(), "op", null, 0, 1, CompOp.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

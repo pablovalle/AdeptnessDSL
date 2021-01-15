@@ -11,13 +11,25 @@ Verdict checkGlobalVerdict(double[] conf, double refValue,int type, double timeS
 			}
 			break;
 		case 1:
-			while(timeStamps!=0 && i<conf.length){
+		int times=timeStamps;
+			while(times!=0 && i<conf.length){
 				if(conf[i]<refValue){
-					timeStamps--;
+					a=true;
+				}
+				while(a && i<conf.length && times!=0){
+					if(conf[i]>refValue){
+						b=true;
+						a=false;
+					}
+					i++;
+				}
+				if(b && times!=0){
+					i--;
+					times=timeStamps;
 				}
 				i++;
 			}
-			if(timeStamps==0){
+			if(times==0){
 				verdict.verdict=VERDICT_FAILED;
 			}
 			break;

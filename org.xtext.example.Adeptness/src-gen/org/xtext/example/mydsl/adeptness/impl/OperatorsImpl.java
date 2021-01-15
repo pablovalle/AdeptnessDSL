@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
+import org.xtext.example.mydsl.adeptness.Comas;
 import org.xtext.example.mydsl.adeptness.CompOp;
 import org.xtext.example.mydsl.adeptness.LogicOp;
 import org.xtext.example.mydsl.adeptness.Op;
@@ -30,6 +31,7 @@ import org.xtext.example.mydsl.adeptness.Operators;
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.OperatorsImpl#getComparation <em>Comparation</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.OperatorsImpl#getLogicOperator <em>Logic Operator</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.adeptness.impl.OperatorsImpl#getBackParentheses <em>Back Parentheses</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.adeptness.impl.OperatorsImpl#getElements <em>Elements</em>}</li>
  * </ul>
  *
  * @generated
@@ -85,6 +87,16 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
    * @ordered
    */
   protected String backParentheses = BACK_PARENTHESES_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getElements()
+   * @generated
+   * @ordered
+   */
+  protected Comas elements;
 
   /**
    * <!-- begin-user-doc -->
@@ -288,6 +300,56 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
    * @generated
    */
   @Override
+  public Comas getElements()
+  {
+    return elements;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetElements(Comas newElements, NotificationChain msgs)
+  {
+    Comas oldElements = elements;
+    elements = newElements;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AdeptnessPackage.OPERATORS__ELEMENTS, oldElements, newElements);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setElements(Comas newElements)
+  {
+    if (newElements != elements)
+    {
+      NotificationChain msgs = null;
+      if (elements != null)
+        msgs = ((InternalEObject)elements).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.OPERATORS__ELEMENTS, null, msgs);
+      if (newElements != null)
+        msgs = ((InternalEObject)newElements).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AdeptnessPackage.OPERATORS__ELEMENTS, null, msgs);
+      msgs = basicSetElements(newElements, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, AdeptnessPackage.OPERATORS__ELEMENTS, newElements, newElements));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
@@ -298,6 +360,8 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
         return basicSetComparation(null, msgs);
       case AdeptnessPackage.OPERATORS__LOGIC_OPERATOR:
         return basicSetLogicOperator(null, msgs);
+      case AdeptnessPackage.OPERATORS__ELEMENTS:
+        return basicSetElements(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -320,6 +384,8 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
         return getLogicOperator();
       case AdeptnessPackage.OPERATORS__BACK_PARENTHESES:
         return getBackParentheses();
+      case AdeptnessPackage.OPERATORS__ELEMENTS:
+        return getElements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -345,6 +411,9 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
         return;
       case AdeptnessPackage.OPERATORS__BACK_PARENTHESES:
         setBackParentheses((String)newValue);
+        return;
+      case AdeptnessPackage.OPERATORS__ELEMENTS:
+        setElements((Comas)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -372,6 +441,9 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
       case AdeptnessPackage.OPERATORS__BACK_PARENTHESES:
         setBackParentheses(BACK_PARENTHESES_EDEFAULT);
         return;
+      case AdeptnessPackage.OPERATORS__ELEMENTS:
+        setElements((Comas)null);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -394,6 +466,8 @@ public class OperatorsImpl extends MinimalEObjectImpl.Container implements Opera
         return logicOperator != null;
       case AdeptnessPackage.OPERATORS__BACK_PARENTHESES:
         return BACK_PARENTHESES_EDEFAULT == null ? backParentheses != null : !BACK_PARENTHESES_EDEFAULT.equals(backParentheses);
+      case AdeptnessPackage.OPERATORS__ELEMENTS:
+        return elements != null;
     }
     return super.eIsSet(featureID);
   }

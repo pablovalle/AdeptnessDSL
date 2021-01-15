@@ -116,6 +116,7 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
       case AdeptnessPackage.EXPRESSIONS_MODEL: return createExpressionsModel();
       case AdeptnessPackage.ABSTRACT_ELEMENT2: return createAbstractElement2();
       case AdeptnessPackage.OPERATORS: return createOperators();
+      case AdeptnessPackage.COMAS: return createComas();
       case AdeptnessPackage.COMP_OP: return createCompOp();
       case AdeptnessPackage.LOGIC_OP: return createLogicOp();
       case AdeptnessPackage.OP: return createOp();
@@ -734,6 +735,18 @@ public class AdeptnessFactoryImpl extends EFactoryImpl implements AdeptnessFacto
   {
     OperatorsImpl operators = new OperatorsImpl();
     return operators;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Comas createComas()
+  {
+    ComasImpl comas = new ComasImpl();
+    return comas;
   }
 
   /**

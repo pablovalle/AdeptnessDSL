@@ -4006,6 +4006,57 @@ ruleOperators returns [EObject current=null]
 				}
 			)
 		)
+		    |
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getOperatorsAccess().getElementsComasParserRuleCall_4_0());
+				}
+				lv_elements_4_0=ruleComas
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getOperatorsRule());
+					}
+					set(
+						$current,
+						"elements",
+						lv_elements_4_0,
+						"org.xtext.example.mydsl.Adeptness.Comas");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleComas
+entryRuleComas returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getComasRule()); }
+	iv_ruleComas=ruleComas
+	{ $current=$iv_ruleComas.current; }
+	EOF;
+
+// Rule Comas
+ruleComas returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			lv_op_0_0=','
+			{
+				newLeafNode(lv_op_0_0, grammarAccess.getComasAccess().getOpCommaKeyword_0());
+			}
+			{
+				if ($current==null) {
+					$current = createModelElement(grammarAccess.getComasRule());
+				}
+				setWithLastConsumed($current, "op", lv_op_0_0, ",");
+			}
+		)
 	)
 ;
 

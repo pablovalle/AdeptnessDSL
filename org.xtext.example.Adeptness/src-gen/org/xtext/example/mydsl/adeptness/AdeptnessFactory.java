@@ -483,6 +483,15 @@ public interface AdeptnessFactory extends EFactory
   Operators createOperators();
 
   /**
+   * Returns a new object of class '<em>Comas</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Comas</em>'.
+   * @generated
+   */
+  Comas createComas();
+
+  /**
    * Returns a new object of class '<em>Comp Op</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

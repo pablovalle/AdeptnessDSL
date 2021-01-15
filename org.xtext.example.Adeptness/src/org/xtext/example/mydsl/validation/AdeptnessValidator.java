@@ -529,6 +529,9 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				if(j>0 && elements.getOp().get(j).getBackParentheses()==null && elements.getOp().get(j-1).getBackParentheses()==null) {
 					error("You can't concatenate operatros this way", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 				}
+				if(elements.getOp().get(j).getElements()!=null && i<data.getElements().size()-1 && (data.getElements().get(i+1).getName()==null && data.getElements().get(i+1).getValue()==null || data.getElements().get(i).getName()==null && data.getElements().get(i).getValue()==null)) {
+					error("You can't concatenate operatros this way", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+				}
 								
 			}
 		}

@@ -2188,13 +2188,50 @@ public interface AdeptnessPackage extends EPackage
   int OPERATORS__BACK_PARENTHESES = 3;
 
   /**
+   * The feature id for the '<em><b>Elements</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPERATORS__ELEMENTS = 4;
+
+  /**
    * The number of structural features of the '<em>Operators</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int OPERATORS_FEATURE_COUNT = 4;
+  int OPERATORS_FEATURE_COUNT = 5;
+
+  /**
+   * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.ComasImpl <em>Comas</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.xtext.example.mydsl.adeptness.impl.ComasImpl
+   * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getComas()
+   * @generated
+   */
+  int COMAS = 51;
+
+  /**
+   * The feature id for the '<em><b>Op</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int COMAS__OP = 0;
+
+  /**
+   * The number of structural features of the '<em>Comas</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int COMAS_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.adeptness.impl.CompOpImpl <em>Comp Op</em>}' class.
@@ -2204,7 +2241,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getCompOp()
    * @generated
    */
-  int COMP_OP = 51;
+  int COMP_OP = 52;
 
   /**
    * The feature id for the '<em><b>Op</b></em>' attribute.
@@ -2232,7 +2269,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getLogicOp()
    * @generated
    */
-  int LOGIC_OP = 52;
+  int LOGIC_OP = 53;
 
   /**
    * The feature id for the '<em><b>Op</b></em>' attribute.
@@ -2260,7 +2297,7 @@ public interface AdeptnessPackage extends EPackage
    * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getOp()
    * @generated
    */
-  int OP = 53;
+  int OP = 54;
 
   /**
    * The feature id for the '<em><b>Op</b></em>' attribute.
@@ -4178,6 +4215,38 @@ public interface AdeptnessPackage extends EPackage
   EAttribute getOperators_BackParentheses();
 
   /**
+   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.adeptness.Operators#getElements <em>Elements</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Elements</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Operators#getElements()
+   * @see #getOperators()
+   * @generated
+   */
+  EReference getOperators_Elements();
+
+  /**
+   * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.Comas <em>Comas</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Comas</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Comas
+   * @generated
+   */
+  EClass getComas();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.adeptness.Comas#getOp <em>Op</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Op</em>'.
+   * @see org.xtext.example.mydsl.adeptness.Comas#getOp()
+   * @see #getComas()
+   * @generated
+   */
+  EAttribute getComas_Op();
+
+  /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.adeptness.CompOp <em>Comp Op</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -5780,6 +5849,32 @@ public interface AdeptnessPackage extends EPackage
      * @generated
      */
     EAttribute OPERATORS__BACK_PARENTHESES = eINSTANCE.getOperators_BackParentheses();
+
+    /**
+     * The meta object literal for the '<em><b>Elements</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference OPERATORS__ELEMENTS = eINSTANCE.getOperators_Elements();
+
+    /**
+     * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.ComasImpl <em>Comas</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.xtext.example.mydsl.adeptness.impl.ComasImpl
+     * @see org.xtext.example.mydsl.adeptness.impl.AdeptnessPackageImpl#getComas()
+     * @generated
+     */
+    EClass COMAS = eINSTANCE.getComas();
+
+    /**
+     * The meta object literal for the '<em><b>Op</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute COMAS__OP = eINSTANCE.getComas_Op();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.adeptness.impl.CompOpImpl <em>Comp Op</em>}' class.
