@@ -6,16 +6,11 @@ package org.xtext.example.mydsl.validation;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.eclipse.xtext.validation.Check;
-import org.xtext.example.mydsl.adeptness.AbstractElement;
 import org.xtext.example.mydsl.adeptness.AbstractElement2;
-import org.xtext.example.mydsl.adeptness.Adeptness;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.At_least;
 import org.xtext.example.mydsl.adeptness.At_most;
-import org.xtext.example.mydsl.adeptness.Bound_Down;
-import org.xtext.example.mydsl.adeptness.Bound_up;
 import org.xtext.example.mydsl.adeptness.Checks;
 import org.xtext.example.mydsl.adeptness.ConstDeg;
 import org.xtext.example.mydsl.adeptness.DOUBLE;
@@ -24,658 +19,737 @@ import org.xtext.example.mydsl.adeptness.ExpressionsModel;
 import org.xtext.example.mydsl.adeptness.Gap;
 import org.xtext.example.mydsl.adeptness.HighPeak;
 import org.xtext.example.mydsl.adeptness.HighTime;
-import org.xtext.example.mydsl.adeptness.XPeaks;
-import org.xtext.example.mydsl.adeptness.Imports;
 import org.xtext.example.mydsl.adeptness.Lower;
-import org.xtext.example.mydsl.adeptness.MonitoringFile;
-import org.xtext.example.mydsl.adeptness.MonitoringPlan;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
 import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.Oracle;
-import org.xtext.example.mydsl.adeptness.PrecondReference;
 import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Same;
-import org.xtext.example.mydsl.adeptness.Sig_type;
 import org.xtext.example.mydsl.adeptness.Signal;
 import org.xtext.example.mydsl.adeptness.Upper;
 import org.xtext.example.mydsl.adeptness.When;
 import org.xtext.example.mydsl.adeptness.While;
+import org.xtext.example.mydsl.adeptness.XPeaks;
 
 /**
- * This class contains custom validation rules. 
+ * This class contains custom validation rules.
  *
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
+ * See
+ * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 public class AdeptnessValidator extends AbstractAdeptnessValidator {
-	
+
 	double cantHigh;
 	double cantTime;
 	double cantDeg;
 	double cantXPeak;
+	// TODO use one variable of type Map<String, Set<MonitoringVariables>> where key
+	// is monitoringVariableName
 	List<MonitoringVariables> monitoringVariableList;
-	List<String>oracleNames;
-	List<String>monitoringVariableNames;
-	//GET MONITORING VARIBALES
+	List<String> oracleNames;
+	List<String> monitoringVariableNames;
+
+	// GET MONITORING VARIBALES
 	@Check
 	public void getImportedMonitoringVariables(Signal CPS) {
-		monitoringVariableList=new ArrayList<>();
-		String type,name;
+		if (monitoringVariableList != null && !monitoringVariableList.isEmpty())
+			return;
+
+		OperationalDataConnector opCon = new OperationalDataConnector();
+		monitoringVariableList = new ArrayList<>();
+		monitoringVariableNames = new ArrayList<>();
+		String type, name;
 		double min, max;
-		for(int i=0; i< CPS.getSuperType().getMonitoringPlan().size(); i++) {
-			MonitoringVariable monitor=CPS.getSuperType().getMonitoringPlan().get(i).getMonitoringVariables();
-			if(monitor.getMonitoringVariableDatatype().getSig_type().toString().equals("boolean")) {
-				name=monitor.getName().toString();
-				type=monitor.getMonitoringVariableDatatype().getSig_type().toString();
-				max=1;
-				min=0;
+		for (int i = 0; i < CPS.getSuperType().getMonitoringPlan().size(); i++) {
+			MonitoringVariable monitor = CPS.getSuperType().getMonitoringPlan().get(i).getMonitoringVariables();
+			if (monitor.getMonitoringVariableDatatype().getSig_type().toString().equals("boolean")) {
+				name = monitor.getName().toString();
+				type = monitor.getMonitoringVariableDatatype().getSig_type().toString();
+				max = 1;
+				min = 0;
+			} else {
+				name = monitor.getName().toString();
+				type = monitor.getMonitoringVariableDatatype().getSig_type().toString();
+				max = monitor.getMax().getDVal();
+				min = monitor.getMin().getDVal();
 			}
-			else {
-				name=monitor.getName().toString();
-				type=monitor.getMonitoringVariableDatatype().getSig_type().toString();
-				max=monitor.getMax().getDVal();
-				min=monitor.getMin().getDVal();
+			MonitoringVariables monitoringVar = new MonitoringVariables(name, type, max, min);
+			if (opCon.getVariableOpData(name)) {
+				monitoringVar.setMaxOp(opCon.getMax(name));
+				monitoringVar.setMinOp(opCon.getMin(name));
 			}
-			monitoringVariableList.add(new MonitoringVariables(name,type,max,min));
+			monitoringVariableList.add(monitoringVar);
+			monitoringVariableNames.add(name);
+
 		}
 	}
-	@Check
-	public void getMonitoringVariablesName(MonitoringFile file) {
-		monitoringVariableNames= new ArrayList<>();
-		for (int i=0; i< file.getMonitoringPlan().size(); i++) {
-			monitoringVariableNames.add(file.getMonitoringPlan().get(i).getMonitoringVariables().getName().toString());
-		}
-		
-	}
+
 	@Check
 	public void checkDuplicatedMonitoringVariableNames(MonitoringVariable variable) {
-		String name= variable.getName().toString();
-		int cont=0;
-		for(int i=0; i<monitoringVariableNames.size(); i++) {
-			if(monitoringVariableNames.get(i).toString().equals(name)) {
+		String name = variable.getName().toString();
+		int cont = 0;
+		for (int i = 0; i < monitoringVariableNames.size(); i++) {
+			if (monitoringVariableNames.get(i).toString().equals(name)) {
 				cont++;
 			}
 		}
-		if(cont>1) {
+		if (cont > 1) {
 			error("Monitoring Variables' name must be unique", AdeptnessPackage.Literals.MONITORING_VARIABLE__NAME);
 		}
 	}
+
 	@Check
 	public void getOraclesNames(Signal CPS) {
-		oracleNames=new ArrayList<>();
-		for(int i=0; i< CPS.getOracle().size(); i++) {
+		oracleNames = new ArrayList<>();
+		for (int i = 0; i < CPS.getOracle().size(); i++) {
 			oracleNames.add(CPS.getOracle().get(i).getName().toString());
 		}
 	}
+
 	@Check
 	public void checkDuplicatedOracleNames(Oracle oracle) {
-		String name=oracle.getName().toString();
-		int cont=0;
-		for(int i=0; i<oracleNames.size(); i++) {
-			if(oracleNames.get(i).toString().equals(name)) {
+		String name = oracle.getName().toString();
+		int cont = 0;
+		for (int i = 0; i < oracleNames.size(); i++) {
+			if (oracleNames.get(i).toString().equals(name)) {
 				cont++;
 			}
 		}
-		if(cont>1) {
+		if (cont > 1) {
 			error("Oracle's name must be unique", AdeptnessPackage.Literals.ORACLE__NAME);
 		}
 	}
+
 	@Check
 	public void checkHighTimeAndHighPeak(Checks check) {
-		boolean HT=false;
-		boolean HP=false;
-		int numHT=0,numHP=0;
-		for (int i=0; i<check.getFailReason().size(); i++) {
-			if(check.getFailReason().get(i).getReason().getHighTime()!=null) {
-				HT=true;
-				numHT=i;
-			}
-			else if(check.getFailReason().get(i).getReason().getHighPeak()!=null) {
-				HP=true;
-				numHP=i;
-			}
-		}
-		if(HT && HP) {
-			HighTime Ht=check.getFailReason().get(numHT).getReason().getHighTime();
-			HighPeak Hp=check.getFailReason().get(numHP).getReason().getHighPeak();
-			if(Ht.getCant().getDVal()<= Hp.getCant().getDVal()) {
-				error("The high peak reference confidence value must be lower than high time out of bounds confidence value",AdeptnessPackage.Literals.CHECKS__FAIL_REASON );
+		boolean HT = false;
+		boolean HP = false;
+		int numHT = 0, numHP = 0;
+		for (int i = 0; i < check.getFailReason().size(); i++) {
+			if (check.getFailReason().get(i).getReason().getHighTime() != null) {
+				HT = true;
+				numHT = i;
+			} else if (check.getFailReason().get(i).getReason().getHighPeak() != null) {
+				HP = true;
+				numHP = i;
 			}
 		}
-		
-	}
-	@Check
-	public void checkConfidenceHighPeak(HighPeak HPeak) {
-		if(HPeak!=null) {
-			cantHigh=HPeak.getCant().getDVal();
-			if(cantHigh<-1 || cantHigh > 0 ) {
-				error("The confidence value must be between -1 and 0",AdeptnessPackage.Literals.HIGH_PEAK__CANT);
+		if (HT && HP) {
+			HighTime Ht = check.getFailReason().get(numHT).getReason().getHighTime();
+			HighPeak Hp = check.getFailReason().get(numHP).getReason().getHighPeak();
+			if (Ht.getCant().getDVal() <= Hp.getCant().getDVal()) {
+				error("The high peak reference confidence value must be lower than high time out of bounds confidence value",
+						AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
 			}
-		}
-		
-	}
-	@Check
-	public void checkConfidenceHighTime(HighTime HTime) {
-		if(HTime!=null) {
-			cantTime=HTime.getCant().getDVal();
-			if(cantTime<-1 || cantTime > 0 ) {
-				error("The confidence value must be between -1 and 0",AdeptnessPackage.Literals.HIGH_TIME__CANT);
-			}
-		}
-		
-	}
-	@Check
-	public void checkConfidenceConstDeg(ConstDeg constDeg) {
-		if(constDeg!=null) {
-			cantDeg=constDeg.getCant().getDVal();
-			if(cantDeg<-1 || cantDeg > 0 ) {
-				error("The confidence value must be between -1 and 0",AdeptnessPackage.Literals.CONST_DEG__CANT);
-			}
-		}
-		
-	}
-	@Check
-	public void checkConfidenceXPeaks(XPeaks xpeak) {
-		if(xpeak!=null) {
-			cantXPeak=xpeak.getCant().getDVal();
-			if(cantXPeak<-1 || cantXPeak > 0 ) {
-				error("The confidence value must be between -1 and 0",AdeptnessPackage.Literals.XPEAKS__CANT);
-			}
-		}
-		
-	}
-	
-	@Check
-	public void checkBooleanMinMaxValidation(MonitoringVariable monitoringVariable) {
-		if(monitoringVariable.getMonitoringVariableDatatype().getSig_type().toString().equals("boolean") && (monitoringVariable.getMax()!=null ||monitoringVariable.getMin()!=null )) {
-			error("A boolean type signal can't have max and min values", AdeptnessPackage.Literals.MONITORING_VARIABLE__MONITORING_VARIABLE_DATATYPE);
-			
-		}
-		else if((monitoringVariable.getMonitoringVariableDatatype().getSig_type().toString().equals("int")||monitoringVariable.getMonitoringVariableDatatype().getSig_type().toString().equals("double")) && (monitoringVariable.getMax()==null ||monitoringVariable.getMin()==null )) {
-			error("An int or double type signal must have max and min values", AdeptnessPackage.Literals.MONITORING_VARIABLE__MONITORING_VARIABLE_DATATYPE);
 		}
 
 	}
+
+	@Check
+	public void checkConfidenceHighPeak(HighPeak HPeak) {
+		if (HPeak != null) {
+			cantHigh = HPeak.getCant().getDVal();
+			if (cantHigh < -1 || cantHigh > 0) {
+				error("The confidence value must be between -1 and 0", AdeptnessPackage.Literals.HIGH_PEAK__CANT);
+			}
+		}
+
+	}
+
+	@Check
+	public void checkConfidenceHighTime(HighTime HTime) {
+		if (HTime != null) {
+			cantTime = HTime.getCant().getDVal();
+			if (cantTime < -1 || cantTime > 0) {
+				error("The confidence value must be between -1 and 0", AdeptnessPackage.Literals.HIGH_TIME__CANT);
+			}
+		}
+
+	}
+
+	@Check
+	public void checkConfidenceConstDeg(ConstDeg constDeg) {
+		if (constDeg != null) {
+			cantDeg = constDeg.getCant().getDVal();
+			if (cantDeg < -1 || cantDeg > 0) {
+				error("The confidence value must be between -1 and 0", AdeptnessPackage.Literals.CONST_DEG__CANT);
+			}
+		}
+
+	}
+
+	@Check
+	public void checkConfidenceXPeaks(XPeaks xpeak) {
+		if (xpeak != null) {
+			cantXPeak = xpeak.getCant().getDVal();
+			if (cantXPeak < -1 || cantXPeak > 0) {
+				error("The confidence value must be between -1 and 0", AdeptnessPackage.Literals.XPEAKS__CANT);
+			}
+		}
+
+	}
+
+	@Check
+	public void checkBooleanMinMaxValidation(MonitoringVariable monitoringVariable) {
+		if (monitoringVariable.getMonitoringVariableDatatype().getSig_type().toString().equals("boolean")
+				&& (monitoringVariable.getMax() != null || monitoringVariable.getMin() != null)) {
+			error("A boolean type signal can't have max and min values",
+					AdeptnessPackage.Literals.MONITORING_VARIABLE__MONITORING_VARIABLE_DATATYPE);
+
+		} else if ((monitoringVariable.getMonitoringVariableDatatype().getSig_type().toString().equals("int")
+				|| monitoringVariable.getMonitoringVariableDatatype().getSig_type().toString().equals("double"))
+				&& (monitoringVariable.getMax() == null || monitoringVariable.getMin() == null)) {
+			error("An int or double type signal must have max and min values",
+					AdeptnessPackage.Literals.MONITORING_VARIABLE__MONITORING_VARIABLE_DATATYPE);
+		}
+
+	}
+
 	@Check
 	public void checkMinMaxValues(MonitoringVariable monitoringVariable) {
-		if(monitoringVariable.getMax().getDVal()<monitoringVariable.getMin().getDVal()) {
+		if (monitoringVariable.getMax().getDVal() < monitoringVariable.getMin().getDVal()) {
 			error("Max value must be higher than min value", AdeptnessPackage.Literals.MONITORING_VARIABLE__MAX);
 		}
 	}
-	
-	
-	/*
+
+//	@Check
+//	public void checkOracleConfigValues(Oracle oracle, Signal CPS) {
+//		System.out.println("check OracleConfig  Values entering");
+//		boolean is=false;
+//		double max, min;
+//		int j=0;
+//		for (int z=0; z<oracle.getCheck().size(); z++) {
+//			is=false;
+//			j=0;
+//			while(!is && j<CPS.getSuperType().getMonitoringPlan().size()) {
+//				if(oracle.getCheck().get(z).getName().toString().equals(CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getName().toString())) {
+//					is=true;
+//				}
+//				j++;
+//			}
+//			if(j==CPS.getSuperType().getMonitoringPlan().size() && !is) {
+//				error("There is at least one variable not included in the monitoring plan", AdeptnessPackage.Literals.SIGNAL__ORACLE);
+//			}
+//			else if(is) {
+//				j--;
+//				if(!CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMonitoringVariableDatatype().getSig_type().equals("boolean")) {
+//					max=CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMax().getDVal();
+//					min=CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMin().getDVal();
+//				}
+//				else {
+//					max=1;
+//					min=0;
+//				}
+//					if(oracle.getCheck().get(z).getReference().getUpper()!=null) {
+//						Upper up=oracle.getCheck().get(z).getReference().getUpper();
+//						if(up.getBound_upp().getValue().getDVal()>max ||up.getBound_upp().getValue().getDVal()>min) {
+//							System.out.println("A");
+//							error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
+//						}
+//					}
+//					else if(oracle.getCheck().get(z).getReference().getLower()!=null) {
+//						Lower low=oracle.getCheck().get(z).getReference().getLower();
+//						if(low.getBound_lower().getValue().getDVal()>max ||low.getBound_lower().getValue().getDVal()>min) {
+//							System.out.println("B");
+//							error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
+//						}
+//					}
+//					else if(oracle.getCheck().get(z).getReference().getGap()!=null) {
+//						Gap gap=oracle.getCheck().get(z).getReference().getGap();
+//						if(gap.getBound_upp().getValue().getDVal()>max || gap.getBound_upp().getValue().getDVal()<min || gap.getBound_lower().getValue().getDVal()>max ||gap.getBound_lower().getValue().getDVal()<min) {
+//							System.out.println("C");
+//							error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
+//						}
+//					}
+//					else if(oracle.getCheck().get(z).getReference().getRange()!=null) {
+//						Range range=oracle.getCheck().get(z).getReference().getRange();
+//						if(range.getBound_upp().getValue().getDVal()>max || range.getBound_upp().getValue().getDVal()<min || range.getBound_lower().getValue().getDVal()>max ||range.getBound_lower().getValue().getDVal()<min) {
+//							System.out.println("D");
+//							error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
+//						}
+//					}
+//			}
+//		}
+//		
+//	}
+//
+//	@Check
+//	public void checkCPSConfigValues(Signal CPS) {
+//		System.out.println("check checkCPSConfigValues entering");
+//		boolean is=false;
+//		double max, min;
+//		int j=0;
+//		for(int i=0; i<CPS.getOracle().size(); i++) {
+//			for (int z=0; z<CPS.getOracle().get(i).getCheck().size(); z++) {
+//				is=false;
+//				j=0;
+//				while(!is && j<CPS.getSuperType().getMonitoringPlan().size()) {
+//					if(CPS.getOracle().get(i).getCheck().get(z).getName().toString().equals(CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getName().toString())) {
+//						is=true;
+//					}
+//					j++;
+//				}
+//				if(j==CPS.getSuperType().getMonitoringPlan().size() && !is) {
+//					String errorString = "The variable " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " is not in the monitoring plan";
+//					error(errorString, AdeptnessPackage.Literals.SIGNAL__ORACLE);
+//				}
+//				else if(is) {
+//					j--;
+//					if(!CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMonitoringVariableDatatype().getSig_type().equals("boolean")) {
+//						max=CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMax().getDVal();
+//						min=CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMin().getDVal();
+//					}
+//					else {
+//						max=1;
+//						min=0;
+//					}
+//					if(CPS.getOracle().get(i).getCheck().get(z).getReference().getUpper()!=null) {
+//						Upper up=CPS.getOracle().get(i).getCheck().get(z).getReference().getUpper();
+//						if(up.getBound_upp().getValue().getDVal()>max) {
+//							System.out.println("A");
+//							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max values specified in the validation plan insede the check";
+//							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);//SIGNAL__ORACLE
+//						}
+//						if(up.getBound_upp().getValue().getDVal()<min) {
+//							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply min values specified in the validation plan insede the check";
+//							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);//SIGNAL__ORACLE
+//	
+//						}
+//					}
+//					else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getLower()!=null) {
+//						Lower low=CPS.getOracle().get(i).getCheck().get(z).getReference().getLower();
+//						if(low.getBound_lower().getValue().getDVal()>max) {
+//							System.out.println("B");
+//							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max values specified in the validation plan in the check";
+//							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
+//						}
+//						if(low.getBound_lower().getValue().getDVal()<min) {
+//							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply min values specified in the validation plan in the check";
+//							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
+//				
+//						}
+//					}
+//					else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getGap()!=null) {
+//						Gap gap=CPS.getOracle().get(i).getCheck().get(z).getReference().getGap();
+//						if(gap.getBound_upp().getValue().getDVal()>max || gap.getBound_upp().getValue().getDVal()<min || gap.getBound_lower().getValue().getDVal()>max ||gap.getBound_lower().getValue().getDVal()<min) {
+//							System.out.println("C");
+//							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max and/or min values in the check";
+//							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
+//						}
+//					}
+//					else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getRange()!=null) {
+//						Range range=CPS.getOracle().get(i).getCheck().get(z).getReference().getRange();
+//						if(range.getBound_upp().getValue().getDVal()>max || range.getBound_upp().getValue().getDVal()<min || range.getBound_lower().getValue().getDVal()>max ||range.getBound_lower().getValue().getDVal()<min) {
+//							System.out.println("D");
+//							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max and/or min values in the check";
+//							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
 	@Check
-	public void checkOracleConfigValues(Oracle oracle, Signal CPS) {
-		System.out.println("check OracleConfig  Values entering");
-		boolean is=false;
+	public void checkMonitoringVariables(Checks check) {
+		String checkName = check.getName().toString();
 		double max, min;
-		int j=0;
-		for (int z=0; z<oracle.getCheck().size(); z++) {
-			is=false;
-			j=0;
-			while(!is && j<CPS.getSuperType().getMonitoringPlan().size()) {
-				if(oracle.getCheck().get(z).getName().toString().equals(CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getName().toString())) {
-					is=true;
+		boolean is = false;
+		for (int i = 0; i < monitoringVariableList.size(); i++) {
+			if (checkName.equals(monitoringVariableList.get(i).getName())) {
+				is = true;
+				max = monitoringVariableList.get(i).getMax();
+				min = monitoringVariableList.get(i).getMin();
+				if (check.getReference().getUpper() != null) {
+					Upper up = check.getReference().getUpper();
+					if (up.getBound_upp().getValue().getDVal() > max) {
+						String errorString = "Check " + check.getName() + " with value: "
+								+ up.getBound_upp().getValue().getDVal() + " does not comply max value: " + max
+								+ " specified in the validation plan";
+						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if (up.getBound_upp().getValue().getDVal() < min) {
+						String errorString = "Check " + check.getName() + " with value: "
+								+ up.getBound_upp().getValue().getDVal() + " does not comply min value: " + min
+								+ " specified in the validation plan";
+						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+				} else if (check.getReference().getLower() != null) {
+					Lower low = check.getReference().getLower();
+					if (low.getBound_lower().getValue().getDVal() > max) {
+						String errorString = "Check " + check.getName() + " with value: "
+								+ low.getBound_lower().getValue().getDVal() + " does not comply max value: " + max
+								+ " specified in the validation plan";
+						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if (low.getBound_lower().getValue().getDVal() < min) {
+						String errorString = "Check " + check.getName() + " with value: "
+								+ low.getBound_lower().getValue().getDVal() + " does not comply min value: " + min
+								+ " specified in the validation plan";
+						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+				} else if (check.getReference().getRange() != null) {
+					Range range = check.getReference().getRange();
+					if (range.getBound_upp().getValue().getDVal() > max) {
+						String errorString = "Check " + check.getName() + " with value: "
+								+ range.getBound_upp().getValue().getDVal() + " does not comply max value: " + max
+								+ " specified in the validation plan";
+						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if (range.getBound_upp().getValue().getDVal() < min) {
+						String errorString = "Check " + check.getName() + " with value: "
+								+ range.getBound_upp().getValue().getDVal() + " does not comply min value: " + min
+								+ " specified in the validation plan";
+						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if (range.getBound_lower().getValue().getDVal() > max) {
+						String errorString = "Check " + check.getName() + " with value: "
+								+ range.getBound_lower().getValue().getDVal() + " does not comply max value: " + max
+								+ " specified in the validation plan";
+						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if (range.getBound_lower().getValue().getDVal() < min) {
+						String errorString = "Check " + check.getName() + " with value: "
+								+ range.getBound_lower().getValue().getDVal() + " does not comply min value: " + min
+								+ " specified in the validation plan";
+						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+				} else if (check.getReference().getGap() != null) {
+					Gap gap = check.getReference().getGap();
+					if (gap.getBound_upp().getValue().getDVal() > max) {
+						String errorString = "Check " + check.getName() + " with value: "
+								+ gap.getBound_upp().getValue().getDVal() + " does not comply max value: " + max
+								+ " specified in the validation plan";
+						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if (gap.getBound_upp().getValue().getDVal() < min) {
+						String errorString = "Check " + check.getName() + " with value: "
+								+ gap.getBound_upp().getValue().getDVal() + " does not comply min value: " + min
+								+ " specified in the validation plan";
+						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if (gap.getBound_lower().getValue().getDVal() > max) {
+						String errorString = "Check " + check.getName() + " with value: "
+								+ gap.getBound_lower().getValue().getDVal() + " does not comply max value: " + max
+								+ " specified in the validation plan";
+						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
+					if (gap.getBound_lower().getValue().getDVal() < min) {
+						String errorString = "Check " + check.getName() + " with value: "
+								+ gap.getBound_lower().getValue().getDVal() + " does not comply min value: " + min
+								+ " specified in the validation plan";
+						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
+					}
 				}
-				j++;
-			}
-			if(j==CPS.getSuperType().getMonitoringPlan().size() && !is) {
-				error("There is at least one variable not included in the monitoring plan", AdeptnessPackage.Literals.SIGNAL__ORACLE);
-			}
-			else if(is) {
-				j--;
-				if(!CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMonitoringVariableDatatype().getSig_type().equals("boolean")) {
-					max=CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMax().getDVal();
-					min=CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMin().getDVal();
-				}
-				else {
-					max=1;
-					min=0;
-				}
-					if(oracle.getCheck().get(z).getReference().getUpper()!=null) {
-						Upper up=oracle.getCheck().get(z).getReference().getUpper();
-						if(up.getBound_upp().getValue().getDVal()>max ||up.getBound_upp().getValue().getDVal()>min) {
-							System.out.println("A");
-							error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
-						}
-					}
-					else if(oracle.getCheck().get(z).getReference().getLower()!=null) {
-						Lower low=oracle.getCheck().get(z).getReference().getLower();
-						if(low.getBound_lower().getValue().getDVal()>max ||low.getBound_lower().getValue().getDVal()>min) {
-							System.out.println("B");
-							error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
-						}
-					}
-					else if(oracle.getCheck().get(z).getReference().getGap()!=null) {
-						Gap gap=oracle.getCheck().get(z).getReference().getGap();
-						if(gap.getBound_upp().getValue().getDVal()>max || gap.getBound_upp().getValue().getDVal()<min || gap.getBound_lower().getValue().getDVal()>max ||gap.getBound_lower().getValue().getDVal()<min) {
-							System.out.println("C");
-							error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
-						}
-					}
-					else if(oracle.getCheck().get(z).getReference().getRange()!=null) {
-						Range range=oracle.getCheck().get(z).getReference().getRange();
-						if(range.getBound_upp().getValue().getDVal()>max || range.getBound_upp().getValue().getDVal()<min || range.getBound_lower().getValue().getDVal()>max ||range.getBound_lower().getValue().getDVal()<min) {
-							System.out.println("D");
-							error("Every reference must be between max and min values",AdeptnessPackage.Literals.SIGNAL__ORACLE);
-						}
-					}
 			}
 		}
-		
+		if (!is) {
+			error("This variable is not in the monitoring plan", AdeptnessPackage.Literals.CHECKS__NAME);
+		}
 	}
 
 	@Check
-	public void checkCPSConfigValues(Signal CPS) {
-		System.out.println("check checkCPSConfigValues entering");
-		boolean is=false;
-		double max, min;
-		int j=0;
-		for(int i=0; i<CPS.getOracle().size(); i++) {
-			for (int z=0; z<CPS.getOracle().get(i).getCheck().size(); z++) {
-				is=false;
-				j=0;
-				while(!is && j<CPS.getSuperType().getMonitoringPlan().size()) {
-					if(CPS.getOracle().get(i).getCheck().get(z).getName().toString().equals(CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getName().toString())) {
-						is=true;
-					}
-					j++;
-				}
-				if(j==CPS.getSuperType().getMonitoringPlan().size() && !is) {
-					String errorString = "The variable " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " is not in the monitoring plan";
-					error(errorString, AdeptnessPackage.Literals.SIGNAL__ORACLE);
-				}
-				else if(is) {
-					j--;
-					if(!CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMonitoringVariableDatatype().getSig_type().equals("boolean")) {
-						max=CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMax().getDVal();
-						min=CPS.getSuperType().getMonitoringPlan().get(j).getMonitoringVariables().getMin().getDVal();
-					}
-					else {
-						max=1;
-						min=0;
-					}
-					if(CPS.getOracle().get(i).getCheck().get(z).getReference().getUpper()!=null) {
-						Upper up=CPS.getOracle().get(i).getCheck().get(z).getReference().getUpper();
-						if(up.getBound_upp().getValue().getDVal()>max) {
-							System.out.println("A");
-							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max values specified in the validation plan insede the check";
-							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);//SIGNAL__ORACLE
-						}
-						if(up.getBound_upp().getValue().getDVal()<min) {
-							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply min values specified in the validation plan insede the check";
-							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);//SIGNAL__ORACLE
-	
-						}
-					}
-					else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getLower()!=null) {
-						Lower low=CPS.getOracle().get(i).getCheck().get(z).getReference().getLower();
-						if(low.getBound_lower().getValue().getDVal()>max) {
-							System.out.println("B");
-							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max values specified in the validation plan in the check";
-							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
-						}
-						if(low.getBound_lower().getValue().getDVal()<min) {
-							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply min values specified in the validation plan in the check";
-							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
-				
-						}
-					}
-					else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getGap()!=null) {
-						Gap gap=CPS.getOracle().get(i).getCheck().get(z).getReference().getGap();
-						if(gap.getBound_upp().getValue().getDVal()>max || gap.getBound_upp().getValue().getDVal()<min || gap.getBound_lower().getValue().getDVal()>max ||gap.getBound_lower().getValue().getDVal()<min) {
-							System.out.println("C");
-							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max and/or min values in the check";
-							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
-						}
-					}
-					else if(CPS.getOracle().get(i).getCheck().get(z).getReference().getRange()!=null) {
-						Range range=CPS.getOracle().get(i).getCheck().get(z).getReference().getRange();
-						if(range.getBound_upp().getValue().getDVal()>max || range.getBound_upp().getValue().getDVal()<min || range.getBound_lower().getValue().getDVal()>max ||range.getBound_lower().getValue().getDVal()<min) {
-							System.out.println("D");
-							String errorString = "Oracle " + CPS.getOracle().get(i).getCheck().get(z).getName().toString() + " does not comply max and/or min values in the check";
-							error(errorString,AdeptnessPackage.Literals.SIGNAL__ORACLE);
-						}
-					}
-				}
-			}
-		}
-	}*/
-	@Check
-	public void checkMonitoringVariables(Checks check) {
-		String checkName=check.getName().toString();
-		double max, min;
-		boolean is= false;
-		for(int i=0;i<monitoringVariableList.size();i++) {
-			if(checkName.equals(monitoringVariableList.get(i).getName())) {
-				is=true;
-				max=monitoringVariableList.get(i).getMax();
-				min= monitoringVariableList.get(i).getMin();
-				if(check.getReference().getUpper()!=null) {
-					Upper up=check.getReference().getUpper();
-					if(up.getBound_upp().getValue().getDVal()>max) {
-						String errorString = "Check "+check.getName()+" with value: "+up.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
-					}
-					if(up.getBound_upp().getValue().getDVal()<min) {
-						String errorString = "Check "+check.getName()+" with value: "+up.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
-					}
-				}
-				else if(check.getReference().getLower()!=null) {
-					Lower low=check.getReference().getLower();
-					if(low.getBound_lower().getValue().getDVal()>max) {
-						String errorString = "Check "+check.getName()+" with value: "+low.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
-					}
-					if(low.getBound_lower().getValue().getDVal()<min) {
-						String errorString = "Check "+check.getName()+" with value: "+low.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
-					}
-				}
-				else if(check.getReference().getRange()!=null) {
-					Range range=check.getReference().getRange();
-					if(range.getBound_upp().getValue().getDVal()>max) {
-						String errorString = "Check "+check.getName()+" with value: "+range.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
-					}
-					if(range.getBound_upp().getValue().getDVal()<min) {
-						String errorString = "Check "+check.getName()+" with value: "+range.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
-					}
-					if(range.getBound_lower().getValue().getDVal()>max) {
-						String errorString = "Check "+check.getName()+" with value: "+range.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
-					}
-					if(range.getBound_lower().getValue().getDVal()<min) {
-						String errorString = "Check "+check.getName()+" with value: "+range.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
-					}
-				}
-				else if(check.getReference().getGap()!=null) {
-					Gap gap=check.getReference().getGap();
-					if(gap.getBound_upp().getValue().getDVal()>max) {
-						String errorString = "Check "+check.getName()+" with value: "+gap.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
-					}
-					if(gap.getBound_upp().getValue().getDVal()<min) {
-						String errorString = "Check "+check.getName()+" with value: "+gap.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
-					}
-					if(gap.getBound_lower().getValue().getDVal()>max) {
-						String errorString = "Check "+check.getName()+" with value: "+gap.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
-					}
-					if(gap.getBound_lower().getValue().getDVal()<min) {
-						String errorString = "Check "+check.getName()+" with value: "+gap.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.CHECKS__REFERENCE);
-					}
-				}
-			}
-		}
-		if(!is) {
-			error("This variable is not in the monitoring plan",AdeptnessPackage.Literals.CHECKS__NAME);
-		}
-	}
-	
-	@Check
 	public void checkOracleAssesment(Oracle or) {
 		OracleAssesment oa = new OracleAssesment(or);
-		if(!oa.assesOracle())
-			warning("This oracle may fail if we consider operational data", AdeptnessPackage.Literals.ORACLE__CHECK);
-		
+		String variableName = oa.getVariableName();
+		for (int i = 0; i < monitoringVariableList.size(); i++) {
+			if (variableName.equals(monitoringVariableList.get(i).getName())) {
+				MonitoringVariables monVar = monitoringVariableList.get(i);
+				// check if operational data is registered for monitoring variable
+				if (monVar.getMaxOp() != null || monVar.getMinOp() != null) {
+					if (!oa.assesOracle(monVar)) {
+						warning("This oracle may fail if we consider operational data",
+								AdeptnessPackage.Literals.ORACLE__CHECK);
+					}
+				}
+				break;
+			}
+		}
 	}
-	
-	
-	
+
 	@Check
 	public void checkMonitoringVariablesInPreconditions(AbstractElement2 precond) {
-		String checkName=precond.getName().toString();
-		double max, min;
-		boolean is= false;
-		for(int i=0;i<monitoringVariableList.size();i++) {
-			if(checkName.equals(monitoringVariableList.get(i).getName())) {
-				is=true;
-				/*max=monitoringVariableList.get(i).getMax();
-				min= monitoringVariableList.get(i).getMin();
-				if(precond.getPrecondReference().getUpper()!=null) {
-					Upper up=precond.getPrecondReference().getUpper();
-					if(up.getBound_upp().getValue().getDVal()>max) {
-						String errorString = "Check "+precond.getName()+" with value: "+up.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
-					}
-					if(up.getBound_upp().getValue().getDVal()<min) {
-						String errorString = "Check "+precond.getName()+" with value: "+up.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
-					}
-				}
-				else if(precond.getPrecondReference().getLower()!=null) {
-					Lower low=precond.getPrecondReference().getLower();
-					if(low.getBound_lower().getValue().getDVal()>max) {
-						String errorString = "Check "+precond.getName()+" with value: "+low.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
-					}
-					if(low.getBound_lower().getValue().getDVal()<min) {
-						String errorString = "Check "+precond.getName()+" with value: "+low.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
-					}
-				}
-				else if(precond.getPrecondReference().getRange()!=null) {
-					Range range=precond.getPrecondReference().getRange();
-					if(range.getBound_upp().getValue().getDVal()>max) {
-						String errorString = "Check "+precond.getName()+" with value: "+range.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
-					}
-					if(range.getBound_upp().getValue().getDVal()<min) {
-						String errorString = "Check "+precond.getName()+" with value: "+range.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
-					}
-					if(range.getBound_lower().getValue().getDVal()>max) {
-						String errorString = "Check "+precond.getName()+" with value: "+range.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
-					}
-					if(range.getBound_lower().getValue().getDVal()<min) {
-						String errorString = "Check "+precond.getName()+" with value: "+range.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
-					}
-				}
-				else if(precond.getPrecondReference().getGap()!=null) {
-					Gap gap=precond.getPrecondReference().getGap();
-					if(gap.getBound_upp().getValue().getDVal()>max) {
-						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
-					}
-					if(gap.getBound_upp().getValue().getDVal()<min) {
-						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
-					}
-					if(gap.getBound_lower().getValue().getDVal()>max) {
-						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
-					}
-					if(gap.getBound_lower().getValue().getDVal()<min) {
-						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
-						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
-					}
-				}*/
+		String checkName = precond.getName().toString();
+//		double max, min;
+		boolean is = false;
+		for (int i = 0; i < monitoringVariableList.size(); i++) {
+			if (checkName.equals(monitoringVariableList.get(i).getName())) {
+				is = true;
+//				max=monitoringVariableList.get(i).getMax();
+//				min= monitoringVariableList.get(i).getMin();
+//				if(precond.getPrecondReference().getUpper()!=null) {
+//					Upper up=precond.getPrecondReference().getUpper();
+//					if(up.getBound_upp().getValue().getDVal()>max) {
+//						String errorString = "Check "+precond.getName()+" with value: "+up.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+//						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+//					}
+//					if(up.getBound_upp().getValue().getDVal()<min) {
+//						String errorString = "Check "+precond.getName()+" with value: "+up.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+//						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+//					}
+//				}
+//				else if(precond.getPrecondReference().getLower()!=null) {
+//					Lower low=precond.getPrecondReference().getLower();
+//					if(low.getBound_lower().getValue().getDVal()>max) {
+//						String errorString = "Check "+precond.getName()+" with value: "+low.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+//						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+//					}
+//					if(low.getBound_lower().getValue().getDVal()<min) {
+//						String errorString = "Check "+precond.getName()+" with value: "+low.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+//						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+//					}
+//				}
+//				else if(precond.getPrecondReference().getRange()!=null) {
+//					Range range=precond.getPrecondReference().getRange();
+//					if(range.getBound_upp().getValue().getDVal()>max) {
+//						String errorString = "Check "+precond.getName()+" with value: "+range.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+//						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+//					}
+//					if(range.getBound_upp().getValue().getDVal()<min) {
+//						String errorString = "Check "+precond.getName()+" with value: "+range.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+//						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+//					}
+//					if(range.getBound_lower().getValue().getDVal()>max) {
+//						String errorString = "Check "+precond.getName()+" with value: "+range.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+//						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+//					}
+//					if(range.getBound_lower().getValue().getDVal()<min) {
+//						String errorString = "Check "+precond.getName()+" with value: "+range.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+//						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+//					}
+//				}
+//				else if(precond.getPrecondReference().getGap()!=null) {
+//					Gap gap=precond.getPrecondReference().getGap();
+//					if(gap.getBound_upp().getValue().getDVal()>max) {
+//						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_upp().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+//						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+//					}
+//					if(gap.getBound_upp().getValue().getDVal()<min) {
+//						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_upp().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+//						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+//					}
+//					if(gap.getBound_lower().getValue().getDVal()>max) {
+//						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_lower().getValue().getDVal()+" does not comply max value: "+max+" specified in the validation plan";
+//						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+//					}
+//					if(gap.getBound_lower().getValue().getDVal()<min) {
+//						String errorString = "Check "+precond.getName()+" with value: "+gap.getBound_lower().getValue().getDVal()+" does not comply min value: "+min+" specified in the validation plan";
+//						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
+//					}
+//				}
 			}
 		}
-		if(!is) {
-			error("This variable is not in the monitoring plan",AdeptnessPackage.Literals.ABSTRACT_ELEMENT2__NAME);
+		if (!is) {
+			error("This variable is not in the monitoring plan", AdeptnessPackage.Literals.ABSTRACT_ELEMENT2__NAME);
 		}
 	}
-	
+
 	@Check
 	public void chekcExpressions(ExpressionsModel data) {
-		int conOpenPar=0, conClosePar=0;
-		boolean is=false;
-		for(int i=0; i<data.getElements().size(); i++) {
-			AbstractElement2 elements=data.getElements().get(i);
-			conOpenPar=conOpenPar+elements.getFrontParentheses().size();
-			if(i>0 && (elements.getName()!=null || elements.getValue()!=null) && (data.getElements().get(i-1).getName()!=null || data.getElements().get(i-1).getValue()!=null)) {
-				if(data.getElements().get(i-1).getOp().size()==0 && data.getElements().get(i).getFrontParentheses().size()==0) {
+		int conOpenPar = 0, conClosePar = 0;
+		for (int i = 0; i < data.getElements().size(); i++) {
+			AbstractElement2 elements = data.getElements().get(i);
+			conOpenPar = conOpenPar + elements.getFrontParentheses().size();
+			// current element (which is not the first one) contains name or value,
+			// and preceding element also contains name or value.
+			if (i > 0 && (elements.getName() != null || elements.getValue() != null)
+					&& (data.getElements().get(i - 1).getName() != null
+							|| data.getElements().get(i - 1).getValue() != null)) {
+				// preceding element does not contain operation,
+				// and current element does not contain front parentheses.
+				if (data.getElements().get(i - 1).getOp().size() == 0
+						&& data.getElements().get(i).getFrontParentheses().size() == 0) {
 					System.out.println("error");
-					error("Two values or signals can't be concatenated without an operator:", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+					error("Two values or signals can't be concatenated without an operator:",
+							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 				}
-								
 			}
-			for(int j=0 ; j< elements.getOp().size(); j++) {
-				if(elements.getOp().get(j).getBackParentheses()!=null) {
+			for (int j = 0; j < elements.getOp().size(); j++) {
+				if (elements.getOp().get(j).getBackParentheses() != null) {
 					conClosePar++;
 				}
-				if(j>0 && elements.getOp().get(j).getBackParentheses()!=null && elements.getOp().get(j-1).getBackParentheses()==null) {
-					error("You can't concatenate operatros this way", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+				// TODO current operator from operators collection has a back parenthesis,
+				// and preceding operator from the same operators collection has not got
+				// a back parentheses.
+				if (j > 0 && elements.getOp().get(j).getBackParentheses() != null
+						&& elements.getOp().get(j - 1).getBackParentheses() == null) {
+					error("You can't concatenate operators this way",
+							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 				}
-				if(j>0 && elements.getOp().get(j).getBackParentheses()==null && elements.getOp().get(j-1).getBackParentheses()==null) {
-					error("You can't concatenate operatros this way", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+
+				if (j > 0 && elements.getOp().get(j).getBackParentheses() == null
+						&& elements.getOp().get(j - 1).getBackParentheses() == null) {
+					error("You can't concatenate operators this way",
+							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 				}
-				if(elements.getOp().get(j).getElements()!=null && i<data.getElements().size()-1 && (data.getElements().get(i+1).getName()==null && data.getElements().get(i+1).getValue()==null || data.getElements().get(i).getName()==null && data.getElements().get(i).getValue()==null)) {
-					error("You can't concatenate operatros this way", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+
+				if (elements.getOp().get(j).getElements() != null && i < data.getElements().size() - 1
+						&& (data.getElements().get(i + 1).getName() == null
+								&& data.getElements().get(i + 1).getValue() == null
+								|| data.getElements().get(i).getName() == null
+										&& data.getElements().get(i).getValue() == null)) {
+					error("You can't concatenate operators this way",
+							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 				}
-								
+
 			}
 		}
-		if(conOpenPar!=conClosePar) {
-			error("Parentheses are not correctly opened and closed",AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+		if (conOpenPar != conClosePar) {
+			error("Parentheses are not correctly opened and closed",
+					AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 		}
-		
+
 	}
+
 	@Check
 	public void checkWhileConditions(While data) {
-		int contLogicOp=0, contCompOp=0;
-		for(int i=0; i< data.getEm().getElements().size(); i++) {
-			AbstractElement2 element=data.getEm().getElements().get(i);
-			for (int j=0; j<element.getOp().size(); j++) {
-				if(element.getOp().get(j).getLogicOperator()!=null) {
+		int contLogicOp = 0, contCompOp = 0;
+		for (int i = 0; i < data.getEm().getElements().size(); i++) {
+			AbstractElement2 element = data.getEm().getElements().get(i);
+			for (int j = 0; j < element.getOp().size(); j++) {
+				if (element.getOp().get(j).getLogicOperator() != null) {
 					contLogicOp++;
-				}
-				else if(element.getOp().get(j).getComparation()!=null) {
+				} else if (element.getOp().get(j).getComparation() != null) {
 					contCompOp++;
 				}
 			}
 		}
-		if(contLogicOp+1!=contCompOp) {
+		if (contLogicOp + 1 != contCompOp) {
 			error("Only conditions are available for while type", AdeptnessPackage.Literals.WHILE__EM);
 		}
 	}
-	
+
 	@Check
 	public void checkWhenConditions(When data) {
-		int contLogicOp=0, contCompOp=0;
-		for(int i=0; i< data.getEm().getElements().size(); i++) {
-			AbstractElement2 element=data.getEm().getElements().get(i);
-			for (int j=0; j<element.getOp().size(); j++) {
-				if(element.getOp().get(j).getLogicOperator()!=null) {
+		int contLogicOp = 0, contCompOp = 0;
+		for (int i = 0; i < data.getEm().getElements().size(); i++) {
+			AbstractElement2 element = data.getEm().getElements().get(i);
+			for (int j = 0; j < element.getOp().size(); j++) {
+				if (element.getOp().get(j).getLogicOperator() != null) {
 					contLogicOp++;
-				}
-				else if(element.getOp().get(j).getComparation()!=null) {
+				} else if (element.getOp().get(j).getComparation() != null) {
 					contCompOp++;
 				}
 			}
 		}
-		if(contLogicOp+1!=contCompOp) {
+		if (contLogicOp + 1 != contCompOp) {
 			error("Only conditions are available for when type", AdeptnessPackage.Literals.WHEN__EM);
 		}
 	}
+
 	@Check
 	public void checkChecksCondition(Checks check) {
-		for(int i=0; i<check.getEm().getElements().size(); i++) {
-			AbstractElement2 element=check.getEm().getElements().get(i);
-			for(int j=0; j<element.getOp().size(); j++) {
-				if(element.getOp().get(j).getLogicOperator()!=null)  {
-					error("The operator: "+element.getOp().get(j).getLogicOperator().getOp().toString()+" is not available for checks",AdeptnessPackage.Literals.CHECKS__EM);
-				}
-				else if(element.getOp().get(j).getComparation()!=null) {
-					error("The operator: "+element.getOp().get(j).getComparation().getOp().toString()+" is not available for checks",AdeptnessPackage.Literals.CHECKS__EM);
+		for (int i = 0; i < check.getEm().getElements().size(); i++) {
+			AbstractElement2 element = check.getEm().getElements().get(i);
+			for (int j = 0; j < element.getOp().size(); j++) {
+				if (element.getOp().get(j).getLogicOperator() != null) {
+					error("The operator: " + element.getOp().get(j).getLogicOperator().getOp().toString()
+							+ " is not available for checks", AdeptnessPackage.Literals.CHECKS__EM);
+				} else if (element.getOp().get(j).getComparation() != null) {
+					error("The operator: " + element.getOp().get(j).getComparation().getOp().toString()
+							+ " is not available for checks", AdeptnessPackage.Literals.CHECKS__EM);
 				}
 			}
 		}
 	}
+
 	@Check
 	public void checkAtLeastValues(At_least atLeast) {
-		if(atLeast.getValue().getDVal()<0) {
-			error("This value: "+atLeast.getValue().getDVal()+" must be a positive value", AdeptnessPackage.Literals.AT_LEAST__VALUE);
+		if (atLeast.getValue().getDVal() < 0) {
+			error("This value: " + atLeast.getValue().getDVal() + " must be a positive value",
+					AdeptnessPackage.Literals.AT_LEAST__VALUE);
 		}
-		if(atLeast.getTime().getDVal()<0) {
-			error("This value: "+atLeast.getTime().getDVal()+" must be a positive value", AdeptnessPackage.Literals.AT_LEAST__TIME);
+		if (atLeast.getTime().getDVal() < 0) {
+			error("This value: " + atLeast.getTime().getDVal() + " must be a positive value",
+					AdeptnessPackage.Literals.AT_LEAST__TIME);
 		}
 	}
+
 	@Check
 	public void checkAtMostValues(At_most atMost) {
-		if(atMost.getValue().getDVal()<0) {
-			error("This value: "+atMost.getValue().getDVal()+" must be a positive value", AdeptnessPackage.Literals.AT_MOST__VALUE);
+		if (atMost.getValue().getDVal() < 0) {
+			error("This value: " + atMost.getValue().getDVal() + " must be a positive value",
+					AdeptnessPackage.Literals.AT_MOST__VALUE);
 		}
-		if(atMost.getTime().getDVal()<0) {
-			error("This value: "+atMost.getTime().getDVal()+" must be a positive value", AdeptnessPackage.Literals.AT_MOST__TIME);
+		if (atMost.getTime().getDVal() < 0) {
+			error("This value: " + atMost.getTime().getDVal() + " must be a positive value",
+					AdeptnessPackage.Literals.AT_MOST__TIME);
 		}
 	}
+
 	@Check
 	public void checkExactlyValues(Exactly exactly) {
-		if(exactly.getValue().getDVal()<0) {
-			error("This value: "+exactly.getValue().getDVal()+" must be a positive value", AdeptnessPackage.Literals.EXACTLY__VALUE);
+		if (exactly.getValue().getDVal() < 0) {
+			error("This value: " + exactly.getValue().getDVal() + " must be a positive value",
+					AdeptnessPackage.Literals.EXACTLY__VALUE);
 		}
-		if(exactly.getTime().getDVal()<0) {
-			error("This value: "+exactly.getTime().getDVal()+" must be a positive value", AdeptnessPackage.Literals.EXACTLY__TIME);
+		if (exactly.getTime().getDVal() < 0) {
+			error("This value: " + exactly.getTime().getDVal() + " must be a positive value",
+					AdeptnessPackage.Literals.EXACTLY__TIME);
 		}
 	}
+
 	@Check
 	public void checkEmptyLowerValue(Lower lower) {
-		if(lower.getBound_lower().getValue()==null && lower.getBound_lower().getEm()==null) {
+		if (lower.getBound_lower().getValue() == null && lower.getBound_lower().getEm() == null) {
 			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.LOWER__BOUND_LOWER);
-			
+
 		}
 	}
+
 	@Check
 	public void checkEmptyLowerValue(Upper upper) {
-		if(upper.getBound_upp().getValue()==null && upper.getBound_upp().getEm()==null) {
+		if (upper.getBound_upp().getValue() == null && upper.getBound_upp().getEm() == null) {
 			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
-			
+
 		}
 	}
+
 	@Check
 	public void checkEmptyLowerValue(Range range) {
-		if(range.getBound_lower().getValue()==null && range.getBound_lower().getEm()==null) {
+		if (range.getBound_lower().getValue() == null && range.getBound_lower().getEm() == null) {
 			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.RANGE__BOUND_LOWER);
-			
+
 		}
-		if(range.getBound_upp().getValue()==null && range.getBound_upp().getEm()==null) {
+		if (range.getBound_upp().getValue() == null && range.getBound_upp().getEm() == null) {
 			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.RANGE__BOUND_UPP);
-			
+
 		}
 	}
+
 	@Check
 	public void checkEmptyLowerValue(Gap gap) {
-		if(gap.getBound_lower().getValue()==null && gap.getBound_lower().getEm()==null) {
+		if (gap.getBound_lower().getValue() == null && gap.getBound_lower().getEm() == null) {
 			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.GAP__BOUND_LOWER);
-			
+
 		}
-		if(gap.getBound_upp().getValue()==null && gap.getBound_upp().getEm()==null) {
+		if (gap.getBound_upp().getValue() == null && gap.getBound_upp().getEm() == null) {
 			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.GAP__BOUND_UPP);
-			
+
 		}
 	}
+
 	@Check
 	public void checkEmptyLowerValue(Same same) {
-		if(same.getBound_upp().getValue()==null && same.getBound_upp().getEm()==null) {
+		if (same.getBound_upp().getValue() == null && same.getBound_upp().getEm() == null) {
 			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.SAME__BOUND_UPP);
-			
+
 		}
 	}
+
 	@Check
 	public void checkEmptyLowerValue(NotSame notSame) {
-		if(notSame.getBound_upp().getValue()==null && notSame.getBound_upp().getEm()==null) {
+		if (notSame.getBound_upp().getValue() == null && notSame.getBound_upp().getEm() == null) {
 			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.NOT_SAME__BOUND_UPP);
-			
+
 		}
 	}
+
 	@Check
 	public void checkValues(DOUBLE value) {
-		if(value.getDVal()>9999999 || value.getDVal()<-9999999) {
-			error("This is an invalid value, must be bigger than -9999999 and lower than 9999999", AdeptnessPackage.Literals.DOUBLE__DVAL);
+		if (value.getDVal() > 9999999 || value.getDVal() < -9999999) {
+			error("This is an invalid value, must be bigger than -9999999 and lower than 9999999",
+					AdeptnessPackage.Literals.DOUBLE__DVAL);
 		}
 	}
-	
-	
-	
-	
+
 }

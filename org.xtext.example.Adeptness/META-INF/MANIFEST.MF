@@ -27,3 +27,10 @@ Export-Package: org.xtext.example.mydsl.adeptness.impl,
  org.xtext.example.mydsl.serializer,
  org.xtext.example.mydsl.parser.antlr
 Import-Package: org.apache.log4j
+Bundle-ClassPath: .,
+ lib/poi-5.0.0.jar,
+ lib/poi-ooxml-5.0.0.jar,
+ lib/poi-ooxml-full-5.0.0.jar,
+ lib/commons-compress-1.20.jar,
+ lib/commons-collections4-4.4.jar,
+ lib/xmlbeans-4.0.0.jar

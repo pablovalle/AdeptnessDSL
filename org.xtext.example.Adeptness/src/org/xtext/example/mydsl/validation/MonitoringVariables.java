@@ -1,8 +1,10 @@
 package org.xtext.example.mydsl.validation;
 
 public class MonitoringVariables {
-	String name, type;
-	double max,min;
+	private String name, type;
+	private double max, min;
+	private Double maxOp, minOp;
+
 	public MonitoringVariables(String name, String type, double max, double min) {
 		super();
 		this.name = name;
@@ -10,17 +12,36 @@ public class MonitoringVariables {
 		this.max = max;
 		this.min = min;
 	}
+
 	public String getName() {
-		return name;
+		return this.name;
 	}
+
 	public String getType() {
-		return type;
+		return this.type;
 	}
+
 	public double getMax() {
-		return max;
+		return this.max;
 	}
+
 	public double getMin() {
-		return min;
+		return this.min;
 	}
-	
+
+	public Double getMaxOp() {
+		return this.maxOp;
+	}
+
+	public Double getMinOp() {
+		return this.minOp;
+	}
+
+	public void setMaxOp(double max) {
+		this.maxOp = max;
+	}
+
+	public void setMinOp(double min) {
+		this.minOp = min;
+	}
 }
