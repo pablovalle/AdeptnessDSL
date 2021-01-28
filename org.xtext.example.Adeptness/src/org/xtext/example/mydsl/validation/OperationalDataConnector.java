@@ -1,7 +1,5 @@
 package org.xtext.example.mydsl.validation;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,28 +18,22 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 public class OperationalDataConnector {
 
 	Sheet sheet;
-	Map<String, Set<Double>> operationalData;
+	Map<String, Set<Double>> operationalData = new HashMap<String, Set<Double>>();
 
 	public OperationalDataConnector() {
 		try (InputStream inp = this.getClass().getClassLoader()
 				.getResourceAsStream("TrainingData_MiercolesSur_trainingdata1.xlsx")) {
 			Workbook wb = WorkbookFactory.create(inp);
 			this.sheet = wb.getSheetAt(0);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public boolean getVariableOpData(String variableName) {
-		if (this.sheet == null)
+		if (operationalData.get(variableName) != null || this.sheet == null)
 			return false;
-		operationalData = new HashMap<String, Set<Double>>();
+
 		try {
 			operationalData.put(variableName, this.readColumn(variableName));
 			return true;
@@ -49,6 +41,14 @@ public class OperationalDataConnector {
 			System.out.println(e.toString());
 			return false;
 		}
+	}
+
+	public double getMin(String variableName) {
+		return Collections.min(operationalData.get(variableName));
+	}
+
+	public double getMax(String variableName) {
+		return Collections.max(operationalData.get(variableName));
 	}
 
 	private Set<Double> readColumn(String variableName) throws Exception {
@@ -92,11 +92,4 @@ public class OperationalDataConnector {
 		throw new Exception("No data monitored for variable " + variableName);
 	}
 
-	public double getMin(String variableName) {
-		return Collections.min(operationalData.get(variableName));
-	}
-
-	public double getMax(String variableName) {
-		return Collections.max(operationalData.get(variableName));
-	}
 }

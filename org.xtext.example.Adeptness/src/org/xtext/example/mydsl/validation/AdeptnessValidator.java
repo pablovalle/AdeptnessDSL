@@ -49,27 +49,26 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	List<String> oracleNames;
 	List<String> monitoringVariableNames;
 
+	OperationalDataConnector opCon = new OperationalDataConnector();
+
 	// GET MONITORING VARIBALES
 	@Check
 	public void getImportedMonitoringVariables(Signal CPS) {
 		if (monitoringVariableList != null && !monitoringVariableList.isEmpty())
 			return;
 
-		OperationalDataConnector opCon = new OperationalDataConnector();
 		monitoringVariableList = new ArrayList<>();
 		monitoringVariableNames = new ArrayList<>();
 		String type, name;
 		double min, max;
 		for (int i = 0; i < CPS.getSuperType().getMonitoringPlan().size(); i++) {
 			MonitoringVariable monitor = CPS.getSuperType().getMonitoringPlan().get(i).getMonitoringVariables();
-			if (monitor.getMonitoringVariableDatatype().getSig_type().toString().equals("boolean")) {
-				name = monitor.getName().toString();
-				type = monitor.getMonitoringVariableDatatype().getSig_type().toString();
+			name = monitor.getName().toString();
+			type = monitor.getMonitoringVariableDatatype().getSig_type().toString();
+			if (type.equals("boolean")) {
 				max = 1;
 				min = 0;
 			} else {
-				name = monitor.getName().toString();
-				type = monitor.getMonitoringVariableDatatype().getSig_type().toString();
 				max = monitor.getMax().getDVal();
 				min = monitor.getMin().getDVal();
 			}
@@ -80,7 +79,6 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			}
 			monitoringVariableList.add(monitoringVar);
 			monitoringVariableNames.add(name);
-
 		}
 	}
 

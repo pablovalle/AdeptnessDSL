@@ -71,16 +71,12 @@ public class OracleAssesment {
 			Gap gap = or.getCheck().getReference().getGap();
 			valUp = gap.getBound_upp().getValue().getDVal();
 			valLower = gap.getBound_lower().getValue().getDVal();
-			// TODO check this
-			return (valUp >= monitoringVar.getMaxOp() || valUp <= monitoringVar.getMinOp()
-					|| valLower >= monitoringVar.getMaxOp() || valLower <= monitoringVar.getMinOp());
+			return (valLower > monitoringVar.getMaxOp() || valUp < monitoringVar.getMinOp());
 		case RANGE:
 			Range range = or.getCheck().getReference().getRange();
 			valUp = range.getBound_upp().getValue().getDVal();
 			valLower = range.getBound_lower().getValue().getDVal();
-			// TODO check this
-			return (valUp >= monitoringVar.getMaxOp() || valUp <= monitoringVar.getMinOp()
-					|| valLower >= monitoringVar.getMaxOp() || valLower <= monitoringVar.getMinOp());
+			return (valLower <= monitoringVar.getMaxOp() && valUp >= monitoringVar.getMinOp());
 		}
 		return true;
 	}
