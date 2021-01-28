@@ -7,7 +7,14 @@ test-bin
 # Ignore plugin.xml_gen and feature.xml_gen files, when build Eclipse Plugins.
 *.xml_gen
 
-target
-*.settings
-*.metadata
-bin
+.settings
+org.xtext.example.Adeptness/bin
+#tmp
+#bin
+#target
+#generated-sources
+#model
+
+# IDE related
+.idea
+*.iml
