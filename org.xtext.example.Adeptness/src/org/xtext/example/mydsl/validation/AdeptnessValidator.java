@@ -472,7 +472,9 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 //		double max, min;
 		boolean is = false;
 		for (int i = 0; i < monitoringVariableList.size(); i++) {
+			
 			if (checkName.equals(monitoringVariableList.get(i).getName())) {
+				System.out.println(checkName+"      "+monitoringVariableList.get(i).getName());
 				is = true;
 //				max=monitoringVariableList.get(i).getMax();
 //				min= monitoringVariableList.get(i).getMin();
@@ -558,7 +560,6 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				// and current element does not contain front parentheses.
 				if (data.getElements().get(i - 1).getOp().size() == 0
 						&& data.getElements().get(i).getFrontParentheses().size() == 0) {
-					System.out.println("error");
 					error("Two values or signals can't be concatenated without an operator:",
 							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 				}
