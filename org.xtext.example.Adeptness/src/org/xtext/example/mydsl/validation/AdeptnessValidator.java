@@ -117,7 +117,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			error("Oracle's name must be unique", AdeptnessPackage.Literals.ORACLE__NAME);
 		}
 	}
-
+	
 	@Check
 	public void checkHighTimeAndHighPeak(Checks check) {
 		boolean HT = false;
@@ -140,8 +140,9 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 						AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
 			}
 		}
-
 	}
+	
+
 
 	@Check
 	public void checkConfidenceHighPeak(HighPeak HPeak) {
@@ -650,7 +651,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			}
 		}
 	}
-
+	
 	@Check
 	public void checkAtLeastValues(At_least atLeast) {
 		if (atLeast.getValue().getDVal() < 0) {
@@ -726,6 +727,23 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 
 		}
 	}
+	
+
+	@Check 
+	public void checkLowerUpperBounds(Range range) {
+		if (range.getBound_lower().getValue().getDVal() > range.getBound_upp().getValue().getDVal()) {
+			error("Lower bound can't be higher than upper bound", AdeptnessPackage.Literals.CHECKS__REFERENCE);
+		}
+	}
+	
+	@Check 
+	public void checkLowerUpperBounds(Gap gap) {
+		if (gap.getBound_lower().getValue().getDVal() > gap.getBound_upp().getValue().getDVal()) {
+			error("Lower bound can't be higher than upper bound", AdeptnessPackage.Literals.CHECKS__REFERENCE);
+
+		}
+	}
+	
 
 	@Check
 	public void checkEmptyLowerValue(Same same) {
