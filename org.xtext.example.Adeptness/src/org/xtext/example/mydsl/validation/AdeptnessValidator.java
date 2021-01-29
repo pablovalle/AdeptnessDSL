@@ -471,7 +471,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 //		double max, min;
 		boolean is = false;
 		for (int i = 0; i < monitoringVariableList.size(); i++) {
-			
+			System.out.println(monitoringVariableList.get(i).getName());
 			if (checkName.equals(monitoringVariableList.get(i).getName())) {
 				System.out.println(checkName+"      "+monitoringVariableList.get(i).getName());
 				is = true;
