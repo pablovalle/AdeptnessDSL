@@ -18,3 +18,4 @@ org.xtext.example.Adeptness/bin
 # IDE related
 .idea
 *.iml
+/.metadata/

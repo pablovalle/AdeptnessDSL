@@ -20,6 +20,7 @@ import org.xtext.example.mydsl.adeptness.Gap;
 import org.xtext.example.mydsl.adeptness.HighPeak;
 import org.xtext.example.mydsl.adeptness.HighTime;
 import org.xtext.example.mydsl.adeptness.Lower;
+import org.xtext.example.mydsl.adeptness.MonitoringFile;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
 import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.Oracle;
@@ -43,22 +44,22 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	double cantTime;
 	double cantDeg;
 	double cantXPeak;
-	// TODO use one variable of type Map<String, Set<MonitoringVariables>> where key
-	// is monitoringVariableName
+	// TODO if variable of type Map<String, MonitoringVariables> where key
+	// is monitoringVariableName is used, checks related to variable in list would be faster
+	// Map<String, MonitoringVariables> monitoringVariables;
 	List<MonitoringVariables> monitoringVariableList;
 	List<String> oracleNames;
 	List<String> monitoringVariableNames;
 
 	OperationalDataConnector opCon = new OperationalDataConnector();
 
-	// GET MONITORING VARIBALES
+	// GET MONITORING VARIABLES
 	@Check
 	public void getImportedMonitoringVariables(Signal CPS) {
-		if (monitoringVariableList != null && !monitoringVariableList.isEmpty())
-			return;
-
+		// TODO Executed on every change. Ideal scenario: execute this function the first time a change within this CPS is done.
 		monitoringVariableList = new ArrayList<>();
-		monitoringVariableNames = new ArrayList<>();
+//		monitoringVariables =  new HashMap<String, MonitoringVariables>();
+
 		String type, name;
 		double min, max;
 		for (int i = 0; i < CPS.getSuperType().getMonitoringPlan().size(); i++) {
@@ -77,10 +78,21 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				monitoringVar.setMaxOp(opCon.getMax(name));
 				monitoringVar.setMinOp(opCon.getMin(name));
 			}
+
 			monitoringVariableList.add(monitoringVar);
-			monitoringVariableNames.add(name);
+//			monitoringVariables.put(name, monitoringVar);
 		}
 	}
+
+
+	@Check
+	public void getMonitoringVariablesName(MonitoringFile file) {
+		monitoringVariableNames= new ArrayList<>();
+		for (int i=0; i< file.getMonitoringPlan().size(); i++) {
+			monitoringVariableNames.add(file.getMonitoringPlan().get(i).getMonitoringVariables().getName().toString());
+		}
+	}
+
 
 	@Check
 	public void checkDuplicatedMonitoringVariableNames(MonitoringVariable variable) {
@@ -545,7 +557,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	@Check
-	public void chekcExpressions(ExpressionsModel data) {
+	public void checkExpressions(ExpressionsModel data) {
 		int conOpenPar = 0, conClosePar = 0;
 		for (int i = 0; i < data.getElements().size(); i++) {
 			AbstractElement2 elements = data.getElements().get(i);
@@ -732,14 +744,16 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	@Check 
 	public void checkLowerUpperBounds(Range range) {
 		if (range.getBound_lower().getValue().getDVal() > range.getBound_upp().getValue().getDVal()) {
-			error("Lower bound can't be higher than upper bound", AdeptnessPackage.Literals.CHECKS__REFERENCE);
+			// TODO should be AdeptnessPackage.Literals.REFERENCE__RANGE, not only lowerbound.
+			error("Lower bound can't be higher than upper bound", AdeptnessPackage.Literals.RANGE__BOUND_LOWER);
 		}
 	}
 	
 	@Check 
 	public void checkLowerUpperBounds(Gap gap) {
 		if (gap.getBound_lower().getValue().getDVal() > gap.getBound_upp().getValue().getDVal()) {
-			error("Lower bound can't be higher than upper bound", AdeptnessPackage.Literals.CHECKS__REFERENCE);
+			// TODO should be AdeptnessPackage.Literals.REFERENCE__GAP, not only lowerbound.
+			error("Lower bound can't be higher than upper bound", AdeptnessPackage.Literals.GAP__BOUND_LOWER);
 
 		}
 	}

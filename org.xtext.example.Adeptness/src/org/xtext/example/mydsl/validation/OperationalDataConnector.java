@@ -31,8 +31,8 @@ public class OperationalDataConnector {
 	}
 
 	public boolean getVariableOpData(String variableName) {
-		if (operationalData.get(variableName) != null || this.sheet == null)
-			return false;
+		if (this.sheet == null) return false;
+		if (operationalData.get(variableName) != null) return true;
 
 		try {
 			operationalData.put(variableName, this.readColumn(variableName));
