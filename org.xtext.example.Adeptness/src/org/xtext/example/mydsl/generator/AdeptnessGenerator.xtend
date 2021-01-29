@@ -768,7 +768,19 @@ var HashMap<String, String> whileMap_preconds;
 	«ENDIF»
 	Verdict evaluatePostConditions_«param.name»(Verdict verdict, SensorInput *inputs, int inputQty);
 	Verdict performEvaluation_«param.name»(SensorInput *inputs, int inputQty, double timeStamp);
+	«IF param.check.reference.upper!==null»
+	double confCalculator(«IF param.check.reference.upper.bound_upp.em!==null»«FOR param1: param.check.reference.upper.bound_upp.em.elements»«IF param1.name!==null» double «param1.name», «ENDIF»«ENDFOR»«ENDIF»double signal);
+	«ELSEIF param.check.reference.lower!==null»
+	double confCalculator(«IF param.check.reference.lower.bound_lower.em!==null»«FOR param1: param.check.reference.lower.bound_lower.em.elements»«IF param1.name!==null» double «param1.name», «ENDIF»«ENDFOR»«ENDIF»double signal);
+	«ELSEIF param.check.reference.same!==null»
+	double confCalculator(«IF param.check.reference.same.bound_upp.em!==null»«FOR param1: param.check.reference.same.bound_upp.em.elements»«IF param1.name!==null» double «param1.name», «ENDIF»«ENDFOR»«ENDIF»double signal);
+	«ELSEIF param.check.reference.notsame!==null»
+	double confCalculator(«IF param.check.reference.notsame.bound_upp.em!==null»«FOR param1: param.check.reference.notsame.bound_upp.em.elements»«IF param1.name!==null» double «param1.name», «ENDIF»«ENDFOR»«ENDIF»double signal);
+	«ELSEIF param.check.reference.range!==null»
 	double confCalculator(double signal);
+	«ELSEIF param.check.reference.gap!==null»
+	double confCalculator(double signal);
+	«ENDIF»
 	#endif
 	'''
 	/*«IF param.check.reference.upper!==null»
@@ -1192,7 +1204,7 @@ var HashMap<String, String> whileMap_preconds;
 			//Adibidea: timeStamp= 2 ms (timeStampOracle[1]-timeStampOracle[0])=timeStamp. IterazioKopurua=During/timeStamp eta horrarte kalkulatu conf-a.
 			//if(preconditionGiven[cycle] && during>0) during baldin bada hasieratuta 1-era egongo da, bestela 0-ra. Kasuistika baten during ez bada erabiltzen 1-era hasieratu ta listo.
 			
-			conf[cycle] = confCalculator(«IF param.check.name!==null»«param.check.name»[cycle] «ELSE»«FOR param2: param.check.em.elements » «FOR param3: param2.frontParentheses»(«ENDFOR»«IF param2.name!==null»«param2.name.toString»[cycle]«ENDIF»«FOR param4:param2.op»«IF param4.backParentheses!==null»)«ELSEIF param4.comparation.op!==null»«param4.comparation.op.toString»«ELSEIF param4.elements.op!==null»«param4.elements.op.toString»«ELSEIF param4.logicOperator.op!==null»«param4.logicOperator.op.toString»«ELSEIF param4.operator.op!==null»«param4.operator.op.toString»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);//--funcion global y pasarle los valores y referencia a checkear con el tipo de check?
+			conf[cycle] = confCalculator(«IF param.check.reference.upper!==null»«IF param.check.reference.upper.bound_upp.em!==null»«FOR param1: param.check.reference.upper.bound_upp.em.elements»«IF param1.name!==null»«param1.name»[cycle], «ENDIF»«ENDFOR»«ENDIF»«ELSEIF param.check.reference.lower!==null»«IF param.check.reference.lower.bound_lower.em!==null»«FOR param1: param.check.reference.lower.bound_lower.em.elements»«IF param1.name!==null»«param1.name»[cycle], «ENDIF»«ENDFOR»«ENDIF»«ELSEIF param.check.reference.same!==null»«IF param.check.reference.same.bound_upp.em!==null»«FOR param1: param.check.reference.same.bound_upp.em.elements»«IF param1.name!==null»«param1.name»[cycle], «ENDIF»«ENDFOR»«ENDIF»«ELSEIF param.check.reference.notsame!==null»«IF param.check.reference.notsame.bound_upp.em!==null»«FOR param1: param.check.reference.notsame.bound_upp.em.elements»«IF param1.name!==null»«param1.name»[cycle], «ENDIF»«ENDFOR»«ENDIF»«ELSEIF param.check.reference.range!==null»«ELSEIF param.check.reference.gap!==null»«ENDIF»«IF param.check.name!==null»«param.check.name»[cycle] «ELSE»«FOR param2: param.check.em.elements » «FOR param3: param2.frontParentheses»(«ENDFOR»«IF param2.name!==null»«param2.name.toString»[cycle]«ENDIF»«FOR param4:param2.op»«IF param4.backParentheses!==null»)«ELSEIF param4.comparation.op!==null»«param4.comparation.op.toString»«ELSEIF param4.elements.op!==null»«param4.elements.op.toString»«ELSEIF param4.logicOperator.op!==null»«param4.logicOperator.op.toString»«ELSEIF param4.operator.op!==null»«param4.operator.op.toString»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);//--funcion global y pasarle los valores y referencia a checkear con el tipo de check?
 		}else{
 			
 			conf[cycle] = 2;
