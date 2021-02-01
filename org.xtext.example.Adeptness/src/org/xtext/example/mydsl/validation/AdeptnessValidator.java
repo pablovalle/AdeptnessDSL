@@ -86,7 +86,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 
 
 	@Check
-	public void getMonitoringVariablesName(MonitoringFile file) {
+	public void getMonitoringVariablesNames(MonitoringFile file) {
 		monitoringVariableNames= new ArrayList<>();
 		for (int i=0; i< file.getMonitoringPlan().size(); i++) {
 			monitoringVariableNames.add(file.getMonitoringPlan().get(i).getMonitoringVariables().getName().toString());
@@ -362,7 +362,13 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 //	}
 	@Check
 	public void checkMonitoringVariables(Checks check) {
-		String checkName = check.getName().toString();
+		if (check.getEm() != null) {
+			System.out.println("TODO Check if expressionsModel within Checks statement is correct according to min, max variable values in monitoring plan");
+			return;
+		}
+		
+		String checkName = check.getName().toString(); 
+		
 		double max, min;
 		boolean is = false;
 		for (int i = 0; i < monitoringVariableList.size(); i++) {
@@ -371,7 +377,15 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				max = monitoringVariableList.get(i).getMax();
 				min = monitoringVariableList.get(i).getMin();
 				if (check.getReference().getUpper() != null) {
+					// TODO getBound_upp to variable.  
 					Upper up = check.getReference().getUpper();
+
+					if (up.getBound_upp().getEm() != null) {
+						System.out.println("TODO Check if expressionsModel within Upper bound statement is correct according to min, max variable values in monitoring plan");
+						continue;
+					}
+					
+					// TODO value to variable.
 					if (up.getBound_upp().getValue().getDVal() > max) {
 						String errorString = "Check " + check.getName() + " with value: "
 								+ up.getBound_upp().getValue().getDVal() + " does not comply max value: " + max
@@ -385,7 +399,15 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
 					}
 				} else if (check.getReference().getLower() != null) {
+					// TODO getBound_lower to variable
 					Lower low = check.getReference().getLower();
+					
+					if (low.getBound_lower().getEm() != null) {
+						System.out.println("TODO Check if expressionsModel within Lower bound statement is correct according to min, max variable values in monitoring plan");
+						continue;
+					}
+					
+					// TODO value to variable.					
 					if (low.getBound_lower().getValue().getDVal() > max) {
 						String errorString = "Check " + check.getName() + " with value: "
 								+ low.getBound_lower().getValue().getDVal() + " does not comply max value: " + max
@@ -400,6 +422,17 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					}
 				} else if (check.getReference().getRange() != null) {
 					Range range = check.getReference().getRange();
+					
+					if (range.getBound_lower().getEm() != null) {
+						System.out.println("TODO Check if expressionsModel within Lower bound statement is correct according to min, max variable values in monitoring plan");
+						continue;
+					}
+					if (range.getBound_upp().getEm() != null) {
+						System.out.println("TODO Check if expressionsModel within Upper bound statement is correct according to min, max variable values in monitoring plan");
+						continue;						
+					}
+					
+					
 					if (range.getBound_upp().getValue().getDVal() > max) {
 						String errorString = "Check " + check.getName() + " with value: "
 								+ range.getBound_upp().getValue().getDVal() + " does not comply max value: " + max
@@ -426,6 +459,16 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					}
 				} else if (check.getReference().getGap() != null) {
 					Gap gap = check.getReference().getGap();
+					
+					if (gap.getBound_lower().getEm() != null) {
+						System.out.println("TODO Check if expressionsModel within Lower bound statement is correct according to min, max variable values in monitoring plan");
+						continue;
+					}
+					if (gap.getBound_upp().getEm() != null) {
+						System.out.println("TODO Check if expressionsModel within Upper bound statement is correct according to min, max variable values in monitoring plan");
+						continue;						
+					}
+					
 					if (gap.getBound_upp().getValue().getDVal() > max) {
 						String errorString = "Check " + check.getName() + " with value: "
 								+ gap.getBound_upp().getValue().getDVal() + " does not comply max value: " + max
@@ -451,13 +494,14 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 						error(errorString, AdeptnessPackage.Literals.CHECKS__REFERENCE);
 					}
 				}
+				break;
 			}
 		}
 		if (!is) {
 			error("This variable is not in the monitoring plan", AdeptnessPackage.Literals.CHECKS__NAME);
 		}
 	}
-
+	
 	@Check
 	public void checkOracleAssesment(Oracle or) {
 		OracleAssesment oa = new OracleAssesment(or);
@@ -474,7 +518,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				}
 				break;
 			}
-		}
+		}		
 	}
 
 	@Check
@@ -549,6 +593,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 //						error(errorString,AdeptnessPackage.Literals.WHEN__PRECOND_REFERENCE);
 //					}
 //				}
+				break;
 			}
 		}
 		if (!is) {
@@ -709,7 +754,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	@Check
-	public void checkEmptyLowerValue(Upper upper) {
+	public void checkEmptyUpperValue(Upper upper) {
 		if (upper.getBound_upp().getValue() == null && upper.getBound_upp().getEm() == null) {
 			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
 
@@ -717,7 +762,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	@Check
-	public void checkEmptyLowerValue(Range range) {
+	public void checkEmptyBoundsValues(Range range) {
 		if (range.getBound_lower().getValue() == null && range.getBound_lower().getEm() == null) {
 			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.RANGE__BOUND_LOWER);
 
@@ -729,7 +774,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	@Check
-	public void checkEmptyLowerValue(Gap gap) {
+	public void checkEmptyBoundsValues(Gap gap) {
 		if (gap.getBound_lower().getValue() == null && gap.getBound_lower().getEm() == null) {
 			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.GAP__BOUND_LOWER);
 
@@ -743,18 +788,25 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 
 	@Check 
 	public void checkLowerUpperBounds(Range range) {
-		if (range.getBound_lower().getValue().getDVal() > range.getBound_upp().getValue().getDVal()) {
-			// TODO should be AdeptnessPackage.Literals.REFERENCE__RANGE, not only lowerbound.
-			error("Lower bound can't be higher than upper bound", AdeptnessPackage.Literals.RANGE__BOUND_LOWER);
+		if (range.getBound_lower().getValue() != null && range.getBound_upp().getValue() != null) {
+			if (range.getBound_lower().getValue().getDVal() > range.getBound_upp().getValue().getDVal()) {
+				// TODO should be AdeptnessPackage.Literals.REFERENCE__RANGE, not only lowerbound.
+				error("Lower bound can't be higher than upper bound", AdeptnessPackage.Literals.RANGE__BOUND_LOWER);
+			}
+		}else {
+			System.out.println("TODO: check ExpressionsModel to check if lower bound is really lower than upper bound in a range");
 		}
 	}
 	
 	@Check 
 	public void checkLowerUpperBounds(Gap gap) {
-		if (gap.getBound_lower().getValue().getDVal() > gap.getBound_upp().getValue().getDVal()) {
-			// TODO should be AdeptnessPackage.Literals.REFERENCE__GAP, not only lowerbound.
-			error("Lower bound can't be higher than upper bound", AdeptnessPackage.Literals.GAP__BOUND_LOWER);
-
+		if (gap.getBound_lower().getValue() != null && gap.getBound_upp().getValue() != null) {
+			if (gap.getBound_lower().getValue().getDVal() > gap.getBound_upp().getValue().getDVal()) {
+				// TODO should be AdeptnessPackage.Literals.REFERENCE__GAP, not only lowerbound.
+				error("Lower bound can't be higher than upper bound", AdeptnessPackage.Literals.GAP__BOUND_LOWER);
+			}
+		}else {
+			System.out.println("TODO: check ExpressionsModel to check if lower bound is really lower than upper bound in a gap");
 		}
 	}
 	
@@ -763,7 +815,6 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	public void checkEmptyLowerValue(Same same) {
 		if (same.getBound_upp().getValue() == null && same.getBound_upp().getEm() == null) {
 			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.SAME__BOUND_UPP);
-
 		}
 	}
 
