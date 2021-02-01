@@ -627,18 +627,24 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				// TODO current operator from operators collection has a back parenthesis,
 				// and preceding operator from the same operators collection has not got
 				// a back parentheses.
+				
+				//Hemen elemento baten barnean ea parentesia eta operazionala dagoen begiratzen dugu.
+				//Adeptness.xtext-en AbstractElement2 begiratzen baduzu op lista bat da non operazionalak,logikoak eta parentesiak dauden
+				// ordun parentesi baten aurretik parentesia ez den elementu bat badago errorea ematen du 
+				// Adibideak: <) edo &&) eta holakoak errorea ematea
 				if (j > 0 && elements.getOp().get(j).getBackParentheses() != null
 						&& elements.getOp().get(j - 1).getBackParentheses() == null) {
 					error("You can't concatenate operators this way",
 							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 				}
-
+				//Hemen aurrekoan berdina begiratzen da baina parentesiak ez badira, adibidez + && errorea eman beharko luke
 				if (j > 0 && elements.getOp().get(j).getBackParentheses() == null
 						&& elements.getOp().get(j - 1).getBackParentheses() == null) {
 					error("You can't concatenate operators this way",
 							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 				}
-
+				
+				//Hau komentauta utzi daiteke n(n,1) eta holako kasuistikak begiratzen ditu
 				if (elements.getOp().get(j).getElements() != null && i < data.getElements().size() - 1
 						&& (data.getElements().get(i + 1).getName() == null
 								&& data.getElements().get(i + 1).getValue() == null
