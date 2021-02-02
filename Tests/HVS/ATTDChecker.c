@@ -1,4 +1,6 @@
 #include "ATTDChecker.h"
+#define VERDICT_PASSED 1;
+#define VERDICT_FAILED -1;
 //In rage reference signal
 int preprocessInputs(SensorInput *inputs, int inputQty) {
 	//TODO.
@@ -12,11 +14,11 @@ Verdict evaluatePostConditions_ATTDChecker(Verdict verdict, SensorInput *inputs,
 Verdict performEvaluation_ATTDChecker(SensorInput *inputs, int inputQty, double timeStamp){
     Verdict verdict;
 	//Step 1: inicializacion
-    Static int cycle = -1;
-	Static double[] timeStampOracle; 
-	Static int[] ATTD;
-	Static double[] conf;
-	Static int[] preconditionGiven;
+    int cycle = -1;
+	Array timeStampOracle; 
+	Array ATTD;
+	Array conf;
+	Array preconditionGiven;
 
 	//Step 2: meter variables en array
 	cycle++;
@@ -24,13 +26,13 @@ Verdict performEvaluation_ATTDChecker(SensorInput *inputs, int inputQty, double 
 	ATTD[cycle]=getCurrentIntValueFromInputs(inputs,"ATTD");
 	
 	//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
-	if(preconditionGiven[cycle]){
+	if(preconditionGiven.array[cycle]){
 		
 		//--During balidn bada, TimeStamp erabili, horretarako timeStamp-a beti ms-tan satru ezkero kalkulatu daiteke zenbat timeStamp behar ditugu honen konfidentzia jakiteko.
 		//Adibidea: timeStamp= 2 ms (timeStampOracle[1]-timeStampOracle[0])=timeStamp. IterazioKopurua=During/timeStamp eta horrarte kalkulatu conf-a.
 		//if(preconditionGiven[cycle] && during>0) during baldin bada hasieratuta 1-era egongo da, bestela 0-ra. Kasuistika baten during ez bada erabiltzen 1-era hasieratu ta listo.
 		
-		conf[cycle] = confCalculator(ATTD[cycle] );//--funcion global y pasarle los valores y referencia a checkear con el tipo de check?
+		conf[cycle] = confCalculator(ATTD.array[cycle] );//--funcion global y pasarle los valores y referencia a checkear con el tipo de check?
 	}else{
 		
 		conf[cycle] = 2;
@@ -44,34 +46,54 @@ Verdict performEvaluation_ATTDChecker(SensorInput *inputs, int inputQty, double 
 	
     return verdict;
 }
+
 double confCalculator(double signal){
 	double conf=0;
 	if(signal<300.0 && signal>3.0 + (300.0-3.0)/2){
 		conf=(300.0-signal)/((300.0-3.0)/2);
 	}
-	else if(signal>3.0 && signal<3.0» + (300.0»-3.0)/2){
+	else if(signal>3.0 && signal<3.0 + (300.0-3.0)/2){
 		conf=(signal-3.0)/((300.0-3.0)/2);
 	}
 	else if(signal<3.0){
-		conf=(signal-3.0)/(3.0--99999);
+		conf=(signal-3.0)/(3.0-(-99999));
 	}
 	else if(signal>300.0){
 		conf=(300.0-signal)/(9999-300.0);
 	}
 	return conf;
 }
-Verdict checkGlobalVerdict(double[] conf, double[] timeStampOracle){
+Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	Verdict verdict;
 	verdict.verdict=VERDICT_PASSED;
 	double times, time;
 	int fail, is, deg,i;
 	
 	i=0;
-	for(i=0 i< conf.length; i++){
-		if(conf[i]< -0.7){
+	for(i=0; i< conf.used; i++){
+		if(conf.array[i]< -0.7){
 			verdict.verdict=VERDICT_FAILED;
 		}
 	}
 	
 	return verdict;
 } 
+void initArray(Array *a, size_t initialSize) {
+  a->array = malloc(initialSize * sizeof(double));
+  a->used = 0;
+  a->size = initialSize;
+}
+
+void insertArray(Array *a, double element) {
+  if (a->used == a->size) {
+    a->size *= 2;
+    a->array = realloc(a->array, a->size * sizeof(double));
+  }
+  a->array[a->used++] = element;
+}
+
+void freeArray(Array *a) {
+  free(a->array);
+  a->array = NULL;
+  a->used = a->size = 0;
+}

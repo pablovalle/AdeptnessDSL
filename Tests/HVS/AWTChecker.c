@@ -1,4 +1,6 @@
 #include "AWTChecker.h"
+#define VERDICT_PASSED 1;
+#define VERDICT_FAILED -1;
 //Checks the AWT is relatively low when there are a medium amount of calls
 int preprocessInputs(SensorInput *inputs, int inputQty) {
 	//TODO.
@@ -15,12 +17,12 @@ Verdict evaluatePostConditions_AWTChecker(Verdict verdict, SensorInput *inputs, 
 Verdict performEvaluation_AWTChecker(SensorInput *inputs, int inputQty, double timeStamp){
     Verdict verdict;
 	//Step 1: inicializacion
-    Static int cycle = -1;
-	Static double[] timeStampOracle; 
-	Static int[] AWT;
-	Static int[] numLlamadasActivas;
-	Static double[] conf;
-	Static int[] preconditionGiven;
+    int cycle = -1;
+	Array timeStampOracle; 
+	Array AWT;
+	Array numLlamadasActivas;
+	Array conf;
+	Array preconditionGiven;
 
 	//Step 2: meter variables en array
 	cycle++;
@@ -30,13 +32,13 @@ Verdict performEvaluation_AWTChecker(SensorInput *inputs, int inputQty, double t
 	preconditionGiven[cycle] = evaluatePreConditions_AWTChecker(numLlamadasActivas[cycle] );	
 	
 	//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
-	if(preconditionGiven[cycle]){
+	if(preconditionGiven.array[cycle]){
 		
 		//--During balidn bada, TimeStamp erabili, horretarako timeStamp-a beti ms-tan satru ezkero kalkulatu daiteke zenbat timeStamp behar ditugu honen konfidentzia jakiteko.
 		//Adibidea: timeStamp= 2 ms (timeStampOracle[1]-timeStampOracle[0])=timeStamp. IterazioKopurua=During/timeStamp eta horrarte kalkulatu conf-a.
 		//if(preconditionGiven[cycle] && during>0) during baldin bada hasieratuta 1-era egongo da, bestela 0-ra. Kasuistika baten during ez bada erabiltzen 1-era hasieratu ta listo.
 		
-		conf[cycle] = confCalculator(AWT[cycle] );//--funcion global y pasarle los valores y referencia a checkear con el tipo de check?
+		conf[cycle] = confCalculator(AWT.array[cycle] );//--funcion global y pasarle los valores y referencia a checkear con el tipo de check?
 	}else{
 		
 		conf[cycle] = 2;
@@ -50,31 +52,32 @@ Verdict performEvaluation_AWTChecker(SensorInput *inputs, int inputQty, double t
 	
     return verdict;
 }
+
 double confCalculator(double signal){
 	double conf=0;
 	if(signal<80.0 && signal>10.0 + (80.0-10.0)/2){
 		conf=(80.0-signal)/((80.0-10.0)/2);
 	}
-	else if(signal>10.0 && signal<10.0» + (80.0»-10.0)/2){
+	else if(signal>10.0 && signal<10.0 + (80.0-10.0)/2){
 		conf=(signal-10.0)/((80.0-10.0)/2);
 	}
 	else if(signal<10.0){
-		conf=(signal-10.0)/(10.0--99999);
+		conf=(signal-10.0)/(10.0-(-99999));
 	}
 	else if(signal>80.0){
 		conf=(80.0-signal)/(9999-80.0);
 	}
 	return conf;
 }
-Verdict checkGlobalVerdict(double[] conf, double[] timeStampOracle){
+Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	Verdict verdict;
 	verdict.verdict=VERDICT_PASSED;
 	double times, time;
 	int fail, is, deg,i;
 	
 	i=0;
-	for(i=0 i< conf.length; i++){
-		if(conf[i]< -0.9){
+	for(i=0; i< conf.used; i++){
+		if(conf.array[i]< -0.9){
 			verdict.verdict=VERDICT_FAILED;
 		}
 	}
@@ -83,14 +86,14 @@ Verdict checkGlobalVerdict(double[] conf, double[] timeStampOracle){
 	time=0;
 	is=0;
 	i=0;
-	while(fail==0 && i<conf.length){
-		if(conf[i]<-0.2){
+	while(fail==0 && i<conf.used){
+		if(conf.array[i]<-0.2){
 			is==1;
 		}
 		i++;
 		time=i;
-		while (is==1 && i<conf.length){
-			if(conf[i]<-0.2 && timeStampOracle[i] - timeStampOracle[time]>10.0 || timeStampOracle[i] - timeStampOracle[time]>10.0){
+		while (is==1 && i<conf.used){
+			if(conf.array[i]<-0.2 && timeStampOracle.array[i] - timeStampOracle.array[time]>10.0 || timeStampOracle.array[i] - timeStampOracle.array[time]>10.0){
 				fail=1;
 			}
 			else{
@@ -107,13 +110,13 @@ Verdict checkGlobalVerdict(double[] conf, double[] timeStampOracle){
 	times=30.0;
 	time=0;
 	fial=0;;
-	while(i<conf.length && fail==0){
-		if(conf[i]<-0.2){
+	while(i<conf.used && fail==0){
+		if(conf.array[i]<-0.2){
 			if(time==0){
 				time=i;
 			}
 			times--;
-			if(times==0 && timeStampOracle[i] - timeStampOracle[time]< 20.0){
+			if(times==0 && timeStampOracle.array[i] - timeStampOracle.array[time]< 20.0){
 				fail=1;	
 			}
 			else if(times==0){
@@ -128,3 +131,22 @@ Verdict checkGlobalVerdict(double[] conf, double[] timeStampOracle){
 	
 	return verdict;
 } 
+void initArray(Array *a, size_t initialSize) {
+  a->array = malloc(initialSize * sizeof(double));
+  a->used = 0;
+  a->size = initialSize;
+}
+
+void insertArray(Array *a, double element) {
+  if (a->used == a->size) {
+    a->size *= 2;
+    a->array = realloc(a->array, a->size * sizeof(double));
+  }
+  a->array[a->used++] = element;
+}
+
+void freeArray(Array *a) {
+  free(a->array);
+  a->array = NULL;
+  a->used = a->size = 0;
+}
