@@ -612,10 +612,9 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			if (i > 0 && (elements.getName() != null || elements.getValue() != null)
 					&& (data.getElements().get(i - 1).getName() != null
 							|| data.getElements().get(i - 1).getValue() != null)) {
-				// preceding element does not contain operation,
-				// and current element does not contain front parentheses.
-				if (data.getElements().get(i - 1).getOp().size() == 0
-						&& data.getElements().get(i).getFrontParentheses().size() == 0) {
+				// preceding element does not contain operation. 
+				// Example: "var 1" or "var ( var"
+				if (data.getElements().get(i - 1).getOp().size() == 0) {
 					error("Two values or signals can't be concatenated without an operator:",
 							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 				}
@@ -645,15 +644,15 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				}
 				
 				//Hau komentauta utzi daiteke n(n,1) eta holako kasuistikak begiratzen ditu
-				if (elements.getOp().get(j).getElements() != null && i < data.getElements().size() - 1
-						&& (data.getElements().get(i + 1).getName() == null
-								&& data.getElements().get(i + 1).getValue() == null
-								|| data.getElements().get(i).getName() == null
-										&& data.getElements().get(i).getValue() == null)) {
-					error("You can't concatenate operators this way",
-							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-				}
-
+//				if (elements.getOp().get(j).getElements() != null && i < data.getElements().size() - 1
+//						&& (data.getElements().get(i + 1).getName() == null
+//								&& data.getElements().get(i + 1).getValue() == null
+//								|| data.getElements().get(i).getName() == null
+//										&& data.getElements().get(i).getValue() == null)) {
+//					error("You can't concatenate operators this way",
+//							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+//				}
+				
 			}
 		}
 		if (conOpenPar != conClosePar) {
