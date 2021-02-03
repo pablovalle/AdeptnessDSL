@@ -1399,31 +1399,6 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-// Entry rule entryRuleComas
-entryRuleComas
-:
-{ before(grammarAccess.getComasRule()); }
-	 ruleComas
-{ after(grammarAccess.getComasRule()); } 
-	 EOF 
-;
-
-// Rule Comas
-ruleComas 
-	@init {
-		int stackSize = keepStackSize();
-	}
-	:
-	(
-		{ before(grammarAccess.getComasAccess().getOpAssignment()); }
-		(rule__Comas__OpAssignment)
-		{ after(grammarAccess.getComasAccess().getOpAssignment()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
 // Entry rule entryRuleCompOp
 entryRuleCompOp
 :
@@ -2114,12 +2089,6 @@ rule__Operators__Alternatives
 		{ before(grammarAccess.getOperatorsAccess().getBackParenthesesAssignment_3()); }
 		(rule__Operators__BackParenthesesAssignment_3)
 		{ after(grammarAccess.getOperatorsAccess().getBackParenthesesAssignment_3()); }
-	)
-	|
-	(
-		{ before(grammarAccess.getOperatorsAccess().getElementsAssignment_4()); }
-		(rule__Operators__ElementsAssignment_4)
-		{ after(grammarAccess.getOperatorsAccess().getElementsAssignment_4()); }
 	)
 ;
 finally {
@@ -9030,40 +8999,6 @@ rule__Operators__BackParenthesesAssignment_3
 		{ before(grammarAccess.getOperatorsAccess().getBackParenthesesBackParenthesesParserRuleCall_3_0()); }
 		ruleBackParentheses
 		{ after(grammarAccess.getOperatorsAccess().getBackParenthesesBackParenthesesParserRuleCall_3_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__Operators__ElementsAssignment_4
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getOperatorsAccess().getElementsComasParserRuleCall_4_0()); }
-		ruleComas
-		{ after(grammarAccess.getOperatorsAccess().getElementsComasParserRuleCall_4_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__Comas__OpAssignment
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getComasAccess().getOpCommaKeyword_0()); }
-		(
-			{ before(grammarAccess.getComasAccess().getOpCommaKeyword_0()); }
-			','
-			{ after(grammarAccess.getComasAccess().getOpCommaKeyword_0()); }
-		)
-		{ after(grammarAccess.getComasAccess().getOpCommaKeyword_0()); }
 	)
 ;
 finally {

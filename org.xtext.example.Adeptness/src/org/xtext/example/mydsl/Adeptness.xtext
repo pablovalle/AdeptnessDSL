@@ -304,7 +304,7 @@ BackParentheses:
 	")"
 ;
 Operators:
-	(operator=Op|comparation=CompOp|logicOperator=LogicOp| backParentheses=BackParentheses |elements=Comas)
+	(operator=Op|comparation=CompOp|logicOperator=LogicOp| backParentheses=BackParentheses /*|elements=Comas*/)
 ;
 
 Comas:
