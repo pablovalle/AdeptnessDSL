@@ -19,3 +19,5 @@ org.xtext.example.Adeptness/bin
 .idea
 *.iml
 /.metadata/
+
+*.exe
