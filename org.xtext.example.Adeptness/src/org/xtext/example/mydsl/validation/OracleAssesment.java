@@ -1,5 +1,7 @@
 package org.xtext.example.mydsl.validation;
 
+import org.xtext.example.mydsl.adeptness.Bound_Down;
+import org.xtext.example.mydsl.adeptness.Bound_up;
 import org.xtext.example.mydsl.adeptness.Gap;
 import org.xtext.example.mydsl.adeptness.Lower;
 import org.xtext.example.mydsl.adeptness.Oracle;
@@ -56,27 +58,57 @@ public class OracleAssesment {
 	 */
 	public boolean assesOracle(MonitoringVariables monitoringVar) {
 		double valUp, valLower;
-		Lower low;
-		Upper up;
+		Bound_Down low;
+		Bound_up up;
 		switch (this.pat) {
 		case ABOVE_REFERENCE:
-			low = or.getCheck().getReference().getLower();
-			valLower = low.getBound_lower().getValue().getDVal();
-			return (valLower <= monitoringVar.getMaxOp());
+			low = or.getCheck().getReference().getLower().getBound_lower();
+			if (low.getEm() != null) {
+				System.out.println("TODO: check expressionsModel");
+				break;
+			}
+			valLower = low.getValue().getDVal(); 
+			return (valLower <= monitoringVar.getMaxOp() && valLower >= monitoringVar.getMinOp());
 		case BELOW_REFERENCE:
-			up = or.getCheck().getReference().getUpper();
-			valUp = up.getBound_upp().getValue().getDVal();
-			return (valUp >= monitoringVar.getMinOp());
+			up = or.getCheck().getReference().getUpper().getBound_upp();
+			if (up.getEm() != null) {
+				System.out.println("TODO: check expressionsModel");
+				break;
+			}
+			
+			valUp = up.getValue().getDVal();
+			return  (valUp <= monitoringVar.getMaxOp() && valUp >= monitoringVar.getMinOp());
 		case GAP:
 			Gap gap = or.getCheck().getReference().getGap();
+			if (gap.getBound_lower().getEm() != null) {
+				System.out.println("TODO: check expressionsModel");
+				break;
+			}
+			if (gap.getBound_upp().getEm() != null) {
+				System.out.println("TODO: check expressionsModel");
+				break;
+			}			
+			
 			valUp = gap.getBound_upp().getValue().getDVal();
 			valLower = gap.getBound_lower().getValue().getDVal();
-			return (valLower > monitoringVar.getMaxOp() || valUp < monitoringVar.getMinOp());
+			
+			return (valUp <= monitoringVar.getMaxOp() && valUp >= monitoringVar.getMinOp() && 
+					valLower <= monitoringVar.getMaxOp() && valLower>= monitoringVar.getMinOp());
 		case RANGE:
 			Range range = or.getCheck().getReference().getRange();
+			if (range.getBound_lower().getEm() != null) {
+				System.out.println("TODO: check expressionsModel");
+				break;
+			}
+			if (range.getBound_upp().getEm() != null) {
+				System.out.println("TODO: check expressionsModel");
+				break;
+			}
+			
 			valUp = range.getBound_upp().getValue().getDVal();
 			valLower = range.getBound_lower().getValue().getDVal();
-			return (valLower <= monitoringVar.getMaxOp() && valUp >= monitoringVar.getMinOp());
+			return (valUp <= monitoringVar.getMaxOp() && valUp >= monitoringVar.getMinOp() && 
+					valLower <= monitoringVar.getMaxOp() && valLower>= monitoringVar.getMinOp());
 		}
 		return true;
 	}
