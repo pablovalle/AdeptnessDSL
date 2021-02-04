@@ -171,11 +171,11 @@ var HashMap<String, List<String>> checkVar;
 				for(var i=0; i< whileNames.size; i++){
 					if(i!=whileNames.size-1){
 						a=a+"int "+whileNames.get(i)+", ";
-						b=b+whileNames.get(i)+"[cycle], ";
+						b=b+whileNames.get(i)+".array[cycle], ";
 					}
 					else{
 						a=a+"int "+whileNames.get(i);
-						b=b+whileNames.get(i)+"[cycle] ";
+						b=b+whileNames.get(i)+".array[cycle] ";
 					}
 				}
 				println(a);
@@ -216,11 +216,11 @@ var HashMap<String, List<String>> checkVar;
 				for(var i=0; i< whenNames.size; i++){
 					if(i!=whenNames.size-1){
 						a=a+"int "+whenNames.get(i)+", ";
-						b=b+whenNames.get(i)+"[cycle], ";
+						b=b+whenNames.get(i)+".array[cycle], ";
 					}
 					else{
 						a=a+"int "+whenNames.get(i);
-						b=b+whenNames.get(i)+"[cycle]";
+						b=b+whenNames.get(i)+".array[cycle]";
 					}
 				}
 				whenMap.put(oracle.name,a);
@@ -926,28 +926,40 @@ var HashMap<String, List<String>> checkVar;
 		Array conf;
 		Array preconditionGiven;
 	
+		//Init arrays
+		initArray(&conf,1);
+		initArray(&preconditionGiven,1);
+		initArray(&timeStampOracle,1);
+		«FOR param1: nameMap.get(param.name)»
+		initArray(&«param1» ,1);
+		«ENDFOR»
 		//Step 2: meter variables en array
 		cycle++;
-		timeStampOracle[cycle] = timeStamp;
+		inserArray(&timeStampOracle,timeStamp);
 		«FOR param1: nameMap.get(param.name)»
-		«param1»[cycle]=getCurrentIntValueFromInputs(inputs,"«param1»");
+		inserArray(&«param1»,getCurrentIntValueFromInputs(inputs,"«param1»"));
 		«ENDFOR»
-		«IF param.when!==null || param.^while!==null»
-		preconditionGiven[cycle] = evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap_preconds.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap_preconds.get(param.name).toString»«ENDIF»);	
-		«ENDIF»
 		
-		//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
+		
+		«IF param.when!==null || param.^while!==null»
+		inserArray(&preconditionGiven,evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap_preconds.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap_preconds.get(param.name).toString»«ENDIF»));	
 		if(preconditionGiven.array[cycle]){
+		//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
+		
 			
 			//--During balidn bada, TimeStamp erabili, horretarako timeStamp-a beti ms-tan satru ezkero kalkulatu daiteke zenbat timeStamp behar ditugu honen konfidentzia jakiteko.
 			//Adibidea: timeStamp= 2 ms (timeStampOracle[1]-timeStampOracle[0])=timeStamp. IterazioKopurua=During/timeStamp eta horrarte kalkulatu conf-a.
 			//if(preconditionGiven[cycle] && during>0) during baldin bada hasieratuta 1-era egongo da, bestela 0-ra. Kasuistika baten during ez bada erabiltzen 1-era hasieratu ta listo.
-			
-			conf[cycle] = confCalculator(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»);//--funcion global y pasarle los valores y referencia a checkear con el tipo de check?
+			insertArray(&conf,confCalculator(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
 		}else{
-			
-			conf[cycle] = 2;
+			insertArray(&conf,2);
 		}
+		«ELSE»
+		insertArray(&preconditionGiven,2);
+		insertArray(&conf,confCalculator(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
+		«ENDIF»
+		
+		
 		
 		//Step 4: Sacar confidence
 		
@@ -1028,8 +1040,8 @@ var HashMap<String, List<String>> checkVar;
 	Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 		Verdict verdict;
 		verdict.verdict=VERDICT_PASSED;
-		double times, time;
-		int fail, is, deg,i;
+		double times;
+		int fail, is, deg,i,time;
 		
 		«FOR param1: param.check.failReason» 
 		«IF param1.reason.highTime!==null»
@@ -1088,7 +1100,7 @@ var HashMap<String, List<String>> checkVar;
 		i=0;
 		times=«param1.reason.XPeaks.NPeaks.DVal»;
 		time=0;
-		fial=0;;
+		fail=0;;
 		while(i<conf.used && fail==0){
 			if(conf.array[i]<«param1.reason.XPeaks.cant.DVal»){
 				if(time==0){
@@ -1113,9 +1125,11 @@ var HashMap<String, List<String>> checkVar;
 		return verdict;
 	} 
 	void initArray(Array *a, size_t initialSize) {
-	  a->array = malloc(initialSize * sizeof(double));
-	  a->used = 0;
-	  a->size = initialSize;
+	    if(a->size==0){
+	        a->array = malloc(initialSize * sizeof(int));
+	        a->used = 0;
+	        a->size = initialSize;
+	    }
 	}
 	
 	void insertArray(Array *a, double element) {
