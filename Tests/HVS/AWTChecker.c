@@ -24,32 +24,27 @@ Verdict performEvaluation_AWTChecker(SensorInput *inputs, int inputQty, double t
 	Array conf;
 	Array preconditionGiven;
 
+	//Init arrays
+	initArray(&conf,1);
+	initArray(&preconditionGiven,1);
+	initArray(&timeStampOracle,1);
+	initArray(&AWT ,1);
+	initArray(&numLlamadasActivas ,1);
 	//Step 2: meter variables en array
 	cycle++;
-	timeStampOracle[cycle] = timeStamp;
-	AWT[cycle]=getCurrentIntValueFromInputs(inputs,"AWT");
-	numLlamadasActivas[cycle]=getCurrentIntValueFromInputs(inputs,"numLlamadasActivas");
-	preconditionGiven[cycle] = evaluatePreConditions_AWTChecker(numLlamadasActivas[cycle] );	
-	
+	inserArray(&timeStampOracle,timeStamp);
+	inserArray(&AWT,getCurrentIntValueFromInputs(inputs,"AWT"));
+	inserArray(&numLlamadasActivas,getCurrentIntValueFromInputs(inputs,"numLlamadasActivas"));
+	inserArray(&preconditionGiven,evaluatePreConditions_AWTChecker(numLlamadasActivas.array[cycle] ));
+
+	if(preconditionGiven.array[cycle]==1){
 	//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
-	if(preconditionGiven.array[cycle]){
-		
-		//--During balidn bada, TimeStamp erabili, horretarako timeStamp-a beti ms-tan satru ezkero kalkulatu daiteke zenbat timeStamp behar ditugu honen konfidentzia jakiteko.
-		//Adibidea: timeStamp= 2 ms (timeStampOracle[1]-timeStampOracle[0])=timeStamp. IterazioKopurua=During/timeStamp eta horrarte kalkulatu conf-a.
-		//if(preconditionGiven[cycle] && during>0) during baldin bada hasieratuta 1-era egongo da, bestela 0-ra. Kasuistika baten during ez bada erabiltzen 1-era hasieratu ta listo.
-		
-		conf[cycle] = confCalculator(AWT.array[cycle] );//--funcion global y pasarle los valores y referencia a checkear con el tipo de check?
+		insertArray(&conf,confCalculator(AWT.array[cycle] ));
 	}else{
-		
-		conf[cycle] = 2;
+		insertArray(&conf,2);
 	}
-	
 	//Step 4: Sacar confidence
-	
-	//GLOBAL?
 	verdict = checkGlobalVerdict(conf, timeStampOracle); 
-	
-	
     return verdict;
 }
 
@@ -69,11 +64,12 @@ double confCalculator(double signal){
 	}
 	return conf;
 }
+
 Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	Verdict verdict;
 	verdict.verdict=VERDICT_PASSED;
-	double times, time;
-	int fail, is, deg,i;
+	double times;
+	int fail, is, deg,i,time;
 	
 	i=0;
 	for(i=0; i< conf.used; i++){
@@ -109,7 +105,7 @@ Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	i=0;
 	times=30.0;
 	time=0;
-	fial=0;;
+	fail=0;;
 	while(i<conf.used && fail==0){
 		if(conf.array[i]<-0.2){
 			if(time==0){
@@ -131,22 +127,27 @@ Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	
 	return verdict;
 } 
+
+
+//DYNAMIC ARRAY
 void initArray(Array *a, size_t initialSize) {
-  a->array = malloc(initialSize * sizeof(double));
-  a->used = 0;
-  a->size = initialSize;
+    if(a->size==0){
+        a->array = malloc(initialSize * sizeof(int));
+        a->used = 0;
+        a->size = initialSize;
+    }
 }
 
 void insertArray(Array *a, double element) {
-  if (a->used == a->size) {
-    a->size *= 2;
-    a->array = realloc(a->array, a->size * sizeof(double));
-  }
-  a->array[a->used++] = element;
+	if (a->used == a->size) {
+    	a->size *= 2;
+    	a->array = realloc(a->array, a->size * sizeof(double));
+	}
+	a->array[a->used++] = element;
 }
 
 void freeArray(Array *a) {
-  free(a->array);
-  a->array = NULL;
-  a->used = a->size = 0;
+	free(a->array);
+	a->array = NULL;
+	a->used = a->size = 0;
 }

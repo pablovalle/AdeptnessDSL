@@ -25,26 +25,35 @@ Verdict performEvaluation_AWTChecker2(SensorInput *inputs, int inputQty, double 
 	Array conf;
 	Array preconditionGiven;
 
+	//Init arrays
+	initArray(&conf,1);
+	initArray(&preconditionGiven,1);
+	initArray(&timeStampOracle,1);
+	initArray(&AWT ,1);
+	initArray(&numLlamadasActivas ,1);
+	initArray(&ATTD ,1);
 	//Step 2: meter variables en array
 	cycle++;
-	timeStampOracle[cycle] = timeStamp;
-	AWT[cycle]=getCurrentIntValueFromInputs(inputs,"AWT");
-	numLlamadasActivas[cycle]=getCurrentIntValueFromInputs(inputs,"numLlamadasActivas");
-	ATTD[cycle]=getCurrentIntValueFromInputs(inputs,"ATTD");
-	preconditionGiven[cycle] = evaluatePreConditions_AWTChecker2(numLlamadasActivas[cycle], AWT[cycle] );	
+	inserArray(&timeStampOracle,timeStamp);
+	inserArray(&AWT,getCurrentIntValueFromInputs(inputs,"AWT"));
+	inserArray(&numLlamadasActivas,getCurrentIntValueFromInputs(inputs,"numLlamadasActivas"));
+	inserArray(&ATTD,getCurrentIntValueFromInputs(inputs,"ATTD"));
 	
-	//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
+	
+	inserArray(&preconditionGiven,evaluatePreConditions_AWTChecker2(numLlamadasActivas.array[cycle], AWT.array[cycle] ));	
 	if(preconditionGiven.array[cycle]){
+	//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
+	
 		
 		//--During balidn bada, TimeStamp erabili, horretarako timeStamp-a beti ms-tan satru ezkero kalkulatu daiteke zenbat timeStamp behar ditugu honen konfidentzia jakiteko.
 		//Adibidea: timeStamp= 2 ms (timeStampOracle[1]-timeStampOracle[0])=timeStamp. IterazioKopurua=During/timeStamp eta horrarte kalkulatu conf-a.
 		//if(preconditionGiven[cycle] && during>0) during baldin bada hasieratuta 1-era egongo da, bestela 0-ra. Kasuistika baten during ez bada erabiltzen 1-era hasieratu ta listo.
-		
-		conf[cycle] = confCalculator(ATTD.array[cycle], ( AWT.array[cycle]- 10.0)  );//--funcion global y pasarle los valores y referencia a checkear con el tipo de check?
+		insertArray(&conf,confCalculator(ATTD.array[cycle], ( AWT.array[cycle]- 10.0)  ));
 	}else{
-		
-		conf[cycle] = 2;
+		insertArray(&conf,2);
 	}
+	
+	
 	
 	//Step 4: Sacar confidence
 	
@@ -59,7 +68,7 @@ double confCalculator(double ATTD,double signal){
 	double conf=0;
 
 	if(signal< ( ATTD+ 10.0) ){
-		conf= ( ( ATTD+ 10.0) -signal)/( ( ATTD.array[cycle]+ 10.0) --99999);
+		conf= ( ( ATTD+ 10.0) -signal)/( ( ATTD.array[cycle]+ 10.0) -(-99999));
 	}
 	else(){
 		conf= ( ( ATTD+ 10.0) -signal)/(99999- ( ATTD.array[cycle]+ 10.0) );
@@ -69,8 +78,8 @@ double confCalculator(double ATTD,double signal){
 Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	Verdict verdict;
 	verdict.verdict=VERDICT_PASSED;
-	double times, time;
-	int fail, is, deg,i;
+	double times;
+	int fail, is, deg,i,time;
 	
 	i=0;
 	for(i=0; i< conf.used; i++){
@@ -106,7 +115,7 @@ Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	i=0;
 	times=30.0;
 	time=0;
-	fial=0;;
+	fail=0;;
 	while(i<conf.used && fail==0){
 		if(conf.array[i]<-0.2){
 			if(time==0){
@@ -129,9 +138,11 @@ Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	return verdict;
 } 
 void initArray(Array *a, size_t initialSize) {
-  a->array = malloc(initialSize * sizeof(double));
-  a->used = 0;
-  a->size = initialSize;
+    if(a->size==0){
+        a->array = malloc(initialSize * sizeof(int));
+        a->used = 0;
+        a->size = initialSize;
+    }
 }
 
 void insertArray(Array *a, double element) {

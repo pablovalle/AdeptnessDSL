@@ -20,23 +20,21 @@ Verdict performEvaluation_STT(SensorInput *inputs, int inputQty, double timeStam
 	Array conf;
 	Array preconditionGiven;
 
+	//Init arrays
+	initArray(&conf,1);
+	initArray(&preconditionGiven,1);
+	initArray(&timeStampOracle,1);
+	initArray(&Energy ,1);
 	//Step 2: meter variables en array
 	cycle++;
-	timeStampOracle[cycle] = timeStamp;
-	Energy[cycle]=getCurrentIntValueFromInputs(inputs,"Energy");
+	inserArray(&timeStampOracle,timeStamp);
+	inserArray(&Energy,getCurrentIntValueFromInputs(inputs,"Energy"));
 	
-	//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
-	if(preconditionGiven.array[cycle]){
-		
-		//--During balidn bada, TimeStamp erabili, horretarako timeStamp-a beti ms-tan satru ezkero kalkulatu daiteke zenbat timeStamp behar ditugu honen konfidentzia jakiteko.
-		//Adibidea: timeStamp= 2 ms (timeStampOracle[1]-timeStampOracle[0])=timeStamp. IterazioKopurua=During/timeStamp eta horrarte kalkulatu conf-a.
-		//if(preconditionGiven[cycle] && during>0) during baldin bada hasieratuta 1-era egongo da, bestela 0-ra. Kasuistika baten during ez bada erabiltzen 1-era hasieratu ta listo.
-		
-		conf[cycle] = confCalculator(Energy.array[cycle] );//--funcion global y pasarle los valores y referencia a checkear con el tipo de check?
-	}else{
-		
-		conf[cycle] = 2;
-	}
+	
+	insertArray(&preconditionGiven,2);
+	insertArray(&conf,confCalculator(Energy.array[cycle] ));
+	
+	
 	
 	//Step 4: Sacar confidence
 	
@@ -51,7 +49,7 @@ double confCalculator(double signal){
 	double conf=0;
 
 	if(signal<5.0){
-		conf= (5.0-signal)/(5.0--99999);
+		conf= (5.0-signal)/(5.0-(-99999));
 	}
 	else(){
 		conf= (5.0-signal)/(99999-5.0);
@@ -61,8 +59,8 @@ double confCalculator(double signal){
 Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	Verdict verdict;
 	verdict.verdict=VERDICT_PASSED;
-	double times, time;
-	int fail, is, deg,i;
+	double times;
+	int fail, is, deg,i,time;
 	
 	i=0;
 	for(i=0; i< conf.used; i++){
@@ -74,9 +72,11 @@ Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	return verdict;
 } 
 void initArray(Array *a, size_t initialSize) {
-  a->array = malloc(initialSize * sizeof(double));
-  a->used = 0;
-  a->size = initialSize;
+    if(a->size==0){
+        a->array = malloc(initialSize * sizeof(int));
+        a->used = 0;
+        a->size = initialSize;
+    }
 }
 
 void insertArray(Array *a, double element) {
