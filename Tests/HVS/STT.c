@@ -1,7 +1,9 @@
 #include "STT.h"
 #define VERDICT_PASSED 1;
-#define VERDICT_FAILED -1;
+#define VERDICT_FAILED 0;
+#define VERDICT_INCONCLUSIVE 2;
 //sdf
+
 int preprocessInputs(SensorInput *inputs, int inputQty) {
 	//TODO.
     return inputQty;
@@ -14,11 +16,11 @@ Verdict evaluatePostConditions_STT(Verdict verdict, SensorInput *inputs, int inp
 Verdict performEvaluation_STT(SensorInput *inputs, int inputQty, double timeStamp){
     Verdict verdict;
 	//Step 1: inicializacion
-    int cycle = -1;
-	Array timeStampOracle; 
-	Array Energy;
-	Array conf;
-	Array preconditionGiven;
+    static int cycle = -1;
+	static Array timeStampOracle; 
+	static Array Energy;
+	static Array conf;
+	static Array preconditionGiven;
 
 	//Init arrays
 	initArray(&conf,1);
@@ -27,27 +29,21 @@ Verdict performEvaluation_STT(SensorInput *inputs, int inputQty, double timeStam
 	initArray(&Energy ,1);
 	//Step 2: meter variables en array
 	cycle++;
-	inserArray(&timeStampOracle,timeStamp);
-	inserArray(&Energy,getCurrentIntValueFromInputs(inputs,"Energy"));
-	
-	
+	insertArray(&timeStampOracle,timeStamp);
+	insertArray(&Energy,inputs->Energy);
 	insertArray(&preconditionGiven,2);
 	insertArray(&conf,confCalculator(Energy.array[cycle] ));
-	
-	
-	
+
 	//Step 4: Sacar confidence
-	
-	//GLOBAL?
+
 	verdict = checkGlobalVerdict(conf, timeStampOracle); 
-	
+	verdict.confidence=conf.array[cycle];
 	
     return verdict;
 }
 
 double confCalculator(double signal){
 	double conf=0;
-
 	if(signal<5.0){
 		conf= (5.0-signal)/(5.0-(-99999));
 	}
@@ -58,10 +54,19 @@ double confCalculator(double signal){
 }
 Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	Verdict verdict;
-	verdict.verdict=VERDICT_PASSED;
+	verdict.verdict=VERDICT_INCONCLUSIVE;
 	double times;
 	int fail, is, deg,i,time;
-	
+	i=0;
+	while (i < conf.used && verdict.verdict==2) {
+		if (conf.array[i] != 2) {
+			verdict.verdict = VERDICT_PASSED;
+		}
+		i++;
+	}
+	if (verdict.verdict == 2) {
+		return verdict;
+	}
 	i=0;
 	for(i=0; i< conf.used; i++){
 		if(conf.array[i]< -0.3){
@@ -72,23 +77,24 @@ Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	return verdict;
 } 
 void initArray(Array *a, size_t initialSize) {
-    if(a->size==0){
-        a->array = malloc(initialSize * sizeof(int));
+    if(a->size==a->used){
+        a->array = malloc(initialSize * sizeof(double));
         a->used = 0;
         a->size = initialSize;
     }
 }
 
 void insertArray(Array *a, double element) {
-  if (a->used == a->size) {
-    a->size *= 2;
-    a->array = realloc(a->array, a->size * sizeof(double));
-  }
-  a->array[a->used++] = element;
+	a->array[a->used++] = element;
+	if (a->used == a->size) {
+    	a->size *= 2;
+    	a->array = realloc(a->array, a->size * sizeof(double));
+	}
+	
 }
 
 void freeArray(Array *a) {
-  free(a->array);
-  a->array = NULL;
-  a->used = a->size = 0;
+	free(a->array);
+	a->array = NULL;
+	a->used = a->size = 0;
 }

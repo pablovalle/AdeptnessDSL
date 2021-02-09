@@ -1,60 +1,27 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct {
-  int *array;
-  size_t used;
-  size_t size;
-} Array;
-void initArray(Array *a, size_t initialSize);
-void insertArray(Array *a, int element);
-void freeArray(Array *a);
-void doSomething(int i);
-static int cont=1;
+#include "AWTChecker.h"
 int main(){
-    int age;
-    
-    for(int i=0; i<4; i++){
-        doSomething(i);
+	char str[128];
+    SensorInput a={1,2};
+    double AWT[10]={0.033333333,3.1,5.4,10.8,15.025,10.9,17.4,11.46,13.3,9.92};
+    int numLlamadas[10]={6,6,9,7,8,10,6,10,10,14};
+    Verdict verdict;
+    int emaitza[10];
+    double conf[10];
+    double timeStamp=5.0;
+    for(int i=0; i<10; i++){
+        a.AWT=AWT[i];
+        a.numLlamadasActivas =numLlamadas[i];
+        verdict=performEvaluation_AWTChecker(&a,1,timeStamp*i);
+        emaitza[i]=verdict.verdict;
+        conf[i]=verdict.confidence;
     }
-    
+	for (int i = 0; i < 10; i++) {
+		printf("%d testaren verdict ondorengoa da, %d, eta confidence balioa hauxe da: %f\n", i, emaitza[i], conf[i]);
+	}
+	printf("\n\nSakatu return amaitzeko");
+	fgets(str, 128, stdin);
     return 0;
-
-}
-void doSomething(int i){
-    static Array lista;
-
-    initArray(&lista,1);
-    
-    for(int j=0; j<i; j++){
-        insertArray(&lista,cont);
-        cont++;
-    }
-    if(i==3){
-        for(int j=0; j<lista.used; j++){
-            printf("\n%d",lista.array[j]);
-        }
-    }
-    
-}
-void initArray(Array *a, size_t initialSize) {
-    if(a->size==0){
-        a->array = malloc(initialSize * sizeof(int));
-        a->used = 0;
-        a->size = initialSize;
-    }
-   
-}
-
-void insertArray(Array *a, int element) {
-    if (a->used == a->size) {
-        a->size *= 2;
-        a->array = realloc(a->array, a->size * sizeof(double));
-    }
-    a->array[a->used++] = element;
-}
-
-void freeArray(Array *a) {
-    free(a->array);
-    a->array = NULL;
-    a->used = a->size = 0;
 }
