@@ -184,6 +184,34 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 	}
 
+	@Check 
+	public void checkFailsIfCount(Checks check){
+		int highPeakCount = 0, highTimeCount = 0, xPeaksCount = 0, constDegCount = 0;
+		for (FailReason fr : check.getFailReason()) {
+			if (fr.getReason().getHighPeak() != null) {
+				highPeakCount++;
+				if (highPeakCount > 1) {
+					error("Duplicated high peak failure detection.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+				}
+			}else if (fr.getReason().getHighTime() != null) {
+				highTimeCount++;
+				if (highTimeCount > 1) {
+					error("Duplicated high time out of bounds failure detection.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+				}
+			}else if (fr.getReason().getXPeaks() != null) {
+				xPeaksCount++;
+				if (xPeaksCount > 1) {
+					error("Duplicated more than n peaks in less than t seconds failure detection.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+				}
+			}else if (fr.getReason().getConstDeg() != null) {
+				constDegCount++;
+				if (constDegCount > 1) {
+					error("Duplicated constant degradation failure detection.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+				}
+			}
+		} 
+	}
+
 	@Check
 	public void checkFailsIfWithOperational(Checks check) {
 		// TODO assess expressionmodels
