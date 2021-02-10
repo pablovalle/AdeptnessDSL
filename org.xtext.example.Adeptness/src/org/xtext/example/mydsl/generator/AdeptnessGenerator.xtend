@@ -863,15 +863,17 @@ var HashMap<String, List<String>> checkVar;
 		double confidence;
 	}Verdict;
 	typedef struct{
-		int a;
+		«FOR param1: nameMap.get(param.name)»
+		double «param1»;
+		«ENDFOR»
 	}SensorInput, *SENSOR_INPUT;
 	typedef struct {
-	  int *array;
+	  double *array;
 	  size_t used;
 	  size_t size;
 	} Array;
 	void initArray(Array *a, size_t initialSize);
-	void insertArray(Array *a, int element);
+	void insertArray(Array *a, double element);
 	void freeArray(Array *a);
 	int preprocessInputs(SensorInput *inputs, int inputQty);
 	«IF param.when!==null || param.^while!==null»
@@ -879,6 +881,7 @@ var HashMap<String, List<String>> checkVar;
 	«ENDIF»
 	Verdict evaluatePostConditions_«param.name»(Verdict verdict, SensorInput *inputs, int inputQty);
 	Verdict performEvaluation_«param.name»(SensorInput *inputs, int inputQty, double timeStamp);
+	Verdict checkGlobalVerdict(Array conf, Array timeStampOracle);
 	«IF param.check.reference.upper!==null»
 	double confCalculator(«FOR param1:checkVar.get(param.name)»double «param1.toString»,«ENDFOR»double signal);
 	«ELSEIF param.check.reference.lower!==null»
@@ -899,8 +902,10 @@ var HashMap<String, List<String>> checkVar;
 	'''
 	#include "«param.name.toString()».h"
 	#define VERDICT_PASSED 1;
-	#define VERDICT_FAILED -1;
+	#define VERDICT_FAILED 0;
+	#define VERDICT_INCONCLUSIVE 2;
 	//«param.check.description.value»
+	
 	int preprocessInputs(SensorInput *inputs, int inputQty) {
 		//TODO.
 	    return inputQty;
@@ -918,13 +923,13 @@ var HashMap<String, List<String>> checkVar;
 	Verdict performEvaluation_«param.name»(SensorInput *inputs, int inputQty, double timeStamp){
 	    Verdict verdict;
 		//Step 1: inicializacion
-	    int cycle = -1;
-		Array timeStampOracle; 
+	    static int cycle = -1;
+		static Array timeStampOracle; 
 		«FOR param1: nameMap.get(param.name)»
-		Array «param1»;
+		static Array «param1»;
 		«ENDFOR»
-		Array conf;
-		Array preconditionGiven;
+		static Array conf;
+		static Array preconditionGiven;
 	
 		//Init arrays
 		initArray(&conf,1);
@@ -935,21 +940,14 @@ var HashMap<String, List<String>> checkVar;
 		«ENDFOR»
 		//Step 2: meter variables en array
 		cycle++;
-		inserArray(&timeStampOracle,timeStamp);
+		insertArray(&timeStampOracle,timeStamp);
 		«FOR param1: nameMap.get(param.name)»
-		inserArray(&«param1»,getCurrentIntValueFromInputs(inputs,"«param1»"));
+		insertArray(&«param1»,inputs->«param1»);
 		«ENDFOR»
-		
-		
 		«IF param.when!==null || param.^while!==null»
-		inserArray(&preconditionGiven,evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap_preconds.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap_preconds.get(param.name).toString»«ENDIF»));	
-		if(preconditionGiven.array[cycle]){
+		insertArray(&preconditionGiven,evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap_preconds.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap_preconds.get(param.name).toString»«ENDIF»));	
+		if(preconditionGiven.array[cycle]==1){
 		//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
-		
-			
-			//--During balidn bada, TimeStamp erabili, horretarako timeStamp-a beti ms-tan satru ezkero kalkulatu daiteke zenbat timeStamp behar ditugu honen konfidentzia jakiteko.
-			//Adibidea: timeStamp= 2 ms (timeStampOracle[1]-timeStampOracle[0])=timeStamp. IterazioKopurua=During/timeStamp eta horrarte kalkulatu conf-a.
-			//if(preconditionGiven[cycle] && during>0) during baldin bada hasieratuta 1-era egongo da, bestela 0-ra. Kasuistika baten during ez bada erabiltzen 1-era hasieratu ta listo.
 			insertArray(&conf,confCalculator(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
 		}else{
 			insertArray(&conf,2);
@@ -958,14 +956,11 @@ var HashMap<String, List<String>> checkVar;
 		insertArray(&preconditionGiven,2);
 		insertArray(&conf,confCalculator(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
 		«ENDIF»
-		
-		
-		
+
 		//Step 4: Sacar confidence
-		
-		//GLOBAL?
+
 		verdict = checkGlobalVerdict(conf, timeStampOracle); 
-		
+		verdict.confidence=conf.array[cycle];
 		
 	    return verdict;
 	}
@@ -973,7 +968,6 @@ var HashMap<String, List<String>> checkVar;
 	double confCalculator(«FOR param1:checkVar.get(param.name)»double «param1.toString»,«ENDFOR»double signal){
 		double conf=0;
 		«IF param.check.reference.upper!==null»
-	
 		if(signal<«IF param.check.reference.upper.bound_upp.value!==null»«param.check.reference.upper.bound_upp.value.DVal»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
 			conf= («IF param.check.reference.upper.bound_upp.value!==null»«param.check.reference.upper.bound_upp.value.DVal»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«IF param.check.reference.upper.bound_upp.value!==null»«param.check.reference.upper.bound_upp.value.DVal»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
 		}
@@ -1039,10 +1033,19 @@ var HashMap<String, List<String>> checkVar;
 	}
 	Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 		Verdict verdict;
-		verdict.verdict=VERDICT_PASSED;
+		verdict.verdict=VERDICT_INCONCLUSIVE;
 		double times;
 		int fail, is, deg,i,time;
-		
+		i=0;
+		while (i < conf.used && verdict.verdict==2) {
+			if (conf.array[i] != 2) {
+				verdict.verdict = VERDICT_PASSED;
+			}
+			i++;
+		}
+		if (verdict.verdict == 2) {
+			return verdict;
+		}
 		«FOR param1: param.check.failReason» 
 		«IF param1.reason.highTime!==null»
 		fail =0;
@@ -1125,25 +1128,26 @@ var HashMap<String, List<String>> checkVar;
 		return verdict;
 	} 
 	void initArray(Array *a, size_t initialSize) {
-	    if(a->size==0){
-	        a->array = malloc(initialSize * sizeof(int));
+	    if(a->size==a->used){
+	        a->array = malloc(initialSize * sizeof(double));
 	        a->used = 0;
 	        a->size = initialSize;
 	    }
 	}
 	
 	void insertArray(Array *a, double element) {
-	  if (a->used == a->size) {
-	    a->size *= 2;
-	    a->array = realloc(a->array, a->size * sizeof(double));
-	  }
-	  a->array[a->used++] = element;
+		a->array[a->used++] = element;
+		if (a->used == a->size) {
+	    	a->size *= 2;
+	    	a->array = realloc(a->array, a->size * sizeof(double));
+		}
+		
 	}
 	
 	void freeArray(Array *a) {
-	  free(a->array);
-	  a->array = NULL;
-	  a->used = a->size = 0;
+		free(a->array);
+		a->array = NULL;
+		a->used = a->size = 0;
 	}
 	'''
 	/*«IF param.check.reference.upper!==null»
