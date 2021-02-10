@@ -1,13 +1,13 @@
 package org.xtext.example.mydsl.validation;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
 
 public class MonitoringVariables {
 	private String name, type;
 	private double max, min;
 	private Double maxOp, minOp;
-	private Set<Double> opData;
+	private ArrayList<Double> opData;
 
 	public MonitoringVariables(String name, String type, double max, double min) {
 		super();
@@ -41,11 +41,11 @@ public class MonitoringVariables {
 		return this.minOp;
 	}
 
-	public Set<Double> getOpData() {
+	public ArrayList<Double> getOpData() {
 		return this.opData;
 	}
 
-	public void setOpData(Set<Double> data) {
+	public void setOpData(ArrayList<Double> data) {
 		if (data != null) {
 			this.opData = data;
 			this.minOp = Collections.min(data);
