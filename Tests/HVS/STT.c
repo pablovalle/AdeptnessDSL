@@ -4,10 +4,7 @@
 #define VERDICT_INCONCLUSIVE 2;
 //sdf
 
-int preprocessInputs(SensorInput *inputs, int inputQty) {
-	//TODO.
-    return inputQty;
-}
+
 Verdict evaluatePostConditions_STT(Verdict verdict, SensorInput *inputs, int inputQty) {
     verdict.verdict = VERDICT_PASSED;
     verdict.confidence = 1;
@@ -32,27 +29,27 @@ Verdict performEvaluation_STT(SensorInput *inputs, int inputQty, double timeStam
 	insertArray(&timeStampOracle,timeStamp);
 	insertArray(&Energy,inputs->Energy);
 	insertArray(&preconditionGiven,2);
-	insertArray(&conf,confCalculator(Energy.array[cycle] ));
+	insertArray(&conf,confCalculator_STT(Energy.array[cycle] ));
 
 	//Step 4: Sacar confidence
 
-	verdict = checkGlobalVerdict(conf, timeStampOracle); 
+	verdict = checkGlobalVerdict_STT(conf, timeStampOracle); 
 	verdict.confidence=conf.array[cycle];
 	
     return verdict;
 }
 
-double confCalculator(double signal){
+double confCalculator_STT(double signal){
 	double conf=0;
 	if(signal<5.0){
 		conf= (5.0-signal)/(5.0-(-99999));
 	}
-	else(){
+	else{
 		conf= (5.0-signal)/(99999-5.0);
 	}
 	return conf;
 }
-Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
+Verdict checkGlobalVerdict_STT(Array conf, Array timeStampOracle){
 	Verdict verdict;
 	verdict.verdict=VERDICT_INCONCLUSIVE;
 	double times;
@@ -76,25 +73,4 @@ Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	
 	return verdict;
 } 
-void initArray(Array *a, size_t initialSize) {
-    if(a->size==a->used){
-        a->array = malloc(initialSize * sizeof(double));
-        a->used = 0;
-        a->size = initialSize;
-    }
-}
 
-void insertArray(Array *a, double element) {
-	a->array[a->used++] = element;
-	if (a->used == a->size) {
-    	a->size *= 2;
-    	a->array = realloc(a->array, a->size * sizeof(double));
-	}
-	
-}
-
-void freeArray(Array *a) {
-	free(a->array);
-	a->array = NULL;
-	a->used = a->size = 0;
-}

@@ -40,20 +40,20 @@ Verdict performEvaluation_AWTChecker(SensorInput *inputs, int inputQty, double t
 	insertArray(&preconditionGiven,evaluatePreConditions_AWTChecker(numLlamadasActivas.array[cycle] ));	
 	if(preconditionGiven.array[cycle]==1){
 	//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
-		insertArray(&conf,confCalculator(AWT.array[cycle] ));
+		insertArray(&conf,confCalculator_AWTChecker(AWT.array[cycle] ));
 	}else{
 		insertArray(&conf,2);
 	}
 
 	//Step 4: Sacar confidence
 
-	verdict = checkGlobalVerdict(conf, timeStampOracle); 
+	verdict = checkGlobalVerdict_AWTChecker(conf, timeStampOracle); 
 	verdict.confidence=conf.array[cycle];
 	
     return verdict;
 }
 
-double confCalculator(double signal){
+double confCalculator_AWTChecker(double signal){
 	double conf=0;
 	if(signal<80.0 && signal>10.0 + (80.0-10.0)/2){
 		conf=(80.0-signal)/((80.0-10.0)/2);
@@ -69,7 +69,7 @@ double confCalculator(double signal){
 	}
 	return conf;
 }
-Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
+Verdict checkGlobalVerdict_AWTChecker(Array conf, Array timeStampOracle){
 	Verdict verdict;
 	verdict.verdict=VERDICT_INCONCLUSIVE;
 	double times;
@@ -140,25 +140,4 @@ Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	
 	return verdict;
 } 
-void initArray(Array *a, size_t initialSize) {
-    if(a->size==a->used){
-        a->array = malloc(initialSize * sizeof(double));
-        a->used = 0;
-        a->size = initialSize;
-    }
-}
 
-void insertArray(Array *a, double element) {
-	a->array[a->used++] = element;
-	if (a->used == a->size) {
-    	a->size *= 2;
-    	a->array = realloc(a->array, a->size * sizeof(double));
-	}
-	
-}
-
-void freeArray(Array *a) {
-	free(a->array);
-	a->array = NULL;
-	a->used = a->size = 0;
-}

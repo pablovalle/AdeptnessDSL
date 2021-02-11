@@ -1,0 +1,5 @@
+﻿  TestATTD.c
+TestATTD.obj : error LNK2005: ya se defini¾ _main en main.obj
+TestAWT2.obj : error LNK2005: ya se defini¾ _main en main.obj
+TestSTT.obj : error LNK2005: ya se defini¾ _main en main.obj
+C:\Users\pablo\OneDrive\Escritorio\trabajo\DSL\AdeptnessDSL\Tests\HVS\Testing\Debug\Testing.exe : fatal error LNK1169: se encontraron uno o mßs sÝmbolos definidos simultßneamente

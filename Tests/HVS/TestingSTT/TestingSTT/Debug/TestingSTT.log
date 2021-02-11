@@ -1,0 +1,17 @@
+﻿  Array.c
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\hvs\array.c(4): warning C4013: 'malloc' sin definir; se supone que extern devuelve como resultado int
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\hvs\array.c(4): warning C4047: '=': 'double *' es distinto en los niveles de direccionamiento indirecto de 'int'
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\hvs\array.c(14): warning C4013: 'realloc' sin definir; se supone que extern devuelve como resultado int
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\hvs\array.c(14): warning C4047: '=': 'double *' es distinto en los niveles de direccionamiento indirecto de 'int'
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\hvs\array.c(20): warning C4013: 'free' sin definir; se supone que extern devuelve como resultado int
+  STT.c
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\hvs\stt.c(58): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\hvs\stt.c(68): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\hvs\stt.c(55): warning C4101: 'times': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\hvs\stt.c(56): warning C4101: 'is': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\hvs\stt.c(56): warning C4101: 'time': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\hvs\stt.c(56): warning C4101: 'fail': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\hvs\stt.c(56): warning C4101: 'deg': variable local sin referencia
+  TestSTT.c
+  Generando código...
+  TestingSTT.vcxproj -> C:\Users\pablo\OneDrive\Escritorio\trabajo\DSL\AdeptnessDSL\Tests\HVS\TestingSTT\Debug\TestingSTT.exe
