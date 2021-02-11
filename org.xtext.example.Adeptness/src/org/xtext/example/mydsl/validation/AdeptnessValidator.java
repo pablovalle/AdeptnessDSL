@@ -184,8 +184,8 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 	}
 
-	@Check 
-	public void checkFailsIfCount(Checks check){
+	@Check
+	public void checkFailsIfCount(Checks check) {
 		int highPeakCount = 0, highTimeCount = 0, xPeaksCount = 0, constDegCount = 0;
 		for (FailReason fr : check.getFailReason()) {
 			if (fr.getReason().getHighPeak() != null) {
@@ -193,23 +193,26 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				if (highPeakCount > 1) {
 					error("Duplicated high peak failure detection.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
 				}
-			}else if (fr.getReason().getHighTime() != null) {
+			} else if (fr.getReason().getHighTime() != null) {
 				highTimeCount++;
 				if (highTimeCount > 1) {
-					error("Duplicated high time out of bounds failure detection.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+					error("Duplicated high time out of bounds failure detection.",
+							AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
 				}
-			}else if (fr.getReason().getXPeaks() != null) {
+			} else if (fr.getReason().getXPeaks() != null) {
 				xPeaksCount++;
 				if (xPeaksCount > 1) {
-					error("Duplicated more than n peaks in less than t seconds failure detection.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+					error("Duplicated more than n peaks in less than t seconds failure detection.",
+							AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
 				}
-			}else if (fr.getReason().getConstDeg() != null) {
+			} else if (fr.getReason().getConstDeg() != null) {
 				constDegCount++;
 				if (constDegCount > 1) {
-					error("Duplicated constant degradation failure detection.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+					error("Duplicated constant degradation failure detection.",
+							AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
 				}
 			}
-		} 
+		}
 	}
 
 	@Check
@@ -364,7 +367,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 //							System.out.println("Lower bound: " + maxBoundDown.toString() + ", Upper bound: "
 //									+ minBoundUp.toString());
 							for (Double opData : mVar.getOpData()) {
-								if (opData != boundUp) {
+								if (opData.doubleValue() == boundUp) {
 									warning("There is operational data out of bounds.",
 											AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
 									break;
@@ -373,16 +376,183 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 						}
 					} else if (fr.getReason().getHighTime() != null) {
 						confidence = fr.getReason().getHighTime().getCant().getDVal();
+
+						// number of samples we need to detect a failure
+						// 1 sample = 1 second
+						int nSamples = (int) fr.getReason().getHighTime().getTime().getDVal();
+						switch (fr.getReason().getHighTime().getUnit().getTime()) {
+						case "milliseconds":
+							nSamples = (int) nSamples / 1000;
+							if (nSamples < 1)
+								nSamples = 1;
+							break;
+						case "minutes":
+							nSamples = nSamples * 60;
+							break;
+						case "hours":
+							nSamples = nSamples * 60 * 60;
+							break;
+						default: // seconds
+						}
+						int outofbounds = 0;
+
+						// check if there is operational data out of bounds during nSamples
+						if (reference.getUpper() != null && boundUp != null) {
+							// conf = (ref - sign)/(max - ref)
+							minBoundUp = -(confidence * (mVar.getMax() - boundUp)) + boundUp;
+
+							for (Double opD : mVar.getOpData()) {
+								if (minBoundUp < opD) {
+									outofbounds++;
+									if (outofbounds == nSamples) {
+										warning("There is operational data out of bounds.",
+												AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+										break;
+									}
+								} else {
+									outofbounds = 0;
+								}
+							}
+
+						} else if (reference.getLower() != null && boundDown != null) {
+							// conf = (sign - ref)/(ref - min)
+							maxBoundDown = confidence * (boundDown - mVar.getMin()) + boundDown;
+
+							for (Double opD : mVar.getOpData()) {
+								if (maxBoundDown > opD) {
+									outofbounds++;
+									if (outofbounds == nSamples) {
+										warning("There is operational data out of bounds.",
+												AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+										break;
+									}
+								} else {
+									outofbounds = 0;
+								}
+							}
+						} else if (reference.getRange() != null) {
+							if (boundDown != null) {
+								// conf = (sign - lowerRef) / (lowerRef - min)
+								maxBoundDown = confidence * (boundDown - mVar.getMin()) + boundDown;
+
+								for (Double opD : mVar.getOpData()) {
+									if (maxBoundDown > opD) {
+										outofbounds++;
+										if (outofbounds == nSamples) {
+											warning("There is operational data out of bounds.",
+													AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+											break;
+										}
+									} else {
+										outofbounds = 0;
+									}
+								}
+							}
+							if (boundUp != null) {
+								// conf = (upRef - sign) / (max - upRef)
+								minBoundUp = -(confidence * (mVar.getMax() - boundUp)) + boundUp;
+
+								for (Double opD : mVar.getOpData()) {
+									if (minBoundUp < opD) {
+										outofbounds++;
+										if (outofbounds == nSamples) {
+											warning("There is operational data out of bounds.",
+													AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+											break;
+										}
+									} else {
+										outofbounds = 0;
+									}
+								}
+							}
+
+						} else if (reference.getGap() != null) {
+							if (boundDown != null && boundUp != null) {
+								// conf = (lowerRef - sign) / (lowerRef - min)
+								maxBoundDown = -(confidence * (boundDown - mVar.getMin())) + boundDown;
+								// conf = (sign - upRef) / (max - upRef)
+								minBoundUp = confidence * (mVar.getMax() - boundUp) + boundUp;
+
+								if (maxBoundDown > minBoundUp) {
+									error("Confidence value too high.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+								}
+
+								for (Double opData : mVar.getOpData()) {
+									if (opData > maxBoundDown && minBoundUp > opData) {
+										outofbounds++;
+										if (outofbounds == nSamples) {
+											warning("There is operational data out of bounds.",
+													AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+											break;
+										}
+									} else {
+										outofbounds = 0;
+									}
+								}
+							}
+						} else if (reference.getSame() != null && boundUp != null) {
+							// sign < ref -> confidence = (sign - ref)/(ref - min)
+							maxBoundDown = confidence * (boundUp - mVar.getMin()) + boundUp;
+							for (Double opData : mVar.getOpData()) {
+								if (maxBoundDown > opData) {
+									outofbounds++;
+									if (outofbounds == nSamples) {
+										warning("There is operational data out of bounds.",
+												AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+										break;
+									}
+								} else {
+									outofbounds = 0;
+								}
+							}
+							// sign > ref -> confidence = (sign - ref) / (ref - max)
+							minBoundUp = confidence * (boundUp - mVar.getMax()) + boundUp;
+
+							System.out.println(maxBoundDown.toString());
+							System.out.println(minBoundUp.toString());
+							for (Double opData : mVar.getOpData()) {
+								if (minBoundUp < mVar.getMaxOp()) {
+									outofbounds++;
+									if (outofbounds == nSamples) {
+										warning("There is operational data out of bounds.",
+												AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+										break;
+									}
+								} else {
+									outofbounds = 0;
+								}
+							}
+						} else if (reference.getNotsame() != null && boundUp != null) {
+							if (confidence != 0) {
+								error("Confidence value must be zero within 'should not be' clauses or use a 'not in range' clause instead.",
+										AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+								continue;
+							}
+//							// sign < ref -> confidence = (ref - sign)/(ref - min)
+//							maxBoundDown = -(confidence * (boundUp - mVar.getMin())) + boundUp;
+//							// sign > ref -> confidence = (sign - ref) / (max - ref)
+//							minBoundUp = confidence * (mVar.getMax() - boundUp) + boundUp;
+//							System.out.println("Lower bound: " + maxBoundDown.toString() + ", Upper bound: "
+//									+ minBoundUp.toString());
+							for (Double opData : mVar.getOpData()) {
+								if (opData.doubleValue() == boundUp) {
+									warning("There is operational data out of bounds.",
+											AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+									break;
+								}
+							}
+						}
 					} else if (fr.getReason().getXPeaks() != null) {
 						confidence = fr.getReason().getXPeaks().getCant().getDVal();
 					} else if (fr.getReason().getConstDeg() != null) {
 						confidence = fr.getReason().getConstDeg().getCant().getDVal();
 					}
-
+					break;
 				}
-				break;
+
 			}
 		}
+
 	}
 
 	@Check
