@@ -229,7 +229,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			if (mVar.getName().equals(signal)) {
 				Double boundUp = null;
 				Double boundDown = null;
-				Double confidence = 0.0;
+
 				Double maxBoundDown;
 				Double minBoundUp;
 				Reference reference = check.getReference();
@@ -285,105 +285,69 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					System.out.println("Unknown assertion");
 					return;
 				}
-				
+
 				// TODO get bounds from expressionmodel
-				if (boundUp == null && boundDown == null) return;
+				if (boundUp == null && boundDown == null)
+					return;
 
 				boolean warning = false;
+				int nPeaks;
+				int nSamples;
+				Double confidence = 0.0;
 				for (FailReason fr : check.getFailReason()) {
-					// check HighPeak
+					nSamples = 1;
+					nPeaks = 1;
 					if (fr.getReason().getHighPeak() != null) {
-						// get confidence
 						confidence = fr.getReason().getHighPeak().getCant().getDVal();
-
-						// check if there is any operational data out of bounds
-						if (reference.getUpper() != null && boundUp != null) {
-							warning = this.checkUpper(this.calcUpBound(confidence, mVar.getMax(), boundUp),
-									mVar.getMaxOp());
-						} else if (reference.getLower() != null && boundDown != null) {
-							warning = this.checkLower(this.calcDownBound(confidence, mVar.getMin(), boundDown),
-									mVar.getMinOp());
-						} else if (reference.getRange() != null) {
-							if (boundDown != null) {
-								warning = this.checkLower(this.calcDownBound(confidence, mVar.getMin(), boundDown),
-										mVar.getMinOp());
-							}
-							// one warning is enough
-							if (!warning && boundUp != null) {
-								warning = this.checkUpper(this.calcUpBound(confidence, mVar.getMax(), boundUp),
-										mVar.getMaxOp());
-							}
-						} else if (reference.getGap() != null && boundDown != null && boundUp != null) {
-							warning = this.checkAny(mVar.getOpData(), "inBetween",
-									this.calcGapDownBound(confidence, mVar.getMin(), boundDown),
-									this.calcGapUpBound(confidence, mVar.getMax(), boundUp));
-						} else if (reference.getSame() != null && boundUp != null) {
-							warning = this.checkLower(this.calcDownBound(confidence, mVar.getMin(), boundUp),
-									mVar.getMinOp());
-							// one warning is enough
-							if (!warning) {
-								warning = this.checkUpper(this.calcSameUpBound(confidence, mVar.getMax(), boundUp),
-										mVar.getMaxOp());
-							}
-						} else if (reference.getNotsame() != null && boundUp != null) {
-							if (confidence != 0) {
-								error("Confidence value must be zero within 'should not be' clauses or use a 'not in range' clause instead.",
-										AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
-								continue;
-							}
-							warning = this.checkAny(mVar.getOpData(), "equal", boundUp);
-						}
 					} else if (fr.getReason().getHighTime() != null) {
 						confidence = fr.getReason().getHighTime().getCant().getDVal();
-						
-						// number of samples out of bounds to detect a failure
-						int nSamples = this.getNSamples((int) fr.getReason().getHighTime().getTime().getDVal(),
+						nSamples = this.getNSamples((int) fr.getReason().getHighTime().getTime().getDVal(),
 								fr.getReason().getHighTime().getUnit().getTime());
-						// check if there is operational data out of bounds during nSamples
-						if (reference.getUpper() != null && boundUp != null) {
-							warning = this.checkAny(mVar.getOpData(), "upper",
-									this.calcUpBound(confidence, mVar.getMax(), boundUp), nSamples);
-						} else if (reference.getLower() != null && boundDown != null) {
-							warning = this.checkAny(mVar.getOpData(), "lower",
-									this.calcDownBound(confidence, mVar.getMin(), boundDown), nSamples);
-						} else if (reference.getRange() != null) {
-							maxBoundDown = boundDown != null ? this.calcDownBound(confidence, mVar.getMin(), boundDown)
-									: null;
-							minBoundUp = boundUp != null ? this.calcUpBound(confidence, mVar.getMax(), boundUp) : null;
-
-							if (boundDown != null && boundUp == null) {
-								warning = this.checkAny(mVar.getOpData(), "lower", maxBoundDown, nSamples);
-							} else if (boundDown == null && boundUp != null) {
-								warning = this.checkAny(mVar.getOpData(), "upper", minBoundUp, nSamples);
-							} else if (boundDown != null && boundUp != null) {
-								warning = this.checkAny(mVar.getOpData(), "notInBetween", maxBoundDown, minBoundUp,
-										nSamples);
-							}
-						} else if (reference.getGap() != null && boundDown != null && boundUp != null) {
-							warning = this.checkAny(mVar.getOpData(), "inBetween",
-									this.calcGapDownBound(confidence, mVar.getMin(), boundDown),
-									this.calcGapUpBound(confidence, mVar.getMax(), boundUp), nSamples);
-						} else if (reference.getSame() != null && boundUp != null) {
-							warning = this.checkAny(mVar.getOpData(), "notInBetween",
-									this.calcDownBound(confidence, mVar.getMin(), boundUp),
-									this.calcSameUpBound(confidence, mVar.getMax(), boundUp), nSamples);
-						} else if (reference.getNotsame() != null && boundUp != null) {
-							if (confidence != 0) {
-								error("Confidence value must be zero within 'should not be' clauses or use a 'not in range' clause instead.",
-										AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
-								continue;
-							}
-							warning = this.checkAny(mVar.getOpData(), "equal", boundUp, nSamples);
-						}
+						nPeaks = nSamples;
 					} else if (fr.getReason().getXPeaks() != null) {
 						confidence = fr.getReason().getXPeaks().getCant().getDVal();
-
-						int nPeaks = (int) fr.getReason().getXPeaks().getNPeaks().getDVal();
-						int nSamples = this.getNSamples((int) fr.getReason().getXPeaks().getTime().getDVal(),
+						nPeaks = (int) fr.getReason().getXPeaks().getNPeaks().getDVal();
+						nSamples = this.getNSamples((int) fr.getReason().getXPeaks().getTime().getDVal(),
 								fr.getReason().getXPeaks().getUnit().getTime());
-
 					} else if (fr.getReason().getConstDeg() != null) {
 						confidence = fr.getReason().getConstDeg().getCant().getDVal();
+						// TODO
+					}
+
+					if (reference.getUpper() != null && boundUp != null) {
+						warning = this.checkAny(mVar.getOpData(), "upper",
+								this.calcUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
+					} else if (reference.getLower() != null && boundDown != null) {
+						warning = this.checkAny(mVar.getOpData(), "lower",
+								this.calcDownBound(confidence, mVar.getMin(), boundDown), nSamples, nPeaks);
+					} else if (reference.getRange() != null) {
+						maxBoundDown = boundDown != null ? this.calcDownBound(confidence, mVar.getMin(), boundDown)
+								: null;
+						minBoundUp = boundUp != null ? this.calcUpBound(confidence, mVar.getMax(), boundUp) : null;
+
+						if (boundDown != null && boundUp == null) {
+							warning = this.checkAny(mVar.getOpData(), "lower", maxBoundDown, nSamples, nPeaks);
+						} else if (boundDown == null && boundUp != null) {
+							warning = this.checkAny(mVar.getOpData(), "upper", minBoundUp, nSamples, nPeaks);
+						} else if (boundDown != null && boundUp != null) {
+							warning = this.checkAny(mVar.getOpData(), "notInBetween", maxBoundDown, minBoundUp,
+									nSamples, nPeaks);
+						}
+					} else if (reference.getGap() != null && boundDown != null && boundUp != null) {
+						warning = this.checkAny(mVar.getOpData(), "inBetween",
+								this.calcGapDownBound(confidence, mVar.getMin(), boundDown),
+								this.calcGapUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
+					} else if (reference.getSame() != null && boundUp != null) {
+						warning = this.checkAny(mVar.getOpData(), "notInBetween",
+								this.calcDownBound(confidence, mVar.getMin(), boundUp),
+								this.calcSameUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
+					} else if (reference.getNotsame() != null && boundUp != null) {
+						if (confidence != 0) {
+							error("Confidence value must be zero within 'should not be' clauses or use a 'not in range' clause instead.",
+									AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+							continue;
+						}
+						warning = this.checkAny(mVar.getOpData(), "equal", boundUp, nSamples, nPeaks);
 					}
 
 					if (warning) {
@@ -898,6 +862,8 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	private boolean checkUpper(Double upBound, Double opData) {
+		if (upBound == null || opData == null)
+			return false;
 		if (upBound < opData) {
 			return true;
 		}
@@ -905,6 +871,8 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	private boolean checkLower(Double lowBound, Double opData) {
+		if (lowBound == null || opData == null)
+			return false;
 		if (lowBound > opData) {
 			return true;
 		}
@@ -912,6 +880,8 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	private boolean checkInBetween(Double lowBound, Double upBound, Double opData) {
+		if (lowBound == null || upBound == null || opData == null)
+			return false;
 		if (opData > lowBound && upBound > opData) {
 			return true;
 		}
@@ -919,6 +889,8 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	private boolean checkNotInBetween(Double lowBound, Double upBound, Double opData) {
+		if (lowBound == null || upBound == null || opData == null)
+			return false;
 		if (lowBound > opData || opData > upBound) {
 			return true;
 		}
@@ -926,52 +898,48 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	private boolean checkEqual(Double bound, Double opData) {
+		if (bound == null || opData == null)
+			return false;
 		if (opData.doubleValue() == bound.doubleValue()) {
 			return true;
 		}
 		return false;
 	}
 
-	private boolean checkAny(ArrayList<Double> operationalData, String type, Double bound) {
-		return checkAny(operationalData, type, bound, 1);
-	}
-
-	private boolean checkAny(ArrayList<Double> operationalData, String type, Double lowBound, Double upBound) {
-		return checkAny(operationalData, type, lowBound, upBound, 1);
-	}
-
-	private boolean checkAny(ArrayList<Double> operationalData, String type, Double bound, int times) {
-		int outofbounds = 0;
-		for (Double opData : operationalData) {
-			if (type.equals("upper") && checkUpper(bound, opData) || type.equals("lower") && checkLower(bound, opData)
-					|| type.equals("equal") && checkEqual(bound, opData)) {
-				outofbounds++;
-				if (outofbounds == times) {
-					return true;
-				}
-			} else {
-				outofbounds = 0;
-			}
-		}
-		return false;
+	private boolean checkAny(ArrayList<Double> operationalData, String type, Double lowBound, int during, int times) {
+		return this.checkAny(operationalData, type, lowBound, 0.0, during, times);
 	}
 
 	private boolean checkAny(ArrayList<Double> operationalData, String type, Double lowBound, Double upBound,
-			int times) {
-		if (lowBound > upBound) {
+			int during, int times) {
+
+		System.out.println(
+				"Check if " + times + " out of bounds during " + during + "[" + lowBound + ", " + upBound + "]");
+		if ((type.equals("inBetween") || type.equals("notInBetween")) && lowBound > upBound) {
 			error("Confidence value too high.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
 			return false;
 		}
 		int outofbounds = 0;
+		int countTime = 0;
 		for (Double opData : operationalData) {
-			if (type.equals("notInBetween") && checkNotInBetween(lowBound, upBound, opData)
+			if (type.equals("upper") && checkUpper(lowBound, opData)
+					|| type.equals("lower") && checkLower(lowBound, opData)
+					|| type.equals("equal") && checkEqual(lowBound, opData)
+					|| type.equals("notInBetween") && checkNotInBetween(lowBound, upBound, opData)
 					|| type.equals("inBetween") && checkInBetween(lowBound, upBound, opData)) {
 				outofbounds++;
+				System.out.println("  " + opData + " " + type + " [" + lowBound + ", " + upBound + "]. Out of bounds: "
+						+ outofbounds + ", During: " + countTime);
 				if (outofbounds == times) {
+					System.out.println("FAILURE DETECTED");
 					return true;
 				}
-			} else {
+			}
+			if (countTime == during) {
+				countTime = 0;
 				outofbounds = 0;
+			} else if (outofbounds > 0) {
+				countTime++;
 			}
 		}
 		return false;
