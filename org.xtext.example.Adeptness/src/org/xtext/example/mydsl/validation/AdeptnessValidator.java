@@ -55,7 +55,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	List<String> monitoringVariableNames;
 
 	OperationalDataConnector opCon = new OperationalDataConnector();
-
+	
 	// GET MONITORING VARIABLES
 	@Check
 	public void getImportedMonitoringVariables(Signal CPS) {
@@ -219,7 +219,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	@Check
-	public void checkFailsIfWithOperational(Checks check) {
+	public void checkFailsIfWithOperationalData(Checks check) {
 		// TODO assess expressionmodels
 		if (check.getName() == null)
 			return;
@@ -230,130 +230,124 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				Double boundUp = null;
 				Double boundDown = null;
 
-				Double maxBoundDown;
-				Double minBoundUp;
 				Reference reference = check.getReference();
-
 				// get lower and upper bounds
 				if (reference.getUpper() != null) {
 					if (reference.getUpper().getBound_upp().getValue() != null) {
 						boundUp = reference.getUpper().getBound_upp().getValue().getDVal();
-					} else if (reference.getUpper().getBound_upp().getEm() != null) {
-						System.out.println("TODO expressionmodel");
 					}
 				} else if (reference.getLower() != null) {
 					if (reference.getLower().getBound_lower().getValue() != null) {
 						boundDown = reference.getLower().getBound_lower().getValue().getDVal();
-					} else if (reference.getLower().getBound_lower().getEm() != null) {
-						System.out.println("TODO expressionmodel");
 					}
 				} else if (reference.getRange() != null) {
 					if (reference.getRange().getBound_lower().getValue() != null) {
 						boundDown = reference.getRange().getBound_lower().getValue().getDVal();
-					} else if (reference.getRange().getBound_lower().getEm() != null) {
-						System.out.println("TODO expressionmodel");
 					}
 					if (reference.getRange().getBound_upp().getValue() != null) {
 						boundUp = reference.getRange().getBound_upp().getValue().getDVal();
-					} else if (reference.getRange().getBound_upp().getEm() != null) {
-						System.out.println("TODO expressionmodel");
 					}
 				} else if (reference.getGap() != null) {
 					if (reference.getGap().getBound_lower().getValue() != null) {
 						boundDown = reference.getGap().getBound_lower().getValue().getDVal();
-					} else if (reference.getGap().getBound_lower().getEm() != null) {
-						System.out.println("TODO expressionmodel");
 					}
 					if (reference.getGap().getBound_upp().getValue() != null) {
 						boundUp = reference.getGap().getBound_upp().getValue().getDVal();
-					} else if (reference.getGap().getBound_upp().getEm() != null) {
-						System.out.println("TODO expressionmodel");
 					}
 				} else if (reference.getSame() != null) {
 					if (reference.getSame().getBound_upp().getValue() != null) {
 						boundUp = reference.getSame().getBound_upp().getValue().getDVal();
-					} else if (reference.getSame().getBound_upp().getEm() != null) {
-						System.out.println("TODO expressionmodel");
 					}
 				} else if (reference.getNotsame() != null) {
 					if (reference.getNotsame().getBound_upp().getValue() != null) {
 						boundUp = reference.getNotsame().getBound_upp().getValue().getDVal();
-					} else if (reference.getNotsame().getBound_upp().getEm() != null) {
-						System.out.println("TODO expressionmodel");
 					}
-				} else {
-					System.out.println("Unknown assertion");
-					return;
 				}
 
 				// TODO get bounds from expressionmodel
 				if (boundUp == null && boundDown == null)
 					return;
 
-				boolean warning = false;
+				boolean opDataOutOfBounds= false;
 				int nPeaks;
 				int nSamples;
 				Double confidence = 0.0;
+				Double maxBoundDown;
+				Double minBoundUp;
 				for (FailReason fr : check.getFailReason()) {
+					// get confidence, nPeaks, and nSamples
 					nSamples = 1;
 					nPeaks = 1;
 					if (fr.getReason().getHighPeak() != null) {
 						confidence = fr.getReason().getHighPeak().getCant().getDVal();
 					} else if (fr.getReason().getHighTime() != null) {
 						confidence = fr.getReason().getHighTime().getCant().getDVal();
-						nSamples = this.getNSamples((int) fr.getReason().getHighTime().getTime().getDVal(),
+						nSamples = Utils.getNSamples((int) fr.getReason().getHighTime().getTime().getDVal(),
 								fr.getReason().getHighTime().getUnit().getTime());
 						nPeaks = nSamples; 
 					} else if (fr.getReason().getXPeaks() != null) {
 						confidence = fr.getReason().getXPeaks().getCant().getDVal();
 						nPeaks = (int) fr.getReason().getXPeaks().getNPeaks().getDVal();
-						nSamples = this.getNSamples((int) fr.getReason().getXPeaks().getTime().getDVal(),
+						nSamples = Utils.getNSamples((int) fr.getReason().getXPeaks().getTime().getDVal(),
 								fr.getReason().getXPeaks().getUnit().getTime());
 					} else if (fr.getReason().getConstDeg() != null) {
 						confidence = fr.getReason().getConstDeg().getCant().getDVal();
 						// TODO
+						return;
 					}
-
-					if (reference.getUpper() != null && boundUp != null) {
-						warning = this.checkAny(mVar.getOpData(), "upper",
-								this.calcUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
-					} else if (reference.getLower() != null && boundDown != null) {
-						warning = this.checkAny(mVar.getOpData(), "lower",
-								this.calcDownBound(confidence, mVar.getMin(), boundDown), nSamples, nPeaks);
-					} else if (reference.getRange() != null) {
-						maxBoundDown = boundDown != null ? this.calcDownBound(confidence, mVar.getMin(), boundDown)
+					
+					// check oracle values againts operational data 
+					// Upper
+					if (reference.getUpper() != null && boundUp != null) { 
+						opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "upper",
+								Utils.calcUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
+					} 
+					// Lower
+					else if (reference.getLower() != null && boundDown != null) { 
+						opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "lower",
+								Utils.calcDownBound(confidence, mVar.getMin(), boundDown), nSamples, nPeaks);
+					} 
+					// Range
+					else if (reference.getRange() != null) {
+						maxBoundDown = boundDown != null ? Utils.calcDownBound(confidence, mVar.getMin(), boundDown)
 								: null;
-						minBoundUp = boundUp != null ? this.calcUpBound(confidence, mVar.getMax(), boundUp) : null;
+						minBoundUp = boundUp != null ? Utils.calcUpBound(confidence, mVar.getMax(), boundUp) : null;
 
 						if (boundDown != null && boundUp == null) {
-							warning = this.checkAny(mVar.getOpData(), "lower", maxBoundDown, nSamples, nPeaks);
+							opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "lower", maxBoundDown, nSamples, nPeaks);
 						} else if (boundDown == null && boundUp != null) {
-							warning = this.checkAny(mVar.getOpData(), "upper", minBoundUp, nSamples, nPeaks);
+							opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "upper", minBoundUp, nSamples, nPeaks);
 						} else if (boundDown != null && boundUp != null) {
-							warning = this.checkAny(mVar.getOpData(), "notInBetween", maxBoundDown, minBoundUp,
+							opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "notInBetween", maxBoundDown, minBoundUp,
 									nSamples, nPeaks);
 						}
-					} else if (reference.getGap() != null && boundDown != null && boundUp != null) {
-						warning = this.checkAny(mVar.getOpData(), "inBetween",
-								this.calcGapDownBound(confidence, mVar.getMin(), boundDown),
-								this.calcGapUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
-					} else if (reference.getSame() != null && boundUp != null) {
-						warning = this.checkAny(mVar.getOpData(), "notInBetween",
-								this.calcDownBound(confidence, mVar.getMin(), boundUp),
-								this.calcSameUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
-					} else if (reference.getNotsame() != null && boundUp != null) {
+					} 
+					// Gap
+					else if (reference.getGap() != null && boundDown != null && boundUp != null) {
+						opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "inBetween",
+								Utils.calcGapDownBound(confidence, mVar.getMin(), boundDown),
+								Utils.calcGapUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
+					} 
+					// Same
+					else if (reference.getSame() != null && boundUp != null) {
+						opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "notInBetween",
+								Utils.calcDownBound(confidence, mVar.getMin(), boundUp),
+								Utils.calcSameUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
+					} 
+					// Not same
+					else if (reference.getNotsame() != null && boundUp != null) {
 						if (confidence != 0) {
 							error("Confidence value must be zero within 'should not be' clauses or use a 'not in range' clause instead.",
 									AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
 							continue;
 						}
-						warning = this.checkAny(mVar.getOpData(), "equal", boundUp, nSamples, nPeaks);
+						opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "equal", boundUp, nSamples, nPeaks);
 					}
 
-					if (warning) {
-						warning("There is operational data out of bounds.",
+					if (opDataOutOfBounds) {
+							warning("There is operational data out of bounds.",
 								AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
-					}
+					} 
 				}
 				break;
 			}
@@ -815,104 +809,14 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					AdeptnessPackage.Literals.DOUBLE__DVAL);
 		}
 	}
-
-	private double calcUpBound(double confidence, double max, double bound) {
-		// conf = (ref - sign)/(max - ref)
-		return -(confidence * (max - bound)) + bound;
+	// Oracle specified failure detection in operational data     
+	// Only one bound specified: upper, lower, equal
+	public boolean checkOperationalDataOutOfBounds(ArrayList<Double> operationalData, String type, Double lowBound, int during, int times) {
+		return checkOperationalDataOutOfBounds(operationalData, type, lowBound, 0.0, during, times);
 	}
 
-	private double calcSameUpBound(double confidence, double max, double bound) {
-		// sign > ref -> confidence = (sign - ref) / (ref - max)
-		return confidence * (bound - max) + bound;
-	}
-
-	private double calcGapUpBound(double confidence, double max, double bound) {
-		// conf = (sign - upRef) / (max - upRef)
-		return confidence * (max - bound) + bound;
-	}
-
-	private double calcDownBound(double confidence, double min, double bound) {
-		// conf = (sign - ref)/(ref - min)
-		return confidence * (bound - min) + bound;
-	}
-
-	private double calcGapDownBound(double confidence, double min, double bound) {
-		// conf = (lowerRef - sign) / (lowerRef - min)
-		return -(confidence * (bound - min)) + bound;
-	}
-
-	private int getNSamples(int samples, String timeUnit) {
-		// 1 sample = 1 second
-		int nSamples = samples;
-		switch (timeUnit) {
-		case "milliseconds":
-			nSamples = (int) nSamples / 1000;
-			if (nSamples < 1)
-				nSamples = 1;
-			break;
-		case "minutes":
-			nSamples = nSamples * 60;
-			break;
-		case "hours":
-			nSamples = nSamples * 60 * 60;
-			break;
-		default: // seconds
-		}
-		return nSamples;
-	}
-
-	private boolean checkUpper(Double upBound, Double opData) {
-		if (upBound == null || opData == null)
-			return false;
-		if (upBound < opData) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean checkLower(Double lowBound, Double opData) {
-		if (lowBound == null || opData == null)
-			return false;
-		if (lowBound > opData) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean checkInBetween(Double lowBound, Double upBound, Double opData) {
-		if (lowBound == null || upBound == null || opData == null)
-			return false;
-		if (opData > lowBound && upBound > opData) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean checkNotInBetween(Double lowBound, Double upBound, Double opData) {
-		if (lowBound == null || upBound == null || opData == null)
-			return false;
-		if (lowBound > opData || opData > upBound) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean checkEqual(Double bound, Double opData) {
-		if (bound == null || opData == null)
-			return false;
-		if (opData.doubleValue() == bound.doubleValue()) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean checkAny(ArrayList<Double> operationalData, String type, Double lowBound, int during, int times) {
-		return this.checkAny(operationalData, type, lowBound, 0.0, during, times);
-	}
-
-	private boolean checkAny(ArrayList<Double> operationalData, String type, Double lowBound, Double upBound,
-			int during, int times) {
-
+	public boolean checkOperationalDataOutOfBounds(ArrayList<Double> operationalData, String type, Double lowBound, Double upBound, int during,
+			int times) {
 		System.out.println(
 				"Check if " + times + " out of bounds during " + during + "[" + lowBound + ", " + upBound + "]");
 		if ((type.equals("inBetween") || type.equals("notInBetween")) && lowBound > upBound) {
@@ -922,11 +826,11 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		int outofbounds = 0;
 		int countTime = 0;
 		for (Double opData : operationalData) {
-			if (type.equals("upper") && checkUpper(lowBound, opData)
-					|| type.equals("lower") && checkLower(lowBound, opData)
-					|| type.equals("equal") && checkEqual(lowBound, opData)
-					|| type.equals("notInBetween") && checkNotInBetween(lowBound, upBound, opData)
-					|| type.equals("inBetween") && checkInBetween(lowBound, upBound, opData)) {
+			if (type.equals("upper") && Utils.checkUpper(lowBound, opData)
+					|| type.equals("lower") && Utils.checkLower(lowBound, opData)
+					|| type.equals("equal") && Utils.checkEqual(lowBound, opData)
+					|| type.equals("notInBetween") && Utils.checkNotInBetween(lowBound, upBound, opData)
+					|| type.equals("inBetween") && Utils.checkInBetween(lowBound, upBound, opData)) {
 				outofbounds++;
 				System.out.println("  " + opData + " " + type + " [" + lowBound + ", " + upBound + "]. Out of bounds: "
 						+ outofbounds + ", During: " + countTime);
@@ -944,6 +848,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 		return false;
 	}
+	
 }
 
 //@Check
