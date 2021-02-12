@@ -303,7 +303,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 						confidence = fr.getReason().getHighTime().getCant().getDVal();
 						nSamples = this.getNSamples((int) fr.getReason().getHighTime().getTime().getDVal(),
 								fr.getReason().getHighTime().getUnit().getTime());
-						nPeaks = nSamples;
+						nPeaks = nSamples; 
 					} else if (fr.getReason().getXPeaks() != null) {
 						confidence = fr.getReason().getXPeaks().getCant().getDVal();
 						nPeaks = (int) fr.getReason().getXPeaks().getNPeaks().getDVal();
