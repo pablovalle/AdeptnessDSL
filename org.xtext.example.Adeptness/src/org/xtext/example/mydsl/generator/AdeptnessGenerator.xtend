@@ -78,9 +78,54 @@ var HashMap<String, List<String>> checkVar;
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
 			}
 			fsa.generateFile(e.fullyQualifiedName.toString("/")+".json", e.create_oracle_json())
+			fsa.generateFile("Array.h", e.create_array_h())
+			fsa.generateFile("Array.c", e.create_array_c())
 			
 		}
     }
+	
+	def CharSequence create_array_c(Signal s)'''
+	#include "Array.h"
+	void initArray(Array *a, size_t initialSize) {
+		if (a->size == a->used) {
+			a->array = malloc(initialSize * sizeof(double));
+			a->used = 0;
+			a->size = initialSize;
+		}
+	}
+	
+	void insertArray(Array *a, double element) {
+		a->array[a->used++] = element;
+		if (a->used == a->size) {
+			a->size *= 2;
+			a->array = realloc(a->array, a->size * sizeof(double));
+		}
+	
+	}
+	
+	void freeArray(Array *a) {
+		free(a->array);
+		a->array = NULL;
+		a->used = a->size = 0;
+	}
+	
+	'''
+	
+	def CharSequence create_array_h(Signal s)'''
+	#ifndef ARRAY_H
+	#define ARRAY_H
+	#include <stdio.h>
+	typedef struct {
+		double *array;
+		size_t used;
+		size_t size;
+	} Array;
+	void initArray(Array *a, size_t initialSize);
+	void insertArray(Array *a, double element);
+	void freeArray(Array *a);
+	
+	#endif
+	'''
 	
 	def create_VP_json(ValidationPlan plan)'''
 	{
@@ -1081,7 +1126,7 @@ var HashMap<String, List<String>> checkVar;
 			if(conf.array[i]< «param1.reason.constDeg.cant.DVal»){
 				deg=1;
 			}
-			i++
+			i++;
 		}				
 		while(deg==1 && i<conf.used){
 			if(conf.array[i]>«param1.reason.constDeg.cant.DVal»){
