@@ -4,10 +4,7 @@
 #define VERDICT_INCONCLUSIVE 2;
 //Gap reference signal
 
-int preprocessInputs(SensorInput *inputs, int inputQty) {
-	//TODO.
-    return inputQty;
-}
+
 Verdict evaluatePostConditions_TotalMovements(Verdict verdict, SensorInput *inputs, int inputQty) {
     verdict.verdict = VERDICT_PASSED;
     verdict.confidence = 1;
@@ -32,17 +29,17 @@ Verdict performEvaluation_TotalMovements(SensorInput *inputs, int inputQty, doub
 	insertArray(&timeStampOracle,timeStamp);
 	insertArray(&TotalMovements,inputs->TotalMovements);
 	insertArray(&preconditionGiven,2);
-	insertArray(&conf,confCalculator(TotalMovements.array[cycle] ));
+	insertArray(&conf,confCalculator_TotalMovements(TotalMovements.array[cycle] ));
 
 	//Step 4: Sacar confidence
 
-	verdict = checkGlobalVerdict(conf, timeStampOracle); 
+	verdict = checkGlobalVerdict_TotalMovements(conf, timeStampOracle); 
 	verdict.confidence=conf.array[cycle];
 	
     return verdict;
 }
 
-double confCalculator(double signal){
+double confCalculator_TotalMovements(double signal){
 	double conf=0;
 	if(signal<200.0 && signal>10.0 + (200.0-10.0)/2){
 		conf=(signal-200.0)/((200.0-10.0)/2);
@@ -58,7 +55,7 @@ double confCalculator(double signal){
 	}
 	return conf;
 }
-Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
+Verdict checkGlobalVerdict_TotalMovements(Array conf, Array timeStampOracle){
 	Verdict verdict;
 	verdict.verdict=VERDICT_INCONCLUSIVE;
 	double times;
@@ -106,25 +103,4 @@ Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	
 	return verdict;
 } 
-void initArray(Array *a, size_t initialSize) {
-    if(a->size==a->used){
-        a->array = malloc(initialSize * sizeof(double));
-        a->used = 0;
-        a->size = initialSize;
-    }
-}
 
-void insertArray(Array *a, double element) {
-	a->array[a->used++] = element;
-	if (a->used == a->size) {
-    	a->size *= 2;
-    	a->array = realloc(a->array, a->size * sizeof(double));
-	}
-	
-}
-
-void freeArray(Array *a) {
-	free(a->array);
-	a->array = NULL;
-	a->used = a->size = 0;
-}

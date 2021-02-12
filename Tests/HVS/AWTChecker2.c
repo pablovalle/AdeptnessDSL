@@ -4,10 +4,7 @@
 #define VERDICT_INCONCLUSIVE 2;
 //Checks the AWT is relatively low when there are few calls
 
-int preprocessInputs(SensorInput *inputs, int inputQty) {
-	//TODO.
-    return inputQty;
-}
+
 int evaluatePreConditions_AWTChecker2(int numLlamadasActivas, int AWT) {
 	return ( ( numLlamadasActivas - AWT ) < 10.0 ) ;
 }
@@ -43,30 +40,30 @@ Verdict performEvaluation_AWTChecker2(SensorInput *inputs, int inputQty, double 
 	insertArray(&preconditionGiven,evaluatePreConditions_AWTChecker2(numLlamadasActivas.array[cycle], AWT.array[cycle] ));	
 	if(preconditionGiven.array[cycle]==1){
 	//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
-		insertArray(&conf,confCalculator(ATTD.array[cycle], ( AWT.array[cycle]- 10.0)  ));
+		insertArray(&conf,confCalculator_AWTChecker2(ATTD.array[cycle], ( AWT.array[cycle]- 10.0)  ));
 	}else{
 		insertArray(&conf,2);
 	}
 
 	//Step 4: Sacar confidence
 
-	verdict = checkGlobalVerdict(conf, timeStampOracle); 
+	verdict = checkGlobalVerdict_AWTChecker2(conf, timeStampOracle); 
 	verdict.confidence=conf.array[cycle];
 	
     return verdict;
 }
 
-double confCalculator(double ATTD,double signal){
+double confCalculator_AWTChecker2(double ATTD,double signal){
 	double conf=0;
 	if(signal< ( ATTD+ 10.0) ){
-		conf= ( ( ATTD+ 10.0) -signal)/( ( ATTD.array[cycle]+ 10.0) -(-99999));
+		conf= ( ( ATTD+ 10.0) -signal)/( ( ATTD+ 10.0) -(-99999));
 	}
-	else(){
-		conf= ( ( ATTD+ 10.0) -signal)/(99999- ( ATTD.array[cycle]+ 10.0) );
+	else{
+		conf= ( ( ATTD+ 10.0) -signal)/(99999- ( ATTD+ 10.0) );
 	}
 	return conf;
 }
-Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
+Verdict checkGlobalVerdict_AWTChecker2(Array conf, Array timeStampOracle){
 	Verdict verdict;
 	verdict.verdict=VERDICT_INCONCLUSIVE;
 	double times;
@@ -137,25 +134,4 @@ Verdict checkGlobalVerdict(Array conf, Array timeStampOracle){
 	
 	return verdict;
 } 
-void initArray(Array *a, size_t initialSize) {
-    if(a->size==a->used){
-        a->array = malloc(initialSize * sizeof(double));
-        a->used = 0;
-        a->size = initialSize;
-    }
-}
 
-void insertArray(Array *a, double element) {
-	a->array[a->used++] = element;
-	if (a->used == a->size) {
-    	a->size *= 2;
-    	a->array = realloc(a->array, a->size * sizeof(double));
-	}
-	
-}
-
-void freeArray(Array *a) {
-	free(a->array);
-	a->array = NULL;
-	a->used = a->size = 0;
-}

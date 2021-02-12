@@ -21,6 +21,7 @@ int main(){
 	for (int i = 0; i < 10; i++) {
 		printf("%d testaren verdict ondorengoa da, %d, eta confidence balioa hauxe da: %f\n", i, emaitza[i], conf[i]);
 	}
+	
 	printf("\n\nSakatu return amaitzeko");
 	fgets(str, 128, stdin);
     return 0;
