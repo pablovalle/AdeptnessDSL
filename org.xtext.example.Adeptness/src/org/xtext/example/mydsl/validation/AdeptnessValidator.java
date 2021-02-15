@@ -332,8 +332,8 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					else if (reference.getSame() != null && boundUp != null) {
 						opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "notInBetween",
 								Utils.calcDownBound(confidence, mVar.getMin(), boundUp),
-								Utils.calcSameUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
-					} 
+								Utils.calcUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
+					}
 					// Not same
 					else if (reference.getNotsame() != null && boundUp != null) {
 						if (confidence != 0) {

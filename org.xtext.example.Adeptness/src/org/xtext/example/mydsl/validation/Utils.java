@@ -19,11 +19,6 @@ public class Utils {
 		return -(confidence * (max - bound)) + bound;
 	}
 
-	public static double calcSameUpBound(double confidence, double max, double bound) {
-		// sign > ref -> confidence = (sign - ref) / (ref - max)
-		return confidence * (bound - max) + bound;
-	}
-
 	public static double calcGapUpBound(double confidence, double max, double bound) {
 		// conf = (sign - upRef) / (max - upRef)
 		return confidence * (max - bound) + bound;
