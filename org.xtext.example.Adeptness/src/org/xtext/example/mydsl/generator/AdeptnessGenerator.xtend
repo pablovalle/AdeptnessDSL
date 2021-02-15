@@ -78,9 +78,54 @@ var HashMap<String, List<String>> checkVar;
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
 			}
 			fsa.generateFile(e.fullyQualifiedName.toString("/")+".json", e.create_oracle_json())
+			fsa.generateFile("Array.h", e.create_array_h())
+			fsa.generateFile("Array.c", e.create_array_c())
 			
 		}
     }
+	
+	def CharSequence create_array_c(Signal s)'''
+	#include "Array.h"
+	void initArray(Array *a, size_t initialSize) {
+		if (a->size == a->used) {
+			a->array = malloc(initialSize * sizeof(double));
+			a->used = 0;
+			a->size = initialSize;
+		}
+	}
+	
+	void insertArray(Array *a, double element) {
+		a->array[a->used++] = element;
+		if (a->used == a->size) {
+			a->size *= 2;
+			a->array = realloc(a->array, a->size * sizeof(double));
+		}
+	
+	}
+	
+	void freeArray(Array *a) {
+		free(a->array);
+		a->array = NULL;
+		a->used = a->size = 0;
+	}
+	
+	'''
+	
+	def CharSequence create_array_h(Signal s)'''
+	#ifndef ARRAY_H
+	#define ARRAY_H
+	#include <stdio.h>
+	typedef struct {
+		double *array;
+		size_t used;
+		size_t size;
+	} Array;
+	void initArray(Array *a, size_t initialSize);
+	void insertArray(Array *a, double element);
+	void freeArray(Array *a);
+	
+	#endif
+	'''
 	
 	def create_VP_json(ValidationPlan plan)'''
 	{
@@ -536,11 +581,7 @@ var HashMap<String, List<String>> checkVar;
 				«"\t"»"AfterWhen":{
 				«IF param.when!==null»
 					«IF param.when.aw!==null»
-						«IF param.when.aw.during!==null»
-					«"\t"»"Type":"During",
-					«"\t"»"Value":"«param.when.aw.during.time.DVal»",
-					«"\t"»"Unit":"«param.when.aw.during.unit.time»"
-						«ELSEIF param.when.aw.getWait!==null»
+						«IF param.when.aw.getWait!==null»
 					«"\t"»"Type":"Wait",
 					«"\t"»"Value":"«param.when.aw.getWait.time.DVal»",
 					«"\t"»"Unit":"«param.when.aw.getWait.unit.time»"
@@ -569,7 +610,6 @@ var HashMap<String, List<String>> checkVar;
 				«"\t\t"»"Trace":{
 				«IF param.check.reference.lower.exactly!==null»
 					«"\t\t\t"»"Type":"exactly",
-					«"\t\t\t"»"Value":"«param.check.reference.lower.exactly.value.DVal»",
 					«IF param.check.reference.lower.exactly.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.lower.exactly.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.lower.exactly.unit.time»"
@@ -579,7 +619,6 @@ var HashMap<String, List<String>> checkVar;
 					«ENDIF»
 				«ELSEIF param.check.reference.lower.atleast!==null»
 					«"\t\t\t"»"Type":"atLeast",
-					«"\t\t\t"»"Value":"«param.check.reference.lower.atleast.value.DVal»",
 					«IF param.check.reference.lower.atleast.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.lower.atleast.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.lower.atleast.unit.time»"
@@ -589,7 +628,6 @@ var HashMap<String, List<String>> checkVar;
 					«ENDIF»
 				«ELSEIF param.check.reference.lower.atmost!==null»
 					«"\t\t\t"»"Type":"atMost",
-					«"\t\t\t"»"Value":"«param.check.reference.lower.atmost.value.DVal»",
 					«IF param.check.reference.lower.atmost.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.lower.atmost.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.lower.atmost.unit.time»"
@@ -611,7 +649,6 @@ var HashMap<String, List<String>> checkVar;
 				«"\t\t"»"Trace":{
 				«IF param.check.reference.upper.exactly!==null»
 				«"\t\t\t"»	"Type":"exactly",
-				«"\t\t\t"»	"Value":"«param.check.reference.upper.exactly.value.DVal»",
 					«IF param.check.reference.upper.exactly.time!==null»
 						«"\t\t\t"»	"Time":"«param.check.reference.upper.exactly.time.DVal»",
 						«"\t\t\t"»	"Unit":"«param.check.reference.upper.exactly.unit.time»"
@@ -621,7 +658,6 @@ var HashMap<String, List<String>> checkVar;
 					«ENDIF»
 				«ELSEIF param.check.reference.upper.atleast!==null»
 					«"\t\t\t"»"Type":"atLeast",
-					«"\t\t\t"»"Value":"«param.check.reference.upper.atleast.value.DVal»",
 					«IF param.check.reference.upper.atleast.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.upper.atleast.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.upper.atleast.unit.time»"
@@ -631,7 +667,6 @@ var HashMap<String, List<String>> checkVar;
 					«ENDIF»
 				«ELSEIF param.check.reference.upper.atmost!==null»
 					«"\t\t\t"»"Type":"atMost",
-					«"\t\t\t"»"Value":"«param.check.reference.upper.atmost.value.DVal»",
 					«IF param.check.reference.upper.atmost.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.upper.atmost.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.upper.atmost.unit.time»"
@@ -653,7 +688,6 @@ var HashMap<String, List<String>> checkVar;
 				«"\t\t"»"Trace":{
 				«IF param.check.reference.range.exactly!==null»
 					«"\t\t\t"»"Type":"exactly",
-					«"\t\t\t"»"Value":"«param.check.reference.range.exactly.value.DVal»",
 					«IF param.check.reference.range.exactly.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.range.exactly.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.range.exactly.unit.time»"
@@ -663,7 +697,6 @@ var HashMap<String, List<String>> checkVar;
 					«ENDIF»
 				«ELSEIF param.check.reference.range.atleast!==null»
 					«"\t\t\t"»"Type":"atLeast",
-					«"\t\t\t"»"Value":"«param.check.reference.range.atleast.value.DVal»",
 					«IF param.check.reference.range.atleast.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.range.atleast.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.range.atleast.unit.time»"
@@ -673,7 +706,6 @@ var HashMap<String, List<String>> checkVar;
 					«ENDIF»
 				«ELSEIF param.check.reference.range.atmost!==null»
 					«"\t\t\t"»"Type":"atMost",
-					«"\t\t\t"»"Value":"«param.check.reference.range.atmost.value.DVal»",
 					«IF param.check.reference.range.atmost.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.range.atmost.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.range.atmost.unit.time»"
@@ -695,7 +727,6 @@ var HashMap<String, List<String>> checkVar;
 				«"\t\t"»"Trace":{
 				«IF param.check.reference.gap.exactly!==null»
 					«"\t\t\t"»"Type":"exactly",
-					«"\t\t\t"»"Value":"«param.check.reference.gap.exactly.value.DVal»",
 					«IF param.check.reference.gap.exactly.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.gap.exactly.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.gap.exactly.unit.time»"
@@ -705,7 +736,6 @@ var HashMap<String, List<String>> checkVar;
 					«ENDIF»
 				«ELSEIF param.check.reference.gap.atleast!==null»
 					«"\t\t\t"»"Type":"atLeast",
-					«"\t\t\t"»"Value":"«param.check.reference.gap.atleast.value.DVal»",
 					«IF param.check.reference.gap.atleast.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.gap.atleast.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.gap.atleast.unit.time»"
@@ -715,7 +745,6 @@ var HashMap<String, List<String>> checkVar;
 					«ENDIF»
 				«ELSEIF param.check.reference.gap.atmost!==null»
 					«"\t\t\t"»"Type":"atMost",
-					«"\t\t\t"»"Value":"«param.check.reference.gap.atmost.value.DVal»",
 					«IF param.check.reference.gap.atmost.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.gap.atmost.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.gap.atmost.unit.time»"
@@ -737,7 +766,6 @@ var HashMap<String, List<String>> checkVar;
 				«"\t\t"»"Trace":{
 				«IF param.check.reference.same.exactly!==null»
 					«"\t\t\t"»"Type":"exactly",
-					«"\t\t\t"»"Value":"«param.check.reference.same.exactly.value.DVal»",
 					«IF param.check.reference.same.exactly.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.same.exactly.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.same.exactly.unit.time»"
@@ -747,7 +775,6 @@ var HashMap<String, List<String>> checkVar;
 					«ENDIF»
 				«ELSEIF param.check.reference.same.atleast!==null»
 					«"\t\t\t"»"Type":"atLeast",
-					«"\t\t\t"»"Value":"«param.check.reference.same.atleast.value.DVal»",
 					«IF param.check.reference.same.atleast.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.same.atleast.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.same.atleast.unit.time»"
@@ -757,7 +784,6 @@ var HashMap<String, List<String>> checkVar;
 					«ENDIF»
 				«ELSEIF param.check.reference.same.atmost!==null»
 					«"\t\t\t"»"Type":"atMost",
-					«"\t\t\t"»"Value":"«param.check.reference.same.atmost.value.DVal»",
 					«IF param.check.reference.same.atmost.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.same.atmost.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.same.atmost.unit.time»"
@@ -779,7 +805,6 @@ var HashMap<String, List<String>> checkVar;
 				«"\t\t"»"Trace":{
 				«IF param.check.reference.notsame.exactly!==null»
 					«"\t\t\t"»"Type":"exactly",
-					«"\t\t\t"»"Value":"«param.check.reference.notsame.exactly.value.DVal»"
 					«IF param.check.reference.notsame.exactly.time!==null»
 						«"\t\t\t"»	"Time":"«param.check.reference.notsame.exactly.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.notsame.exactly.unit.time»"
@@ -789,7 +814,6 @@ var HashMap<String, List<String>> checkVar;
 					«ENDIF»
 				«ELSEIF param.check.reference.notsame.atleast!==null»
 					«"\t\t\t"»"Type":"atLeast",
-					«"\t\t\t"»"Value":"«param.check.reference.notsame.atleast.value.DVal»"
 					«IF param.check.reference.notsame.atleast.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.notsame.atleast.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.notsame.atleast.unit.time»"
@@ -798,8 +822,7 @@ var HashMap<String, List<String>> checkVar;
 							«"\t\t\t"»"Unit":"null"
 					«ENDIF»
 				«ELSEIF param.check.reference.notsame.atmost!==null»
-					«"\t\t\t"»"Type":"atMost",
-					«"\t\t\t"»"Value":"«param.check.reference.notsame.atmost.value.DVal»"
+					«"\t\t\t"»"Type":"atMost"
 					«IF param.check.reference.notsame.atmost.time!==null»
 							«"\t\t\t"»"Time":"«param.check.reference.notsame.atmost.time.DVal»",
 							«"\t\t\t"»"Unit":"«param.check.reference.notsame.atmost.unit.time»"
@@ -994,7 +1017,7 @@ var HashMap<String, List<String>> checkVar;
 			conf=(«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
 		}
 		else if(signal>«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-			conf=(signal-«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-99999);
+			conf=(signal-«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(9999-«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
 		}
 		«ELSEIF param.check.reference.range!==null»
 		if(signal<«IF param.check.reference.range.bound_upp.value!==null»«param.check.reference.range.bound_upp.value.DVal»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal>«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.range.bound_upp.value!==null»«param.check.reference.range.bound_upp.value.DVal»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
@@ -1081,7 +1104,7 @@ var HashMap<String, List<String>> checkVar;
 			if(conf.array[i]< «param1.reason.constDeg.cant.DVal»){
 				deg=1;
 			}
-			i++
+			i++;
 		}				
 		while(deg==1 && i<conf.used){
 			if(conf.array[i]>«param1.reason.constDeg.cant.DVal»){

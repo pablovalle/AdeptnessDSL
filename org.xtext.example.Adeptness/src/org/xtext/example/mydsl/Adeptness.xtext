@@ -134,16 +134,14 @@ When:
 ;
 
 AfterWhen:
-	(wait = Wait | during = During)
+	(wait = Wait)
 ;
 
 Wait:
 	'after('  time = DOUBLE ',' unit=TimeType ')'
 ;
 
-During:
-	'during(' time = DOUBLE  ','  unit=TimeType ')'
-;
+
 
 Checks:
 	'checks:' (name=ID |em = ExpressionsModel) //'is'
@@ -229,19 +227,15 @@ InclusiveBound:
 //exactly at a especified time
 Exactly:
 	'exactly'
-	value=DOUBLE 
-	('times' | 'times in' (time=DOUBLE) (unit=TimeType) | (unit=TimeType))
-	 
+	(time=DOUBLE) (unit=TimeType)
 ;
 At_most:
 	'at most'
-	value=DOUBLE 
-	('times' | 'times in' (time=DOUBLE) (unit=TimeType) | (unit=TimeType))
+	(time=DOUBLE) (unit=TimeType)
 ;
 At_least:
 	'at least'
-	value=DOUBLE 
-	('times' | 'times in' (time=DOUBLE) (unit=TimeType) | (unit=TimeType))
+	(time=DOUBLE) (unit=TimeType)
 ;
 
 //Upper limit

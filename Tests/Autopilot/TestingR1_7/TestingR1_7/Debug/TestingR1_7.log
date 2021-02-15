@@ -1,0 +1,9 @@
+﻿  R1_7.c
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_7.c(67): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_7.c(77): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_7.c(64): warning C4101: 'times': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_7.c(65): warning C4101: 'is': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_7.c(65): warning C4101: 'time': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_7.c(65): warning C4101: 'fail': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_7.c(65): warning C4101: 'deg': variable local sin referencia
+  TestingR1_7.vcxproj -> C:\Users\pablo\OneDrive\Escritorio\trabajo\DSL\AdeptnessDSL\Tests\Autopilot\TestingR1_7\Debug\TestingR1_7.exe

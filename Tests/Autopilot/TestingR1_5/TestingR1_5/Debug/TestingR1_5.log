@@ -1,0 +1,10 @@
+﻿  R1_5.c
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_5.c(43): warning C4244: 'función': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_5.c(81): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_5.c(91): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_5.c(78): warning C4101: 'times': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_5.c(79): warning C4101: 'is': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_5.c(79): warning C4101: 'time': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_5.c(79): warning C4101: 'fail': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\autopilot\r1_5.c(79): warning C4101: 'deg': variable local sin referencia
+  TestingR1_5.vcxproj -> C:\Users\pablo\OneDrive\Escritorio\trabajo\DSL\AdeptnessDSL\Tests\Autopilot\TestingR1_5\Debug\TestingR1_5.exe
