@@ -685,11 +685,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	@Check
-	public void checkAtLeastValues(At_least atLeast) {
-		if (atLeast.getValue().getDVal() < 0) {
-			error("This value: " + atLeast.getValue().getDVal() + " must be a positive value",
-					AdeptnessPackage.Literals.AT_LEAST__VALUE);
-		}
+	public void checkAtLeastTime(At_least atLeast) {
 		if (atLeast.getTime().getDVal() < 0) {
 			error("This value: " + atLeast.getTime().getDVal() + " must be a positive value",
 					AdeptnessPackage.Literals.AT_LEAST__TIME);
@@ -697,11 +693,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	@Check
-	public void checkAtMostValues(At_most atMost) {
-		if (atMost.getValue().getDVal() < 0) {
-			error("This value: " + atMost.getValue().getDVal() + " must be a positive value",
-					AdeptnessPackage.Literals.AT_MOST__VALUE);
-		}
+	public void checkAtMostTime(At_most atMost) {
 		if (atMost.getTime().getDVal() < 0) {
 			error("This value: " + atMost.getTime().getDVal() + " must be a positive value",
 					AdeptnessPackage.Literals.AT_MOST__TIME);
@@ -709,11 +701,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	@Check
-	public void checkExactlyValues(Exactly exactly) {
-		if (exactly.getValue().getDVal() < 0) {
-			error("This value: " + exactly.getValue().getDVal() + " must be a positive value",
-					AdeptnessPackage.Literals.EXACTLY__VALUE);
-		}
+	public void checkExactlyTime(Exactly exactly) {
 		if (exactly.getTime().getDVal() < 0) {
 			error("This value: " + exactly.getTime().getDVal() + " must be a positive value",
 					AdeptnessPackage.Literals.EXACTLY__TIME);
