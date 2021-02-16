@@ -55,7 +55,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	List<String> monitoringVariableNames;
 
 	OperationalDataConnector opCon = new OperationalDataConnector();
-	
+
 	// GET MONITORING VARIABLES
 	@Check
 	public void getImportedMonitoringVariables(Signal CPS) {
@@ -307,7 +307,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				if (boundUp == null && boundDown == null)
 					return;
 
-				boolean opDataOutOfBounds= false;
+				boolean opDataOutOfBounds = false;
 				int nPeaks;
 				int nSamples;
 				Double confidence = 0.0;
@@ -323,7 +323,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 						confidence = fr.getReason().getHighTime().getCant().getDVal();
 						nSamples = Utils.getNSamples((int) fr.getReason().getHighTime().getTime().getDVal(),
 								fr.getReason().getHighTime().getUnit().getTime());
-						nPeaks = nSamples; 
+						nPeaks = nSamples;
 					} else if (fr.getReason().getXPeaks() != null) {
 						confidence = fr.getReason().getXPeaks().getCant().getDVal();
 						nPeaks = (int) fr.getReason().getXPeaks().getNPeaks().getDVal();
@@ -334,18 +334,23 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 						// TODO
 						return;
 					}
-					
-					// check oracle values againts operational data 
+
+					if (nSamples == 0 || nPeaks == 0) {
+						error("Duration or number of peaks cannot be zero.",
+								AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+					}
+
+					// check oracle values against operational data
 					// Upper
-					if (reference.getUpper() != null && boundUp != null) { 
+					if (reference.getUpper() != null && boundUp != null) {
 						opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "upper",
 								Utils.calcUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
-					} 
+					}
 					// Lower
-					else if (reference.getLower() != null && boundDown != null) { 
+					else if (reference.getLower() != null && boundDown != null) {
 						opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "lower",
 								Utils.calcDownBound(confidence, mVar.getMin(), boundDown), nSamples, nPeaks);
-					} 
+					}
 					// Range
 					else if (reference.getRange() != null) {
 						maxBoundDown = boundDown != null ? Utils.calcDownBound(confidence, mVar.getMin(), boundDown)
@@ -353,20 +358,22 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 						minBoundUp = boundUp != null ? Utils.calcUpBound(confidence, mVar.getMax(), boundUp) : null;
 
 						if (boundDown != null && boundUp == null) {
-							opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "lower", maxBoundDown, nSamples, nPeaks);
+							opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "lower",
+									maxBoundDown, nSamples, nPeaks);
 						} else if (boundDown == null && boundUp != null) {
-							opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "upper", minBoundUp, nSamples, nPeaks);
+							opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "upper",
+									minBoundUp, nSamples, nPeaks);
 						} else if (boundDown != null && boundUp != null) {
-							opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "notInBetween", maxBoundDown, minBoundUp,
-									nSamples, nPeaks);
+							opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "notInBetween",
+									maxBoundDown, minBoundUp, nSamples, nPeaks);
 						}
-					} 
+					}
 					// Gap
 					else if (reference.getGap() != null && boundDown != null && boundUp != null) {
 						opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "inBetween",
 								Utils.calcGapDownBound(confidence, mVar.getMin(), boundDown),
 								Utils.calcGapUpBound(confidence, mVar.getMax(), boundUp), nSamples, nPeaks);
-					} 
+					}
 					// Same
 					else if (reference.getSame() != null && boundUp != null) {
 						opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "notInBetween",
@@ -380,13 +387,14 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 									AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
 							continue;
 						}
-						opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "equal", boundUp, nSamples, nPeaks);
+						opDataOutOfBounds = this.checkOperationalDataOutOfBounds(mVar.getOpData(), "equal", boundUp,
+								nSamples, nPeaks);
 					}
 
 					if (opDataOutOfBounds) {
-							warning("There is operational data out of bounds.",
+						warning("There is operational data out of bounds.",
 								AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
-					} 
+					}
 				}
 				break;
 			}
@@ -836,14 +844,16 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					AdeptnessPackage.Literals.DOUBLE__DVAL);
 		}
 	}
-	// Oracle specified failure detection in operational data     
+
+	// Oracle specified failure detection in operational data
 	// Only one bound specified: upper, lower, equal
-	public boolean checkOperationalDataOutOfBounds(ArrayList<Double> operationalData, String type, Double lowBound, int during, int times) {
+	public boolean checkOperationalDataOutOfBounds(ArrayList<Double> operationalData, String type, Double lowBound,
+			int during, int times) {
 		return checkOperationalDataOutOfBounds(operationalData, type, lowBound, 0.0, during, times);
 	}
 
-	public boolean checkOperationalDataOutOfBounds(ArrayList<Double> operationalData, String type, Double lowBound, Double upBound, int during,
-			int times) {
+	public boolean checkOperationalDataOutOfBounds(ArrayList<Double> operationalData, String type, Double lowBound,
+			Double upBound, int during, int times) {
 		System.out.println(
 				"Check if " + times + " out of bounds during " + during + "[" + lowBound + ", " + upBound + "]");
 		if ((type.equals("inBetween") || type.equals("notInBetween")) && lowBound > upBound) {
@@ -875,7 +885,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 		return false;
 	}
-	
+
 }
 
 //@Check
