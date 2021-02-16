@@ -134,6 +134,45 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	@Check
+	public void checkTemporaryConditionsInCheckOnlyWithWhenPrecond(Oracle oracle) {
+		if (oracle.getCheck().getReference().getUpper() != null
+				&& (oracle.getCheck().getReference().getUpper().getAtleast() != null
+						|| oracle.getCheck().getReference().getUpper().getAtmost() != null
+						|| oracle.getCheck().getReference().getUpper().getExactly() != null)
+				|| (oracle.getCheck().getReference().getLower() != null
+						&& (oracle.getCheck().getReference().getLower().getAtleast() != null
+								|| oracle.getCheck().getReference().getLower().getAtmost() != null
+								|| oracle.getCheck().getReference().getLower().getExactly() != null))
+				|| (oracle.getCheck().getReference().getRange() != null
+						&& (oracle.getCheck().getReference().getRange().getAtleast() != null
+								|| oracle.getCheck().getReference().getRange().getAtmost() != null
+								|| oracle.getCheck().getReference().getRange().getExactly() != null))
+				|| (oracle.getCheck().getReference().getGap() != null
+						&& (oracle.getCheck().getReference().getGap().getAtleast() != null
+								|| oracle.getCheck().getReference().getGap().getAtmost() != null
+								|| oracle.getCheck().getReference().getGap().getExactly() != null))
+				|| (oracle.getCheck().getReference().getSame() != null
+						&& (oracle.getCheck().getReference().getSame().getAtleast() != null
+								|| oracle.getCheck().getReference().getSame().getAtmost() != null
+								|| oracle.getCheck().getReference().getSame().getExactly() != null))
+				|| (oracle.getCheck().getReference().getNotsame() != null
+						&& (oracle.getCheck().getReference().getNotsame().getAtleast() != null
+								|| oracle.getCheck().getReference().getNotsame().getAtmost() != null
+								|| oracle.getCheck().getReference().getNotsame().getExactly() != null))) {
+			if (oracle.getWhen() == null) {
+				error("Temporary conditions should only be used in conjuction with \"when\" preconditions.", AdeptnessPackage.Literals.ORACLE__CHECK);
+			}
+			for (FailReason fr : oracle.getCheck().getFailReason()) {
+				if (fr.getReason().getHighTime() != null || fr.getReason().getXPeaks() != null ) {
+					error("Temporary conditions are either set within the assertion or the failure statement, but not in both.", AdeptnessPackage.Literals.ORACLE__CHECK);
+				}
+			}
+		}
+	}
+	
+	
+
+	@Check
 	public void checkHighTimeAndHighPeak(Checks check) {
 		boolean HT = false;
 		boolean HP = false;
