@@ -1,0 +1,18 @@
+﻿  Array.c
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\array.c(4): warning C4013: 'malloc' sin definir; se supone que extern devuelve como resultado int
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\array.c(4): warning C4047: '=': 'double *' es distinto en los niveles de direccionamiento indirecto de 'int'
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\array.c(14): warning C4013: 'realloc' sin definir; se supone que extern devuelve como resultado int
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\array.c(14): warning C4047: '=': 'double *' es distinto en los niveles de direccionamiento indirecto de 'int'
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\array.c(20): warning C4013: 'free' sin definir; se supone que extern devuelve como resultado int
+  R10.c
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\r10.c(40): warning C4244: 'función': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\r10.c(75): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\r10.c(85): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\r10.c(72): warning C4101: 'times': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\r10.c(73): warning C4101: 'is': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\r10.c(73): warning C4101: 'time': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\r10.c(73): warning C4101: 'fail': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\finite_state_machine\r10.c(73): warning C4101: 'deg': variable local sin referencia
+  TestingR10.c
+  Generando código...
+  R10.vcxproj -> C:\Users\pablo\OneDrive\Escritorio\trabajo\DSL\AdeptnessDSL\Tests\Finite_State_Machine\R10\Debug\R10.exe

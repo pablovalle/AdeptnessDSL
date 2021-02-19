@@ -1,0 +1,17 @@
+﻿  Array.c
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\puertaspiso\array.c(4): warning C4013: 'malloc' sin definir; se supone que extern devuelve como resultado int
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\puertaspiso\array.c(4): warning C4047: '=': 'double *' es distinto en los niveles de direccionamiento indirecto de 'int'
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\puertaspiso\array.c(14): warning C4013: 'realloc' sin definir; se supone que extern devuelve como resultado int
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\puertaspiso\array.c(14): warning C4047: '=': 'double *' es distinto en los niveles de direccionamiento indirecto de 'int'
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\puertaspiso\array.c(20): warning C4013: 'free' sin definir; se supone que extern devuelve como resultado int
+  R1_26_b.c
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\puertaspiso\r1_26_b.c(62): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\puertaspiso\r1_26_b.c(72): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\puertaspiso\r1_26_b.c(59): warning C4101: 'times': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\puertaspiso\r1_26_b.c(60): warning C4101: 'is': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\puertaspiso\r1_26_b.c(60): warning C4101: 'time': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\puertaspiso\r1_26_b.c(60): warning C4101: 'fail': variable local sin referencia
+c:\users\pablo\onedrive\escritorio\trabajo\dsl\adeptnessdsl\tests\puertaspiso\r1_26_b.c(60): warning C4101: 'deg': variable local sin referencia
+  TestingR1_26_b.c
+  Generando código...
+  R1_26_b.vcxproj -> C:\Users\pablo\OneDrive\Escritorio\trabajo\DSL\AdeptnessDSL\Tests\PuertasPiso\R1_26_b\Debug\R1_26_b.exe
