@@ -286,7 +286,7 @@ PackageDeclaration:
 
  AbstractElement2:
  	(frontParentheses+=FrontParentheses)*
-	((name=ID) | (value=DOUBLE))
+	((name=ID) | (value=DOUBLE) |(uncer = UncertaintyProb))
 	(op+=Operators)*
 
 	
@@ -316,6 +316,23 @@ LogicOp:
 Op:
 	op=("+"|"-"|"*"|"/")
 ;
+
+
+UncertaintyProb:
+	(normalDisstribution=NormalDistribution|bernoulliDistribution=BernoulliDistribution)
+;
+
+
+NormalDistribution:
+	distr= 'ProbabilityNormalDistribution('(name=ID)')'
+;
+
+BernoulliDistribution:
+	distr= 'ProbabilityBernoulliDistribution('(name=ID)')'
+;
+
+
+
 /*
 ExpressionsModel:
 	 (elements+=AbstractElement2)*;
