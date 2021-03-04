@@ -319,16 +319,166 @@ Op:
 
 
 UncertaintyProb:
-	(normalDisstribution=NormalDistribution|bernoulliDistribution=BernoulliDistribution)
+	(normalDisstribution=NormalDistribution|bernoulliDistribution=BernoulliDistribution
+		|gammaDistribution = GammaDistribution| uniformDistribution = UniformDistribution |
+		triangularDistribution = TriangularDistribution | binomialDistribution = BinomialDistribution |
+		exponentialDistribution = ExponentialDistribution | poissonDistribution = PoissonDistribution |
+		geometricDistribution = GeometricDistribution | logarithmicDistribution = LogarithmicDistribution
+	)
 ;
 
 
+
+
+
+
+
+/*
+ * Normal
+  */
 NormalDistribution:
-	distr= 'ProbabilityNormalDistribution('(name=ID)')'
+	distr= 'NormalDistribution('(name=ID)')'(normDistStd = NormalDistrStandardeviation|mean=NormalDistrMean)
 ;
 
+NormalDistrStandardeviation:
+	stdDev  = '.standDev()'
+;
+
+NormalDistrMean:
+	mean  = '.mean()'
+;
+
+/*
+ * Bernoulli
+ */
 BernoulliDistribution:
-	distr= 'ProbabilityBernoulliDistribution('(name=ID)')'
+	distr= 'BernoulliDistribution('(name=ID)')'(bernProb = ProbabilityBernoulli|bernTrials = TrialsBernoulli)
+;
+
+TrialsBernoulli:
+	trials = '.trials()'
+;
+
+ProbabilityBernoulli:
+	probBern = '.prob()'
+;
+
+/**
+ * Gamma Distribution
+  */
+  
+GammaDistribution:
+	distr = 'GammaDistribution('(name=ID)')'(gammaK = kGamma|gammaMean = GammaMean)
+;
+
+
+
+kGamma:
+	k = '.k()'
+;  
+
+GammaMean:
+	mean = '.mean()'
+;
+
+/*
+ * Uniform distribution
+  */
+
+UniformDistribution:
+	distr = 'UniformDistribution('(name=ID)')'(uniformMin = UniformMin|uniformMax = UniformMax)	
+;
+
+UniformMin:
+	min = '.min()'
+;
+
+UniformMax:
+	max = '.max()'
+;
+
+/*
+ * Triangular distribution
+  */
+  
+ TriangularDistribution:
+	distr = 'TriangularDistribution('(name=ID)')'(triangularMin = TriangularMin|triangularMax = TriangularMax | triangularMode = TriangularMode)	
+;
+
+TriangularMin:
+	min = '.min()'
+;
+
+TriangularMax:
+	max = '.max()'
+;
+
+TriangularMode:
+	mode = '.mode()'
+;
+
+
+/*
+ * Binomial distribution
+  */
+  
+ BinomialDistribution:
+	distr = 'BinomialDistribution('(name=ID)')'(binomialProb = BinomialProb)
+;
+
+BinomialProb:
+	prob = '.prob()'	
+;
+  
+  
+/*
+ * Exponential distribution
+ */
+ 
+ExponentialDistribution:
+	distr = 'ExponentialDistribution('(name=ID)')'(exponentialMean = ExponentialMean)
+;
+
+ExponentialMean:
+	mean = '.mean()'
+;
+   
+   
+/* Poisson distribution
+ * 
+ */  
+ 
+PoissonDistribution:
+	distr = 'PoissonDistribution('(name=ID)')'(poissonMean = PoissonMean)
+;
+
+PoissonMean:
+	mean = '.mean()'
+;
+ 
+ 
+ /*
+  * Geometric distribution
+   */
+   
+GeometricDistribution:
+	distr = 'GeometricDistribution('(name=ID)')'(geometricp = GeometricP)	
+;
+
+GeometricP:
+	p = '.p()'
+;
+
+/*
+  * Geometric distribution
+   */
+   
+LogarithmicDistribution:
+	distr = 'LogarithmicDistribution('(name=ID)')'(logarithmicTheta = LogarithmicTheta)	
+;
+
+LogarithmicTheta:
+	theta = '.theta()'
 ;
 
 
