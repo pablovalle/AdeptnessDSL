@@ -73,6 +73,7 @@ var HashMap<String, List<String>> checkVar;
 			for(q: e.oracle){
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".c", q.create_oracle_c(nameMap.get(q.name)))
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".h", q.create_oracle_h(nameMap.get(q.name)))
+				fsa.generateFile(q.fullyQualifiedName.toString("/")+"_Verdict.c", q.create_verdict_c(nameMap.get(q.name)))
 				//fsa.generateFile(q.fullyQualifiedName.toString("/")+".json", q.create_oracle_json())
 				//fsa.generateFile(q.fullyQualifiedName.toString("/")+".m", q.create_oracle_m())
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
@@ -882,6 +883,9 @@ var HashMap<String, List<String>> checkVar;
 	#define «param.name.toString().toUpperCase»_H
 	#include <stdio.h>
 	#include "Array.h"
+	#define VERDICT_PASSED 1;
+		#define VERDICT_FAILED 0;
+		#define VERDICT_INCONCLUSIVE 2;
 	typedef struct{
 		int verdict;
 		double confidence;
@@ -915,139 +919,10 @@ var HashMap<String, List<String>> checkVar;
 	#endif
 	'''
 	
-	def create_oracle_c(Oracle param,List<String> nameList)
+	
+	def create_verdict_c(Oracle param, List<String> nameList)
 	'''
-	#include "«param.name.toString()».h"
-	#define VERDICT_PASSED 1;
-	#define VERDICT_FAILED 0;
-	#define VERDICT_INCONCLUSIVE 2;
-	//«param.check.description.value»
-	
-	int preprocessInputs(SensorInput *inputs, int inputQty) {
-		//TODO.
-	    return inputQty;
-	}
-	«IF param.when!==null || param.^while!==null»
-	int evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap.get(param.name).toString»«ENDIF») {
-		return «IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»;
-	}
-	«ENDIF»
-	Verdict evaluatePostConditions_«param.name»(Verdict verdict, SensorInput *inputs, int inputQty) {
-	    verdict.verdict = VERDICT_PASSED;
-	    verdict.confidence = 1;
-	    return verdict;
-	}
-	Verdict performEvaluation_«param.name»(SensorInput *inputs, int inputQty, double timeStamp){
-	    Verdict verdict;
-		//Step 1: inicializacion
-	    static int cycle = -1;
-		static Array timeStampOracle; 
-		«FOR param1: nameMap.get(param.name)»
-		static Array «param1»;
-		«ENDFOR»
-		static Array conf;
-		static Array preconditionGiven;
-	
-		//Init arrays
-		initArray(&conf,1);
-		initArray(&preconditionGiven,1);
-		initArray(&timeStampOracle,1);
-		«FOR param1: nameMap.get(param.name)»
-		initArray(&«param1» ,1);
-		«ENDFOR»
-		//Step 2: meter variables en array
-		cycle++;
-		insertArray(&timeStampOracle,timeStamp);
-		«FOR param1: nameMap.get(param.name)»
-		insertArray(&«param1»,inputs->«param1»);
-		«ENDFOR»
-		«IF param.when!==null || param.^while!==null»
-		insertArray(&preconditionGiven,evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap_preconds.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap_preconds.get(param.name).toString»«ENDIF»));	
-		if(preconditionGiven.array[cycle]==1){
-		//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
-			insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
-		}else{
-			insertArray(&conf,2);
-		}
-		«ELSE»
-		insertArray(&preconditionGiven,2);
-		insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
-		«ENDIF»
-
-		//Step 4: Sacar confidence
-
-		verdict = checkGlobalVerdict_«param.name»(conf, timeStampOracle); 
-		verdict.confidence=conf.array[cycle];
-		
-	    return verdict;
-	}
-	
-	double confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»double «param1.toString»,«ENDFOR»double signal){
-		double conf=0;
-		«IF param.check.reference.upper!==null»
-		if(signal<«IF param.check.reference.upper.bound_upp.value!==null»«param.check.reference.upper.bound_upp.value.DVal»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-			conf= («IF param.check.reference.upper.bound_upp.value!==null»«param.check.reference.upper.bound_upp.value.DVal»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«IF param.check.reference.upper.bound_upp.value!==null»«param.check.reference.upper.bound_upp.value.DVal»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
-		}
-		else{
-			conf= («IF param.check.reference.upper.bound_upp.value!==null»«param.check.reference.upper.bound_upp.value.DVal»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(99999-«IF param.check.reference.upper.bound_upp.value!==null»«param.check.reference.upper.bound_upp.value.DVal»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
-		}
-		«ELSEIF param.check.reference.lower!==null»
-		if(signal>«IF param.check.reference.lower.bound_lower.value!==null»«param.check.reference.lower.bound_lower.value.DVal»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-				
-			conf=(signal-«IF param.check.reference.lower.bound_lower.value!==null»«param.check.reference.lower.bound_lower.value.DVal»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(9999-«IF param.check.reference.lower.bound_lower.value!==null»«param.check.reference.lower.bound_lower.value.DVal»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
-		}
-		else{
-			conf=(signal-«IF param.check.reference.lower.bound_lower.value!==null»«param.check.reference.lower.bound_lower.value.DVal»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«IF param.check.reference.lower.bound_lower.value!==null»«param.check.reference.lower.bound_lower.value.DVal»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
-		}
-		«ELSEIF param.check.reference.same!==null»
-		if(signal==«IF param.check.reference.same.bound_upp.value!==null»«param.check.reference.same.bound_upp.value.DVal»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-			conf=1;
-		}
-		else if(signal<«IF param.check.reference.same.bound_upp.value!==null»«param.check.reference.same.bound_upp.value.DVal»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-			conf=(signal-«IF param.check.reference.same.bound_upp.value!==null»«param.check.reference.same.bound_upp.value.DVal»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«IF param.check.reference.same.bound_upp.value!==null»«param.check.reference.same.bound_upp.value.DVal»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
-		}
-		else if(signal>«IF param.check.reference.same.bound_upp.value!==null»«param.check.reference.same.bound_upp.value.DVal»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-			conf=(«IF param.check.reference.same.bound_upp.value!==null»«param.check.reference.same.bound_upp.value.DVal»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(9999-«IF param.check.reference.same.bound_upp.value!==null»«param.check.reference.same.bound_upp.value.DVal»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
-		}
-		«ELSEIF param.check.reference.notsame!==null»
-		if(signal==«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-			conf=-1;
-		}
-		else if(signal<«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-			conf=(«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
-		}
-		else if(signal>«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-			conf=(signal-«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(9999-«IF param.check.reference.notsame.bound_upp.value!==null»«param.check.reference.notsame.bound_upp.value.DVal»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
-		}
-		«ELSEIF param.check.reference.range!==null»
-		if(signal<«IF param.check.reference.range.bound_upp.value!==null»«param.check.reference.range.bound_upp.value.DVal»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal>«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.range.bound_upp.value!==null»«param.check.reference.range.bound_upp.value.DVal»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
-			conf=(«IF param.check.reference.range.bound_upp.value!==null»«param.check.reference.range.bound_upp.value.DVal»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/((«IF param.check.reference.range.bound_upp.value!==null»«param.check.reference.range.bound_upp.value.DVal»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2);
-		}
-		else if(signal>«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal<«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.range.bound_upp.value!==null»«param.check.reference.range.bound_upp.value.DVal»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
-			conf=(signal-«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/((«IF param.check.reference.range.bound_upp.value!==null»«param.check.reference.range.bound_upp.value.DVal»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2);
-		}
-		else if(signal<«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-			conf=(signal-«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«IF param.check.reference.range.bound_lower.value!==null»«param.check.reference.range.bound_lower.value.DVal»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
-		}
-		else if(signal>«IF param.check.reference.range.bound_upp.value!==null»«param.check.reference.range.bound_upp.value.DVal»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-			conf=(«IF param.check.reference.range.bound_upp.value!==null»«param.check.reference.range.bound_upp.value.DVal»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(9999-«IF param.check.reference.range.bound_upp.value!==null»«param.check.reference.range.bound_upp.value.DVal»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
-		}
-		«ELSEIF param.check.reference.gap!==null»
-		if(signal<«IF param.check.reference.gap.bound_upp.value!==null»«param.check.reference.gap.bound_upp.value.DVal»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal>«IF param.check.reference.gap.bound_lower.value!==null»«param.check.reference.gap.bound_lower.value.DVal»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.gap.bound_upp.value!==null»«param.check.reference.gap.bound_upp.value.DVal»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.gap.bound_lower.value!==null»«param.check.reference.gap.bound_lower.value.DVal»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
-			conf=(signal-«IF param.check.reference.gap.bound_upp.value!==null»«param.check.reference.gap.bound_upp.value.DVal»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/((«IF param.check.reference.gap.bound_upp.value!==null»«param.check.reference.gap.bound_upp.value.DVal»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.gap.bound_lower.value!==null»«param.check.reference.gap.bound_lower.value.DVal»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2);
-		}
-		else if(signal>«IF param.check.reference.gap.bound_lower.value!==null»«param.check.reference.gap.bound_lower.value.DVal»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal<«IF param.check.reference.gap.bound_lower.value!==null»«param.check.reference.gap.bound_lower.value.DVal»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.gap.bound_upp.value!==null»«param.check.reference.gap.bound_upp.value.DVal»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.gap.bound_lower.value!==null»«param.check.reference.gap.bound_lower.value.DVal»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
-			conf=(«IF param.check.reference.gap.bound_lower.value!==null»«param.check.reference.gap.bound_lower.value.DVal»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/((«IF param.check.reference.gap.bound_upp.value!==null»«param.check.reference.gap.bound_upp.value.DVal»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.gap.bound_lower.value!==null»«param.check.reference.gap.bound_lower.value.DVal»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2);
-		}
-		else if(signal<«IF param.check.reference.gap.bound_lower.value!==null»«param.check.reference.gap.bound_lower.value.DVal»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-			conf=(«IF param.check.reference.gap.bound_lower.value!==null»«param.check.reference.gap.bound_lower.value.DVal»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«IF param.check.reference.gap.bound_lower.value!==null»«param.check.reference.gap.bound_lower.value.DVal»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
-		}
-		else if(signal>«IF param.check.reference.gap.bound_upp.value!==null»«param.check.reference.gap.bound_upp.value.DVal»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
-			conf=(signal-«IF param.check.reference.gap.bound_upp.value!==null»«param.check.reference.gap.bound_upp.value.DVal»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(9999-«IF param.check.reference.gap.bound_upp.value!==null»«param.check.reference.gap.bound_upp.value.DVal»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
-		}
-		«ENDIF»
-		return conf;
-	}
+	#include "«param.name».h"
 	Verdict checkGlobalVerdict_«param.name»(Array conf, Array timeStampOracle){
 		Verdict verdict;
 		verdict.verdict=VERDICT_INCONCLUSIVE;
@@ -1144,391 +1019,141 @@ var HashMap<String, List<String>> checkVar;
 		«ENDFOR»
 		return verdict;
 	} 
-	
 	'''
-	/*«IF param.check.reference.upper!==null»
-	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
-	«ELSEIF param.check.reference.lower!==null»
-	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
-	«ELSEIF param.check.reference.same!==null»
-	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
-	«ELSEIF param.check.reference.notsame!==null»
-	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
-	«ELSEIF param.check.reference.range!==null»
-	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
-	«ELSEIF param.check.reference.gap!==null»
-	struct Ret «param.name.toString()» («FOR name:nameList»double «name»[], «ENDFOR» double timeStamp[]){
+	
+	def create_oracle_c(Oracle param,List<String> nameList)
+	'''
+	#include "«param.name.toString()».h"
+	
+	//«param.check.description.value»
+	
+	int preprocessInputs(SensorInput *inputs, int inputQty) {
+		//TODO.
+	    return inputQty;
+	}
+	«IF param.when!==null || param.^while!==null»
+	int evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap.get(param.name).toString»«ENDIF») {
+		return «IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»;
+	}
 	«ENDIF»
-		struct Ret ret;
-		return ret;
+	Verdict evaluatePostConditions_«param.name»(Verdict verdict, SensorInput *inputs, int inputQty) {
+	    verdict.verdict = VERDICT_PASSED;
+	    verdict.confidence = 1;
+	    return verdict;
 	}
-	'''
-	* 
-	*/
+	Verdict performEvaluation_«param.name»(SensorInput *inputs, int inputQty, double timeStamp){
+	    Verdict verdict;
+		//Step 1: inicializacion
+	    static int cycle = -1;
+		static Array timeStampOracle; 
+		«FOR param1: nameMap.get(param.name)»
+		static Array «param1»;
+		«ENDFOR»
+		static Array conf;
+		static Array preconditionGiven;
 	
-	/*
-	 «IF param.when!==null && param.^while!==null»
-		«IF param.check.name!==null»
-			«IF param.check.reference.upper!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.lower!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.same!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.notsame!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.range!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.gap!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ENDIF»
-		«ELSE»
-			«IF param.check.reference.upper!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.lower!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.same!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.notsame!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){			
-			«ELSEIF param.check.reference.range!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.gap!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ENDIF»
-		«ENDIF»
-	«ELSEIF param.when===null && param.^while!==null»
-		«IF param.check.name!==null»
-			«IF param.check.reference.upper!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF»«FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.lower!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.same!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.notsame!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){				
-			«ELSEIF param.check.reference.range!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.gap!==null»
-			struct Ret «param.name.toString()» (double «param.check.name.toString()»[], «FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ENDIF»
-		«ELSE»
-			«IF param.check.reference.upper!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.lower!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.same!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.notsame!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){				
-			«ELSEIF param.check.reference.range!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.gap!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par2: param.^while.em.elements»«IF par2.name!==null && !par2.name.equals("timeStamp")»double «par2.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ENDIF»
-		«ENDIF»
-	«ELSEIF param.when!==null && param.^while===null»
-		«IF param.check.name!==null»
-			«IF param.check.reference.upper!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.lower!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.same!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.notsame!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){			
-			«ELSEIF param.check.reference.range!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.gap!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ENDIF»
-		«ELSE»
-			«IF param.check.reference.upper!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.lower!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.same!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.notsame!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){			
-			«ELSEIF param.check.reference.range!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ELSEIF param.check.reference.gap!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR» «FOR par1:param.when.em.elements»«IF par1.name!==null && !par1.name.equals("timeStamp")»double «par1.name»[],«ENDIF»«ENDFOR» double timeStamp[]){
-			«ENDIF»
-		«ENDIF»
-	«ELSE»
-		«IF param.check.name!==null»
-			«IF param.check.reference.upper!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF»double timeStamp[]){
-			«ELSEIF param.check.reference.lower!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF»double timeStamp[]){
-			«ELSEIF param.check.reference.same!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF»double timeStamp[]){
-			«ELSEIF param.check.reference.notsame!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF»double timeStamp[]){			
-			«ELSEIF param.check.reference.range!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF»double timeStamp[]){
-			«ELSEIF param.check.reference.gap!==null»
-			struct Ret «param.name.toString()» («IF !param.check.name.equals("timeStamp")»double «param.check.name.toString()»[], «ENDIF»double timeStamp[]){
-			«ENDIF»
-		«ELSE»
-			«IF param.check.reference.upper!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){
-			«ELSEIF param.check.reference.lower!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){
-			«ELSEIF param.check.reference.same!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){
-			«ELSEIF param.check.reference.notsame!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){			
-			«ELSEIF param.check.reference.range!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){
-			«ELSEIF param.check.reference.gap!==null»
-			struct Ret «param.name.toString()» («FOR par3: param.check.em.elements»«IF par3.name!==null && !par3.name.equals("timeStamp")»double «par3.name»[],«ENDIF»«ENDFOR»double timeStamp[]){
-			«ENDIF»
-		«ENDIF»
-	«ENDIF» 
-	 
-	 
-	 def create_oracle_c(Oracle param)'''
-	#include "«param.name.toString()».h"
-	«FOR param1: param.check»
-		//Comment: «param1.description.value.toString»'''
-		«IF param1.reference.upper!==null»
-		struct Ret BelowReference (double «param1.name.toString()»){
-			struct Ret ret;
-			ret.assert=0;
-			«IF param1.reference.upper.bound_upp.value!==null»
-			if(«param1.name.toString()»<=«param1.reference.upper.bound_upp.value.DVal»){
-				ret.assertret=1;
-			}
-			ret.diff=«param1.reference.upper.bound_upp.value.DVal»-«param1.name.toString()»;
-			«ELSE»
-			if(«param1.name.toString()»<=«param1.reference.upper.bound_upp.name.toString»){
-				ret.assertret=1;
-			}
-			ret.diff=«param1.reference.upper.bound_upp.name.toString»-«param1.name.toString()»;
-			«ENDIF»
-		«ELSEIF param1.reference.lower!==null»
-		struct Ret AboveReference (double «param1.name.toString()»){
-			struct Ret ret;
-			ret.assert=0;
-			«IF param1.reference.lower.bound_lower.value!==null»
-			if(«param1.name.toString()»>=«param1.reference.lower.bound_lower.value.DVal»){
-				ret.assert=1;
-			}
-			ret.diff=«param1.name.toString()»-«param1.reference.lower.bound_lower.value.DVal»;
-			«ELSE»
-			if(«param1.name.toString()»>=«param1.reference.lower.bound_lower.name.toString»){
-				ret.assert=1;
-			}
-			ret.diff=«param1.name.toString()»-«param1.reference.lower.bound_lower.name.toString»;
-			«ENDIF»
-		«ELSEIF param1.reference.range!==null»
-		struct Ret RangeReference (double «param1.name.toString»){
-			struct Ret ret;
-			
-			«IF param1.reference.range.bound_lower.value!==null && param1.reference.range.bound_upp.value!==null»
-			if(«param1.name.toString()»>=«param1.reference.range.bound_lower.value.DVal» && «param1.name.toString()»<=«param1.reference.range.bound_upp.value.DVal»){
-				ret.assert=1;
-			}
-			ret.diff_up=«param1.reference.range.bound_upp.value.DVal»-«param1.name.toString()»;
-			ret.diff_down=«param1.name.toString()»-«param1.reference.range.bound_lower.value.DVal»;
-			«ELSEIF param1.reference.range.bound_lower.value===null && param1.reference.range.bound_upp.value!==null»
-			if(«param1.name.toString()»>=«param1.reference.range.bound_lower.name.toString» && «param1.name.toString()»<=«param1.reference.range.bound_upp.value.DVal»){
-				ret.assert=1;
-			}
-			ret.diff_up=«param1.reference.range.bound_upp.value.DVal»-«param1.name.toString()»;
-			ret.diff_down=«param1.name.toString()»-«param1.reference.range.bound_lower.name.toString»;
-			«ELSEIF param1.reference.range.bound_lower.value!==null && param1.reference.range.bound_upp.value===null»
-			if(«param1.name.toString()»>=«param1.reference.range.bound_lower.value.DVal» && «param1.name.toString()»<=«param1.reference.range.bound_upp.name.toString»){
-				ret.assert=1;
-			}
-			ret.diff_up=«param1.reference.range.bound_upp.name.toString»-«param1.name.toString()»;
-			ret.diff_down=«param1.name.toString()»-«param1.reference.range.bound_lower.value.DVal»;
-			«ELSE»
-			if(«param1.name.toString()»>=«param1.reference.range.bound_lower.name.toString» && «param1.name.toString()»<=«param1.reference.range.bound_upp.name.toString»){
-				ret.assert=1;
-			}
-			ret.diff_up=«param1.reference.range.bound_upp.name.toString»-«param1.name.toString()»;
-			ret.diff_down=«param1.name.toString()»-«param1.reference.range.bound_lower.name.toString»;
-			«ENDIF»
-		«ELSEIF param1.reference.gap!==null»
-		struct Ret GapReference (double «param1.name.toString()»){
-			struct Ret ret;
-			«IF param1.reference.gap.bound_lower.value!==null && param1.reference.gap.bound_upp.value!==null»
-			if(«param1.name.toString()»<=«param1.reference.gap.bound_lower.value.DVal» || «param1.name.toString()»>=«param1.reference.gap.bound_upp.value.DVal»){
-				ret.assert=1;
-			}
-			ret.diff_up=«param1.name.toString()»-«param1.reference.gap.bound_upp.value.DVal»;
-			ret.diff_down=«param1.reference.gap.bound_lower.value.DVal»-«param1.name.toString()»;
-			«ELSEIF param1.reference.gap.bound_lower.value===null && param1.reference.gap.bound_upp.value!==null»
-			if(«param1.name.toString()»<=«param1.reference.gap.bound_lower.name.toString» || «param1.name.toString()»>=«param1.reference.gap.bound_upp.value.DVal»){
-				ret.assert=1;
-			}
-			ret.diff_up=«param1.name.toString()»-«param1.reference.gap.bound_upp.value.DVal»;
-			ret.diff_down=«param1.reference.gap.bound_lower.name.toString»-«param1.name.toString()»;
-			«ELSEIF param1.reference.gap.bound_lower.value!==null && param1.reference.gap.bound_upp.value===null»
-			if(«param1.name.toString()»<=«param1.reference.gap.bound_lower.value.DVal» || «param1.name.toString()»>=«param1.reference.gap.bound_upp.name.toString»){
-				ret.assert=1;
-			}
-			ret.diff_up=«param1.name.toString()»-«param1.reference.gap.bound_upp.name.toString»;
-			ret.diff_down=«param1.reference.gap.bound_lower.value.DVal»-«param1.name.toString()»;
-			«ELSE»
-			if(«param1.name.toString()»<=«param1.reference.gap.bound_lower.name.toString» || «param1.name.toString()»>=«param1.reference.gap.bound_upp.name.toString»){
-				ret.assert=1;
-			}
-			ret.diff_up=«param1.name.toString()»-«param1.reference.gap.bound_upp.name.toString»;
-			ret.diff_down=«param1.reference.gap.bound_lower.name.toString»-«param1.name.toString()»;
-			«ENDIF»
-		«ENDIF»
-			return ret;
+		//Init arrays
+		initArray(&conf,1);
+		initArray(&preconditionGiven,1);
+		initArray(&timeStampOracle,1);
+		«FOR param1: nameMap.get(param.name)»
+		initArray(&«param1» ,1);
+		«ENDFOR»
+		//Step 2: meter variables en array
+		cycle++;
+		insertArray(&timeStampOracle,timeStamp);
+		«FOR param1: nameMap.get(param.name)»
+		insertArray(&«param1»,inputs->«param1»);
+		«ENDFOR»
+		«IF param.when!==null || param.^while!==null»
+		insertArray(&preconditionGiven,evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap_preconds.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap_preconds.get(param.name).toString»«ENDIF»));	
+		if(preconditionGiven.array[cycle]==1){
+		//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
+			insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
+		}else{
+			insertArray(&conf,2);
 		}
-	«ENDFOR»
+		«ELSE»
+		insertArray(&preconditionGiven,2);
+		insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
+		«ENDIF»
+
+		//Step 4: Sacar confidence
+
+		verdict = checkGlobalVerdict_«param.name»(conf, timeStampOracle); 
+		verdict.confidence=conf.array[cycle];
 		
-
-	'''*/
-	
-
-	
-	/*def create_up_m(Check_Static_upper_only param)'''
-	
-	def= legacy_code('initialize');
-	def.OutputFcnSpec= 'double y1=«param.name.toString()»(double u1)';
-	def.SourceFiles= {'«param.name.toString()».c'};
-	def.HeaderFiles= {'«param.name.toString()».h'};
-	def.SFunctionName= 'S_«param.name.toString()»';
-	legacy_code('sfcn_cmex_generate' ,def)
-	legacy_code('compile' ,def)
-	exit
-	'''
-	def create_up_h(Check_Static_upper_only param)'''
-	#ifndef «param.name.toString().toUpperCase»_H
-	#define «param.name.toString().toUpperCase»_H
-	double «param.name.toString()»(double Input);
-	#endif
-	'''
-	
-	def create_up_c(Check_Static_upper_only param)'''
-	#include "«param.name.toString()».h"
-	double «param.name.toString()»(double Input){
-		double ret=0;
-		«IF param.inclusive_bound.value.bool»
-			if(Input <=«param.bound_up.value.DVal»){
-				ret=1;
-			}	
-		«ELSE»
-			if(Input <«param.bound_up.value.DVal»){
-				ret=1;
-			}	
-		«ENDIF»
-		return ret;
+	    return verdict;
 	}
-	'''
 	
-	def create_low_m(Check_Static_lower_only param)'''
-	def= legacy_code('initialize');
-	def.OutputFcnSpec= 'double y1=«param.name.toString()»(double u1)';
-	def.SourceFiles= {'«param.name.toString()».c'};
-	def.HeaderFiles= {'«param.name.toString()».h'};
-	def.SFunctionName= 'S_«param.name.toString()»';
-	legacy_code('sfcn_cmex_generate' ,def)
-	legacy_code('compile' ,def)
-	exit
-	'''
-	
-	def create_low_h(Check_Static_lower_only param)'''
-	#ifndef «param.name.toString().toUpperCase»_H
-	#define «param.name.toString().toUpperCase»_H
-	double «param.name.toString()»(double Input);
-	#endif
-	'''
-	
-	def create_low_c(Check_Static_lower_only param)'''
-	#include "«param.name.toString()».h"
-	double «param.name.toString()»(double Input){
-		double ret=0;
-		«IF param.inclusive_bound.value.bool»
-			if(Input >= «param.bound_low.value.DVal»){
-				ret=1;
-			}	
-		«ELSE»
-			if(Input > «param.bound_low.value.DVal»){
-				ret=1;
-			}
+	double confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»double «param1.toString»,«ENDFOR»double signal){
+		double conf=0;
+		«IF param.check.reference.upper!==null»
+		if(signal<«IF param.check.reference.upper.bound_upp.value!==null»«IF param.check.reference.upper.bound_upp.value.DVal>=0»«param.check.reference.upper.bound_upp.value.DVal»«ELSE»(«param.check.reference.upper.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf= («IF param.check.reference.upper.bound_upp.value!==null»«IF param.check.reference.upper.bound_upp.value.DVal>=0»«param.check.reference.upper.bound_upp.value.DVal»«ELSE»(«param.check.reference.upper.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«IF param.check.reference.upper.bound_upp.value!==null»«IF param.check.reference.upper.bound_upp.value.DVal>=0»«param.check.reference.upper.bound_upp.value.DVal»«ELSE»(«param.check.reference.upper.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
+		}
+		else{
+			conf= («IF param.check.reference.upper.bound_upp.value!==null»«IF param.check.reference.upper.bound_upp.value.DVal>=0»«param.check.reference.upper.bound_upp.value.DVal»«ELSE»(«param.check.reference.upper.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(99999-«IF param.check.reference.upper.bound_upp.value!==null»«IF param.check.reference.upper.bound_upp.value.DVal>=0»«param.check.reference.upper.bound_upp.value.DVal»«ELSE»(«param.check.reference.upper.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+		}
+		«ELSEIF param.check.reference.lower!==null»
+		if(signal>«IF param.check.reference.lower.bound_lower.value!==null»«IF param.check.reference.lower.bound_lower.value.DVal>=0»«param.check.reference.lower.bound_lower.value.DVal»«ELSE»(«param.check.reference.lower.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+				
+			conf=(signal-«IF param.check.reference.lower.bound_lower.value!==null»«IF param.check.reference.lower.bound_lower.value.DVal>=0»«param.check.reference.lower.bound_lower.value.DVal»«ELSE»(«param.check.reference.lower.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(9999-«IF param.check.reference.lower.bound_lower.value!==null»«IF param.check.reference.lower.bound_lower.value.DVal>=0»«param.check.reference.lower.bound_lower.value.DVal»«ELSE»(«param.check.reference.lower.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+		}
+		else{
+			conf=(signal-«IF param.check.reference.lower.bound_lower.value!==null»«IF param.check.reference.lower.bound_lower.value.DVal>=0»«param.check.reference.lower.bound_lower.value.DVal»«ELSE»(«param.check.reference.lower.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«IF param.check.reference.lower.bound_lower.value!==null»«IF param.check.reference.lower.bound_lower.value.DVal>=0»«param.check.reference.lower.bound_lower.value.DVal»«ELSE»(«param.check.reference.lower.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
+		}
+		«ELSEIF param.check.reference.same!==null»
+		if(signal==«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=1;
+		}
+		else if(signal<«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(signal-«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
+		}
+		else if(signal>«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(9999-«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+		}
+		«ELSEIF param.check.reference.notsame!==null»
+		if(signal==«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=-1;
+		}
+		else if(signal<«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
+		}
+		else if(signal>«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(signal-«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(9999-«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+		}
+		«ELSEIF param.check.reference.range!==null»
+		if(signal<«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal>«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
+			conf=(«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/((«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2);
+		}
+		else if(signal>«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal<«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
+			conf=(signal-«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/((«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2);
+		}
+		else if(signal<«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(signal-«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
+		}
+		else if(signal>«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(9999-«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+		}
+		«ELSEIF param.check.reference.gap!==null»
+		if(signal<«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal>«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
+			conf=(signal-«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/((«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2);
+		}
+		else if(signal>«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal<«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
+			conf=(«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/((«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2);
+		}
+		else if(signal<«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-(-99999));
+		}
+		else if(signal>«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(signal-«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(9999-«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+		}
 		«ENDIF»
-		return ret;
+		return conf;
 	}
+	
+	
 	'''
 	
-	def create_range_m(Check_Range param)'''
-	def= legacy_code('initialize');
-	def.OutputFcnSpec= 'double y1=«param.name.toString()»(double u1)';
-	def.SourceFiles= {'«param.name.toString()».c'};
-	def.HeaderFiles= {'«param.name.toString()».h'};
-	def.SFunctionName= 'S_«param.name.toString()»';
-	legacy_code('sfcn_cmex_generate' ,def)
-	legacy_code('compile' ,def)
-	exit
-	'''
-	
-	def create_range_h(Check_Range param)'''
-	#ifndef «param.name.toString().toUpperCase»_H
-	#define «param.name.toString().toUpperCase»_H
-	double «param.name.toString()»(double Input);
-	#endif
-	'''
-	
-	def create_range_c(Check_Range param)'''
-	#include "«param.name.toString()».h"
-	double «param.name.toString()»(double Input){
-		double ret=0;
-		«IF param.inclusive_bound.value.bool»
-			if(Input >= «param.bound_low.value.DVal» && Input <= «param.bound_up.value.DVal» ){
-				ret=1;
-			}	
-		«ELSE»
-			if(Input > «param.bound_low.value.DVal» && Input < «param.bound_up.value.DVal» ){
-						ret=1;
-			}	
-		«ENDIF»
-		return ret;		
-			
-	}
-	'''
-	
-	def create_gap_m(Check_Gap param)'''
-	def= legacy_code('initialize');
-	def.OutputFcnSpec= 'double y1=«param.name.toString()»(double u1)';
-	def.SourceFiles= {'«param.name.toString()».c'};
-	def.HeaderFiles= {'«param.name.toString()».h'};
-	def.SFunctionName= 'S_«param.name.toString()»';
-	legacy_code('sfcn_cmex_generate' ,def)
-	legacy_code('compile' ,def)
-	exit
-	'''
-	
-	def create_gap_h(Check_Gap param)'''
-	#ifndef «param.name.toString().toUpperCase»_H
-	#define «param.name.toString().toUpperCase»_H
-	double «param.name.toString()»(double Input);
-	#endif
-	'''
-	
-	def create_gap_c(Check_Gap param)'''
-	#include "«param.name.toString()».h"
-	double «param.name.toString()»(double Input){
-		double ret=0;
-		«IF param.inclusive_bound.value.bool»
-			if(Input <= «param.bound_low.value.DVal» || Input >= «param.bound_up.value.DVal» ){
-				ret=1;
-			}	
-		«ELSE»
-			if(Input < «param.bound_low.value.DVal» || Input > «param.bound_up.value.DVal» ){
-							ret=1;
-			}	
-		«ENDIF»
-		return ret;
-	}
-	'''*/
 }
