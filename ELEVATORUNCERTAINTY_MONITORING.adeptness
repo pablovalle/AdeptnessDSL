@@ -1,0 +1,93 @@
+MONITORINGPLAN MONITORING_PLAN_ELEVATORUNCERTAINTY:
+
+	
+	MONITOR PassengerArrivalTime:
+	 	type: double
+	 	max: 2400
+	 	min: 0000
+	ENDMONITOR
+	
+	MONITOR NumOfPassenger:
+	 	type: double
+	 	max: 50
+	 	min: 0
+	ENDMONITOR
+	
+	MONITOR DestinationOfPassenger:
+	 	type: double
+	 	max: 50
+	 	min: 2
+	ENDMONITOR
+	
+	MONITOR AWT:
+	 	type: double
+	 	max: 50
+	 	min: 20
+	ENDMONITOR
+	
+	MONITOR Calls:
+	 	type: double
+	 	max: 50
+	 	min: 5
+	ENDMONITOR
+	
+	MONITOR WT:
+	 	type: double
+	 	max: 30
+	 	min: 5
+	ENDMONITOR
+	
+	MONITOR TrafficFlow:
+		type : int
+		max : 50
+		min : 0
+	ENDMONITOR
+	
+	MONITOR Demand:
+		type : int
+		max : 200
+		min : 0
+	ENDMONITOR
+	
+	MONITOR DestinationFloor:
+		type : int
+		max : 20
+		min : 0
+	ENDMONITOR
+	
+	MONITOR TransitTime:
+		type : int
+		max : 20
+		min : 0
+	ENDMONITOR
+	
+	MONITOR Floor:
+		type : string
+	ENDMONITOR
+	
+//////////////////////////////////////////×Ô¶¯¼ÝÊ»////////////////////////////////////////////////////	
+	MONITOR AngularError:
+		type : string
+	ENDMONITOR
+	
+	MONITOR LateralError:
+		type : string
+	ENDMONITOR
+	
+	MONITOR Deviation:
+		type : string
+	ENDMONITOR
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+ENDMONITORINGPLAN 

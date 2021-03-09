@@ -1,0 +1,1169 @@
+grammar org.xtext.example.mydsl.Adeptness with org.eclipse.xtext.common.Terminals
+
+generate adeptness "http://www.xtext.org/example/mydsl/Adeptness"
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+Adeptness:
+	(elements+=AbstractElement)*
+;
+
+AbstractElement:
+	PackageDeclaration | Type | Imports
+;
+
+Imports:
+	'import' importedNamespace=QualifiedNameWithWildcard
+;
+
+QualifiedNameWithWildcard:
+	QualifiedName '.*'?
+;
+
+QualifiedName:
+	ID ('.' ID)*
+;
+
+Type:
+	DataType | Signal | MonitoringFile | ValidationPlan
+;
+
+ValidationPlan:
+	'VALIDATIONPLAN' name=ID ':' ('implements'superType=[MonitoringFile|QualifiedName])?
+	(test+=Test)+ 'ENDVALIDATIONPLAN'
+;
+
+Test:
+	'TEST' name=ID ':'
+	'SUT:' sut=STRING ','
+	'TestLevel:' testLevel=STRING ','
+	"Inputs:" (inputs+=Inputs)+
+	(oracles+=TestingOracle)+
+	'ENDTEST'
+;
+
+TestingOracle:
+	"TESTINGORACLE" name=ID ':'
+	'Type:' type=STRING ','
+	'Params:' (parameters+=Parameters)+
+	'ENDTESTINGORACLE'
+	
+;
+
+Parameters:
+	value=ExpressionsModel ','
+;
+
+Inputs:
+	(value=STRING) ','
+;
+
+MonitoringFile:
+	'MONITORINGPLAN' name=ID ':'
+		(monitoringPlan+=MonitoringPlan)+'ENDMONITORINGPLAN'
+		/*(check_static_upper+=Check_Static_upper_only)*
+		(check_static_lower+=Check_Static_lower_only)*
+		(check_range+=Check_Range)*
+		(check_gap+=Check_Gap)*/
+;
+
+
+MonitoringPlan:
+	monitoringVariables = MonitoringVariable 
+	
+;
+
+/*MonitoringVariable: 
+ //'MonitoringVariable' '{'
+	(monitoringVariable+=MonVar)*	
+  //'}';	*/
+MonitoringVariable: 
+	'MONITOR' name=ID ':'
+		'type'':' (MonitoringVariableDatatype = Sig_type)
+		('max'':' max = DOUBLE
+		'min'':' min = DOUBLE)?
+		//(monvar+=MonVar)+
+		'ENDMONITOR'
+;	
+
+
+/*MonVar:
+	//'sig:' name = ID'{'
+		'type:' MonitoringVariableDatatype = Sig_type
+		//'signalPattern:' sigPattern = SigPattern
+		//('unit:' unit = STRING)?
+		('max:' max = DOUBLE
+		'min:' min = DOUBLE)?
+		//('timePeriod:' timePeriod_down = DOUBLE 'to' timePeriod_up = DOUBLE)?
+	//'}'
+;*/
+
+Sig_type:
+	((sig_type = 'boolean')|(sig_type = 'int' )|(sig_type = 'double' ) |(sig_type = 'string' ))
+;
+
+//Each signal could have more than one oracles
+Signal:
+	//imp = ImportMonitoringPlan
+	'CPS' name=ID ('[' cardinalityNumCPS = INT ']')? ':' ('implements'superType=[MonitoringFile|QualifiedName])?
+		(oracle+=Oracle)+'ENDCPS'
+		/*(check_static_upper+=Check_Static_upper_only)*
+		(check_static_lower+=Check_Static_lower_only)*
+		(check_range+=Check_Range)*
+		(check_gap+=Check_Gap)*/
+;
+
+ImportMonitoringPlan:
+	'import' importURI = STRING
+;
+
+Oracle: 
+	'ORACLE' name=ID ':'
+		(when=When|while=While)?
+		(check=Checks)'ENDORACLE'
+;
+
+While:
+	'while:' em = ExpressionsModel
+			//precondReference = PrecondReference
+;
+
+When:
+	'when:' em = ExpressionsModel
+			(aw = AfterWhen)?
+			//precondReference = PrecondReference
+;
+
+AfterWhen:
+	(wait = Wait)
+;
+
+Wait:
+	'after('  time = DOUBLE ',' unit=TimeType ')'
+;
+
+
+
+Checks:
+	'checks:' (name=ID |em = ExpressionsModel) //'is'
+	(reference=Reference)
+	(failReason+=FailReason)+
+	(description=Description) //','
+	
+;
+
+Description:
+	'Description: ' value=STRING
+;
+
+FailReason:
+	'fails if :'
+	(reason=Reason)
+	
+;
+
+Reason:
+	((highPeak=HighPeak)|(highTime=HighTime)|(constDeg=ConstDeg)|(xPeaks=XPeaks)) ';'
+;
+
+XPeaks:
+	'confidence is below' (cant=DOUBLE) 'more than' (nPeaks=DOUBLE) 'times within' (time=DOUBLE) (unit=TimeType) //nola jarri integer-ak?
+;
+
+ConstDeg:
+	'confidence is in constant degradation'  (cant=DOUBLE) //(((upper=Upper)|(lower=Lower)))
+;
+
+HighTime:
+	'confidence is below' (cant=DOUBLE) 'within' (time=DOUBLE) (unit=TimeType)
+;
+
+HighPeak:
+	'confidence is below' (cant=DOUBLE)
+;
+Reference:
+	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap)|(same=Same)|(notsame=NotSame))';'
+;
+
+PrecondReference:
+	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap)|(same=Same)|(notsame=NotSame))';'
+;
+
+Same:
+	'should be' (bound_upp=Bound_up) 
+	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
+;
+
+NotSame:
+	'should not be' (bound_upp=Bound_up)
+	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
+;
+
+//Oracle for upper limit --> Below reference signal
+Upper:
+	'is below' (bound_upp=Bound_up)
+	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
+;
+//Oracle for lower limit --> Above reference signal
+Lower:
+	'is above' (bound_lower=Bound_Down)
+	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
+;
+//Oracle for Above and Below limit --> In range reference signal
+Range:
+	'is in range between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
+	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
+;
+//Oracle for !Above and !Below limit --> Gap reference signal
+Gap:
+	'not in range between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
+	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
+;
+
+//If the limits must be included ==
+InclusiveBound:
+	'inclusiveBound' name=ID '=' value= BOOLEAN
+;
+
+//exactly at a especified time
+Exactly:
+	'exactly'
+	(time=DOUBLE) (unit=TimeType)
+;
+At_most:
+	'at most'
+	(time=DOUBLE) (unit=TimeType)
+;
+At_least:
+	'at least'
+	(time=DOUBLE) (unit=TimeType)
+;
+
+//Upper limit
+
+Bound_up:
+	(value=DOUBLE|/*variable=AbstractElement2|*/em = ExpressionsModel)
+;
+
+//Lower limit
+Bound_Down:
+	 (value=DOUBLE|/*variable=AbstractElement2|*/em = ExpressionsModel)
+;
+//Boolean declaration
+BOOLEAN:
+	bool=b	
+;
+b returns ecore::EBoolean: 'true' | 'false';
+//Double declaration
+DOUBLE:
+	dVal = d
+;
+d returns ecore::EDouble : ('-')? INT('.'INT)?;
+
+
+TimeType:
+	((time='milliseconds')|(time='seconds')|(time='minutes')|(time='hours'))
+;
+
+//DataType declaration
+DataType:
+	'datatype' name=ID
+;
+//Package declaration
+PackageDeclaration:
+	'package' name=QualifiedName '{'
+		(elements+=AbstractElement)*
+	'}'	
+;
+
+
+/*
+ * MATH ELEMENTS
+ */
+ ExpressionsModel:
+
+ 	(elements+=AbstractElement2)*
+
+;
+
+ AbstractElement2:
+ 	(frontParentheses+=FrontParentheses)*
+	((name=ID) | (value=DOUBLE) |(uncer = UncertaintyProb)|(uncer = UncertaintyVagueness)|(uncer = UncertaintyAmbiguity))
+	(op+=Operators)*
+
+	
+;
+FrontParentheses:
+	"("
+;
+BackParentheses:
+	")"
+;
+Operators:
+	(operator=Op|comparation=CompOp|logicOperator=LogicOp| backParentheses=BackParentheses /*|elements=Comas*/)
+;
+ 
+Comas:
+	op=(",")
+;
+
+CompOp:
+	op=("=="|"!="|">="|"<="|"<"|">")
+;
+
+LogicOp:
+	op=("&&"|"||")
+;
+
+Op:
+	op=("+"|"-"|"*"|"/")
+;
+
+
+UncertaintyProb:
+	(normalDisstribution=NormalDistribution|bernoulliDistribution=BernoulliDistribution
+		|gammaDistribution = GammaDistribution| uniformDistribution = UniformDistribution |
+		triangularDistribution = TriangularDistribution | binomialDistribution = BinomialDistribution |
+		exponentialDistribution = ExponentialDistribution | poissonDistribution = PoissonDistribution |
+		geometricDistribution = GeometricDistribution | logarithmicDistribution = LogarithmicDistribution | interval=Interval
+		|probabilityInterval=ProbabilityInterval |percentage=Percentage |probability=Probability
+		|condidenceLevel=ConfidenceLevel|confidenceInterval=ConfidenceInterval
+		|probabilityConfidenceInterval=ProbabilityConfidenceInterval|probability_3Scale = Probability_3Scale
+		|probability_4Scale = Probability_4Scale|probability_5Scale = Probability_5Scale
+		|probability_7Scale = Probability_7Scale|P3Senumeration=P3ScalEnumeration|P4Senumeration=P4ScalEnumeration
+		|P5Senumeration=P5ScalEnumeration|P7Senumeration=P7ScalEnumeration
+		
+	)
+;
+
+
+
+
+
+
+
+/*
+ * Normal
+  */
+NormalDistribution:
+	distr= 'NormalDistribution('(name=ID)')'(normDistStd = NormalDistrStandardeviation|mean=NormalDistrMean)
+;
+
+NormalDistrStandardeviation:
+	stdDev  = '.standDev()'
+;
+
+NormalDistrMean:
+	mean  = '.mean()'
+;
+
+/*
+ * Bernoulli
+ */
+BernoulliDistribution:
+	distr= 'BernoulliDistribution('(name=ID)')'(bernProb = ProbabilityBernoulli|bernTrials = TrialsBernoulli)
+;
+
+TrialsBernoulli:
+	trials = '.trials()'
+;
+
+ProbabilityBernoulli:
+	probBern = '.prob()'
+;
+
+/**
+ * Gamma Distribution
+  */
+  
+GammaDistribution:
+	distr = 'GammaDistribution('(name=ID)')'(gammaK = kGamma|gammaMean = GammaMean)
+;
+
+
+
+kGamma:
+	k = '.k()'
+;  
+
+GammaMean:
+	mean = '.mean()'
+;
+
+/*
+ * Uniform distribution
+  */
+
+UniformDistribution:
+	distr = 'UniformDistribution('(name=ID)')'(uniformMin = UniformMin|uniformMax = UniformMax)	
+;
+
+UniformMin:
+	min = '.min()'
+;
+
+UniformMax:
+	max = '.max()'
+;
+
+/*
+ * Triangular distribution
+  */
+  
+ TriangularDistribution:
+	distr = 'TriangularDistribution('(name=ID)')'(triangularMin = TriangularMin|triangularMax = TriangularMax | triangularMode = TriangularMode)	
+;
+
+TriangularMin:
+	min = '.min()'
+;
+
+TriangularMax:
+	max = '.max()'
+;
+
+TriangularMode:
+	mode = '.mode()'
+;
+
+
+/*
+ * Binomial distribution
+  */
+  
+ BinomialDistribution:
+	distr = 'BinomialDistribution('(name=ID)')'(binomialProb = BinomialProb)
+;
+
+BinomialProb:
+	prob = '.prob()'	
+;
+  
+  
+/*
+ * Exponential distribution
+ */
+ 
+ExponentialDistribution:
+	distr = 'ExponentialDistribution('(name=ID)')'(exponentialMean = ExponentialMean)
+;
+
+ExponentialMean:
+	mean = '.mean()'
+;
+   
+   
+/* Poisson distribution
+ * 
+ */  
+ 
+PoissonDistribution:
+	distr = 'PoissonDistribution('(name=ID)')'(poissonMean = PoissonMean)
+;
+
+PoissonMean:
+	mean = '.mean()'
+;
+ 
+ 
+ /*
+  * Geometric distribution
+   */
+   
+GeometricDistribution:
+	distr = 'GeometricDistribution('(name=ID)')'(geometricp = GeometricP)	
+;
+
+GeometricP:
+	p = '.p()'
+;
+
+/*
+  * Geometric distribution
+   */
+   
+LogarithmicDistribution:
+	distr = 'LogarithmicDistribution('(name=ID)')'(logarithmicTheta = LogarithmicTheta)	
+;
+
+LogarithmicTheta:
+	theta = '.theta()'
+;
+
+/*
+ * Interval
+  */
+Interval:
+	distr='Interval('(name=ID)')'(minInterval = MinInterval|maxInterval = MaxInterval)
+;
+MinInterval:
+	min='.min()'
+;
+MaxInterval:
+	max='.max()'
+;
+
+/*
+ * ProbabilityInterval
+  */
+ProbabilityInterval:
+	distr='ProbabilityInterval('(name=ID)')'(minPro = MinPro|maxPro = MaxPro)
+;
+MinPro:
+	min='.min()'
+;
+MaxPro:
+	max='.max()'
+;
+/*
+ * Percentage
+  */
+Percentage:
+	distr='Percentage('(name=ID)')'(valuePer = ValuePer)
+;
+ValuePer:
+	value='.value()'
+;
+
+/*
+ * Probability
+  */
+Probability:
+	distr='Probability('(name=ID)')'(valueProb = ValueProb)
+;
+ValueProb:
+	value='.value()'
+;
+/*
+ * ConfidenceLevel
+  */
+ ConfidenceLevel:
+  	distr='ConfidenceLevel('(name=ID)')'(valueConfid = ValueConfid)
+  ;
+ValueConfid:
+	value='.value()'
+;
+
+/*
+ * ConfidenceInterval
+  */
+ConfidenceInterval:
+	distr='ConfidenceInterval('(name=ID)')'(valueConfiInter = ValueConfiInter| errorConfiInter=ErrorConfiInter| levelConfiInter=LevelConfiInter)
+;
+ValueConfiInter:
+	value='.value()'
+;
+ErrorConfiInter:
+	error='.error()'
+;
+LevelConfiInter:
+	level='.level()'
+;
+/*
+ * ProbabilityConfidenceInterval
+  */
+ProbabilityConfidenceInterval:
+   distr='ProbabilityConfidenceInterval('(name=ID)')'(valueProCon = ValueProCon| errorProCon=ErrorProCon| levelProCon=LevelProCon)
+;
+ValueProCon:
+	value='.value()'
+;
+ErrorProCon:
+	error='.error()'
+;
+LevelProCon:
+	level='.level()'
+;
+
+/*
+ * Probability_3Scale, 
+  */
+Probability_3Scale:
+	 distr='Probability_3Scale('(name=ID)')'
+;
+		enum P3ScalEnumeration:
+			P3Im='Impossible' |
+			P3Li='Likely' |
+			P3Ce='Certain'
+;
+
+/*
+ * Probability_4Scale, 
+  */
+Probability_4Scale:
+	 distr='Probability_4Scale('(name=ID)')'
+;
+		enum P4ScalEnumeration:
+			P4Im='Impossible' |
+			P4Un='Unlikely' |
+			P4Li='Likely' |
+			P4Ce='Certain'
+;
+
+/*
+ * Probability_5Scale
+  */
+Probability_5Scale:
+	 distr='Probability_5Scale('(name=ID)')'
+;
+		enum P5ScalEnumeration:
+			P5Im='Impossible' |
+			P5Un='Unlikely' |
+			P5Ev='Even' |
+			P5Li='Likely' |
+			P5Ce='Certain'
+;
+
+
+/*
+ * Probability_7Scale
+  */
+Probability_7Scale:
+	 distr='Probability_7Scale('(name=ID)')'
+;
+		enum P7ScalEnumeration:
+			P7Im='Impossible' |
+			P7Ve='VeryUnlikely'|
+			P7Un='Unlikely' |
+			P7Ev='Even' |
+			P7Li='Likely' |
+			P7VL='VeryLikely'|
+			P7Ce='Certain'
+;
+
+
+
+
+
+
+
+
+
+
+
+
+UncertaintyVagueness:
+	(fuzzySetCut=FuzzySetCut|fuzzyLogic=FuzzyLogic|fuzzySet=FuzzySet|intervalValuedFuzzySet=IntervalValuedFuzzySet
+	|lFuzzySet=LFuzzySet|intuitionisticFuzzySet=IntuitionisticFuzzySet|vagueSet=VagueSet|fuzzyInterval=FuzzyInterval
+	|triangularFuzzyNumber=TriangularFuzzyNumber|roughSet=RoughSet|sharpness=Sharpness
+	|fuzzyLogicOperation=FuzzyLogicOperation|fuzzySetCutKind=FuzzySetCutKind|fuzzySetOperationKind=FuzzySetOperationKind
+	|hedgeKind=HedgeKind|enumerationFuzziness=EnumerationFuzziness
+	)
+;
+
+
+
+
+/*
+ * FuzzySetCut
+  */
+FuzzySetCut:
+	distr='FuzzySetCut('(name=ID)')'(fuzzySetCutLam = FuzzySetCutLam|fuzzySetCutisStr=FuzzySetCutisStr|fuzzySetCutkin=FuzzySetCutkin)
+;
+
+FuzzySetCutLam:
+	
+	lambda  = '.lambda()'
+;
+
+FuzzySetCutisStr:
+	isStrong  = '.isStrong()'
+;
+
+FuzzySetCutkin:
+	kind = '.kind()'
+;
+/*
+ * FuzzySetCutKind
+  */
+
+    enum FuzzySetCutKind:
+    	supp='Supp'|
+    	ker='Ker'|
+    	bd='Bd'
+    ;
+
+
+
+/*
+ * FuzzyLogic
+  */
+FuzzyLogic:
+	distr= 'FuzzyLogic('(name=ID)')'(fuzzyLogicOpera = FuzzyLogicOpera|fuzzyLogicVar= FuzzyLogicVar|fuzzyLogicSet=FuzzyLogicSet)
+;
+
+FuzzyLogicOpera:
+	operator='.operator()'
+;
+FuzzyLogicVar:
+	var='.var()'
+;
+
+FuzzyLogicSet:
+	      set='.set'
+		  ( FLSmembershipDegree=MembershipDegree |
+	      FLSfuzziness=Fuzziness |
+	      FLSfuzzyEntropy=FuzzyEntropy |
+	      FLSroughness=Roughness )
+;
+
+/*
+ * FuzzyLogicOperation
+  */
+//FuzzyLogicOperation:
+	//distr='FuzzyLogicOperation('(name=ID)')'(operat=Operat)
+//;
+    enum FuzzyLogicOperation:
+	FA='AND'|
+	FO='OR'|
+	FN='NOT'
+;
+
+
+/*
+ * FuzzySet
+  */
+FuzzySet: distr= 'FuzzySet('(name=ID)')'
+	     ( FSmembershipDegree=MembershipDegree |
+	      FSfuzziness=Fuzziness |
+	      FSfuzzyEntropy=FuzzyEntropy| 
+	      FSroughness=Roughness )
+;
+
+/*
+ * IntervalValuedFuzzySet
+  */
+IntervalValuedFuzzySet: distr= 'IntervalValuedFuzzySet('(name=ID)')'
+	                   ( IVFmembershipDegree=MembershipDegree |
+	                    IVFfuzziness=Fuzziness |
+	                    IVFfuzzyEntropy=FuzzyEntropy |
+	                    IVFroughness=Roughness )
+	
+;
+
+/*
+ * LFuzzySet
+  */
+LFuzzySet: distr= 'LFuzzySet('(name=ID)')'
+	     ( LFSmembershipDegree=MembershipDegree |
+	      LFSfuzziness=Fuzziness |
+	      LFSfuzzyEntropy=FuzzyEntropy |
+	      LFSroughness=Roughness )
+	
+;
+
+
+/*
+ * IntuitionisticFuzzySet
+  */
+IntuitionisticFuzzySet: distr= 'IntuitionisticFuzzySet('(name=ID)')'
+	                 (   IFmembershipDegree=MembershipDegree |
+	                    IFfuzziness=Fuzziness |
+	                    IFfuzzyEntropy=FuzzyEntropy |
+	                    IFroughness=Roughness )
+	                    
+;
+
+
+/*
+ * VagueSet
+  */
+VagueSet: distr= 'VagueSet('(name=ID)')'
+	    (  VSmembershipDegree=MembershipDegree |
+	      VSfuzziness=Fuzziness |
+	      VSfuzzyEntropy=FuzzyEntropy |
+	      VSroughness=Roughness )
+	
+;
+
+
+/*
+ * MembershipDegree
+  */
+MembershipDegree:
+	distr= '.MembershipDegree('(name=ID)')'(membershipDegreeValue = MembershipDegreeValue|membershipDegreeHedge=MembershipDegreeHedge|membershipDegreeElement=MembershipDegreeElement)
+;
+
+MembershipDegreeValue:
+	
+	value  = '.value()'
+;
+
+MembershipDegreeHedge:
+	hedge  = '.hedge()'//(hedgeKind=HedgeKind)
+;
+/*
+ * HedgeKind
+  */
+//HedgeKind:
+	//distr='HedgeKind('(name=ID)')'(hedKind=HedKind)
+//;  
+  enum HedgeKind:
+  	aLittle= 'A_Little'|
+  	slightly='Slightly'|
+  	very='Very'|
+  	extremely='Extremely'|
+  	veryvery='Very_Very'|
+  	moreOrLess='More_or_Less' |
+  	somewhat='Somewhat'|
+  	indeed='Indeed'
+  ;
+MembershipDegreeElement:
+	element = '.element()'
+;
+
+/*
+ * Fuzziness
+  */
+Fuzziness:
+	distr= '.Fuzziness'
+;
+    enum EnumerationFuzziness:
+	euclid='EuclidFuzziness'|
+	hamming='HammingFuzziness'|
+	minkowski='MinkowskiFuzziness'
+;
+
+ /*
+ * FuzzyEntropy
+  */
+FuzzyEntropy:
+	distr= '.FuzzyEntropy'
+
+;
+
+
+  /*
+ * Roughness
+  */
+Roughness:
+		distr= '.Roughness'
+;
+
+
+
+
+  /*
+ * FuzzyInterval
+  */
+FuzzyInterval:
+	      distr= 'FuzzyInterval('(name=ID)')'
+	      ('.min'minfuzzyNumber=FuzzyNumber |'.max'maxfuzzyNumber=FuzzyNumber) 
+;
+
+/*
+ * FuzzyNumber
+  */
+FuzzyNumber:
+	number='.number()'
+;
+
+/*
+ * TriangularFuzzyNumber
+  */
+TriangularFuzzyNumber:
+	distr= 'TriangularFuzzyNumber('(name=ID)')'(triangularFuzzyNumberisSha = TriangularFuzzyNumberisSha |triangularFuzzyNumbera = TriangularFuzzyNumbera
+		|triangularFuzzyNumberb = TriangularFuzzyNumberb|triangularFuzzyNumberc = TriangularFuzzyNumberc|triangularFuzzyNumber=FuzzyNumber)
+;
+
+TriangularFuzzyNumberisSha:
+	
+	isSharped  = '.isSharped()'
+;
+
+TriangularFuzzyNumbera:
+	
+	a  ='.a()'
+;
+
+TriangularFuzzyNumberb:
+	b='.b()'
+;
+
+TriangularFuzzyNumberc:
+	c='.c()'
+;
+
+
+
+/*
+ * RoughSet
+  */
+RoughSet:
+	distr='RoughSet('(name=ID)')'
+	
+;
+
+
+/*
+ * Sharpness
+  */
+Sharpness:
+	distr= 'Sharpness('(name=ID)')'
+;
+
+
+
+
+/*
+ * FuzzySetOperationKind
+  */
+enum FuzzySetOperationKind:
+    	union='Union'|
+    	intersection='Intersection'|
+    	complement='Complement'
+    ;
+    
+
+
+
+
+
+
+
+
+UncertaintyAmbiguity:
+	(shannonEntropy=ShannonEntropy|hartleyMeasure=HartleyMeasure|alternativeMeasure=AlternativeMeasure|u_Uncertainty=U_Uncertainty
+	|dissonanceMeasure=DissonanceMeasure|distribution=Distribution|beliefInterval=BeliefInterval
+	|possibleDistribution=PossibleDistribution|pignisticDistribution=PignisticDistribution)
+;
+
+
+/*
+ * ShannonEntropy
+  */
+ShannonEntropy:
+	distr='ShannonEntropy('(name=ID)')'(shannonEntropyH = ShannonEntropyH)
+;
+
+ShannonEntropyH:
+	
+	h = '.h()'
+;
+
+/*
+ * HartleyMeasure
+  */
+HartleyMeasure:
+	distr='HartleyMeasure('(name=ID)')'(hartleyMeasureH = HartleyMeasureH)
+;
+HartleyMeasureH:
+	h='.h()'
+;
+/*
+ * AlternativeMeasure
+  */
+AlternativeMeasure:
+	distr='AlternativeMeasure('(name=ID)')'(alternativeMeasureA = AlternativeMeasureA)
+;
+AlternativeMeasureA:
+	a='.a()'
+;
+/*
+ * U_Uncertainty
+  */
+U_Uncertainty:
+	distr='U_Uncertainty('(name=ID)')'(uUncertaintyu = UUncertaintyu)
+;
+UUncertaintyu:
+	u='.u()'
+;
+
+/*
+ * DissonanceMeasure
+  */
+DissonanceMeasure:
+    distr='DissonanceMeasure('(name=ID)')'
+    (dissonanceMeasureE = DissonanceMeasureE|dissonanceMeasureComplem=DissonanceMeasureComplem) ?
+    conflict=Conflict ?
+;
+DissonanceMeasureE:
+	e='.e()'
+;
+DissonanceMeasureComplem:
+	complementrary='.complementray()'
+;
+
+
+/*
+ * Conflict
+  */
+Conflict:
+	distr='.Conflict'(conflictWeight = ConflictWeight|leftdegree=Leftdegree|rightdegree=Rightdegree)
+;
+ConflictWeight:
+	weight='.weight()'
+;
+Leftdegree:
+	distr='.left'(leftdegree=Belief)
+;
+Rightdegree:
+	distr='.right'(rightdegree=Belief)
+;
+
+
+/*
+ * Distribution
+  */
+Distribution:
+	distr='Distribution('(name=ID)')'(distributionExpre = DistributionExpre)
+;
+DistributionExpre:
+	expression='.expression()'
+;
+
+
+/*
+ * BeliefInterval
+  */
+BeliefInterval: distr='BeliefInterval('(name=ID)')'
+	          ( '.min'min=Belief) ?
+	          ( '.max'max=Plausibility) ?
+	
+;
+
+/*
+ * Belief
+  */
+Belief:
+	degree='.degree()'
+;
+
+/*
+ * Plausibility
+  */
+Plausibility:
+	degree='.degree()'
+;
+
+/*
+ * PignisticDistribution
+  */
+PignisticDistribution:
+	distr='PignisticDistribution('(name=ID)')'(pignisticDistributionExpre = PignisticDistributionExpre)
+;
+PignisticDistributionExpre:
+	expression='.expression()'
+;
+
+/*
+ * PossibleDistribution
+  */
+PossibleDistribution:
+	distr='PossibleDistribution('(name=ID)')'(possibleDistributionExpre = PossibleDistributionExpre)
+;
+PossibleDistributionExpre:
+	expression='.expression()'
+;
+
+
+
+
+
+
+/*
+ExpressionsModel:
+	 (elements+=AbstractElement2)*;
+AbstractElement2:
+	Variable | EvalExpression;
+Variable:
+	name = ID   ('=' expression=Expression)? // TODO:  ('=' expression=Expression)? jarrita, bestela ez doa
+;
+	//"var" name=ID '=' expression=Expression;
+
+MonitoringVariableExpresion:
+	name=ID
+;	
+	
+EvalExpression:
+	expression=Expression;
+Expression: Or;
+
+Or returns Expression:
+
+And (
+{Or. left =current} '||' right=And
+)*;
+
+And returns Expression:
+	Equality (
+		{And.left=current} '&&' right=Equality
+	)*;
+
+Equality returns Expression:
+	Comparison (
+	{Equality . left =current} op=('==' | '!=')
+	right=Comparison
+)*;
+
+Comparison returns Expression:
+	PlusOrMinus (
+	{Comparison.left=current} op=('>=' | '<=' | '>' | '<')
+	right=PlusOrMinus
+)*;
+
+PlusOrMinus returns Expression:
+	MulOrDiv (
+	({ Plus. left =current} '+' | {Minus.left=current} '-')
+	right=MulOrDiv
+	)*;
+
+MulOrDiv returns Expression:
+	Primary (
+	({MulOrDiv.left=current} op=('*' | '/' | '^'))
+	right=Primary
+	)*;
+Primary returns Expression:
+'(' Expression ')' |
+{Not} '!' expression=Primary |
+Atomic ;
+
+Atomic returns Expression: //TODO: Support for doubles and negative values (negatives can be handled with 0-1)
+	{IntConstant} value=INT |
+	{StringConstant} value=STRING |
+	{BoolConstant} value=('true' | 'false') |
+	variable=Variable ;
+*/
+/*------------------------ANOHER EXPRESIONS MATHS------------------------ */
+
+/*Math:
+  expression=Expression;
+    
+Expression:
+  Addition;
+    
+Addition returns Expression:
+  Multiplication (({Plus.left=current} '+' | {Minus.left=current} '-') right=Multiplication)*;
+    
+Multiplication returns Expression:
+  PrimaryExpression (({Multi.left=current} '*' | {Div.left=current} '/') right=PrimaryExpression)*;
+    
+PrimaryExpression returns Expression:
+  '(' Expression ')' |
+   {NumberLiteral} value=NUMBER;
+
+terminal NUMBER returns ecore::EBigDecimal:
+  ('0'..'9')* ('.' ('0'..'9')+)?;
+    
+
+@Override
+terminal INT returns ecore::EInt:
+  'this one has been deactivated';
+  
+*/
+
+
+/*------------------------------------------------------- */
+/*
+Addition returns Expression:
+  Multiplication ({Addition.left=current} '+' right=Multiplication)*;
+  
+Multiplication returns Expression:
+  Primary ({Multiplication.left=current} '*' right=Primary)*;
+  
+Primary returns Expression:
+  NumberLiteral |
+  '(' Addition ')';
+  
+NumberLiteral:
+  value=INT;
+ */
