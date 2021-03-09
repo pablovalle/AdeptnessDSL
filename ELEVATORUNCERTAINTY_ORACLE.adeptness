@@ -1,0 +1,422 @@
+import ELEVATOREUNCERTAINTY_MONITORING. adeptness
+
+
+
+CPS Elevator: implements MONITORING_PLAN_ELEVATORUNCERTAINTY
+
+	
+	ORACLE R1:
+		while: ( NumOfPassenger>20 ) 
+		checks: NormalDistribution(PassengerArrivalTime) .standDev() should be 10 ;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R2:
+		while: ( NumOfPassenger>20 ) 
+		checks: NormalDistribution(PassengerArrivalTime) .mean() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R3:
+		while: ( NumOfPassenger>20 ) 
+		checks: BernoulliDistribution(PassengerArrivalTime) .trials() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R4:
+		while: ( BernoulliDistribution(PassengerArrivalTime) .prob()==2 ) 
+		checks: AWT should be 28;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R5:
+		while: ( Calls <30 ) 
+		checks: GammaDistribution(WT) .k() should be 28;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R6:
+		while: ( Calls <30 ) 
+		checks: GammaDistribution(WT) .mean() should be 10;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R7:
+		while: ( Demand==200 ) 
+		checks: UniformDistribution(TrafficFlow) .min() should be 5;
+		fails if : confidence is below 0; 
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R8:
+		while: ( Demand==20 ) 
+		checks: UniformDistribution(TrafficFlow) .max() should be 10;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R9:
+		while: ( TriangularDistribution(TrafficFlow) .min() ==2 && TriangularDistribution(TrafficFlow) .max() ==5 && TriangularDistribution(TrafficFlow) .mode() ==3 ) 
+		checks: AWT should not be 20;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R10:
+		while: ( PoissonDistribution(TrafficFlow) .mean() ==2 ) 
+		checks: AWT should not be 20;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R11:
+		while: ( LogarithmicDistribution(TrafficFlow) .theta()==0.2 ) 
+		checks: AWT should be 20;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R12:
+		while: ( GeometricDistribution(TrafficFlow) .p()>0.2 ) 
+		checks: PoissonDistribution(WT) .mean() should be 5;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R13:
+		while: ( ExponentialDistribution(DestinationFloor) .mean()>9 ) 
+		checks: BinomialDistribution(TransitTime) .prob() should be 0.8;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R14:
+		while: ( Interval(DestinationFloor).min() >9 ) 
+		checks: Interval(DestinationFloor).max() should be 20;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R15:
+		while: ( ProbabilityInterval(DestinationFloor).min() >0.1 ) 
+		checks: ProbabilityInterval(DestinationFloor).max() should be 0.8;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+		
+	ORACLE R16:
+		while: ( ConfidenceInterval(DestinationFloor).value()>9 && ConfidenceInterval(DestinationFloor).level()==1) 
+		checks: ConfidenceInterval(DestinationFloor).error() should be 0.8;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R17:
+		while: ( ProbabilityConfidenceInterval(DestinationFloor).value() >0.3 && ProbabilityConfidenceInterval(DestinationFloor).level() ==1) 
+		checks: ProbabilityConfidenceInterval(DestinationFloor).error() should be 0.8;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R18:
+		while: ( Calls <30 ) 
+		checks: Percentage(WT).value() should be 28;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R19:
+		while: ( Calls <30 ) 
+		checks: Probability(WT).value() should be 28;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R20:
+		while: ( Calls <30 ) 
+		checks: ConfidenceLevel(WT).value() should be 28;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE		
+	
+	ORACLE R201:
+		while: (  Probability_3Scale(DestinationFloor) == Likely && Probability_3Scale(TrafficFlow) == Certain) 
+		checks: Probability_3Scale(AWT) should be Impossible ;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R202:
+		while: (  Probability_4Scale(DestinationFloor) == Likely && Probability_4Scale(TrafficFlow) == Certain && Probability_4Scale(Calls) == Unlikely ) 
+		checks: Probability_4Scale(AWT)  should be Impossible;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R203:
+		while: (  Probability_5Scale(DestinationFloor) == Likely && Probability_5Scale(TrafficFlow) == Certain && Probability_5Scale(Calls) == Unlikely  
+			&& Probability_5Scale(Demand) == Even ) 
+		checks: Probability_5Scale(AWT) should be Impossible ;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R204:
+		while: (  Probability_7Scale(PassengerArrivalTime) == Impossible && Probability_7Scale(DestinationFloor) == Likely
+			&& Probability_7Scale(Calls) == Unlikely && Probability_7Scale(Demand) == Even 
+	    	&& Probability_7Scale(NumOfPassenger) == VeryUnlikely && Probability_7Scale(TransitTime) == VeryLikely ) 
+		checks: Probability_7Scale(AWT) should be Certain ;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	
+	
+	ORACLE R21:
+		while: ( FuzzyInterval(Calls).max.number() <30 ) 
+		checks: FuzzyInterval(WT).min.number() should be 28;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R22:
+		while: ( TriangularFuzzyNumber(DestinationFloor).a() >9 && TriangularFuzzyNumber(DestinationFloor).b() ==1 && TriangularFuzzyNumber(DestinationFloor).c() == 2) 
+		checks: TriangularFuzzyNumber(DestinationFloor).isSharped() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R221:
+		while: ( TriangularFuzzyNumber(DestinationFloor).a() >9 && TriangularFuzzyNumber(DestinationFloor).b() ==1 && TriangularFuzzyNumber(DestinationFloor).c() == 2) 
+		checks: TriangularFuzzyNumber(DestinationFloor).number() should be 10;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R23:
+		while: ( FuzzyLogic(DestinationFloor).operator() == AND && FuzzyLogic(DestinationFloor).var() == a ) 
+		checks: FuzzyLogic(Deviation).set.MembershipDegree(AngularError).value() should be 0.8;
+		fails if : confidence is below 0;  
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R231:
+		while: ( FuzzyLogic(Deviation).set.MembershipDegree(AngularError).hedge() == Extremely && FuzzyLogic(DestinationFloor).set.MembershipDegree(AngularError).element() == Right ) 
+		checks: FuzzyLogic(Deviation).set.Fuzziness should be HammingFuzziness;
+		fails if : confidence is below 0;  
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R232:
+		while: (FuzzyLogic(Deviation).set.Fuzziness == MinkowskiFuzziness &&  FuzzyLogic(Deviation).set.Fuzziness == EuclidFuzziness 
+			    && FuzzyLogic(Deviation).set.FuzzyEntropy == True && FuzzyLogic(Deviation).set.Roughness == True) 
+		checks: FuzzyLogic(Deviation).set.Fuzziness should be HammingFuzziness;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R24:
+		while: ( FuzzySet(Deviation).MembershipDegree(AngularError).hedge() == Extremely && FuzzySet(Deviation).MembershipDegree(AngularError).element() == Right) 
+		checks: FuzzySet(Deviation).MembershipDegree(AngularError).value() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R240:
+		while: (FuzzySet(Deviation).MembershipDegree(AngularError).value()==0.5 && FuzzySet(Deviation).MembershipDegree(LateralError).value()==0.8) 
+		checks: FuzzySet(Deviation).Fuzziness should be HammingFuzziness;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	 
+	
+	ORACLE R241:
+		while: (FuzzySet(Deviation).MembershipDegree(AngularError).value()==0.5 && FuzzySet(Deviation).MembershipDegree(LateralError).value()==0.8
+			  && FuzzySet(Deviation).MembershipDegree(AngularError).hedge()==Extremely && FuzzySet(Deviation).MembershipDegree(LateralError).hedge()==Very
+			  && FuzzySet(Deviation).MembershipDegree(AngularError).element() == Left && FuzzySet(Deviation).MembershipDegree(LateralError).element() == Right) 
+		checks: FuzzySet(Deviation).Fuzziness should be HammingFuzziness;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R2410:
+		while: (FuzzySet(Deviation).MembershipDegree(AngularError).hedge()==Very_Very && FuzzySet(Deviation).MembershipDegree(LateralError).hedge()==Extremely
+			   && FuzzySet(Deviation).MembershipDegree(AngularError).element()==Left && FuzzySet(Deviation).MembershipDegree(LateralError).element()==Left ) 
+		checks: FuzzySet(Deviation).Fuzziness should be EuclidFuzziness;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	 
+	
+	
+	ORACLE R2411:
+		while: (FuzzySet(Deviation).Fuzziness == MinkowskiFuzziness &&  FuzzySet(Deviation).Fuzziness == EuclidFuzziness && FuzzySet(Deviation).FuzzyEntropy == True
+			      && FuzzySet(Deviation).Roughness == True) 
+		checks: FuzzySet(Deviation).Fuzziness should be HammingFuzziness;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R242:
+		while: ( IntervalValuedFuzzySet(Deviation).MembershipDegree(AngularError).element() == Right
+			    && IntervalValuedFuzzySet(Deviation).MembershipDegree(AngularError).hedge() == A_Little) 
+		checks: IntervalValuedFuzzySet(Deviation).MembershipDegree(AngularError).value() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R243:
+		while: ( LFuzzySet(Deviation).MembershipDegree(AngularError).element() == Right
+			    && LFuzzySet(Deviation).MembershipDegree(AngularError).hedge() == Indeed) 
+		checks: LFuzzySet(Deviation).MembershipDegree(AngularError).value() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R244:
+		while: ( IntuitionisticFuzzySet(Deviation).MembershipDegree(AngularError).element() == Right
+			    && IntuitionisticFuzzySet(Deviation).MembershipDegree(AngularError).hedge() == Slightly) 
+		checks: IntuitionisticFuzzySet(Deviation).MembershipDegree(AngularError).value() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	
+	ORACLE R245:
+		while: ( VagueSet(Deviation).MembershipDegree(AngularError).element() == Right
+			    && VagueSet(Deviation).MembershipDegree(AngularError).hedge() == Very) 
+		checks: VagueSet(Deviation).MembershipDegree(AngularError).value() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R246:
+		while: (IntervalValuedFuzzySet(Deviation).Fuzziness == MinkowskiFuzziness  &&  IntervalValuedFuzzySet(Deviation).Fuzziness == EuclidFuzziness
+		    	&& IntervalValuedFuzzySet(Deviation).FuzzyEntropy == True && IntervalValuedFuzzySet(Deviation).Roughness == True) 
+		checks: IntervalValuedFuzzySet(Deviation).Fuzziness should be HammingFuzziness;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R247:
+		while: (LFuzzySet(Deviation).Fuzziness == MinkowskiFuzziness  &&  LFuzzySet(Deviation).Fuzziness == EuclidFuzziness
+		    	&& LFuzzySet(Deviation).FuzzyEntropy == True && LFuzzySet(Deviation).Roughness == True) 
+		checks: LFuzzySet(Deviation).Fuzziness should be HammingFuzziness;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R248:
+		while: (IntuitionisticFuzzySet(Deviation).Fuzziness == MinkowskiFuzziness && IntuitionisticFuzzySet(Deviation).Fuzziness == EuclidFuzziness
+		    	&& IntuitionisticFuzzySet(Deviation).FuzzyEntropy == True && IntuitionisticFuzzySet(Deviation).Roughness == True) 
+		checks: IntuitionisticFuzzySet(Deviation).Fuzziness  should be  HammingFuzziness;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R249:
+		while: (VagueSet(Deviation).Fuzziness == MinkowskiFuzziness && VagueSet(Deviation).Fuzziness == EuclidFuzziness
+		    	&& VagueSet(Deviation).FuzzyEntropy == True && VagueSet(Deviation).Roughness == True) 
+		checks: VagueSet(Deviation).Fuzziness should be  HammingFuzziness ;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	
+	ORACLE R25:
+		while: ( FuzzySetCut(DestinationFloor).lambda() ==0.1 && FuzzySetCut(DestinationFloor).isStrong() == True) 
+		checks: FuzzySetCut(DestinationFloor).kind() should be Supp;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE
+	
+	ORACLE R26:
+		while: ( NumOfPassenger>20 ) 
+		checks: ShannonEntropy(PassengerArrivalTime).h() should be 0.6;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+
+	ORACLE R27:
+		while: ( NumOfPassenger>20 ) 
+		checks: HartleyMeasure(PassengerArrivalTime).h() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R28:
+		while: ( NumOfPassenger>20 ) 
+		checks: AlternativeMeasure(PassengerArrivalTime).a() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R29:
+		while: ( NumOfPassenger>20 ) 
+		checks: U_Uncertainty(PassengerArrivalTime).u() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R30:
+		while: ( BeliefInterval(AWT).min.degree() ==2 ) 
+		checks: BeliefInterval(AWT).max.degree() should be 10;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R31:
+		while: ( NumOfPassenger>20 ) 
+		checks: DissonanceMeasure(DestinationFloor).Conflict.weight() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE		
+	
+	ORACLE R311:
+		while: ( NumOfPassenger>20 ) 
+		checks: DissonanceMeasure(DestinationFloor).Conflict.left.degree() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R312:
+		while: ( NumOfPassenger>20 ) 
+		checks: DissonanceMeasure(DestinationFloor).Conflict.right.degree() should be 1;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+	ORACLE R32:
+		while: ( DissonanceMeasure(DestinationFloor).e() >9 ) 
+		checks: DissonanceMeasure(DestinationFloor).complementray() should be 2;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+
+	ORACLE R33:
+		while: ( NumOfPassenger>20 ) 
+		checks: Distribution(PassengerArrivalTime).expression() should be Normal;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+	
+
+	ORACLE R34:
+		while: ( NumOfPassenger>20 ) 
+		checks: PossibleDistribution(PassengerArrivalTime).expression() should be Normal;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+
+	ORACLE R35:
+		while: ( NumOfPassenger>20 ) 
+		checks: PignisticDistribution(PassengerArrivalTime).expression() should be Normal;
+		fails if : confidence is below 0;
+		Description: "EXPLICACION"
+	ENDORACLE	
+
+ENDCPS 
