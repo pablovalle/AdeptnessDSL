@@ -8,6 +8,8 @@ import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -16,6 +18,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 public class OperationalDataConnector {
 
 	Sheet sheet;
+	FormulaEvaluator evaluator;
 
 	public OperationalDataConnector() {
 		try {
@@ -28,6 +31,7 @@ public class OperationalDataConnector {
 				// caches file content
 				// this.getClass().getClassLoader().getResourceAsStream("TrainingData_MiercolesSur_trainingdata1.xlsx"))
 				Workbook wb = WorkbookFactory.create(inp);
+				evaluator = wb.getCreationHelper().createFormulaEvaluator();
 				this.sheet = wb.getSheetAt(0);
 			}
 		} catch (Exception e) {
@@ -63,16 +67,21 @@ public class OperationalDataConnector {
 			if (row.getRowNum() == 0)
 				continue;
 			Cell cell = row.getCell(columnIdx);
-			if (cell.getCellType() == CellType.NUMERIC) {
-				columnValues.add(cell.getNumericCellValue());
-			} else if (cell.getCellType() == CellType.BOOLEAN) {
-				if (cell.getBooleanCellValue()) {
+			CellValue cellVal = evaluator.evaluate(cell);
+			
+			switch (cellVal.getCellType()) {
+			case NUMERIC:
+				columnValues.add(cellVal.getNumberValue());
+				break;
+			case BOOLEAN:
+				if (cellVal.getBooleanValue()) {
 					columnValues.add(1.0);
 				} else {
 					columnValues.add(0.0);
 				}
-			} else {
-				throw new Exception("Variable " + variableName + " is not boolean or numeric.");
+				break;
+			default:
+				throw new Exception("Variable " + variableName + " is not boolean nor numeric.");
 			}
 		}
 		return columnValues;
@@ -98,7 +107,7 @@ public class OperationalDataConnector {
 		if (timestamps.size() != data.size() || timestamps.size() < 2)
 			return null;
 		ArrayList<Double> normalizedData = new ArrayList<Double>();
-		
+
 		int p = 1; // 1 second
 
 		int t0idx = 0;
@@ -106,7 +115,7 @@ public class OperationalDataConnector {
 		Double t0 = timestamps.get(t0idx);
 		Double t = t0;
 		Double t1 = timestamps.get(t1idx);
-		
+
 		normalizedData.add(data.get(0));
 		Double tlast = timestamps.get(timestamps.size() - 1);
 		Double tbeflast = timestamps.get(timestamps.size() - 2);

@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.util,
  org.eclipse.emf.common,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.xtext.example.mydsl.adeptness.impl,
  org.xtext.example.mydsl.parser.antlr.internal,
  org.xtext.example.mydsl.scoping,
@@ -33,4 +33,5 @@ Bundle-ClassPath: .,
  lib/poi-ooxml-full-5.0.0.jar,
  lib/commons-compress-1.20.jar,
  lib/commons-collections4-4.4.jar,
- lib/xmlbeans-4.0.0.jar
+ lib/xmlbeans-4.0.0.jar,
+ lib/commons-math3-3.6.1.jar
