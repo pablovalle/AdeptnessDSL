@@ -4,9 +4,13 @@
 package org.xtext.example.mydsl.generator
 
 import com.google.inject.Inject
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileWriter
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.List
+import java.util.Scanner
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
@@ -25,7 +29,7 @@ class AdeptnessGenerator extends AbstractGenerator {
  @Inject extension IQualifiedNameProvider
 
 	//Poner el directorio de la seinal, donde se van a generar los .c y .h para poder compilarlo en matlab y generar el .mex file
-	//String directory="C:\\Users\\hazibek02\\runtime-EclipseXtext\\Matlab\\src-gen\\lehenengoa\\"; 
+	String directory="C:\\Users\\pablo\\OneDrive\\Escritorio\\trabajo\\runtime-EclipseXtext\\Pruebas\\src-gen\\"; 
 var HashMap<String, List<String>> nameMap;
 var HashMap<String, String> whenMap;
 var HashMap<String, String> whileMap;
@@ -36,6 +40,7 @@ var HashMap<String, List<String>> checkVar;
     	//fsa.generateFile("adeptness.xml", resource.allContents.toIterable.filter(Signal).createXML());
     		for(a: resource.allContents.toIterable.filter(ValidationPlan)){
     			fsa.generateFile(a.fullyQualifiedName.toString("/")+".json", a.create_VP_json())
+  
     		}
       		for(e: resource.allContents.toIterable.filter(Signal)){
        	
@@ -72,8 +77,9 @@ var HashMap<String, List<String>> checkVar;
 			getAllNames(e);
 			for(q: e.oracle){
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".c", q.create_oracle_c(nameMap.get(q.name)))
-				fsa.generateFile(q.fullyQualifiedName.toString("/")+".h", q.create_oracle_h(nameMap.get(q.name)))
+				fsa.generateFile(q.fullyQualifiedName.toString("/")+".h", q.create_oracle_h(nameMap.get(q.name),e.fullyQualifiedName.toString()))
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+"_Verdict.c", q.create_verdict_c(nameMap.get(q.name)))
+				appendFile(e,q.fullyQualifiedName.toString("/")+".c",q.fullyQualifiedName.toString("/")+"_Verdict.c")
 				//fsa.generateFile(q.fullyQualifiedName.toString("/")+".json", q.create_oracle_json())
 				//fsa.generateFile(q.fullyQualifiedName.toString("/")+".m", q.create_oracle_m())
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
@@ -81,9 +87,49 @@ var HashMap<String, List<String>> checkVar;
 			fsa.generateFile(e.fullyQualifiedName.toString("/")+".json", e.create_oracle_json())
 			fsa.generateFile("Array.h", e.create_array_h())
 			fsa.generateFile("Array.c", e.create_array_c())
+			fsa.generateFile(e.fullyQualifiedName.toString()+".h", e.create_global_h())
 			
 		}
     }
+	
+	def appendFile(Signal s,String dotC, String dotVerdict) {
+		var List<String> lineak= new ArrayList();
+		var File myObj;
+		var Scanner myReader;
+		var String data;
+		try {
+	      myObj = new File(directory+dotC);
+	      //println("Working Directory = " + System.getProperty("user.dir"));
+	      myReader = new Scanner(myObj);
+	      while (myReader.hasNextLine()) {
+	        data = myReader.nextLine();
+	        lineak.add(data);
+	      }
+	      myReader.close();
+	    } catch (FileNotFoundException e) {
+	      System.out.println("An error occurred.");
+	      e.printStackTrace();
+	    }
+	    try {
+	      myObj = new File(directory+dotVerdict);
+	      myReader = new Scanner(myObj);
+	      while (myReader.hasNextLine()) {
+	        data = myReader.nextLine();
+	        lineak.add(data);
+	      }
+	      myReader.close();
+	    } catch (FileNotFoundException e) {
+	      System.out.println("An error occurred.");
+	      e.printStackTrace();
+	    }
+	    var FileWriter writer = new FileWriter(directory+dotC); 
+		for(String str: lineak) {
+		  writer.write(str + System.lineSeparator());
+		}
+		writer.close();
+		
+		
+	}
 	
 	def CharSequence create_array_c(Signal s)'''
 	#include "Array.h"
@@ -111,7 +157,38 @@ var HashMap<String, List<String>> checkVar;
 	}
 	
 	'''
+	def create_global_h(Signal s)'''
+	#ifndef «s.fullyQualifiedName.toUpperCase.toString»_H
+	#define «s.fullyQualifiedName.toUpperCase.toString»_H
+	#include <stdio.h>
+	#include "Array.h"
+	enum VerdictValue{
+		VERDICT_PASSED,
+		VERDICT_FAILED,
+		VERDICT_INCONCLUISVE,
+		VERDICT_NONE,
+		VERDICT_ERROR
+	};
+	enum VerdictType{
+		VERDICTTYPE_CYCLE,
+		VERDICTTYPE_PARTIAL,
+		VERDICTTYPLE_GLOBAL
+	};
+	typedef struct Verdict{
+		enum VerdictValue verdict;
+		double confidence;
+		enum VerdictType type;
+	}Verdict;
+	typedef struct{
+	«FOR plan: s.superType.monitoringPlan»
+		«"\t"»double «plan.monitoringVariables.name»;
+	«ENDFOR»	
+	«"\t"»double timeStamp;
+	}SensorInput, *SENSOR_INPUT;
 	
+	#endif
+	
+	'''
 	def CharSequence create_array_h(Signal s)'''
 	#ifndef ARRAY_H
 	#define ARRAY_H
@@ -567,8 +644,39 @@ var HashMap<String, List<String>> checkVar;
 	exit
 	'''*/
 	//Expresions in values check
+	
+	//TODO ajustar paramteros necesarios
 	def CharSequence create_oracle_json(Signal CPS)'''
-	«var cont=0»
+
+	{ 
+		"«CPS.name»":[
+		«"\t"»{
+	    «"\t\t"»"inputVariationPoints": [
+	    «FOR param1:CPS.superType.monitoringPlan»
+	    «"\t\t\t"»{
+	«"\t\t\t\t"»"name":"«param1.monitoringVariables.name»",
+	«"\t\t\t\t"»"datatype": "«param1.monitoringVariables.monitoringVariableDatatype.sig_type»"
+	«"\t\t\t"»}, 
+	    «ENDFOR»
+	    «"\t\t\t"»{ 
+		«"\t\t\t\t"»"name": "timeStamp",
+		«"\t\t\t\t"»"datatype": "double"
+		«"\t\t\t"»}
+		«"\t\t"»],
+		«"\t\t"»"evaluationFunctions": [
+		«FOR param:CPS.oracle»
+		«"\t\t\t"»{
+		«"\t\t\t\t"»"name": "«param.name»"
+		«"\t\t\t"»},
+		«ENDFOR»
+		«"\t\t"»]
+		«"\t"»}
+		]
+	}
+	'''
+	/*
+	'''
+	}
 	{
 		"Name":"«CPS.name»",
 	«FOR param: CPS.oracle»
@@ -878,23 +986,13 @@ var HashMap<String, List<String>> checkVar;
 	}
 	
 	'''
-	def create_oracle_h(Oracle param, List<String> nameList)'''
+	* 
+	*/
+	//TODO division .h global(añadir verdict formato que esta en array.h) y .h por oraculo
+	def create_oracle_h(Oracle param, List<String> nameList, String name)'''
 	#ifndef «param.name.toString().toUpperCase»_H
 	#define «param.name.toString().toUpperCase»_H
-	#include <stdio.h>
-	#include "Array.h"
-	#define VERDICT_PASSED 1;
-		#define VERDICT_FAILED 0;
-		#define VERDICT_INCONCLUSIVE 2;
-	typedef struct{
-		int verdict;
-		double confidence;
-	}Verdict;
-	typedef struct{
-		«FOR param1: nameMap.get(param.name)»
-		double «param1»;
-		«ENDFOR»
-	}SensorInput, *SENSOR_INPUT;
+	#include "«name».h"
 	
 	int preprocessInputs(SensorInput *inputs, int inputQty);
 	«IF param.when!==null || param.^while!==null»
@@ -922,10 +1020,9 @@ var HashMap<String, List<String>> checkVar;
 	
 	def create_verdict_c(Oracle param, List<String> nameList)
 	'''
-	#include "«param.name».h"
 	Verdict checkGlobalVerdict_«param.name»(Array conf, Array timeStampOracle){
 		Verdict verdict;
-		verdict.verdict=VERDICT_INCONCLUSIVE;
+		verdict.verdict=VERDICT_INCONCLUISVE;
 		double times;
 		int fail, is, deg,i,time;
 		i=0;
@@ -1019,6 +1116,7 @@ var HashMap<String, List<String>> checkVar;
 		«ENDFOR»
 		return verdict;
 	} 
+	
 	'''
 	
 	def create_oracle_c(Oracle param,List<String> nameList)
