@@ -72,8 +72,7 @@ public class OracleAssesment {
 
 	PATTERNS pattern;
 	TIMING_PATTERNS tpattern;
-	Double duration;
-	String timeUnit;
+	int duration;
 
 	double signalMax;
 	double signalMin;
@@ -123,12 +122,17 @@ public class OracleAssesment {
 
 		int aWDurCount = 0;
 		for (int timestamp = 0; timestamp < monitoringVariableList.get(key).getOpData().size(); timestamp++) {
-			// whenPrecondMet are true only when a when precondition has been met previously
-			// and will remain true while operational data is checked to detect failures
+			// 1. check precondition. If a when precondition has been met previously, don't
+			// check precondition.
+
 			if (!whenPrecondMet) {
-				// check precondition is met
-				// returns true if no precondition is set.
-				if (!checkPreconditionIsMet(timestamp, monitoringVariableList)) {
+				// check if a precondition is met (true if no precondition has been set)
+				if (checkPreconditionIsMet(timestamp, monitoringVariableList)) {
+					if (precond != null && (precond.equals(PRECONDS.WHEN) || precond.equals(PRECONDS.WHENAFTERWHEN))) {
+						whenPrecondMet = true;
+						savedTimestamp = timestamp;
+					}
+				} else {
 					if (precond.equals(PRECONDS.WHILE)) {
 						resetAllCounters();
 					}
@@ -136,86 +140,171 @@ public class OracleAssesment {
 				}
 			}
 
-			// after when
-			aWDurCount++;
-			if (aWDurCount <= aWDuration) {
-				continue;
+			// 2. continue until aWDuration has passed
+			if (precond != null && precond.equals(PRECONDS.WHENAFTERWHEN)) {
+				aWDurCount++;
+				if (aWDurCount <= aWDuration) {
+					continue;
+				}
 			}
+			
 
-			// TODO atleast, atmost or exactly conditions shouldn't go inside failreason,
-			// but just the other way round
-
-			// check, foreach fail reason, if operational data is out of bounds according to
-			// the confidence value
+			// 4. check foreach fail reason if operational data is out of bounds according
+			// to the confidence value
 			Iterator<FAILREASONS> failReasonsIt = failReasons.keySet().iterator();
 			FAILREASONS frk;
+			boolean isOutOfBounds = false;
 			while (failReasonsIt.hasNext()) {
 				frk = (FAILREASONS) failReasonsIt.next();
-				if (checkOperationalDataOutOfBounds(failReasons.get(frk).confidence, timestamp,
-						monitoringVariableList)) {
-					switch (frk) {
-					case HIGH_PEAK:
+				isOutOfBounds = checkOperationalDataOutOfBounds(failReasons.get(frk).confidence, timestamp,
+						monitoringVariableList);
+
+				switch (frk) {
+				case HIGH_PEAK:
+					if (tpattern == null && isOutOfBounds) {
 						System.out.println("HighPeak detected.");
 						return false;
-					case HIGH_TIME_OUT_BOUNDS:
-						failReasons.get(frk).peakCount++;
-						if (failReasons.get(frk).peakCount >= failReasons.get(frk).nPeaks) {
-							System.out.println("High Time Out of Bounds detected (during " + failReasons.get(frk).nPeaks
-									+ " seconds).");
-							return false;
+					} else if (tpattern != null) {
+						switch (tpattern) {
+						case ATLEAST:
+							if (failReasons.get(frk).durCount <= duration && isOutOfBounds) {
+								System.out.println(
+										"Operational data out of bounds detected while a timing condition check.");
+								return false;
+							}
+							// checking time has expired, reset parameters
+							if (timestamp == (savedTimestamp + aWDuration + duration)) {
+								whenPrecondMet = false;
+								timestamp = savedTimestamp;
+								aWDurCount = 0;
+								failReasons.get(frk).durCount = 0;
+							} else {
+								failReasons.get(frk).durCount++;
+							}
+							break;
+						case ATMOST:
+							if (failReasons.get(frk).durCount == 0 && isOutOfBounds) {
+								System.out.println(
+										"Operational data in between bounds detected after a timing condition check.");
+								return false;
+							}
+							if (timestamp == (savedTimestamp + aWDuration + duration + 1) && !isOutOfBounds) {
+								System.out.println(
+										"Operational data in between bounds detected after a timing condition check.");
+								return false;
+							}
+							
+							if (timestamp > (savedTimestamp + aWDuration + duration)) {
+								whenPrecondMet = false;
+								timestamp = savedTimestamp;
+								aWDurCount = 0;
+								failReasons.get(frk).durCount = 0;
+							} else {
+								failReasons.get(frk).durCount++;
+							}
+							break;
+						case EXACTLY:
+							if (failReasons.get(frk).durCount <= duration && isOutOfBounds) {
+								System.out.println(
+										"Operational data out of bounds detected while timing condition check.");
+								return false;
+							} else if (failReasons.get(frk).durCount > duration && !isOutOfBounds) {
+								System.out.println(
+										"Operational data in between bounds detected after a timing condition check.");
+								return false;
+							}
+							
+							if (timestamp == (savedTimestamp + aWDuration + duration + 1)) {
+								whenPrecondMet = false;
+								timestamp = savedTimestamp;
+								aWDurCount = 0;
+								failReasons.get(frk).durCount = 0;
+							} else {
+								failReasons.get(frk).durCount++;
+							}
+							break;
 						}
-						break;
-					case X_PEAKS_XSECONDS:
-						failReasons.get(frk).peakCount++;
-						if (failReasons.get(frk).savedTimestamp == 0) {
-							failReasons.get(frk).savedTimestamp = timestamp;
-						}
-						if (failReasons.get(frk).peakCount >= failReasons.get(frk).nPeaks) {
-							System.out.println(failReasons.get(frk).nPeaks + " peaks detected during "
-									+ failReasons.get(frk).nSamples + " seconds.");
-							return false;
-						}
-						break;
-					default:
+						
 					}
-				}
-
-				// check haven't detected a failure, if precondMet was set -> reset parameters.
-				// if x_peaks_xseconds, continue checking until duration is reached.
-				if (whenPrecondMet && (frk == FAILREASONS.HIGH_PEAK
-						|| (frk == FAILREASONS.HIGH_TIME_OUT_BOUNDS || frk == FAILREASONS.X_PEAKS_XSECONDS)
-								&& (timestamp == (savedTimestamp + failReasons.get(frk).nSamples + aWDuration)))) {
-					// reset
-					whenPrecondMet = false;
-					timestamp = savedTimestamp;
-					aWDurCount = 0;
-					failReasons.get(frk).peakCount = 0;
-					failReasons.get(frk).durCount = 0;
-				}
-
-				// no error has been detected and duration has ended: reset
-				if (failReasons.get(frk).durCount == failReasons.get(frk).nSamples) {
-					failReasons.get(frk).peakCount = 0;
-					failReasons.get(frk).durCount = 0;
-					// if there isn't any precondition to meet, and currently checking a
-					// x_peaks_xseconds failreason and a peak was detected previously -> reset
-					// timestamp. This way it will continue checking from the following timestamp of
-					// the first peak detected
-					if (this.precond == null && frk == FAILREASONS.X_PEAKS_XSECONDS
-							&& failReasons.get(frk).savedTimestamp != 0) {
-						timestamp = failReasons.get(frk).savedTimestamp;
-						failReasons.get(frk).savedTimestamp = 0;
+					break;
+				case HIGH_TIME_OUT_BOUNDS:
+					if (isOutOfBounds) {
+						failReasons.get(frk).peakCount++;
 					}
-				}
-				// no error was detected and duration hasn't ended and a peak was detected
-				// at some point -> continue counting
-				else if (failReasons.get(frk).peakCount > 0 || whenPrecondMet) {
-					failReasons.get(frk).durCount++;
+					if (failReasons.get(frk).peakCount >= failReasons.get(frk).nPeaks) {
+						System.out.println("High Time Out of Bounds detected (during " + failReasons.get(frk).nPeaks
+								+ " seconds).");
+						return false;
+					}
+
+					if (whenPrecondMet
+							&& (timestamp == (savedTimestamp + failReasons.get(frk).nSamples + aWDuration))) {
+						whenPrecondMet = false;
+						timestamp = savedTimestamp;
+						aWDurCount = 0;
+						failReasons.get(frk).peakCount = 0;
+						failReasons.get(frk).durCount = 0;
+					}
+
+					// duration has ended: reset
+					if (failReasons.get(frk).durCount == failReasons.get(frk).nSamples) {
+						failReasons.get(frk).peakCount = 0;
+						failReasons.get(frk).durCount = 0;
+					}
+					// duration hasn't ended and a peak was detected at some point (x_peaks_xseconds
+					// or high_time_out_of_bounds)-> continue counting
+					else if (failReasons.get(frk).peakCount > 0 || whenPrecondMet) {
+						failReasons.get(frk).durCount++;
+					}
+
+					break;
+				case X_PEAKS_XSECONDS:
+					if (isOutOfBounds) {
+						failReasons.get(frk).peakCount++;
+					}
+					if (failReasons.get(frk).savedTimestamp == 0) {
+						failReasons.get(frk).savedTimestamp = timestamp;
+					}
+					if (failReasons.get(frk).peakCount >= failReasons.get(frk).nPeaks) {
+						System.out.println(failReasons.get(frk).nPeaks + " peaks detected during "
+								+ failReasons.get(frk).nSamples + " seconds.");
+						return false;
+					}
+
+					// previous check haven't detected a failure
+					// if whenPrecondMet was set -> reset parameters. if x_peaks_xseconds or
+					// high_time_out_of_bounds, continue checking until duration is reached.
+					if (whenPrecondMet
+							&& (timestamp == (savedTimestamp + failReasons.get(frk).nSamples + aWDuration))) {
+						whenPrecondMet = false;
+						timestamp = savedTimestamp;
+						aWDurCount = 0;
+						failReasons.get(frk).peakCount = 0;
+						failReasons.get(frk).durCount = 0;
+					}
+
+					// duration has ended: reset
+					if (failReasons.get(frk).durCount == failReasons.get(frk).nSamples) {
+						failReasons.get(frk).peakCount = 0;
+						failReasons.get(frk).durCount = 0;
+						// if there isn't any precondition to meet, and a peak was detected previously
+						// -> reset timestamp. This way it will continue checking from the following
+						// timestamp of the first peak detected
+						if (this.precond == null && failReasons.get(frk).savedTimestamp != 0) {
+							timestamp = failReasons.get(frk).savedTimestamp;
+							failReasons.get(frk).savedTimestamp = 0;
+						}
+					}
+					// duration hasn't ended and a peak was detected at some point (x_peaks_xseconds
+					// or high_time_out_of_bounds)-> continue counting
+					else if (failReasons.get(frk).peakCount > 0 || whenPrecondMet) {
+						failReasons.get(frk).durCount++;
+					}
+					break;
+				default:
 				}
 
 			}
-			// TODO check atleast | atmost | exactly conditions
-
 		}
 
 		return true;
@@ -317,7 +406,7 @@ public class OracleAssesment {
 
 		if (timestamp == 0) {
 			System.out.println(
-					"Checking if signal is out of bounds for reference [" + lowerRefBound + "," + upperRefBound + "]");
+					"Checking if signal is " + pattern + " [" + lowerRefBound + "," + upperRefBound + "]" );
 		}
 
 		if (outOfBounds) {
@@ -416,17 +505,12 @@ public class OracleAssesment {
 			elements = this.oracle.getWhile().getEm().getElements();
 			break;
 		}
+		String expression = getExpression(elements, timestamp, monitoringVariableList);
 
-		isMet = (Boolean) evalExpression(getExpression(elements, timestamp, monitoringVariableList));
+		isMet = (Boolean) evalExpression(expression);
 		if (isMet) {
-			if (precond.equals(PRECONDS.WHEN) || precond.equals(PRECONDS.WHENAFTERWHEN)) {
-				System.out.println("Precondition met (" + getExpression(elements, timestamp, monitoringVariableList)
-						+ ") at timestamp: " + timestamp);
-				whenPrecondMet = true;
-				savedTimestamp = timestamp;
-			}
+			System.out.println("Precondition met (" + expression + ") at timestamp: " + timestamp);
 		}
-
 		return isMet;
 	}
 
@@ -508,24 +592,26 @@ public class OracleAssesment {
 			if (this.oracle.getWhen().getAw() != null) {
 				this.precond = PRECONDS.WHENAFTERWHEN;
 				double dur = this.oracle.getWhen().getAw().getWait().getTime().getDVal();
-				switch (this.oracle.getWhen().getAw().getWait().getUnit().getTime()) {
-				case "milliseconds":
-					aWDuration = (int) (dur * 1000);
-					break;
-				case "minutes":
-					aWDuration = (int) dur * 60;
-					break;
-				case "hours":
-					aWDuration = (int) dur * 60 * 60;
-					break;
-				default: // seconds
-					aWDuration = (int) dur;
-				}
+				aWDuration = getDurationInSeconds(dur, this.oracle.getWhen().getAw().getWait().getUnit().getTime());
+
 			} else {
 				this.precond = PRECONDS.WHEN;
 			}
 		} else if (this.oracle.getWhile() != null) {
 			this.precond = PRECONDS.WHILE;
+		}
+	}
+
+	private int getDurationInSeconds(double duration, String timeUnit) {
+		switch (timeUnit) {
+		case "milliseconds":
+			return (int) duration * 1000;
+		case "minutes":
+			return (int) duration * 60;
+		case "hours":
+			return (int) duration * 60 * 60;
+		default: // seconds
+			return (int) duration;
 		}
 	}
 
@@ -566,19 +652,26 @@ public class OracleAssesment {
 			exactly = reference.getNotsame().getExactly();
 		}
 
+		Double dur = null;
+		String timeUnit = null;
 		if (atLeast != null) {
-			this.tpattern = TIMING_PATTERNS.EXACTLY;
-			duration = atLeast.getTime() != null ? atLeast.getTime().getDVal() : null;
+			this.tpattern = TIMING_PATTERNS.ATLEAST;
+			dur = atLeast.getTime() != null ? atLeast.getTime().getDVal() : null;
 			timeUnit = atLeast.getUnit() != null ? atLeast.getUnit().toString() : null;
 		} else if (atMost != null) {
 			this.tpattern = TIMING_PATTERNS.ATMOST;
-			duration = atMost.getTime() != null ? atMost.getTime().getDVal() : null;
+			dur = atMost.getTime() != null ? atMost.getTime().getDVal() : null;
 			timeUnit = atMost.getUnit() != null ? atMost.getUnit().toString() : null;
 		} else if (exactly != null) {
-			this.tpattern = TIMING_PATTERNS.ATLEAST;
-			duration = exactly.getTime() != null ? exactly.getTime().getDVal() : null;
+			this.tpattern = TIMING_PATTERNS.EXACTLY;
+			dur = exactly.getTime() != null ? exactly.getTime().getDVal() : null;
 			timeUnit = exactly.getUnit() != null ? exactly.getUnit().toString() : null;
 		}
+
+		if (dur != null && timeUnit != null) {
+			duration = getDurationInSeconds(dur, timeUnit);
+		}
+
 	}
 
 	private void findSignalsMaxMinValues(HashMap<String, MonitoringVariables> monitoringVariableList) {
