@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.ComposedChecks;
 import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.At_least;
@@ -37,12 +38,14 @@ import org.xtext.example.mydsl.adeptness.When;
 import org.xtext.example.mydsl.adeptness.While;
 import org.xtext.example.mydsl.adeptness.XPeaks;
 
+
 /**
  * This class contains custom validation rules.
  *
  * See
  * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
+@ComposedChecks(validators= {UncertaintyValidator.class})
 public class AdeptnessValidator extends AbstractAdeptnessValidator {
 
 	double cantHigh;
