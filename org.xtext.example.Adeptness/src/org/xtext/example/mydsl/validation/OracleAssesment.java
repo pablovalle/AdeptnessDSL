@@ -735,7 +735,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			}
 
 			if (this.tpattern != null && this.precond == null) {
-				error("Temporary conditions should only be used in conjuction with preconditions.",
+				error("Temporary conditions within assertions should only be used in conjuction with \"while\" or \"when\" preconditions.",
 						AdeptnessPackage.Literals.ORACLE__CHECK);
 				continue;
 			}
