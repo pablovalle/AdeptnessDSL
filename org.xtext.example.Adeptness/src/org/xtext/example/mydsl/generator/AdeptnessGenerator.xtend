@@ -162,10 +162,11 @@ var HashMap<String, List<String>> checkVar;
 	#define «s.fullyQualifiedName.toUpperCase.toString»_H
 	#include <stdio.h>
 	#include "Array.h"
+	
 	enum VerdictValue{
 		VERDICT_PASSED,
 		VERDICT_FAILED,
-		VERDICT_INCONCLUISVE,
+		VERDICT_INCONCLUSIVE,
 		VERDICT_NONE,
 		VERDICT_ERROR
 	};
@@ -986,20 +987,22 @@ var HashMap<String, List<String>> checkVar;
 	}
 	
 	'''
-	* 
+	* #include "«name».h"
 	*/
+
 	//TODO division .h global(añadir verdict formato que esta en array.h) y .h por oraculo
 	def create_oracle_h(Oracle param, List<String> nameList, String name)'''
 	#ifndef «param.name.toString().toUpperCase»_H
 	#define «param.name.toString().toUpperCase»_H
-	#include "«name».h"
 	
-	int preprocessInputs(SensorInput *inputs, int inputQty);
+	#include "oracle_commons.h"
+	
+	int preprocessInputs_«param.name»(SensorInput *inputs);
 	«IF param.when!==null || param.^while!==null»
 	int evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap.get(param.name).toString»«ENDIF»);
 	«ENDIF»
-	Verdict evaluatePostConditions_«param.name»(Verdict verdict, SensorInput *inputs, int inputQty);
-	Verdict performEvaluation_«param.name»(SensorInput *inputs, int inputQty, double timeStamp);
+	Verdict evaluatePostConditions_«param.name»(Verdict verdict, SensorInput *inputs);
+	Verdict performEvaluation_«param.name»(SensorInput *inputs);
 	Verdict checkGlobalVerdict_«param.name»(Array conf, Array timeStampOracle);
 	«IF param.check.reference.upper!==null»
 	double confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»double «param1.toString»,«ENDFOR»double signal);
@@ -1022,7 +1025,7 @@ var HashMap<String, List<String>> checkVar;
 	'''
 	Verdict checkGlobalVerdict_«param.name»(Array conf, Array timeStampOracle){
 		Verdict verdict;
-		verdict.verdict=VERDICT_INCONCLUISVE;
+		verdict.verdict=VERDICT_INCONCLUSIVE;
 		double times;
 		int fail, is, deg,i,time;
 		i=0;
@@ -1125,21 +1128,21 @@ var HashMap<String, List<String>> checkVar;
 	
 	//«param.check.description.value»
 	
-	int preprocessInputs(SensorInput *inputs, int inputQty) {
+	int preprocessInputs_«param.name»(SensorInput *inputs) {
 		//TODO.
-	    return inputQty;
+	    return 1;
 	}
 	«IF param.when!==null || param.^while!==null»
 	int evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap.get(param.name).toString»«ENDIF») {
 		return «IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»;
 	}
 	«ENDIF»
-	Verdict evaluatePostConditions_«param.name»(Verdict verdict, SensorInput *inputs, int inputQty) {
+	Verdict evaluatePostConditions_«param.name»(Verdict verdict, SensorInput *inputs) {
 	    verdict.verdict = VERDICT_PASSED;
 	    verdict.confidence = 1;
 	    return verdict;
 	}
-	Verdict performEvaluation_«param.name»(SensorInput *inputs, int inputQty, double timeStamp){
+	Verdict performEvaluation_«param.name»(SensorInput *inputs){
 	    Verdict verdict;
 		//Step 1: inicializacion
 	    static int cycle = -1;
@@ -1159,7 +1162,7 @@ var HashMap<String, List<String>> checkVar;
 		«ENDFOR»
 		//Step 2: meter variables en array
 		cycle++;
-		insertArray(&timeStampOracle,timeStamp);
+		insertArray(&timeStampOracle,inputs->timeStamp);
 		«FOR param1: nameMap.get(param.name)»
 		insertArray(&«param1»,inputs->«param1»);
 		«ENDFOR»
