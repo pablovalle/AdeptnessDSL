@@ -6,10 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.DoubleStream;
-import java.util.stream.Stream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import javax.script.ScriptEngineManager;
@@ -17,7 +14,9 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtext.validation.Check;
 import org.xtext.example.mydsl.adeptness.AbstractElement2;
+import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.At_least;
 import org.xtext.example.mydsl.adeptness.At_most;
 import org.xtext.example.mydsl.adeptness.Bound_Down;
@@ -27,113 +26,84 @@ import org.xtext.example.mydsl.adeptness.FailReason;
 import org.xtext.example.mydsl.adeptness.Operators;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.Reference;
+import org.xtext.example.mydsl.adeptness.Signal;
 
-public class OracleAssesment {
-	enum PRECONDS {
-		WHEN, WHILE, WHENAFTERWHEN
+public class OracleAssesment extends AbstractAdeptnessValidator {
+
+	MonitoringVariables monitoringVariables;
+
+	@Check
+	public void init(Signal CPS) {
+		monitoringVariables = MonitoringVariables.getInstance(CPS.getName());
 	}
 
-	enum PATTERNS {
-		BELOW_REFERENCE, ABOVE_REFERENCE, GAP, RANGE, SAME_REFERENCE, NOTSAME_REFERENCE
-	};
+	private Oracle oracle;
+	private Constants.PRECONDS precond;
+	private boolean whenPrecondMet = false;
+	private int savedTimestamp = 0;
+	private int aWDuration = 0;
 
-	enum TIMING_PATTERNS {
-		EXACTLY, ATMOST, ATLEAST
-	}
+	private Constants.PATTERNS pattern;
+	private Constants.TIMING_PATTERNS tpattern;
+	private int duration;
 
-	enum FAILREASONS {
-		HIGH_PEAK, HIGH_TIME_OUT_BOUNDS, CONSTANT_DEGRADATION, X_PEAKS_XSECONDS
-	}
+	private double signalMax;
+	private double signalMin;
 
-	enum STATUS {
-		PRECOND_CHECK, AFTER_WHEN,
-	}
+	private Map<Constants.FAILREASONS, FailReasonValues> failReasons = new HashMap<Constants.FAILREASONS, FailReasonValues>();
 
-	class FailReasonValues {
-		Double confidence;
-		int nPeaks;
-		int nSamples;
-		int peakCount = 0;
-		int durCount = 0;
-		int savedTimestamp = 0;
-
-		public FailReasonValues(Double conf, int nP, int nS) {
-			this.confidence = conf;
-			this.nPeaks = nP;
-			this.nSamples = nS;
-		}
-	}
-
-	Oracle oracle;
-	PRECONDS precond;
-	boolean whenPrecondMet = false;
-	int savedTimestamp = 0;
-	int aWDuration = 0;
-
-	PATTERNS pattern;
-	TIMING_PATTERNS tpattern;
-	int duration;
-
-	double signalMax;
-	double signalMin;
-
-	Map<FAILREASONS, FailReasonValues> failReasons = new HashMap<FAILREASONS, FailReasonValues>();
-
-	/**
-	 * Constructor
-	 * 
-	 * @param or
-	 */
-	public OracleAssesment(Oracle or) {
-		this.oracle = or;
-		findPrecond();
-		findOraclePattern();
-		findOracleFailReason();
-	}
-
-	public String getVariableName() {
-		return this.oracle.getCheck().getName().toString();
+	@Check
+	public void checkOracleWithOperationData(Oracle oracle) {
+		if (monitoringVariables == null || monitoringVariables.getVariables().size() == 0)
+			return;
+		resetParameters();
+		this.oracle = oracle;
+		this.findPrecond();
+		this.findOraclePattern();
+		this.findOracleFailReason();
+		this.assesOracle();
 	}
 
 	/**
 	 * @author aarrieta
 	 * @return false if there is risk that the oracle fails, true if there isn't
 	 */
-	public boolean assesOracle(HashMap<String, MonitoringVariables> monitoringVariableList) {
+	private void assesOracle() {
 		// TODO check if all names in the oracle expressions are in the
 		// monitoringVariableList
 
 		// get any given variables opData to
-		Iterator<String> it = monitoringVariableList.keySet().iterator();
+		Iterator<String> it = monitoringVariables.getVariables().keySet().iterator();
 		String key = "";
 		while (it.hasNext()) {
 			key = it.next();
-			if (monitoringVariableList.get(key).getOpData() != null) {
+			if (monitoringVariables.getVariables().get(key).getOpData() != null) {
 				break;
 			}
 		}
 		if (key.equals(""))
-			return true;
+			return;
 
-		// get signal's max and min values
-		// used on assessment, to recalculate reference according to the confidence
-		// value
-		findSignalsMaxMinValues(monitoringVariableList);
+		// get signal's max and min values. used on assessment, to recalculate reference
+		// according to the confidence value
+		findSignalsMaxMinValues();
 
 		int aWDurCount = 0;
-		for (int timestamp = 0; timestamp < monitoringVariableList.get(key).getOpData().size(); timestamp++) {
+		for (int timestamp = 0; timestamp < monitoringVariables.getVariables().get(key).getOpData()
+				.size(); timestamp++) {
 			// 1. check precondition. If a when precondition has been met previously, don't
 			// check precondition.
 
 			if (!whenPrecondMet) {
 				// check if a precondition is met (true if no precondition has been set)
-				if (checkPreconditionIsMet(timestamp, monitoringVariableList)) {
-					if (precond != null && (precond.equals(PRECONDS.WHEN) || precond.equals(PRECONDS.WHENAFTERWHEN))) {
+				if (checkPreconditionIsMet(timestamp)) {
+					if (precond != null && (precond.equals(Constants.PRECONDS.WHEN)
+							|| precond.equals(Constants.PRECONDS.WHENAFTERWHEN))) {
 						whenPrecondMet = true;
 						savedTimestamp = timestamp;
 					}
 				} else {
-					if (precond.equals(PRECONDS.WHILE)) {
+					if (precond.equals(Constants.PRECONDS.WHILE)) {
 						resetAllCounters();
 					}
 					continue;
@@ -141,36 +111,43 @@ public class OracleAssesment {
 			}
 
 			// 2. continue until aWDuration has passed
-			if (precond != null && precond.equals(PRECONDS.WHENAFTERWHEN)) {
+			if (precond != null && precond.equals(Constants.PRECONDS.WHENAFTERWHEN)) {
 				aWDurCount++;
 				if (aWDurCount <= aWDuration) {
 					continue;
 				}
 			}
-			
 
 			// 4. check foreach fail reason if operational data is out of bounds according
 			// to the confidence value
-			Iterator<FAILREASONS> failReasonsIt = failReasons.keySet().iterator();
-			FAILREASONS frk;
-			boolean isOutOfBounds = false;
+			Iterator<Constants.FAILREASONS> failReasonsIt = failReasons.keySet().iterator();
+			Constants.FAILREASONS frk;
+			Boolean isOutOfBounds = false;
 			while (failReasonsIt.hasNext()) {
-				frk = (FAILREASONS) failReasonsIt.next();
-				isOutOfBounds = checkOperationalDataOutOfBounds(failReasons.get(frk).confidence, timestamp,
-						monitoringVariableList);
+				frk = (Constants.FAILREASONS) failReasonsIt.next();
+				isOutOfBounds = checkOperationalDataOutOfBounds(failReasons.get(frk).confidence, timestamp);
+				if (isOutOfBounds == null) {
+					System.out.println("Too high confidence value detected for " + frk
+							+ " fail reason, removed from failure detection according to operational data.");
+					failReasons.remove(frk);
+					continue;
+				}
 
 				switch (frk) {
 				case HIGH_PEAK:
 					if (tpattern == null && isOutOfBounds) {
 						System.out.println("HighPeak detected.");
-						return false;
+						warning("There is operational data out of bounds.", AdeptnessPackage.Literals.ORACLE__CHECK);
+						return;
 					} else if (tpattern != null) {
 						switch (tpattern) {
 						case ATLEAST:
 							if (failReasons.get(frk).durCount <= duration && isOutOfBounds) {
 								System.out.println(
 										"Operational data out of bounds detected while a timing condition check.");
-								return false;
+								warning("There is operational data out of bounds.",
+										AdeptnessPackage.Literals.ORACLE__CHECK);
+								return;
 							}
 							// checking time has expired, reset parameters
 							if (timestamp == (savedTimestamp + aWDuration + duration)) {
@@ -186,14 +163,18 @@ public class OracleAssesment {
 							if (failReasons.get(frk).durCount == 0 && isOutOfBounds) {
 								System.out.println(
 										"Operational data in between bounds detected after a timing condition check.");
-								return false;
+								warning("There is operational data out of bounds.",
+										AdeptnessPackage.Literals.ORACLE__CHECK);
+								return;
 							}
 							if (timestamp == (savedTimestamp + aWDuration + duration + 1) && !isOutOfBounds) {
 								System.out.println(
 										"Operational data in between bounds detected after a timing condition check.");
-								return false;
+								warning("There is operational data out of bounds.",
+										AdeptnessPackage.Literals.ORACLE__CHECK);
+								return;
 							}
-							
+
 							if (timestamp > (savedTimestamp + aWDuration + duration)) {
 								whenPrecondMet = false;
 								timestamp = savedTimestamp;
@@ -207,13 +188,17 @@ public class OracleAssesment {
 							if (failReasons.get(frk).durCount <= duration && isOutOfBounds) {
 								System.out.println(
 										"Operational data out of bounds detected while timing condition check.");
-								return false;
+								warning("There is operational data out of bounds.",
+										AdeptnessPackage.Literals.ORACLE__CHECK);
+								return;
 							} else if (failReasons.get(frk).durCount > duration && !isOutOfBounds) {
 								System.out.println(
 										"Operational data in between bounds detected after a timing condition check.");
-								return false;
+								warning("There is operational data out of bounds.",
+										AdeptnessPackage.Literals.ORACLE__CHECK);
+								return;
 							}
-							
+
 							if (timestamp == (savedTimestamp + aWDuration + duration + 1)) {
 								whenPrecondMet = false;
 								timestamp = savedTimestamp;
@@ -224,7 +209,7 @@ public class OracleAssesment {
 							}
 							break;
 						}
-						
+
 					}
 					break;
 				case HIGH_TIME_OUT_BOUNDS:
@@ -234,7 +219,8 @@ public class OracleAssesment {
 					if (failReasons.get(frk).peakCount >= failReasons.get(frk).nPeaks) {
 						System.out.println("High Time Out of Bounds detected (during " + failReasons.get(frk).nPeaks
 								+ " seconds).");
-						return false;
+						warning("There is operational data out of bounds.", AdeptnessPackage.Literals.ORACLE__CHECK);
+						return;
 					}
 
 					if (whenPrecondMet
@@ -268,7 +254,8 @@ public class OracleAssesment {
 					if (failReasons.get(frk).peakCount >= failReasons.get(frk).nPeaks) {
 						System.out.println(failReasons.get(frk).nPeaks + " peaks detected during "
 								+ failReasons.get(frk).nSamples + " seconds.");
-						return false;
+						warning("There is operational data out of bounds.", AdeptnessPackage.Literals.ORACLE__CHECK);
+						return;
 					}
 
 					// previous check haven't detected a failure
@@ -306,23 +293,20 @@ public class OracleAssesment {
 
 			}
 		}
-
-		return true;
 	}
 
 	private void resetAllCounters() {
-		Iterator<FAILREASONS> failReasonsIt = failReasons.keySet().iterator();
-		FAILREASONS frk;
+		Iterator<Constants.FAILREASONS> failReasonsIt = failReasons.keySet().iterator();
+		Constants.FAILREASONS frk;
 		while (failReasonsIt.hasNext()) {
-			frk = (FAILREASONS) failReasonsIt.next();
+			frk = (Constants.FAILREASONS) failReasonsIt.next();
 			failReasons.get(frk).durCount = 0;
 			failReasons.get(frk).peakCount = 0;
 			failReasons.get(frk).savedTimestamp = 0;
 		}
 	}
 
-	public boolean checkOperationalDataOutOfBounds(double confidence, int timestamp,
-			HashMap<String, MonitoringVariables> monitoringVariableList) {
+	private Boolean checkOperationalDataOutOfBounds(double confidence, int timestamp) {
 
 		boolean outOfBounds = false;
 
@@ -331,11 +315,11 @@ public class OracleAssesment {
 		if (this.oracle.getCheck().getEm() != null) {
 			// signal is an expression
 			// get current signal's value
-			signalVal = (Double) evalExpression(
-					getExpression(this.oracle.getCheck().getEm().getElements(), timestamp, monitoringVariableList));
+			signalVal = (Double) evalExpression(getExpression(this.oracle.getCheck().getEm().getElements(), timestamp));
 		} else {
 			// signal is a single variable
-			signalVal = monitoringVariableList.get(this.oracle.getCheck().getName()).getOpData().get(timestamp);
+			signalVal = monitoringVariables.getVariables().get(this.oracle.getCheck().getName()).getOpData()
+					.get(timestamp);
 		}
 
 		// Get reference bounds, recalculate according to the confidence value and
@@ -344,8 +328,8 @@ public class OracleAssesment {
 		double upperRefBound = 0.0;
 		switch (this.pattern) {
 		case BELOW_REFERENCE:
-			upperRefBound = getUpperRefBound(this.oracle.getCheck().getReference().getUpper().getBound_upp(), timestamp,
-					monitoringVariableList);
+			upperRefBound = getUpperRefBound(this.oracle.getCheck().getReference().getUpper().getBound_upp(),
+					timestamp);
 			// recalculate upperRefBound according to the confidence value
 			upperRefBound = Utils.calcUpBound(confidence, signalMax, upperRefBound);
 
@@ -353,60 +337,82 @@ public class OracleAssesment {
 			break;
 		case ABOVE_REFERENCE:
 			lowerRefBound = getLowerRefBound(this.oracle.getCheck().getReference().getLower().getBound_lower(),
-					timestamp, monitoringVariableList);
+					timestamp);
 			// recalculate lowerRefBound according to the confidence value
 			lowerRefBound = Utils.calcDownBound(confidence, signalMin, lowerRefBound);
 
 			outOfBounds = Utils.checkLower(lowerRefBound, signalVal);
 			break;
 		case RANGE:
-			upperRefBound = getUpperRefBound(this.oracle.getCheck().getReference().getRange().getBound_upp(), timestamp,
-					monitoringVariableList);
+			upperRefBound = getUpperRefBound(this.oracle.getCheck().getReference().getRange().getBound_upp(),
+					timestamp);
 			upperRefBound = Utils.calcUpBound(confidence, signalMax, upperRefBound);
 
 			lowerRefBound = getLowerRefBound(this.oracle.getCheck().getReference().getRange().getBound_lower(),
-					timestamp, monitoringVariableList);
+					timestamp);
 			lowerRefBound = Utils.calcDownBound(confidence, signalMin, lowerRefBound);
 
-			if (upperRefBound < lowerRefBound)
-				return false;
+			if (upperRefBound < lowerRefBound) {
+				if (this.oracle.getCheck().getReference().getRange().getBound_upp().getValue() != null
+						&& this.oracle.getCheck().getReference().getRange().getBound_lower().getValue() != null) {
+					error("Confidence value too high.", AdeptnessPackage.Literals.ORACLE__CHECK);
+				} else {
+					warning("Confidence value too high according to operational data.",
+							AdeptnessPackage.Literals.ORACLE__CHECK);
+				}
+
+				return null;
+			}
+
 			outOfBounds = Utils.checkNotInBetween(lowerRefBound, upperRefBound, signalVal);
 			break;
 		case GAP:
-			upperRefBound = getUpperRefBound(this.oracle.getCheck().getReference().getGap().getBound_upp(), timestamp,
-					monitoringVariableList);
+			upperRefBound = getUpperRefBound(this.oracle.getCheck().getReference().getGap().getBound_upp(), timestamp);
 			upperRefBound = Utils.calcGapUpBound(confidence, signalMax, upperRefBound);
 
-			lowerRefBound = getLowerRefBound(this.oracle.getCheck().getReference().getGap().getBound_lower(), timestamp,
-					monitoringVariableList);
+			lowerRefBound = getLowerRefBound(this.oracle.getCheck().getReference().getGap().getBound_lower(),
+					timestamp);
 			lowerRefBound = Utils.calcGapDownBound(confidence, signalMin, lowerRefBound);
 
-			if (upperRefBound < lowerRefBound)
-				return false;
+			if (upperRefBound < lowerRefBound) {
+				if (this.oracle.getCheck().getReference().getGap().getBound_upp().getValue() != null
+						&& this.oracle.getCheck().getReference().getGap().getBound_lower().getValue() != null) {
+					error("Confidence value is too high.", AdeptnessPackage.Literals.ORACLE__CHECK);
+				} else {
+					warning("Confidence value might be too high according to operational data.",
+							AdeptnessPackage.Literals.ORACLE__CHECK);
+				}
+				return null;
+			}
 
 			outOfBounds = Utils.checkInBetween(lowerRefBound, upperRefBound, signalVal);
 			break;
 		case SAME_REFERENCE:
-			upperRefBound = getUpperRefBound(this.oracle.getCheck().getReference().getSame().getBound_upp(), timestamp,
-					monitoringVariableList);
+			upperRefBound = getUpperRefBound(this.oracle.getCheck().getReference().getSame().getBound_upp(), timestamp);
 			upperRefBound = Utils.calcUpBound(confidence, signalMax, upperRefBound);
 			lowerRefBound = Utils.calcDownBound(confidence, signalMin, upperRefBound);
 
-			if (upperRefBound < lowerRefBound)
-				return false;
+			if (upperRefBound < lowerRefBound) {
+				if (this.oracle.getCheck().getReference().getSame().getBound_upp().getValue() != null) {
+					error("Confidence value too high.", AdeptnessPackage.Literals.ORACLE__CHECK);
+				} else {
+					warning("Confidence value might be too high according to operational data.",
+							AdeptnessPackage.Literals.ORACLE__CHECK);
+				}
+				return null;
+			}
 			outOfBounds = Utils.checkNotInBetween(lowerRefBound, upperRefBound, signalVal);
 			break;
 		case NOTSAME_REFERENCE:
 			upperRefBound = getUpperRefBound(this.oracle.getCheck().getReference().getNotsame().getBound_upp(),
-					timestamp, monitoringVariableList);
+					timestamp);
 
 			outOfBounds = Utils.checkEqual(upperRefBound, signalVal);
 			break;
 		}
 
 		if (timestamp == 0) {
-			System.out.println(
-					"Checking if signal is " + pattern + " [" + lowerRefBound + "," + upperRefBound + "]" );
+			System.out.println("Checking if signal is " + pattern + " [" + lowerRefBound + "," + upperRefBound + "]");
 		}
 
 		if (outOfBounds) {
@@ -416,68 +422,61 @@ public class OracleAssesment {
 		return outOfBounds;
 	}
 
-	private double getLowerRefBound(Bound_Down down, int timestamp,
-			HashMap<String, MonitoringVariables> monitoringVariableList) {
+	private double getLowerRefBound(Bound_Down down, int timestamp) {
 		double lowerRefBound = 0.0;
 		if (down.getValue() != null) {
 			lowerRefBound = down.getValue().getDVal();
 		} else {
-			lowerRefBound = (double) evalExpression(
-					getExpression(down.getEm().getElements(), timestamp, monitoringVariableList));
+			lowerRefBound = (double) evalExpression(getExpression(down.getEm().getElements(), timestamp));
 		}
 
 		return lowerRefBound;
 	}
 
-	private double getUpperRefBound(Bound_up up, int timestamp,
-			HashMap<String, MonitoringVariables> monitoringVariableList) {
+	private double getUpperRefBound(Bound_up up, int timestamp) {
 		double upperRefBound = 0.0;
 		if (up.getValue() != null) {
 			upperRefBound = up.getValue().getDVal();
 		} else {
-			upperRefBound = (double) evalExpression(
-					getExpression(up.getEm().getElements(), timestamp, monitoringVariableList));
+			upperRefBound = (double) evalExpression(getExpression(up.getEm().getElements(), timestamp));
 		}
 
 		return upperRefBound;
 	}
 
-	private List<Double> getMaxMinValueCombinations(EList<AbstractElement2> elements,
-			HashMap<String, MonitoringVariables> monitoringVariableList) {
+	private List<Double> getMaxMinValueCombinations(EList<AbstractElement2> elements) {
 		String expressionWithVars = getExpressionWithVars(elements);
 		List<String> varNames = diffVarNames(expressionWithVars);
 		List<String> exprCombs = new ArrayList<String>();
 		List<Double> maxMinValueCombs = new ArrayList<Double>();
 
-		exprCombs = generateCombinations(0, expressionWithVars, varNames, exprCombs, monitoringVariableList);
+		exprCombs = generateCombinations(0, expressionWithVars, varNames, exprCombs);
 		for (String expression : exprCombs) {
 			maxMinValueCombs.add((Double) evalExpression(expression));
 		}
 		return maxMinValueCombs;
 	}
 
-	public List<String> generateCombinations(int index, String expression, List<String> varNames,
-			final List<String> exprCombs, HashMap<String, MonitoringVariables> monitoringVariableList) {
+	private List<String> generateCombinations(int index, String expression, List<String> varNames,
+			final List<String> exprCombs) {
 		List<String> exC = new ArrayList<String>(exprCombs);
 		String replaceVarMin = replaceVar(expression, varNames.get(index),
-				Double.toString(monitoringVariableList.get(varNames.get(index)).getMin()));
+				Double.toString(monitoringVariables.getVariables().get(varNames.get(index)).getMin()));
 		String replaceVarMax = replaceVar(expression, varNames.get(index),
-				Double.toString(monitoringVariableList.get(varNames.get(index)).getMax()));
+				Double.toString(monitoringVariables.getVariables().get(varNames.get(index)).getMax()));
 		if (index == varNames.size() - 1) {
 			exC.add(replaceVarMin);
 			exC.add(replaceVarMax);
 		} else {
-			List<String> minCombs = generateCombinations(index + 1, replaceVarMin, varNames, exprCombs,
-					monitoringVariableList);
-			List<String> maxCombs = generateCombinations(index + 1, replaceVarMax, varNames, exprCombs,
-					monitoringVariableList);
+			List<String> minCombs = generateCombinations(index + 1, replaceVarMin, varNames, exprCombs);
+			List<String> maxCombs = generateCombinations(index + 1, replaceVarMax, varNames, exprCombs);
 			exC.addAll(minCombs);
 			exC.addAll(maxCombs);
 		}
 		return exC;
 	}
 
-	public List<String> diffVarNames(String expression) {
+	private List<String> diffVarNames(String expression) {
 		List<String> varNames = new ArrayList<String>();
 		Pattern pattern = Pattern.compile("@@([^@]*)@@");
 		Matcher matcher = pattern.matcher(expression);
@@ -490,7 +489,7 @@ public class OracleAssesment {
 		return varNames;
 	}
 
-	public boolean checkPreconditionIsMet(int timestamp, HashMap<String, MonitoringVariables> monitoringVariableList) {
+	private boolean checkPreconditionIsMet(int timestamp) {
 		boolean isMet = false;
 		if (precond == null)
 			return !isMet;
@@ -505,7 +504,7 @@ public class OracleAssesment {
 			elements = this.oracle.getWhile().getEm().getElements();
 			break;
 		}
-		String expression = getExpression(elements, timestamp, monitoringVariableList);
+		String expression = getExpression(elements, timestamp);
 
 		isMet = (Boolean) evalExpression(expression);
 		if (isMet) {
@@ -543,19 +542,19 @@ public class OracleAssesment {
 		return expression;
 	}
 
-	public String replaceVar(String expression, String varName, String value) {
+	private String replaceVar(String expression, String varName, String value) {
 		return expression.replace("@@" + varName + "@@", value);
 	}
 
-	private String getExpression(EList<AbstractElement2> elements, int timestamp,
-			HashMap<String, MonitoringVariables> monitoringVariableList) {
+	private String getExpression(EList<AbstractElement2> elements, int timestamp) {
 		String expression = "";
 		for (AbstractElement2 element : elements) {
 			if (element.getFrontParentheses().size() > 0) {
 				expression += "(";
 			}
 			if (element.getName() != null) {
-				expression += monitoringVariableList.get(element.getName()).getOpData().get(timestamp).toString();
+				expression += monitoringVariables.getVariables().get(element.getName()).getOpData().get(timestamp)
+						.toString();
 			}
 			if (element.getValue() != null) {
 				expression += String.valueOf(element.getValue().getDVal());
@@ -587,18 +586,18 @@ public class OracleAssesment {
 		}
 	}
 
-	public void findPrecond() {
+	private void findPrecond() {
 		if (this.oracle.getWhen() != null) {
 			if (this.oracle.getWhen().getAw() != null) {
-				this.precond = PRECONDS.WHENAFTERWHEN;
+				this.precond = Constants.PRECONDS.WHENAFTERWHEN;
 				double dur = this.oracle.getWhen().getAw().getWait().getTime().getDVal();
 				aWDuration = getDurationInSeconds(dur, this.oracle.getWhen().getAw().getWait().getUnit().getTime());
 
 			} else {
-				this.precond = PRECONDS.WHEN;
+				this.precond = Constants.PRECONDS.WHEN;
 			}
 		} else if (this.oracle.getWhile() != null) {
-			this.precond = PRECONDS.WHILE;
+			this.precond = Constants.PRECONDS.WHILE;
 		}
 	}
 
@@ -615,38 +614,38 @@ public class OracleAssesment {
 		}
 	}
 
-	public void findOraclePattern() {
+	private void findOraclePattern() {
 		Reference reference = this.oracle.getCheck().getReference();
 		At_least atLeast = null;
 		At_most atMost = null;
 		Exactly exactly = null;
 		if (this.oracle.getCheck().getReference().getLower() != null) {
-			this.pattern = PATTERNS.ABOVE_REFERENCE;
+			this.pattern = Constants.PATTERNS.ABOVE_REFERENCE;
 			atLeast = reference.getLower().getAtleast();
 			atMost = reference.getLower().getAtmost();
 			exactly = reference.getLower().getExactly();
 		} else if (this.oracle.getCheck().getReference().getUpper() != null) {
-			this.pattern = PATTERNS.BELOW_REFERENCE;
+			this.pattern = Constants.PATTERNS.BELOW_REFERENCE;
 			atLeast = reference.getUpper().getAtleast();
 			atMost = reference.getUpper().getAtmost();
 			exactly = reference.getUpper().getExactly();
 		} else if (this.oracle.getCheck().getReference().getGap() != null) {
-			this.pattern = PATTERNS.GAP;
+			this.pattern = Constants.PATTERNS.GAP;
 			atLeast = reference.getGap().getAtleast();
 			atMost = reference.getGap().getAtmost();
 			exactly = reference.getGap().getExactly();
 		} else if (this.oracle.getCheck().getReference().getRange() != null) {
-			this.pattern = PATTERNS.RANGE;
+			this.pattern = Constants.PATTERNS.RANGE;
 			atLeast = reference.getRange().getAtleast();
 			atMost = reference.getRange().getAtmost();
 			exactly = reference.getRange().getExactly();
 		} else if (this.oracle.getCheck().getReference().getSame() != null) {
-			this.pattern = PATTERNS.SAME_REFERENCE;
+			this.pattern = Constants.PATTERNS.SAME_REFERENCE;
 			atLeast = reference.getSame().getAtleast();
 			atMost = reference.getSame().getAtmost();
 			exactly = reference.getSame().getExactly();
 		} else if (this.oracle.getCheck().getReference().getNotsame() != null) {
-			this.pattern = PATTERNS.NOTSAME_REFERENCE;
+			this.pattern = Constants.PATTERNS.NOTSAME_REFERENCE;
 			atLeast = reference.getNotsame().getAtleast();
 			atMost = reference.getNotsame().getAtmost();
 			exactly = reference.getNotsame().getExactly();
@@ -655,15 +654,15 @@ public class OracleAssesment {
 		Double dur = null;
 		String timeUnit = null;
 		if (atLeast != null) {
-			this.tpattern = TIMING_PATTERNS.ATLEAST;
+			this.tpattern = Constants.TIMING_PATTERNS.ATLEAST;
 			dur = atLeast.getTime() != null ? atLeast.getTime().getDVal() : null;
 			timeUnit = atLeast.getUnit() != null ? atLeast.getUnit().toString() : null;
 		} else if (atMost != null) {
-			this.tpattern = TIMING_PATTERNS.ATMOST;
+			this.tpattern = Constants.TIMING_PATTERNS.ATMOST;
 			dur = atMost.getTime() != null ? atMost.getTime().getDVal() : null;
 			timeUnit = atMost.getUnit() != null ? atMost.getUnit().toString() : null;
 		} else if (exactly != null) {
-			this.tpattern = TIMING_PATTERNS.EXACTLY;
+			this.tpattern = Constants.TIMING_PATTERNS.EXACTLY;
 			dur = exactly.getTime() != null ? exactly.getTime().getDVal() : null;
 			timeUnit = exactly.getUnit() != null ? exactly.getUnit().toString() : null;
 		}
@@ -671,48 +670,93 @@ public class OracleAssesment {
 		if (dur != null && timeUnit != null) {
 			duration = getDurationInSeconds(dur, timeUnit);
 		}
-
 	}
 
-	private void findSignalsMaxMinValues(HashMap<String, MonitoringVariables> monitoringVariableList) {
+	private void findSignalsMaxMinValues() {
+		HashMap<String, MonitoringVar> morVarList = monitoringVariables.getVariables();
 		if (this.oracle.getCheck().getEm() != null) {
 			// get signal's variable's max and min value combinations
 			List<Double> maxMinValueCombinations = getMaxMinValueCombinations(
-					this.oracle.getCheck().getEm().getElements(), monitoringVariableList);
+					this.oracle.getCheck().getEm().getElements());
 			// get signal's max and min possible values
 			signalMax = Collections.max(maxMinValueCombinations);
 			signalMin = Collections.min(maxMinValueCombinations);
 		} else {
 			// signal is a single variable
-			signalMax = monitoringVariableList.get(this.oracle.getCheck().getName()).getMax();
-			signalMin = monitoringVariableList.get(this.oracle.getCheck().getName()).getMin();
+			signalMax = morVarList.get(this.oracle.getCheck().getName()).getMax();
+			signalMin = morVarList.get(this.oracle.getCheck().getName()).getMin();
 		}
 
 	}
 
 	private void findOracleFailReason() {
-		int nSamples = 1;
-		int nPeaks = 1;
-		Double confidence = 0.0;
+		int nSamples, nPeaks;
+		Double confidence;
+		Constants.FAILREASONS frk = null;
 		// confidence, nSamples, nPeaks
 		for (FailReason fr : this.oracle.getCheck().getFailReason()) {
+			nSamples = 1;
+			nPeaks = 1;
+			confidence = 0.0;
 			if (fr.getReason().getHighPeak() != null) {
 				confidence = fr.getReason().getHighPeak().getCant().getDVal();
-				failReasons.put(FAILREASONS.HIGH_PEAK, new FailReasonValues(confidence, nPeaks, nSamples));
+				frk = Constants.FAILREASONS.HIGH_PEAK;
 			} else if (fr.getReason().getHighTime() != null) {
 				confidence = fr.getReason().getHighTime().getCant().getDVal();
 				nSamples = Utils.getNSamples((int) fr.getReason().getHighTime().getTime().getDVal(),
 						fr.getReason().getHighTime().getUnit().getTime());
 				nPeaks = nSamples;
-				failReasons.put(FAILREASONS.HIGH_TIME_OUT_BOUNDS, new FailReasonValues(confidence, nPeaks, nSamples));
+				frk = Constants.FAILREASONS.HIGH_TIME_OUT_BOUNDS;
 			} else if (fr.getReason().getXPeaks() != null) {
 				confidence = fr.getReason().getXPeaks().getCant().getDVal();
 				nPeaks = (int) fr.getReason().getXPeaks().getNPeaks().getDVal();
 				nSamples = Utils.getNSamples((int) fr.getReason().getXPeaks().getTime().getDVal(),
 						fr.getReason().getXPeaks().getUnit().getTime());
-				failReasons.put(FAILREASONS.X_PEAKS_XSECONDS, new FailReasonValues(confidence, nPeaks, nSamples));
+
+				frk = Constants.FAILREASONS.X_PEAKS_XSECONDS;
 			}
+
+			// check structural errors. If an error is detected, fails if is not added to
+			// failReasons map.
+			if (nSamples == 0 || nPeaks == 0) {
+				error("Duration or number of peaks cannot be zero.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+				continue;
+			}
+			if (pattern.equals(Constants.PATTERNS.NOTSAME_REFERENCE) && confidence != 0) {
+				error("Confidence value must be zero within 'should not be' clauses or use a 'not in range' clause instead.",
+						AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+				continue;
+			}
+
+			if (!frk.equals(Constants.FAILREASONS.HIGH_PEAK) && this.tpattern != null) {
+				error("Temporary conditions are either set within the assertion or the failure statement, but not in both.",
+						AdeptnessPackage.Literals.ORACLE__CHECK);
+				continue;
+			}
+
+			if (this.tpattern != null && this.precond == null) {
+				error("Temporary conditions should only be used in conjuction with preconditions.",
+						AdeptnessPackage.Literals.ORACLE__CHECK);
+				continue;
+			}
+
+			// add fail reason to be checked
+			failReasons.put(frk, new FailReasonValues(confidence, nPeaks, nSamples));
 		}
+	}
+
+	private void resetParameters() {
+		oracle = null;
+		precond = null;
+		whenPrecondMet = false;
+		savedTimestamp = 0;
+		aWDuration = 0;
+		pattern = null;
+		tpattern = null;
+		duration = 0;
+		signalMax = 0.0;
+		signalMin = 0.0;
+		failReasons = new HashMap<Constants.FAILREASONS, FailReasonValues>();
 	}
 
 }

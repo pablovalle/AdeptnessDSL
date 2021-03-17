@@ -4,10 +4,10 @@
 package org.xtext.example.mydsl.validation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.ComposedChecks;
 import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.At_least;
@@ -42,8 +42,9 @@ import org.xtext.example.mydsl.adeptness.XPeaks;
  * See
  * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
+@ComposedChecks(validators = { OracleAssesment.class })
 public class AdeptnessValidator extends AbstractAdeptnessValidator {
-
+	
 	public static String DUPLICATED_NAME = "Duplicated Name";
 
 	double cantHigh;
@@ -51,24 +52,23 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	double cantDeg;
 	double cantXPeak;
 
-	HashMap<String, MonitoringVariables> monitoringVariables;
 	List<String> oracleNames;
 	List<String> monitoringVariableNames;
 
-	OperationalDataConnector opCon = new OperationalDataConnector();
+	
+	MonitoringVariables monitoringVariables;
 
 	// GET MONITORING VARIABLES
 	@Check
 	public void getImportedMonitoringVariables(Signal CPS) {
-		// TODO Executed on every change. Ideal scenario: execute this function the
-		// first time a change within this CPS is done.
-		monitoringVariables = new HashMap<String, MonitoringVariables>();
+		monitoringVariables = MonitoringVariables.getInstance(CPS.getName());
 
 		String type, name;
-		double min, max;
+		double min, max; 
 		for (int i = 0; i < CPS.getSuperType().getMonitoringPlan().size(); i++) {
 			MonitoringVariable monitor = CPS.getSuperType().getMonitoringPlan().get(i).getMonitoringVariables();
 			name = monitor.getName().toString();
+			if (monitoringVariables.getVariables() != null && monitoringVariables.getVariables().get(name) != null) return;
 			type = monitor.getMonitoringVariableDatatype().getSig_type().toString();
 			if (type.equals("boolean")) {
 				max = 1;
@@ -77,11 +77,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				max = monitor.getMax().getDVal();
 				min = monitor.getMin().getDVal();
 			}
-			MonitoringVariables monitoringVar = new MonitoringVariables(name, type, max, min);
-			// if no data was retrieved, opData will be null
-			monitoringVar.setOpData(opCon.getVariableOpData(name));
-
-			monitoringVariables.put(name, monitoringVar);
+			monitoringVariables.addVariable(CPS.getName(), name, type, max, min);
 		}
 	}
 
@@ -128,53 +124,6 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 		if (cont > 1) {
 			error("Oracle's name must be unique", AdeptnessPackage.Literals.ORACLE__NAME);
-		}
-	}
-
-	@Check
-	public void checkOracleWithOperationData(Oracle oracle) {
-		OracleAssesment or = new OracleAssesment(oracle);
-		if (!or.assesOracle(monitoringVariables)) {
-			warning("There is operational data out of bounds.", AdeptnessPackage.Literals.ORACLE__CHECK);
-		}
-	}
-
-	@Check
-	public void checkTemporaryConditionsInCheckOnlyWithWhenPrecond(Oracle oracle) {
-		if (oracle.getCheck().getReference().getUpper() != null
-				&& (oracle.getCheck().getReference().getUpper().getAtleast() != null
-						|| oracle.getCheck().getReference().getUpper().getAtmost() != null
-						|| oracle.getCheck().getReference().getUpper().getExactly() != null)
-				|| (oracle.getCheck().getReference().getLower() != null
-						&& (oracle.getCheck().getReference().getLower().getAtleast() != null
-								|| oracle.getCheck().getReference().getLower().getAtmost() != null
-								|| oracle.getCheck().getReference().getLower().getExactly() != null))
-				|| (oracle.getCheck().getReference().getRange() != null
-						&& (oracle.getCheck().getReference().getRange().getAtleast() != null
-								|| oracle.getCheck().getReference().getRange().getAtmost() != null
-								|| oracle.getCheck().getReference().getRange().getExactly() != null))
-				|| (oracle.getCheck().getReference().getGap() != null
-						&& (oracle.getCheck().getReference().getGap().getAtleast() != null
-								|| oracle.getCheck().getReference().getGap().getAtmost() != null
-								|| oracle.getCheck().getReference().getGap().getExactly() != null))
-				|| (oracle.getCheck().getReference().getSame() != null
-						&& (oracle.getCheck().getReference().getSame().getAtleast() != null
-								|| oracle.getCheck().getReference().getSame().getAtmost() != null
-								|| oracle.getCheck().getReference().getSame().getExactly() != null))
-				|| (oracle.getCheck().getReference().getNotsame() != null
-						&& (oracle.getCheck().getReference().getNotsame().getAtleast() != null
-								|| oracle.getCheck().getReference().getNotsame().getAtmost() != null
-								|| oracle.getCheck().getReference().getNotsame().getExactly() != null))) {
-			if (oracle.getWhen() == null) {
-				error("Temporary conditions should only be used in conjuction with \"when\" preconditions.",
-						AdeptnessPackage.Literals.ORACLE__CHECK);
-			}
-			for (FailReason fr : oracle.getCheck().getFailReason()) {
-				if (fr.getReason().getHighTime() != null || fr.getReason().getXPeaks() != null) {
-					error("Temporary conditions are either set within the assertion or the failure statement, but not in both.",
-							AdeptnessPackage.Literals.ORACLE__CHECK);
-				}
-			}
 		}
 	}
 
@@ -326,7 +275,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			return;
 		}
 
-		MonitoringVariables checkVar = monitoringVariables.get(check.getName().toString());
+		MonitoringVar checkVar = monitoringVariables.getVariables().get(check.getName().toString());
 		if (checkVar == null) {
 			error("This variable is not in the monitoring plan", AdeptnessPackage.Literals.CHECKS__NAME);
 			return;
@@ -387,7 +336,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 
 	@Check
 	public void checkMonitoringVariablesInPreconditions(AbstractElement2 precond) {
-		MonitoringVariables precondVar = monitoringVariables.get(precond.getName().toString());
+		MonitoringVar precondVar = monitoringVariables.getVariables().get(precond.getName().toString());
 		if (precondVar == null) {
 			error("This variable is not in the monitoring plan", AdeptnessPackage.Literals.ABSTRACT_ELEMENT2__NAME);
 		}
