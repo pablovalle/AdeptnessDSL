@@ -30,6 +30,7 @@ import org.xtext.example.mydsl.adeptness.MonitoringPlan
 import javax.script.ScriptEngine
 import javax.script.ScriptEngineManager
 import javax.script.ScriptException
+import org.xtext.example.mydsl.adeptness.FailReason
 
 /**
  * Generates code from your model files on save.
@@ -49,6 +50,7 @@ var HashMap<String, String> whileMap_preconds;
 var HashMap<String, Double> maxMap;
 var HashMap<String, Double> minMap;
 var HashMap<String, List<String>> checkVar;
+var List<String> verdict;
     override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
     	//fsa.generateFile("adeptness.xml", resource.allContents.toIterable.filter(Signal).createXML());
     		for(a: resource.allContents.toIterable.filter(ValidationPlan)){
@@ -92,10 +94,12 @@ var HashMap<String, List<String>> checkVar;
 			getAllNames(e);
 			findSignalsMaxMinValues(e);
 			for(q: e.oracle){
+				verdict= new ArrayList();
+				q.create_verdict_c(nameMap.get(q.name));
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".c", q.create_oracle_c(nameMap.get(q.name)))
 				fsa.generateFile(q.fullyQualifiedName.toString("/")+".h", q.create_oracle_h(nameMap.get(q.name),e.fullyQualifiedName.toString()))
-				fsa.generateFile(q.fullyQualifiedName.toString("/")+"_Verdict.c", q.create_verdict_c(nameMap.get(q.name)))
-				appendFile(e,q.fullyQualifiedName.toString("/")+".c",q.fullyQualifiedName.toString("/")+"_Verdict.c")
+				
+				//appendFile(e,q.fullyQualifiedName.toString("/")+".c",q.fullyQualifiedName.toString("/")+"_Verdict.c")
 				//fsa.generateFile(q.fullyQualifiedName.toString("/")+".json", q.create_oracle_json())
 				//fsa.generateFile(q.fullyQualifiedName.toString("/")+".m", q.create_oracle_m())
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
@@ -1192,107 +1196,106 @@ var HashMap<String, List<String>> checkVar;
 	'''
 	
 	
-	def create_verdict_c(Oracle param, List<String> nameList)
-	'''
-	Verdict checkGlobalVerdict_«param.name»(Array conf, Array timeStampOracle){
-		Verdict verdict;
-		verdict.verdict=VERDICT_INCONCLUSIVE;
-		double times;
-		int fail, is, deg,i,time;
-		i=0;
-		while (i < conf.used && verdict.verdict==2) {
-			if (conf.array[i] != 2) {
-				verdict.verdict = VERDICT_PASSED;
+	def create_verdict_c(Oracle param, List<String> nameList){
+		verdict.add("Verdict checkGlobalVerdict_"+param.name+"(Array conf, Array timeStampOracle){");
+		verdict.add("	verdict.verdict=VERDICT_INCONCLUSIVE;");
+		verdict.add("	double times;");
+		verdict.add("	int fail, is, deg,i,time;");
+		verdict.add("	i=0;");
+		verdict.add("	while (i < conf.used && verdict.verdict==2) {");
+		verdict.add("		if (conf.array[i] != 2) {");
+		verdict.add("			verdict.verdict = VERDICT_PASSED;");
+		verdict.add("		}");
+		verdict.add("		i++;");
+		verdict.add("	}");
+		verdict.add("	if (verdict.verdict == 2) {");
+		verdict.add("		return verdict;");
+		verdict.add("	}");
+		for(FailReason param1: param.check.failReason){
+			if(param1.reason.highTime!==null){
+				verdict.add("	fail =0;");
+				verdict.add("	time=0;");
+				verdict.add("	is=0;");
+				verdict.add("	i=0;");
+				verdict.add("	while(fail==0 && i<conf.used){");
+				verdict.add("		if(conf.array[i]<"+param1.reason.highTime.cant.DVal+"){");
+				verdict.add("			is==1;");
+				verdict.add("		}");
+				verdict.add("		i++;");
+				verdict.add("		time=i;");
+				verdict.add("		while (is==1 && i<conf.used){");
+				verdict.add("			if(conf.array[i]<"+param1.reason.highTime.cant.DVal+" && timeStampOracle.array[i] - timeStampOracle.array[time]>"+param1.reason.highTime.time.DVal+" || timeStampOracle.array[i] - timeStampOracle.array[time]>"+param1.reason.highTime.time.DVal+"){");
+				verdict.add("				fail=1;");
+				verdict.add("			}");
+				verdict.add("			else{");
+				verdict.add("				is=0;");
+				verdict.add("			}");
+				verdict.add("			i++;");
+				verdict.add("		}");
+				verdict.add("	}");
+				verdict.add("	if(fail==1){");
+				verdict.add("		verdict.verdict=VERDICT_FAILED;	");
+				verdict.add("	}");
+								
+			}	
+			else if(param1.reason.highPeak!==null){
+				verdict.add("	i=0;");
+				verdict.add("	for(i=0; i< conf.used; i++){");
+				verdict.add("		if(conf.array[i]<"+param1.reason.highPeak.cant.DVal+"){");
+				verdict.add("			verdict.verdict=VERDICT_FAILED;");
+				verdict.add("		}");
+				verdict.add("	}");
 			}
-			i++;
-		}
-		if (verdict.verdict == 2) {
-			return verdict;
-		}
-		«FOR param1: param.check.failReason» 
-		«IF param1.reason.highTime!==null»
-		fail =0;
-		time=0;
-		is=0;
-		i=0;
-		while(fail==0 && i<conf.used){
-			if(conf.array[i]<«param1.reason.highTime.cant.DVal»){
-				is==1;
-			}
-			i++;
-			time=i;
-			while (is==1 && i<conf.used){
-				if(conf.array[i]<«param1.reason.highTime.cant.DVal» && timeStampOracle.array[i] - timeStampOracle.array[time]>«param1.reason.highTime.time.DVal» || timeStampOracle.array[i] - timeStampOracle.array[time]>«param1.reason.highTime.time.DVal»){
-					fail=1;
-				}
-				else{
-					is=0;
-				}
-				i++;
-			}
-		}
-		if(fail==1){
-			verdict.verdict=VERDICT_FAILED;	
-		}
-		
-		«ELSEIF param1.reason.highPeak!==null»
-		i=0;
-		for(i=0; i< conf.used; i++){
-			if(conf.array[i]< «param1.reason.highPeak.cant.DVal»){
-				verdict.verdict=VERDICT_FAILED;
-			}
-		}
-		
-		«ELSEIF param1.reason.constDeg!==null»
-		deg=0;
-		i=0;
-		while(deg==0 && i<conf.length){
-			if(conf.array[i]< «param1.reason.constDeg.cant.DVal»){
-				deg=1;
-			}
-			i++;
-		}				
-		while(deg==1 && i<conf.used){
-			if(conf.array[i]>«param1.reason.constDeg.cant.DVal»){
-				deg=0;
-			}
-			i++;
-		}
-		if(i==conf.used && deg==1){
-			verdict.verdict=VERDICT_FAILED;	
-		}
-		
-		«ELSEIF param1.reason.XPeaks!==null»
-		i=0;
-		times=«param1.reason.XPeaks.NPeaks.DVal»;
-		time=0;
-		fail=0;;
-		while(i<conf.used && fail==0){
-			if(conf.array[i]<«param1.reason.XPeaks.cant.DVal»){
-				if(time==0){
-					time=i;
-				}
-				times--;
-				if(times==0 && timeStampOracle.array[i] - timeStampOracle.array[time]< «param1.reason.XPeaks.time.DVal»){
-					fail=1;	
-				}
-				else if(times==0){
-					times=0;
-				}
-			}
-			i++;
-		}
-		if(fail==1){
-			verdict.verdict=VERDICT_FAILED;				
-		}
-		
-		«ENDIF»
-		«ENDFOR»
-		return verdict;
-	} 
+			else if(param1.reason.constDeg!==null){
+				verdict.add("	deg=0;");
+				verdict.add("	i=0;");
+				verdict.add("	while(deg==0 && i<conf.length){");
+				verdict.add("		if(conf.array[i]<"+param1.reason.constDeg.cant.DVal+"){");
+				verdict.add("			deg=1;");
+				verdict.add("		}");
+				verdict.add("		i++;");
+				verdict.add("	}");
+				verdict.add("	while(deg==1 && i<conf.used){");
+				verdict.add("		if(conf.array[i]>"+param1.reason.constDeg.cant.DVal+"){");
+				verdict.add("			deg=0;");
+				verdict.add("		}");
+				verdict.add("		i++;");
+				verdict.add("	}");
+				verdict.add("	if(i==conf.used && deg==1){");
+				verdict.add("		verdict.verdict=VERDICT_FAILED;	");
+				verdict.add("	}");
 	
-	'''
-	
+				
+			}
+			else if(param1.reason.XPeaks!==null){
+				verdict.add("	i=0;");
+				verdict.add("	times="+param1.reason.XPeaks.NPeaks.DVal+";");
+				verdict.add("	time=0;");
+				verdict.add("	fail=0;");
+				verdict.add("	while(i<conf.used && fail==0){")
+				verdict.add("		if(conf.array[i]<"+param1.reason.XPeaks.cant.DVal+"»){");
+				verdict.add("			if(time==0){");
+				verdict.add("				time=i;");
+				verdict.add("			}");
+				verdict.add("			times--;");
+				verdict.add("			if(times==0 && timeStampOracle.array[i] - timeStampOracle.array[time]<"+param1.reason.XPeaks.time.DVal+"»){");
+				verdict.add("				fail=1;	");
+				verdict.add("			}");
+				verdict.add("			else if(times==0){");
+				verdict.add("				times=0;");
+				verdict.add("			}");
+				verdict.add("		}");
+				verdict.add("		i++;");
+				verdict.add("	}");
+				verdict.add("	if(fail==1){");
+				verdict.add("		verdict.verdict=VERDICT_FAILED;	");
+				verdict.add("	}");
+			}	
+		}
+		verdict.add("	return verdict;");
+		verdict.add("}");
+	}
+
 	def create_oracle_c(Oracle param,List<String> nameList)
 	'''
 	#include "«param.name.toString()».h"
@@ -1304,6 +1307,7 @@ var HashMap<String, List<String>> checkVar;
 	    return 1;
 	}
 	«IF param.when!==null || param.^while!==null»
+
 	int evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap.get(param.name).toString»«ENDIF») {
 		return «IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»;
 	}
@@ -1424,7 +1428,9 @@ var HashMap<String, List<String>> checkVar;
 		«ENDIF»
 		return conf;
 	}
-	
+	«FOR String a:verdict»
+	«a»
+	«ENDFOR»
 	
 	'''
 	
