@@ -228,7 +228,9 @@ var List<String> verdict;
 	def diffVarNames(Oracle oracle) {
 		var List<String> varNames = new ArrayList<String>();
 		for(AbstractElement2 name: oracle.check.em.elements)
-		varNames.add(name.name);
+		if(name.name!==null){
+			varNames.add(name.name);
+		}
 		return varNames;
 	}
 	
