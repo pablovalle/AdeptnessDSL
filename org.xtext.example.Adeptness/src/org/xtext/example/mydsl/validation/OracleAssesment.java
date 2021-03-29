@@ -1,32 +1,52 @@
 package org.xtext.example.mydsl.validation;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
-
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.EValidatorRegistrar;
 import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.At_least;
 import org.xtext.example.mydsl.adeptness.At_most;
 import org.xtext.example.mydsl.adeptness.Bound_Down;
 import org.xtext.example.mydsl.adeptness.Bound_up;
+import org.xtext.example.mydsl.adeptness.Checks;
+import org.xtext.example.mydsl.adeptness.DOUBLE;
 import org.xtext.example.mydsl.adeptness.Exactly;
+import org.xtext.example.mydsl.adeptness.ExpressionsModel;
 import org.xtext.example.mydsl.adeptness.FailReason;
+import org.xtext.example.mydsl.adeptness.Gap;
+import org.xtext.example.mydsl.adeptness.HighPeak;
+import org.xtext.example.mydsl.adeptness.HighTime;
+import org.xtext.example.mydsl.adeptness.Lower;
+import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.Operators;
 import org.xtext.example.mydsl.adeptness.Oracle;
-import org.xtext.example.mydsl.adeptness.Reference;
+import org.xtext.example.mydsl.adeptness.Range;
+import org.xtext.example.mydsl.adeptness.Reason;
+import org.xtext.example.mydsl.adeptness.Same;
 import org.xtext.example.mydsl.adeptness.Signal;
+import org.xtext.example.mydsl.adeptness.TimeType;
+import org.xtext.example.mydsl.adeptness.Upper;
+import org.xtext.example.mydsl.adeptness.Wait;
+import org.xtext.example.mydsl.adeptness.When;
+import org.xtext.example.mydsl.adeptness.While;
 
 public class OracleAssesment extends AbstractAdeptnessValidator {
 
@@ -40,6 +60,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 	private Oracle oracle;
 	private Constants.PRECONDS precond;
 	private boolean whenPrecondMet = false;
+	// precond timestamp
 	private int savedTimestamp = 0;
 	private int aWDuration = 0;
 
@@ -50,28 +71,535 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 	private double signalMax;
 	private double signalMin;
 
-	private Map<Constants.FAILREASONS, FailReasonValues> failReasons = new HashMap<Constants.FAILREASONS, FailReasonValues>();
+	private boolean errorDetected = false;
+
+	private Set<Constants.FAILREASONS> failReasons = new HashSet<Constants.FAILREASONS>();
 
 	@Check
-	public void checkOracleWithOperationData(Oracle oracle) {
-		if (monitoringVariables == null || monitoringVariables.getVariables().size() == 0)
-			return;
+	public void resetOracle(Oracle oracle) {
 		resetParameters();
 		this.oracle = oracle;
-		this.findPrecond();
-		this.findOraclePattern();
-		this.findOracleFailReason();
-		this.assesOracle();
+	}
+
+	@Check
+	public void checkEmptyOracleName(Oracle or) {
+		if (or.getName() == null) {
+			error("Oracles must be given a name", AdeptnessPackage.Literals.ORACLE__NAME);
+			errorDetected = true;
+		}
+	}
+
+	// DETECT ERRORS WITHIN EXPRESSIONS
+	@Check
+	public void checkExpressionModelVarsInMonitoringVariablesFile(AbstractElement2 elem) {
+		if (elem.getName() == null)
+			return;
+		checkNameInMonitoringVariablesFile(elem.getName(), AdeptnessPackage.Literals.ABSTRACT_ELEMENT2__NAME);
+	}
+
+	@Check
+	public void checkCheckNameInMonitoringVariablesFile(Checks check) {
+		if (check.getName() == null)
+			return;
+		checkNameInMonitoringVariablesFile(check.getName(), AdeptnessPackage.Literals.CHECKS__NAME);
+	}
+
+	private void checkNameInMonitoringVariablesFile(String name, EAttribute reference) {
+		MonitoringVar emVar = monitoringVariables.getVariables().get(name);
+		if (emVar == null) {
+			error("Variable " + name + " is not in the monitoring plan", reference);
+			errorDetected = true;
+		}else {
+			if (emVar.getOpData() == null) {
+				// Not operational data registered. Prevent operational data checks. 
+				errorDetected = true;
+			}
+		}
+		
+		
+	}
+
+	@Check
+	public void checkExpressions(ExpressionsModel data) {
+		int conOpenPar = 0, conClosePar = 0;
+
+		// Check if expression model is correctly evaluated otherwise is not well
+		// formated.
+		if (evalExpression(getBasicExpression(data.getElements())) == null) {
+			error("Incorrect expression.", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+			errorDetected = true;
+		}
+
+		for (int i = 0; i < data.getElements().size(); i++) {
+			AbstractElement2 elements = data.getElements().get(i);
+			conOpenPar = conOpenPar + elements.getFrontParentheses().size();
+
+			// current element (which is not the first one) contains name or value,
+			// and preceding element also contains name or value.
+			if (i > 0 && (elements.getName() != null || elements.getValue() != null)
+					&& (data.getElements().get(i - 1).getName() != null
+							|| data.getElements().get(i - 1).getValue() != null)) {
+				// preceding element does not contain operation.
+				// Example: "var 1" or "var ( var"
+				if (data.getElements().get(i - 1).getOp().size() == 0) {
+					error("Two values or signals cannot be concatenated without an operator",
+							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+					errorDetected = true;
+				}
+			}
+
+			for (int j = 0; j < elements.getOp().size(); j++) {
+				if (elements.getOp().get(j).getBackParentheses() != null) {
+					conClosePar++;
+				}
+
+				// Hemen elemento baten barnean ea parentesia eta operazionala dagoen begiratzen
+				// dugu.
+				// Adeptness.xtext-en AbstractElement2 begiratzen baduzu op lista bat da non
+				// operazionalak,logikoak eta parentesiak dauden
+				// ordun parentesi baten aurretik parentesia ez den elementu bat badago errorea
+				// ematen du
+				// Adibideak: <) edo &&) eta holakoak errorea ematea
+				if (j > 0 && elements.getOp().get(j).getBackParentheses() != null
+						&& elements.getOp().get(j - 1).getBackParentheses() == null) {
+					error("Operators cannot be concatenated this way",
+							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+					errorDetected = true;
+				}
+				// Hemen aurrekoan berdina begiratzen da baina parentesiak ez badira, adibidez +
+				// && errorea eman beharko luke
+				if (j > 0 && elements.getOp().get(j).getBackParentheses() == null
+						&& elements.getOp().get(j - 1).getBackParentheses() == null) {
+					error("Operators cannot be concatenated this way",
+							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+					errorDetected = true;
+				}
+			}
+		}
+		if (conOpenPar != conClosePar) {
+			error("Parentheses are not correctly opened and closed",
+					AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+			errorDetected = true;
+		}
+	}
+
+	// PRECONDITION CHECKS AND INFORMATION GATHERING
+	@Check
+	public void checkWhileConditions(While whi) {
+		this.precond = Constants.PRECONDS.WHILE;
+		checkComparisson(whi.getEm(), AdeptnessPackage.Literals.WHILE__EM);
+	}
+
+	@Check
+	public void checkWhenConditions(When whe) {
+		if (whe.getAw() != null) {
+			this.precond = Constants.PRECONDS.WHENAFTERWHEN;
+		} else {
+			this.precond = Constants.PRECONDS.WHEN;
+		}
+		checkComparisson(whe.getEm(), AdeptnessPackage.Literals.WHEN__EM);
+	}
+
+	private void checkComparisson(ExpressionsModel expr, EReference reference) {
+		if (expr == null) {
+			error("Condition cannot be empty.", reference);
+			errorDetected = true;
+			return;
+		}
+
+		int contLogicOp = 0, contCompOp = 0;
+		for (int i = 0; i < expr.getElements().size(); i++) {
+			AbstractElement2 element = expr.getElements().get(i);
+			for (int j = 0; j < element.getOp().size(); j++) {
+				if (element.getOp().get(j).getLogicOperator() != null) {
+					contLogicOp++;
+				} else if (element.getOp().get(j).getComparation() != null) {
+					contCompOp++;
+				}
+			}
+		}
+		if (contLogicOp + 1 < contCompOp) {
+			error("Conditions must be concatenated by logical operators.", reference);
+			errorDetected = true;
+			return;
+		} else if (contLogicOp + 1 != contCompOp) {
+			error("Expression must be a condition.", reference);
+			errorDetected = true;
+			return;
+		}
+	}
+
+	@Check
+	public void checkAfterWhenEmptyValues(Wait wait) {
+		if (wait.getUnit() == null) {
+			error("Enter a time unit (milliseconds, seconds, minutes or hours).", AdeptnessPackage.Literals.WAIT__UNIT);
+			errorDetected = true;
+			return;
+		}
+
+		// there is no way to detect empty wait.getTime() -> takes 0.0 value by default
+		// automatic validation detects it anyway -> EDOUBLE cannot be null
+		double dur = wait.getTime().getDVal();
+		if (dur < 0) {
+			error("Duration must be positive.", AdeptnessPackage.Literals.WAIT__TIME);
+			errorDetected = true;
+			return;
+		}
+		aWDuration = getDurationInSeconds(dur, wait.getUnit().getTime());
+	}
+
+	// CHECKS STATEMENT CHECKS AND INFORMATION GATHERING
+	@Check
+	public void checkCheckSignal(Checks check) {
+		// Left part in check must contain at least a variable name
+		if (check.getName() == null && check.getEm() == null) {
+			error("Checks' left part must represent a signal, cannot be empty.", AdeptnessPackage.Literals.CHECKS__EM);
+			errorDetected = true;
+			return;
+		}
+
+		List<AbstractElement2> elems = check.getEm().getElements();
+		boolean anyVar = false;
+		for (AbstractElement2 elem : elems) {
+			if (elem.getName() != null) {
+				anyVar = true;
+				break;
+			}
+		}
+		if (!anyVar) {
+			error("Checks' left part must represent a signal, cannot be a value.",
+					AdeptnessPackage.Literals.CHECKS__EM);
+			errorDetected = true;
+			return;
+		}
+	}
+
+	@Check
+	public void checkReferenceBetweenMonitoringVariableMinMax(Checks check) {
+		if (check.getEm() != null) {
+			System.out.println(
+					"TODO Check if expressionsModel within Checks statement is correct according to min, max variable values in monitoring plan");
+			return;
+		}
+
+		MonitoringVar checkVar = monitoringVariables.getVariables().get(check.getName().toString());
+		if (checkVar == null)
+			return;
+
+		double max = checkVar.getMax();
+		double min = checkVar.getMin();
+
+		Bound_up bound_up = null;
+		Bound_Down bound_down = null;
+		if (check.getReference().getUpper() != null) {
+			bound_up = check.getReference().getUpper().getBound_upp();
+		} else if (check.getReference().getLower() != null) {
+			bound_down = check.getReference().getLower().getBound_lower();
+		} else if (check.getReference().getRange() != null) {
+			bound_down = check.getReference().getRange().getBound_lower();
+			bound_up = check.getReference().getRange().getBound_upp();
+		} else if (check.getReference().getGap() != null) {
+			bound_down = check.getReference().getGap().getBound_lower();
+			bound_up = check.getReference().getGap().getBound_upp();
+		} else if (check.getReference().getSame() != null) {
+			bound_up = check.getReference().getSame().getBound_upp();
+		} else if (check.getReference().getNotsame() != null) {
+			bound_up = check.getReference().getNotsame().getBound_upp();
+		}
+
+		Double boundup = null, boundown = null;
+		if (bound_up != null) {
+			if (bound_up.getEm() != null) {
+				System.out.println(
+						"TODO Check if expressionsModel within Upper bound statement is correct according to min, max variable values in monitoring plan");
+			}
+			boundup = bound_up.getValue().getDVal();
+			if (boundup > max) {
+				error("Check " + check.getName() + " with value: " + boundup + " does not comply max value: " + max
+						+ " specified in the validation plan", AdeptnessPackage.Literals.CHECKS__REFERENCE);
+				errorDetected = true;
+			}
+			if (boundup < min) {
+				error("Check " + check.getName() + " with value: " + boundup + " does not comply min value: " + min
+						+ " specified in the validation plan", AdeptnessPackage.Literals.CHECKS__REFERENCE);
+				errorDetected = true;
+			}
+		}
+		if (bound_down != null) {
+			if (bound_down.getEm() != null) {
+				System.out.println(
+						"TODO Check if expressionsModel within Lower bound statement is correct according to min, max variable values in monitoring plan");
+			}
+			boundown = bound_down.getValue().getDVal();
+			if (boundown > max) {
+				error("Check " + check.getName() + " with value: " + boundown + " does not comply max value: " + max
+						+ " specified in the validation plan", AdeptnessPackage.Literals.CHECKS__REFERENCE);
+				errorDetected = true;
+			}
+			if (boundown < min) {
+				error("Check " + check.getName() + " with value: " + boundown + " does not comply min value: " + min
+						+ " specified in the validation plan", AdeptnessPackage.Literals.CHECKS__REFERENCE);
+				errorDetected = true;
+			}
+		}
+	}
+
+	@Check
+	public void checkChecksCondition(Checks check) {
+		for (int i = 0; i < check.getEm().getElements().size(); i++) {
+			AbstractElement2 element = check.getEm().getElements().get(i);
+			for (int j = 0; j < element.getOp().size(); j++) {
+				if (element.getOp().get(j).getLogicOperator() != null) {
+					error("Operator: " + element.getOp().get(j).getLogicOperator().getOp().toString()
+							+ " is not available for checks", AdeptnessPackage.Literals.CHECKS__EM);
+					errorDetected = true;
+				} else if (element.getOp().get(j).getComparation() != null) {
+					error("Operator: " + element.getOp().get(j).getComparation().getOp().toString()
+							+ " is not available for checks", AdeptnessPackage.Literals.CHECKS__EM);
+					errorDetected = true;
+				}
+			}
+		}
+	}
+
+	@Check
+	public void checkEmptyLowerValue(Lower lower) {
+		this.pattern = Constants.PATTERNS.ABOVE_REFERENCE;
+		checkBound(lower.getBound_lower().getValue(), lower.getBound_lower().getEm(), "Lower",
+				AdeptnessPackage.Literals.LOWER__BOUND_LOWER);
+		checkTempCondWithPrecond(lower.getAtleast() != null, AdeptnessPackage.Literals.LOWER__ATLEAST);
+		checkTempCondWithPrecond(lower.getAtmost() != null, AdeptnessPackage.Literals.LOWER__ATMOST);
+		checkTempCondWithPrecond(lower.getExactly() != null, AdeptnessPackage.Literals.LOWER__EXACTLY);
+	}
+
+	@Check
+	public void checkEmptyUpperValue(Upper upper) {
+		this.pattern = Constants.PATTERNS.BELOW_REFERENCE;
+		checkBound(upper.getBound_upp().getValue(), upper.getBound_upp().getEm(), "Upper",
+				AdeptnessPackage.Literals.UPPER__BOUND_UPP);
+		checkTempCondWithPrecond(upper.getAtleast() != null, AdeptnessPackage.Literals.UPPER__ATLEAST);
+		checkTempCondWithPrecond(upper.getAtmost() != null, AdeptnessPackage.Literals.UPPER__ATMOST);
+		checkTempCondWithPrecond(upper.getExactly() != null, AdeptnessPackage.Literals.UPPER__EXACTLY);
+	}
+
+	@Check
+	public void checkBoundValues(Range range) {
+		this.pattern = Constants.PATTERNS.RANGE;
+		checkBound(range.getBound_lower().getValue(), range.getBound_lower().getEm(), "Lower",
+				AdeptnessPackage.Literals.RANGE__BOUND_LOWER);
+		checkBound(range.getBound_upp().getValue(), range.getBound_upp().getEm(), "Upper",
+				AdeptnessPackage.Literals.RANGE__BOUND_UPP);
+		checkDownBoundLower(range.getBound_lower().getValue(), range.getBound_upp().getValue(),
+				AdeptnessPackage.Literals.RANGE__BOUND_LOWER);
+
+		checkTempCondWithPrecond(range.getAtleast() != null, AdeptnessPackage.Literals.RANGE__ATLEAST);
+		checkTempCondWithPrecond(range.getAtmost() != null, AdeptnessPackage.Literals.RANGE__ATMOST);
+		checkTempCondWithPrecond(range.getExactly() != null, AdeptnessPackage.Literals.RANGE__EXACTLY);
+
+	}
+
+	@Check
+	public void checkBoundValues(Gap gap) {
+		this.pattern = Constants.PATTERNS.GAP;
+		checkBound(gap.getBound_lower().getValue(), gap.getBound_lower().getEm(), "Lower",
+				AdeptnessPackage.Literals.GAP__BOUND_LOWER);
+		checkBound(gap.getBound_upp().getValue(), gap.getBound_upp().getEm(), "Upper",
+				AdeptnessPackage.Literals.GAP__BOUND_UPP);
+		checkDownBoundLower(gap.getBound_lower().getValue(), gap.getBound_upp().getValue(),
+				AdeptnessPackage.Literals.GAP__BOUND_LOWER);
+		checkTempCondWithPrecond(gap.getAtleast() != null, AdeptnessPackage.Literals.GAP__ATLEAST);
+		checkTempCondWithPrecond(gap.getAtmost() != null, AdeptnessPackage.Literals.GAP__ATMOST);
+		checkTempCondWithPrecond(gap.getExactly() != null, AdeptnessPackage.Literals.GAP__EXACTLY);
+	}
+
+	@Check
+	public void checkEmptyLowerValue(Same same) {
+		this.pattern = Constants.PATTERNS.SAME_REFERENCE;
+		checkBound(same.getBound_upp().getValue(), same.getBound_upp().getEm(), "Upper",
+				AdeptnessPackage.Literals.SAME__BOUND_UPP);
+		checkTempCondWithPrecond(same.getAtleast() != null, AdeptnessPackage.Literals.SAME__ATLEAST);
+		checkTempCondWithPrecond(same.getAtmost() != null, AdeptnessPackage.Literals.SAME__ATMOST);
+		checkTempCondWithPrecond(same.getExactly() != null, AdeptnessPackage.Literals.SAME__EXACTLY);
+	}
+
+	@Check
+	public void checkEmptyLowerValue(NotSame notSame) {
+		this.pattern = Constants.PATTERNS.NOTSAME_REFERENCE;
+		checkBound(notSame.getBound_upp().getValue(), notSame.getBound_upp().getEm(), "Upper",
+				AdeptnessPackage.Literals.NOT_SAME__BOUND_UPP);
+		checkTempCondWithPrecond(notSame.getAtleast() != null, AdeptnessPackage.Literals.NOT_SAME__ATLEAST);
+		checkTempCondWithPrecond(notSame.getAtmost() != null, AdeptnessPackage.Literals.NOT_SAME__ATMOST);
+		checkTempCondWithPrecond(notSame.getExactly() != null, AdeptnessPackage.Literals.NOT_SAME__EXACTLY);
+	}
+
+	private void checkBound(DOUBLE value, ExpressionsModel em, String type, EReference reference) {
+		if (value == null && em == null) {
+			error(type + " bound must be a value or an expression", reference);
+			errorDetected = true;
+		}
+	}
+
+	private void checkDownBoundLower(DOUBLE lowerBound, DOUBLE upperBound, EReference reference) {
+		if (lowerBound != null && upperBound != null) {
+			if (lowerBound.getDVal() > upperBound.getDVal()) {
+				error("Lower bound cannot be higher than upper bound", reference);
+				errorDetected = true;
+			}
+		} else {
+			System.out.println(
+					"TODO: check ExpressionsModel to check if lower bound is really lower than upper bound in a range");
+		}
+	}
+
+	private void checkTempCondWithPrecond(boolean temp, EReference reference) {
+		if (temp && this.precond == null) {
+			error("Temporary conditions within assertions should only be used in conjuction with \"while\" or \"when\" preconditions.",
+					reference);
+			errorDetected = true;
+		}
+	}
+
+	@Check
+	public void checkAtLeastTime(At_least atLeast) {
+		this.tpattern = Constants.TIMING_PATTERNS.ATLEAST;
+		checkTimeAndDuration(atLeast.getTime(), atLeast.getUnit(), AdeptnessPackage.Literals.AT_LEAST__TIME,
+				AdeptnessPackage.Literals.AT_LEAST__UNIT);
+	}
+
+	@Check
+	public void checkAtMostTimeAndDuration(At_most atMost) {
+		this.tpattern = Constants.TIMING_PATTERNS.ATMOST;
+		checkTimeAndDuration(atMost.getTime(), atMost.getUnit(), AdeptnessPackage.Literals.AT_MOST__TIME,
+				AdeptnessPackage.Literals.AT_MOST__UNIT);
+	}
+
+	@Check
+	public void checkExactlyTime(Exactly exactly) {
+		this.tpattern = Constants.TIMING_PATTERNS.EXACTLY;
+		checkTimeAndDuration(exactly.getTime(), exactly.getUnit(), AdeptnessPackage.Literals.EXACTLY__TIME,
+				AdeptnessPackage.Literals.EXACTLY__UNIT);
+	}
+
+	private void checkTimeAndDuration(DOUBLE time, TimeType timeUnit, EReference timeReference,
+			EReference unitReference) {
+		if (time.getDVal() < 0) {
+			error("Duration must be positive.", timeReference);
+			errorDetected = true;
+			return;
+		} else if (time.getDVal() == 0) {
+			error("Duration cannot be zero.", timeReference);
+			errorDetected = true;
+			return;
+		}
+
+		if (timeUnit == null) {
+			error("Enter time unit (milliseconds, seconds, minutes or hours).", unitReference);
+			errorDetected = true;
+			return;
+		}
+
+		Double dur = time != null ? time.getDVal() : null;
+		String unit = timeUnit != null ? timeUnit.toString() : null;
+		if (dur != null && timeUnit != null) {
+			duration = getDurationInSeconds(dur, unit);
+		}
+	}
+
+	// FAILS IF STATEMENTS CHECKS AND INFORMATION GATHERING
+	@Check
+	public void checkHighTimeAndHighPeak(Checks check) {
+		boolean HT = false;
+		boolean HP = false;
+		int numHT = 0, numHP = 0;
+		for (int i = 0; i < check.getFailReason().size(); i++) {
+			if (check.getFailReason().get(i).getReason().getHighTime() != null) {
+				HT = true;
+				numHT = i;
+			} else if (check.getFailReason().get(i).getReason().getHighPeak() != null) {
+				HP = true;
+				numHP = i;
+			}
+		}
+		if (HT && HP) {
+			HighTime Ht = check.getFailReason().get(numHT).getReason().getHighTime();
+			HighPeak Hp = check.getFailReason().get(numHP).getReason().getHighPeak();
+			if (Ht.getCant().getDVal() <= Hp.getCant().getDVal()) {
+				error("High peak reference's confidence value must be lower than High time out of bound reference's confidence value",
+						AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
+			}
+		}
+	}
+
+	@Check
+	public void checkFailReasons(FailReason fr) {
+		if (fr.getReason() == null) {
+			error("Incomplete fails if statement. ", AdeptnessPackage.Literals.FAIL_REASON__REASON);
+			return;
+		}
+	}
+
+	@Check
+	public void checkFailReasons(Reason fr) {
+		Constants.FAILREASONS frk = null;
+		double confidence = 0.0;
+		int nSamples = 1, nPeaks = 1;
+		EReference reference = null;
+		if (fr.getHighPeak() != null) {
+			confidence = fr.getHighPeak().getCant().getDVal();
+			frk = Constants.FAILREASONS.HIGH_PEAK;
+			reference = AdeptnessPackage.Literals.REASON__HIGH_PEAK;
+		} else if (fr.getHighTime() != null) {
+			confidence = fr.getHighTime().getCant().getDVal();
+			nSamples = Utils.getNSamples((int) fr.getHighTime().getTime().getDVal(),
+					fr.getHighTime().getUnit().getTime());
+			nPeaks = nSamples;
+			frk = Constants.FAILREASONS.HIGH_TIME_OUT_BOUNDS;
+			reference = AdeptnessPackage.Literals.REASON__HIGH_TIME;
+		} else if (fr.getXPeaks() != null) {
+			confidence = fr.getXPeaks().getCant().getDVal();
+			nPeaks = (int) fr.getXPeaks().getNPeaks().getDVal();
+			nSamples = Utils.getNSamples((int) fr.getXPeaks().getTime().getDVal(), fr.getXPeaks().getUnit().getTime());
+			frk = Constants.FAILREASONS.X_PEAKS_XSECONDS;
+			reference = AdeptnessPackage.Literals.REASON__XPEAKS;
+		}
+
+		boolean failsError = false;
+		// check structural errors.
+		if (nSamples == 0 || nPeaks == 0) {
+			error("Duration or number of peaks cannot be zero.", reference);
+			failsError = true;
+		}
+		if (pattern.equals(Constants.PATTERNS.NOTSAME_REFERENCE) && confidence != 0) {
+			error("Confidence value must be zero within 'should not be' clauses or use a 'not in range' clause instead.",
+					reference);
+			failsError = true;
+		}
+		if (!frk.equals(Constants.FAILREASONS.HIGH_PEAK) && this.tpattern != null) {
+			error("Temporary conditions are either set within the assertion or the failure statement, but not in both.",
+					reference);
+			failsError = true;
+		}
+		if (!failReasons.add(frk)) {
+			error("Duplicated " + frk + " detection.", reference);
+			failsError = true;
+		}
+		if (confidence < -1 || confidence > 0) {
+			error("Confidence value must be between -1 and 0", reference);
+			failsError = true;
+		}
+
+		if (monitoringVariables != null && monitoringVariables.getVariables().size() != 0 && !failsError
+				&& !errorDetected)
+			this.assesOracle(frk, confidence, nPeaks, nSamples, reference);
+
 	}
 
 	/**
 	 * @author aarrieta
 	 * @return false if there is risk that the oracle fails, true if there isn't
 	 */
-	private void assesOracle() {
-		// TODO check if all names in the oracle expressions are in the
-		// monitoringVariableList
-
+	private void assesOracle(Constants.FAILREASONS frk, double confidence, int nPeaks, int nSamples,
+			EReference reference) {
 		// get any given variables opData to
 		Iterator<String> it = monitoringVariables.getVariables().keySet().iterator();
 		String key = "";
@@ -89,6 +617,9 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		findSignalsMaxMinValues();
 
 		int aWDurCount = 0;
+		int durCount = 0;
+		int peakCount = 0;
+		int savedTimestamp = 0;
 		for (int timestamp = 0; timestamp < monitoringVariables.getVariables().get(key).getOpData()
 				.size(); timestamp++) {
 			// 1. check precondition. If a when precondition has been met previously, don't
@@ -100,11 +631,13 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 					if (precond != null && (precond.equals(Constants.PRECONDS.WHEN)
 							|| precond.equals(Constants.PRECONDS.WHENAFTERWHEN))) {
 						whenPrecondMet = true;
-						savedTimestamp = timestamp;
+						this.savedTimestamp = timestamp;
 					}
 				} else {
 					if (precond.equals(Constants.PRECONDS.WHILE)) {
-						resetAllCounters();
+						durCount = 0;
+						peakCount = 0;
+						savedTimestamp = 0;
 					}
 					continue;
 				}
@@ -118,195 +651,167 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 				}
 			}
 
-			// 4. check foreach fail reason if operational data is out of bounds according
-			// to the confidence value
-			Iterator<Constants.FAILREASONS> failReasonsIt = failReasons.keySet().iterator();
-			Constants.FAILREASONS frk;
+			// 3. check if operational data is out of bounds according to the confidence
+			// value of the current fail reason
 			Boolean isOutOfBounds = false;
-			while (failReasonsIt.hasNext()) {
-				frk = (Constants.FAILREASONS) failReasonsIt.next();
-				isOutOfBounds = checkOperationalDataOutOfBounds(failReasons.get(frk).confidence, timestamp);
-				if (isOutOfBounds == null) {
-					System.out.println("Too high confidence value detected for " + frk
-							+ " fail reason, removed from failure detection according to operational data.");
-					failReasons.remove(frk);
-					continue;
-				}
+			isOutOfBounds = checkOperationalDataOutOfBounds(confidence, timestamp, reference);
+			if (isOutOfBounds == null) {
+				System.out.println("Too high confidence value detected for " + frk
+						+ " fail reason, removed from failure detection according to operational data.");
+				return;
+			}
 
-				switch (frk) {
-				case HIGH_PEAK:
-					if (tpattern == null && isOutOfBounds) {
-						System.out.println("HighPeak detected.");
-						warning("There is operational data out of bounds.", AdeptnessPackage.Literals.ORACLE__CHECK);
-						return;
-					} else if (tpattern != null) {
-						switch (tpattern) {
-						case ATLEAST:
-							if (failReasons.get(frk).durCount <= duration && isOutOfBounds) {
-								System.out.println(
-										"Operational data out of bounds detected while a timing condition check.");
-								warning("There is operational data out of bounds.",
-										AdeptnessPackage.Literals.ORACLE__CHECK);
-								return;
-							}
-							// checking time has expired, reset parameters
-							if (timestamp == (savedTimestamp + aWDuration + duration)) {
-								whenPrecondMet = false;
-								timestamp = savedTimestamp;
-								aWDurCount = 0;
-								failReasons.get(frk).durCount = 0;
-							} else {
-								failReasons.get(frk).durCount++;
-							}
-							break;
-						case ATMOST:
-							if (failReasons.get(frk).durCount == 0 && isOutOfBounds) {
-								System.out.println(
-										"Operational data in between bounds detected after a timing condition check.");
-								warning("There is operational data out of bounds.",
-										AdeptnessPackage.Literals.ORACLE__CHECK);
-								return;
-							}
-							if (timestamp == (savedTimestamp + aWDuration + duration + 1) && !isOutOfBounds) {
-								System.out.println(
-										"Operational data in between bounds detected after a timing condition check.");
-								warning("There is operational data out of bounds.",
-										AdeptnessPackage.Literals.ORACLE__CHECK);
-								return;
-							}
-
-							if (timestamp > (savedTimestamp + aWDuration + duration)) {
-								whenPrecondMet = false;
-								timestamp = savedTimestamp;
-								aWDurCount = 0;
-								failReasons.get(frk).durCount = 0;
-							} else {
-								failReasons.get(frk).durCount++;
-							}
-							break;
-						case EXACTLY:
-							if (failReasons.get(frk).durCount <= duration && isOutOfBounds) {
-								System.out.println(
-										"Operational data out of bounds detected while timing condition check.");
-								warning("There is operational data out of bounds.",
-										AdeptnessPackage.Literals.ORACLE__CHECK);
-								return;
-							} else if (failReasons.get(frk).durCount > duration && !isOutOfBounds) {
-								System.out.println(
-										"Operational data in between bounds detected after a timing condition check.");
-								warning("There is operational data out of bounds.",
-										AdeptnessPackage.Literals.ORACLE__CHECK);
-								return;
-							}
-
-							if (timestamp == (savedTimestamp + aWDuration + duration + 1)) {
-								whenPrecondMet = false;
-								timestamp = savedTimestamp;
-								aWDurCount = 0;
-								failReasons.get(frk).durCount = 0;
-							} else {
-								failReasons.get(frk).durCount++;
-							}
-							break;
+			switch (frk) {
+			case HIGH_PEAK:
+				if (tpattern == null && isOutOfBounds) {
+					System.out.println("HighPeak detected.");
+					warning("There is operational data out of bounds.", reference);
+					return;
+				} else if (tpattern != null) {
+					switch (tpattern) {
+					case ATLEAST:
+						if (durCount <= duration && isOutOfBounds) {
+							System.out
+									.println("Operational data out of bounds detected while a timing condition check.");
+							warning("There is operational data out of bounds.", reference);
+							return;
+						}
+						// checking time has expired, reset parameters
+						if (timestamp == (this.savedTimestamp + aWDuration + duration)) {
+							whenPrecondMet = false;
+							timestamp = this.savedTimestamp;
+							aWDurCount = 0;
+							durCount = 0;
+						} else {
+							durCount++;
+						}
+						break;
+					case ATMOST:
+						if (durCount == 0 && isOutOfBounds) {
+							System.out.println(
+									"Operational data in between bounds detected after a timing condition check.");
+							warning("There is operational data out of bounds.", reference);
+							return;
+						}
+						if (timestamp == (this.savedTimestamp + aWDuration + duration + 1) && !isOutOfBounds) {
+							System.out.println(
+									"Operational data in between bounds detected after a timing condition check.");
+							warning("There is operational data out of bounds.", reference);
+							return;
 						}
 
-					}
-					break;
-				case HIGH_TIME_OUT_BOUNDS:
-					if (isOutOfBounds) {
-						failReasons.get(frk).peakCount++;
-					}
-					if (failReasons.get(frk).peakCount >= failReasons.get(frk).nPeaks) {
-						System.out.println("High Time Out of Bounds detected (during " + failReasons.get(frk).nPeaks
-								+ " seconds).");
-						warning("There is operational data out of bounds.", AdeptnessPackage.Literals.ORACLE__CHECK);
-						return;
-					}
-
-					if (whenPrecondMet
-							&& (timestamp == (savedTimestamp + failReasons.get(frk).nSamples + aWDuration))) {
-						whenPrecondMet = false;
-						timestamp = savedTimestamp;
-						aWDurCount = 0;
-						failReasons.get(frk).peakCount = 0;
-						failReasons.get(frk).durCount = 0;
-					}
-
-					// duration has ended: reset
-					if (failReasons.get(frk).durCount == failReasons.get(frk).nSamples) {
-						failReasons.get(frk).peakCount = 0;
-						failReasons.get(frk).durCount = 0;
-					}
-					// duration hasn't ended and a peak was detected at some point (x_peaks_xseconds
-					// or high_time_out_of_bounds)-> continue counting
-					else if (failReasons.get(frk).peakCount > 0 || whenPrecondMet) {
-						failReasons.get(frk).durCount++;
-					}
-
-					break;
-				case X_PEAKS_XSECONDS:
-					if (isOutOfBounds) {
-						failReasons.get(frk).peakCount++;
-					}
-					if (failReasons.get(frk).savedTimestamp == 0) {
-						failReasons.get(frk).savedTimestamp = timestamp;
-					}
-					if (failReasons.get(frk).peakCount >= failReasons.get(frk).nPeaks) {
-						System.out.println(failReasons.get(frk).nPeaks + " peaks detected during "
-								+ failReasons.get(frk).nSamples + " seconds.");
-						warning("There is operational data out of bounds.", AdeptnessPackage.Literals.ORACLE__CHECK);
-						return;
-					}
-
-					// previous check haven't detected a failure
-					// if whenPrecondMet was set -> reset parameters. if x_peaks_xseconds or
-					// high_time_out_of_bounds, continue checking until duration is reached.
-					if (whenPrecondMet
-							&& (timestamp == (savedTimestamp + failReasons.get(frk).nSamples + aWDuration))) {
-						whenPrecondMet = false;
-						timestamp = savedTimestamp;
-						aWDurCount = 0;
-						failReasons.get(frk).peakCount = 0;
-						failReasons.get(frk).durCount = 0;
-					}
-
-					// duration has ended: reset
-					if (failReasons.get(frk).durCount == failReasons.get(frk).nSamples) {
-						failReasons.get(frk).peakCount = 0;
-						failReasons.get(frk).durCount = 0;
-						// if there isn't any precondition to meet, and a peak was detected previously
-						// -> reset timestamp. This way it will continue checking from the following
-						// timestamp of the first peak detected
-						if (this.precond == null && failReasons.get(frk).savedTimestamp != 0) {
-							timestamp = failReasons.get(frk).savedTimestamp;
-							failReasons.get(frk).savedTimestamp = 0;
+						if (timestamp > (this.savedTimestamp + aWDuration + duration)) {
+							whenPrecondMet = false;
+							timestamp = this.savedTimestamp;
+							aWDurCount = 0;
+							durCount = 0;
+						} else {
+							durCount++;
 						}
+						break;
+					case EXACTLY:
+						if (durCount <= duration && isOutOfBounds) {
+							System.out.println("Operational data out of bounds detected while timing condition check.");
+							warning("There is operational data out of bounds.", reference);
+							return;
+						} else if (durCount > duration && !isOutOfBounds) {
+							System.out.println(
+									"Operational data in between bounds detected after a timing condition check.");
+							warning("There is operational data out of bounds.", reference);
+							return;
+						}
+
+						if (timestamp == (this.savedTimestamp + aWDuration + duration + 1)) {
+							whenPrecondMet = false;
+							timestamp = this.savedTimestamp;
+							aWDurCount = 0;
+							durCount = 0;
+						} else {
+							durCount++;
+						}
+						break;
 					}
-					// duration hasn't ended and a peak was detected at some point (x_peaks_xseconds
-					// or high_time_out_of_bounds)-> continue counting
-					else if (failReasons.get(frk).peakCount > 0 || whenPrecondMet) {
-						failReasons.get(frk).durCount++;
-					}
-					break;
-				default:
+
+				}
+				break;
+			case HIGH_TIME_OUT_BOUNDS:
+				if (isOutOfBounds) {
+					peakCount++;
+				}
+				if (peakCount >= nPeaks) {
+					System.out.println("High Time Out of Bounds detected (during " + nPeaks + " seconds).");
+					warning("There is operational data out of bounds.", reference);
+					return;
 				}
 
+				if (whenPrecondMet && (timestamp == (this.savedTimestamp + nSamples + aWDuration))) {
+					whenPrecondMet = false;
+					timestamp = this.savedTimestamp;
+					aWDurCount = 0;
+					peakCount = 0;
+					durCount = 0;
+				}
+
+				// duration has ended: reset
+				if (durCount == nSamples) {
+					peakCount = 0;
+					durCount = 0;
+				}
+				// duration hasn't ended and a peak was detected at some point (x_peaks_xseconds
+				// or high_time_out_of_bounds)-> continue counting
+				else if (peakCount > 0 || whenPrecondMet) {
+					durCount++;
+				}
+
+				break;
+			case X_PEAKS_XSECONDS:
+				if (isOutOfBounds) {
+					peakCount++;
+				}
+				if (savedTimestamp == 0) {
+					savedTimestamp = timestamp;
+				}
+				if (peakCount >= nPeaks) {
+					System.out.println(nPeaks + " peaks detected during " + nSamples + " seconds.");
+					warning("There is operational data out of bounds.", reference);
+					return;
+				}
+
+				// previous check haven't detected a failure
+				// if whenPrecondMet was set -> reset parameters. if x_peaks_xseconds or
+				// high_time_out_of_bounds, continue checking until duration is reached.
+				if (whenPrecondMet && (timestamp == (this.savedTimestamp + nSamples + aWDuration))) {
+					whenPrecondMet = false;
+					timestamp = this.savedTimestamp;
+					aWDurCount = 0;
+					peakCount = 0;
+					durCount = 0;
+				}
+
+				// duration has ended: reset
+				if (durCount == nSamples) {
+					peakCount = 0;
+					durCount = 0;
+					// if there isn't any precondition to meet, and a peak was detected previously
+					// -> reset timestamp. This way it will continue checking from the following
+					// timestamp of the first peak detected
+					if (this.precond == null && savedTimestamp != 0) {
+						timestamp = savedTimestamp;
+						savedTimestamp = 0;
+					}
+				}
+				// duration hasn't ended and a peak was detected at some point (x_peaks_xseconds
+				// or high_time_out_of_bounds)-> continue counting
+				else if (peakCount > 0 || whenPrecondMet) {
+					durCount++;
+				}
+				break;
+			default:
 			}
 		}
 	}
 
-	private void resetAllCounters() {
-		Iterator<Constants.FAILREASONS> failReasonsIt = failReasons.keySet().iterator();
-		Constants.FAILREASONS frk;
-		while (failReasonsIt.hasNext()) {
-			frk = (Constants.FAILREASONS) failReasonsIt.next();
-			failReasons.get(frk).durCount = 0;
-			failReasons.get(frk).peakCount = 0;
-			failReasons.get(frk).savedTimestamp = 0;
-		}
-	}
-
-	private Boolean checkOperationalDataOutOfBounds(double confidence, int timestamp) {
+	private Boolean checkOperationalDataOutOfBounds(double confidence, int timestamp, EReference reference) {
 
 		boolean outOfBounds = false;
 
@@ -355,10 +860,9 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			if (upperRefBound < lowerRefBound) {
 				if (this.oracle.getCheck().getReference().getRange().getBound_upp().getValue() != null
 						&& this.oracle.getCheck().getReference().getRange().getBound_lower().getValue() != null) {
-					error("Confidence value too high.", AdeptnessPackage.Literals.ORACLE__CHECK);
+					error("Confidence value too high.", reference);
 				} else {
-					warning("Confidence value too high according to operational data.",
-							AdeptnessPackage.Literals.ORACLE__CHECK);
+					warning("Confidence value too high according to operational data.", reference);
 				}
 
 				return null;
@@ -377,10 +881,9 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			if (upperRefBound < lowerRefBound) {
 				if (this.oracle.getCheck().getReference().getGap().getBound_upp().getValue() != null
 						&& this.oracle.getCheck().getReference().getGap().getBound_lower().getValue() != null) {
-					error("Confidence value is too high.", AdeptnessPackage.Literals.ORACLE__CHECK);
+					error("Confidence value is too high.", reference);
 				} else {
-					warning("Confidence value might be too high according to operational data.",
-							AdeptnessPackage.Literals.ORACLE__CHECK);
+					warning("Confidence value might be too high according to operational data.", reference);
 				}
 				return null;
 			}
@@ -394,10 +897,9 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 
 			if (upperRefBound < lowerRefBound) {
 				if (this.oracle.getCheck().getReference().getSame().getBound_upp().getValue() != null) {
-					error("Confidence value too high.", AdeptnessPackage.Literals.ORACLE__CHECK);
+					error("Confidence value too high.", reference);
 				} else {
-					warning("Confidence value might be too high according to operational data.",
-							AdeptnessPackage.Literals.ORACLE__CHECK);
+					warning("Confidence value might be too high according to operational data.", reference);
 				}
 				return null;
 			}
@@ -576,6 +1078,35 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		return expression;
 	}
 
+	private String getBasicExpression(EList<AbstractElement2> elements) {
+		String expression = "";
+		for (AbstractElement2 element : elements) {
+			if (element.getFrontParentheses().size() > 0) {
+				expression += "(";
+			}
+			if (element.getName() != null) {
+				expression += "1.0";
+			}
+			if (element.getValue() != null) {
+				expression += String.valueOf(element.getValue().getDVal());
+			}
+			if (element.getOp() != null) {
+				for (Operators op : element.getOp()) {
+					if (op.getOperator() != null) {
+						expression += op.getOperator().getOp().toString();
+					} else if (op.getComparation() != null) {
+						expression += op.getComparation().getOp().toString();
+					} else if (op.getLogicOperator() != null) {
+						expression += op.getLogicOperator().getOp().toString();
+					} else if (op.getBackParentheses() != null) {
+						expression += op.getBackParentheses();
+					}
+				}
+			}
+		}
+		return expression;
+	}
+
 	private Object evalExpression(String expression) {
 		ScriptEngine engine = new ScriptEngineManager(null).getEngineByName("JavaScript");
 		try {
@@ -583,21 +1114,6 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		} catch (ScriptException e) {
 			e.printStackTrace();
 			return null;
-		}
-	}
-
-	private void findPrecond() {
-		if (this.oracle.getWhen() != null) {
-			if (this.oracle.getWhen().getAw() != null) {
-				this.precond = Constants.PRECONDS.WHENAFTERWHEN;
-				double dur = this.oracle.getWhen().getAw().getWait().getTime().getDVal();
-				aWDuration = getDurationInSeconds(dur, this.oracle.getWhen().getAw().getWait().getUnit().getTime());
-
-			} else {
-				this.precond = Constants.PRECONDS.WHEN;
-			}
-		} else if (this.oracle.getWhile() != null) {
-			this.precond = Constants.PRECONDS.WHILE;
 		}
 	}
 
@@ -611,64 +1127,6 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			return (int) duration * 60 * 60;
 		default: // seconds
 			return (int) duration;
-		}
-	}
-
-	private void findOraclePattern() {
-		Reference reference = this.oracle.getCheck().getReference();
-		At_least atLeast = null;
-		At_most atMost = null;
-		Exactly exactly = null;
-		if (this.oracle.getCheck().getReference().getLower() != null) {
-			this.pattern = Constants.PATTERNS.ABOVE_REFERENCE;
-			atLeast = reference.getLower().getAtleast();
-			atMost = reference.getLower().getAtmost();
-			exactly = reference.getLower().getExactly();
-		} else if (this.oracle.getCheck().getReference().getUpper() != null) {
-			this.pattern = Constants.PATTERNS.BELOW_REFERENCE;
-			atLeast = reference.getUpper().getAtleast();
-			atMost = reference.getUpper().getAtmost();
-			exactly = reference.getUpper().getExactly();
-		} else if (this.oracle.getCheck().getReference().getGap() != null) {
-			this.pattern = Constants.PATTERNS.GAP;
-			atLeast = reference.getGap().getAtleast();
-			atMost = reference.getGap().getAtmost();
-			exactly = reference.getGap().getExactly();
-		} else if (this.oracle.getCheck().getReference().getRange() != null) {
-			this.pattern = Constants.PATTERNS.RANGE;
-			atLeast = reference.getRange().getAtleast();
-			atMost = reference.getRange().getAtmost();
-			exactly = reference.getRange().getExactly();
-		} else if (this.oracle.getCheck().getReference().getSame() != null) {
-			this.pattern = Constants.PATTERNS.SAME_REFERENCE;
-			atLeast = reference.getSame().getAtleast();
-			atMost = reference.getSame().getAtmost();
-			exactly = reference.getSame().getExactly();
-		} else if (this.oracle.getCheck().getReference().getNotsame() != null) {
-			this.pattern = Constants.PATTERNS.NOTSAME_REFERENCE;
-			atLeast = reference.getNotsame().getAtleast();
-			atMost = reference.getNotsame().getAtmost();
-			exactly = reference.getNotsame().getExactly();
-		}
-
-		Double dur = null;
-		String timeUnit = null;
-		if (atLeast != null) {
-			this.tpattern = Constants.TIMING_PATTERNS.ATLEAST;
-			dur = atLeast.getTime() != null ? atLeast.getTime().getDVal() : null;
-			timeUnit = atLeast.getUnit() != null ? atLeast.getUnit().toString() : null;
-		} else if (atMost != null) {
-			this.tpattern = Constants.TIMING_PATTERNS.ATMOST;
-			dur = atMost.getTime() != null ? atMost.getTime().getDVal() : null;
-			timeUnit = atMost.getUnit() != null ? atMost.getUnit().toString() : null;
-		} else if (exactly != null) {
-			this.tpattern = Constants.TIMING_PATTERNS.EXACTLY;
-			dur = exactly.getTime() != null ? exactly.getTime().getDVal() : null;
-			timeUnit = exactly.getUnit() != null ? exactly.getUnit().toString() : null;
-		}
-
-		if (dur != null && timeUnit != null) {
-			duration = getDurationInSeconds(dur, timeUnit);
 		}
 	}
 
@@ -686,63 +1144,6 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			signalMax = morVarList.get(this.oracle.getCheck().getName()).getMax();
 			signalMin = morVarList.get(this.oracle.getCheck().getName()).getMin();
 		}
-
-	}
-
-	private void findOracleFailReason() {
-		int nSamples, nPeaks;
-		Double confidence;
-		Constants.FAILREASONS frk = null;
-		// confidence, nSamples, nPeaks
-		for (FailReason fr : this.oracle.getCheck().getFailReason()) {
-			nSamples = 1;
-			nPeaks = 1;
-			confidence = 0.0;
-			if (fr.getReason().getHighPeak() != null) {
-				confidence = fr.getReason().getHighPeak().getCant().getDVal();
-				frk = Constants.FAILREASONS.HIGH_PEAK;
-			} else if (fr.getReason().getHighTime() != null) {
-				confidence = fr.getReason().getHighTime().getCant().getDVal();
-				nSamples = Utils.getNSamples((int) fr.getReason().getHighTime().getTime().getDVal(),
-						fr.getReason().getHighTime().getUnit().getTime());
-				nPeaks = nSamples;
-				frk = Constants.FAILREASONS.HIGH_TIME_OUT_BOUNDS;
-			} else if (fr.getReason().getXPeaks() != null) {
-				confidence = fr.getReason().getXPeaks().getCant().getDVal();
-				nPeaks = (int) fr.getReason().getXPeaks().getNPeaks().getDVal();
-				nSamples = Utils.getNSamples((int) fr.getReason().getXPeaks().getTime().getDVal(),
-						fr.getReason().getXPeaks().getUnit().getTime());
-
-				frk = Constants.FAILREASONS.X_PEAKS_XSECONDS;
-			}
-
-			// check structural errors. If an error is detected, fails if is not added to
-			// failReasons map.
-			if (nSamples == 0 || nPeaks == 0) {
-				error("Duration or number of peaks cannot be zero.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
-				continue;
-			}
-			if (pattern.equals(Constants.PATTERNS.NOTSAME_REFERENCE) && confidence != 0) {
-				error("Confidence value must be zero within 'should not be' clauses or use a 'not in range' clause instead.",
-						AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
-				continue;
-			}
-
-			if (!frk.equals(Constants.FAILREASONS.HIGH_PEAK) && this.tpattern != null) {
-				error("Temporary conditions are either set within the assertion or the failure statement, but not in both.",
-						AdeptnessPackage.Literals.ORACLE__CHECK);
-				continue;
-			}
-
-			if (this.tpattern != null && this.precond == null) {
-				error("Temporary conditions within assertions should only be used in conjuction with \"while\" or \"when\" preconditions.",
-						AdeptnessPackage.Literals.ORACLE__CHECK);
-				continue;
-			}
-
-			// add fail reason to be checked
-			failReasons.put(frk, new FailReasonValues(confidence, nPeaks, nSamples));
-		}
 	}
 
 	private void resetParameters() {
@@ -756,7 +1157,12 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		duration = 0;
 		signalMax = 0.0;
 		signalMin = 0.0;
-		failReasons = new HashMap<Constants.FAILREASONS, FailReasonValues>();
+		failReasons = new HashSet<Constants.FAILREASONS>();
+		errorDetected = false;
 	}
 
+	// Avoids duplicated calls to @Check functions.
+	@Override
+	public void register(EValidatorRegistrar registrar) {
+	}
 }

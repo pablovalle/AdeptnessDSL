@@ -8,33 +8,13 @@ import java.util.List;
 
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.ComposedChecks;
-import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
-import org.xtext.example.mydsl.adeptness.At_least;
-import org.xtext.example.mydsl.adeptness.At_most;
-import org.xtext.example.mydsl.adeptness.Bound_Down;
-import org.xtext.example.mydsl.adeptness.Bound_up;
-import org.xtext.example.mydsl.adeptness.Checks;
-import org.xtext.example.mydsl.adeptness.ConstDeg;
 import org.xtext.example.mydsl.adeptness.DOUBLE;
-import org.xtext.example.mydsl.adeptness.Exactly;
-import org.xtext.example.mydsl.adeptness.ExpressionsModel;
-import org.xtext.example.mydsl.adeptness.FailReason;
-import org.xtext.example.mydsl.adeptness.Gap;
-import org.xtext.example.mydsl.adeptness.HighPeak;
-import org.xtext.example.mydsl.adeptness.HighTime;
-import org.xtext.example.mydsl.adeptness.Lower;
+import org.xtext.example.mydsl.adeptness.Description;
 import org.xtext.example.mydsl.adeptness.MonitoringFile;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
-import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.Oracle;
-import org.xtext.example.mydsl.adeptness.Range;
-import org.xtext.example.mydsl.adeptness.Same;
 import org.xtext.example.mydsl.adeptness.Signal;
-import org.xtext.example.mydsl.adeptness.Upper;
-import org.xtext.example.mydsl.adeptness.When;
-import org.xtext.example.mydsl.adeptness.While;
-import org.xtext.example.mydsl.adeptness.XPeaks;
 
 /**
  * This class contains custom validation rules.
@@ -44,7 +24,7 @@ import org.xtext.example.mydsl.adeptness.XPeaks;
  */
 @ComposedChecks(validators = { OracleAssesment.class })
 public class AdeptnessValidator extends AbstractAdeptnessValidator {
-	
+
 	public static String DUPLICATED_NAME = "Duplicated Name";
 
 	double cantHigh;
@@ -55,7 +35,6 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	List<String> oracleNames;
 	List<String> monitoringVariableNames;
 
-	
 	MonitoringVariables monitoringVariables;
 
 	// GET MONITORING VARIABLES
@@ -64,11 +43,12 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		monitoringVariables = MonitoringVariables.getInstance(CPS.getName());
 
 		String type, name;
-		double min, max; 
+		double min, max;
 		for (int i = 0; i < CPS.getSuperType().getMonitoringPlan().size(); i++) {
 			MonitoringVariable monitor = CPS.getSuperType().getMonitoringPlan().get(i).getMonitoringVariables();
 			name = monitor.getName().toString();
-			if (monitoringVariables.getVariables() != null && monitoringVariables.getVariables().get(name) != null) return;
+			if (monitoringVariables.getVariables() != null && monitoringVariables.getVariables().get(name) != null)
+				return;
 			type = monitor.getMonitoringVariableDatatype().getSig_type().toString();
 			if (type.equals("boolean")) {
 				max = 1;
@@ -128,124 +108,6 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	@Check
-	public void checkHighTimeAndHighPeak(Checks check) {
-		boolean HT = false;
-		boolean HP = false;
-		int numHT = 0, numHP = 0;
-		for (int i = 0; i < check.getFailReason().size(); i++) {
-			if (check.getFailReason().get(i).getReason().getHighTime() != null) {
-				HT = true;
-				numHT = i;
-			} else if (check.getFailReason().get(i).getReason().getHighPeak() != null) {
-				HP = true;
-				numHP = i;
-			}
-		}
-		if (HT && HP) {
-			HighTime Ht = check.getFailReason().get(numHT).getReason().getHighTime();
-			HighPeak Hp = check.getFailReason().get(numHP).getReason().getHighPeak();
-			if (Ht.getCant().getDVal() <= Hp.getCant().getDVal()) {
-				error("The high peak reference confidence value must be lower than high time out of bounds confidence value",
-						AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
-			}
-		}
-	}
-
-	@Check
-	public void checkConfidenceHighPeak(HighPeak HPeak) {
-		if (HPeak != null) {
-			cantHigh = HPeak.getCant().getDVal();
-			if (cantHigh < -1 || cantHigh > 0) {
-				error("The confidence value must be between -1 and 0", AdeptnessPackage.Literals.HIGH_PEAK__CANT);
-			}
-		} else {
-			System.out.println("TODO can HPeak be null?");
-
-		}
-	}
-
-	@Check
-	public void checkCheckSignal(Checks check) {
-		// Left part in check must contain at least a variable name
-		List<AbstractElement2> elems = check.getEm().getElements();
-		boolean anyVar = false;
-		for (AbstractElement2 elem : elems) {
-			if (elem.getName() != null) {
-				anyVar = true;
-				break;
-			}
-		}
-		if (!anyVar) {
-			error("Checks' left part must represent a signal, cannot be a value.",
-					AdeptnessPackage.Literals.CHECKS__EM);
-		}
-	}
-
-	@Check
-	public void checkFailsIfCount(Checks check) {
-		int highPeakCount = 0, highTimeCount = 0, xPeaksCount = 0, constDegCount = 0;
-		for (FailReason fr : check.getFailReason()) {
-			if (fr.getReason().getHighPeak() != null) {
-				highPeakCount++;
-				if (highPeakCount > 1) {
-					error("Duplicated high peak failure detection.", AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
-				}
-			} else if (fr.getReason().getHighTime() != null) {
-				highTimeCount++;
-				if (highTimeCount > 1) {
-					error("Duplicated high time out of bounds failure detection.",
-							AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
-				}
-			} else if (fr.getReason().getXPeaks() != null) {
-				xPeaksCount++;
-				if (xPeaksCount > 1) {
-					error("Duplicated more than n peaks in less than t seconds failure detection.",
-							AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
-				}
-			} else if (fr.getReason().getConstDeg() != null) {
-				constDegCount++;
-				if (constDegCount > 1) {
-					error("Duplicated constant degradation failure detection.",
-							AdeptnessPackage.Literals.CHECKS__FAIL_REASON);
-				}
-			}
-		}
-	}
-
-	@Check
-	public void checkConfidenceHighTime(HighTime HTime) {
-		if (HTime != null) {
-			cantTime = HTime.getCant().getDVal();
-			if (cantTime < -1 || cantTime > 0) {
-				error("The confidence value must be between -1 and 0", AdeptnessPackage.Literals.HIGH_TIME__CANT);
-			}
-		}
-
-	}
-
-	@Check
-	public void checkConfidenceConstDeg(ConstDeg constDeg) {
-		if (constDeg != null) {
-			cantDeg = constDeg.getCant().getDVal();
-			if (cantDeg < -1 || cantDeg > 0) {
-				error("The confidence value must be between -1 and 0", AdeptnessPackage.Literals.CONST_DEG__CANT);
-			}
-		}
-
-	}
-
-	@Check
-	public void checkConfidenceXPeaks(XPeaks xpeak) {
-		if (xpeak != null) {
-			cantXPeak = xpeak.getCant().getDVal();
-			if (cantXPeak < -1 || cantXPeak > 0) {
-				error("The confidence value must be between -1 and 0", AdeptnessPackage.Literals.XPEAKS__CANT);
-			}
-		}
-
-	}
-
-	@Check
 	public void checkBooleanMinMaxValidation(MonitoringVariable monitoringVariable) {
 		if (monitoringVariable.getMonitoringVariableDatatype().getSig_type().toString().equals("boolean")
 				&& (monitoringVariable.getMax() != null || monitoringVariable.getMin() != null)) {
@@ -268,291 +130,17 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	@Check
-	public void checkReferenceBetweenMonitoringVariableMinMax(Checks check) {
-		if (check.getEm() != null) {
-			System.out.println(
-					"TODO Check if expressionsModel within Checks statement is correct according to min, max variable values in monitoring plan");
-			return;
-		}
-
-		MonitoringVar checkVar = monitoringVariables.getVariables().get(check.getName().toString());
-		if (checkVar == null) {
-			error("This variable is not in the monitoring plan", AdeptnessPackage.Literals.CHECKS__NAME);
-			return;
-		}
-		double max = checkVar.getMax();
-		double min = checkVar.getMin();
-
-		Bound_up bound_up = null;
-		Bound_Down bound_down = null;
-		if (check.getReference().getUpper() != null) {
-			bound_up = check.getReference().getUpper().getBound_upp();
-		} else if (check.getReference().getLower() != null) {
-			bound_down = check.getReference().getLower().getBound_lower();
-		} else if (check.getReference().getRange() != null) {
-			bound_down = check.getReference().getRange().getBound_lower();
-			bound_up = check.getReference().getRange().getBound_upp();
-		} else if (check.getReference().getGap() != null) {
-			bound_down = check.getReference().getGap().getBound_lower();
-			bound_up = check.getReference().getGap().getBound_upp();
-		} else if (check.getReference().getSame() != null) {
-			bound_up = check.getReference().getSame().getBound_upp();
-		} else if (check.getReference().getNotsame() != null) {
-			bound_up = check.getReference().getNotsame().getBound_upp();
-		}
-
-		Double boundup = null, boundown = null;
-		if (bound_up != null) {
-			if (bound_up.getEm() != null) {
-				System.out.println(
-						"TODO Check if expressionsModel within Upper bound statement is correct according to min, max variable values in monitoring plan");
-			}
-			boundup = bound_up.getValue().getDVal();
-			if (boundup > max) {
-				error("Check " + check.getName() + " with value: " + boundup + " does not comply max value: " + max
-						+ " specified in the validation plan", AdeptnessPackage.Literals.CHECKS__REFERENCE);
-			}
-			if (boundup < min) {
-				error("Check " + check.getName() + " with value: " + boundup + " does not comply min value: " + min
-						+ " specified in the validation plan", AdeptnessPackage.Literals.CHECKS__REFERENCE);
-			}
-		}
-		if (bound_down != null) {
-			if (bound_down.getEm() != null) {
-				System.out.println(
-						"TODO Check if expressionsModel within Lower bound statement is correct according to min, max variable values in monitoring plan");
-			}
-			boundown = bound_down.getValue().getDVal();
-			if (boundown > max) {
-				error("Check " + check.getName() + " with value: " + boundown + " does not comply max value: " + max
-						+ " specified in the validation plan", AdeptnessPackage.Literals.CHECKS__REFERENCE);
-			}
-			if (boundown < min) {
-				error("Check " + check.getName() + " with value: " + boundown + " does not comply min value: " + min
-						+ " specified in the validation plan", AdeptnessPackage.Literals.CHECKS__REFERENCE);
-			}
-		}
-	}
-
-	@Check
-	public void checkMonitoringVariablesInPreconditions(AbstractElement2 precond) {
-		MonitoringVar precondVar = monitoringVariables.getVariables().get(precond.getName().toString());
-		if (precondVar == null) {
-			error("This variable is not in the monitoring plan", AdeptnessPackage.Literals.ABSTRACT_ELEMENT2__NAME);
-		}
-	}
-
-	@Check
-	public void checkExpressions(ExpressionsModel data) {
-		int conOpenPar = 0, conClosePar = 0;
-		for (int i = 0; i < data.getElements().size(); i++) {
-			AbstractElement2 elements = data.getElements().get(i);
-			conOpenPar = conOpenPar + elements.getFrontParentheses().size();
-			// current element (which is not the first one) contains name or value,
-			// and preceding element also contains name or value.
-			if (i > 0 && (elements.getName() != null || elements.getValue() != null)
-					&& (data.getElements().get(i - 1).getName() != null
-							|| data.getElements().get(i - 1).getValue() != null)) {
-				// preceding element does not contain operation.
-				// Example: "var 1" or "var ( var"
-				if (data.getElements().get(i - 1).getOp().size() == 0) {
-					error("Two values or signals can't be concatenated without an operator:",
-							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-				}
-			}
-			for (int j = 0; j < elements.getOp().size(); j++) {
-				if (elements.getOp().get(j).getBackParentheses() != null) {
-					conClosePar++;
-				}
-
-				// Hemen elemento baten barnean ea parentesia eta operazionala dagoen begiratzen
-				// dugu.
-				// Adeptness.xtext-en AbstractElement2 begiratzen baduzu op lista bat da non
-				// operazionalak,logikoak eta parentesiak dauden
-				// ordun parentesi baten aurretik parentesia ez den elementu bat badago errorea
-				// ematen du
-				// Adibideak: <) edo &&) eta holakoak errorea ematea
-				if (j > 0 && elements.getOp().get(j).getBackParentheses() != null
-						&& elements.getOp().get(j - 1).getBackParentheses() == null) {
-					error("You can't concatenate operators this way",
-							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-				}
-				// Hemen aurrekoan berdina begiratzen da baina parentesiak ez badira, adibidez +
-				// && errorea eman beharko luke
-				if (j > 0 && elements.getOp().get(j).getBackParentheses() == null
-						&& elements.getOp().get(j - 1).getBackParentheses() == null) {
-					error("You can't concatenate operators this way",
-							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-				}
-			}
-		}
-		if (conOpenPar != conClosePar) {
-			error("Parentheses are not correctly opened and closed",
-					AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-		}
-
-	}
-
-	@Check
-	public void checkWhileConditions(While data) {
-		int contLogicOp = 0, contCompOp = 0;
-		for (int i = 0; i < data.getEm().getElements().size(); i++) {
-			AbstractElement2 element = data.getEm().getElements().get(i);
-			for (int j = 0; j < element.getOp().size(); j++) {
-				if (element.getOp().get(j).getLogicOperator() != null) {
-					contLogicOp++;
-				} else if (element.getOp().get(j).getComparation() != null) {
-					contCompOp++;
-				}
-			}
-		}
-		if (contLogicOp + 1 != contCompOp) {
-			error("Only conditions are available for while type", AdeptnessPackage.Literals.WHILE__EM);
-		}
-	}
-
-	@Check
-	public void checkWhenConditions(When data) {
-		int contLogicOp = 0, contCompOp = 0;
-		for (int i = 0; i < data.getEm().getElements().size(); i++) {
-			AbstractElement2 element = data.getEm().getElements().get(i);
-			for (int j = 0; j < element.getOp().size(); j++) {
-				if (element.getOp().get(j).getLogicOperator() != null) {
-					contLogicOp++;
-				} else if (element.getOp().get(j).getComparation() != null) {
-					contCompOp++;
-				}
-			}
-		}
-		if (contLogicOp + 1 != contCompOp) {
-			error("Only conditions are available for when type", AdeptnessPackage.Literals.WHEN__EM);
-		}
-	}
-
-	@Check
-	public void checkChecksCondition(Checks check) {
-		for (int i = 0; i < check.getEm().getElements().size(); i++) {
-			AbstractElement2 element = check.getEm().getElements().get(i);
-			for (int j = 0; j < element.getOp().size(); j++) {
-				if (element.getOp().get(j).getLogicOperator() != null) {
-					error("The operator: " + element.getOp().get(j).getLogicOperator().getOp().toString()
-							+ " is not available for checks", AdeptnessPackage.Literals.CHECKS__EM);
-				} else if (element.getOp().get(j).getComparation() != null) {
-					error("The operator: " + element.getOp().get(j).getComparation().getOp().toString()
-							+ " is not available for checks", AdeptnessPackage.Literals.CHECKS__EM);
-				}
-			}
-		}
-	}
-
-	@Check
-	public void checkAtLeastTime(At_least atLeast) {
-		if (atLeast.getTime().getDVal() < 0) {
-			error("This value: " + atLeast.getTime().getDVal() + " must be a positive value",
-					AdeptnessPackage.Literals.AT_LEAST__TIME);
-		}
-	}
-
-	@Check
-	public void checkAtMostTime(At_most atMost) {
-		if (atMost.getTime().getDVal() < 0) {
-			error("This value: " + atMost.getTime().getDVal() + " must be a positive value",
-					AdeptnessPackage.Literals.AT_MOST__TIME);
-		}
-	}
-
-	@Check
-	public void checkExactlyTime(Exactly exactly) {
-		if (exactly.getTime().getDVal() < 0) {
-			error("This value: " + exactly.getTime().getDVal() + " must be a positive value",
-					AdeptnessPackage.Literals.EXACTLY__TIME);
-		}
-	}
-
-	@Check
-	public void checkEmptyLowerValue(Lower lower) {
-		if (lower.getBound_lower().getValue() == null && lower.getBound_lower().getEm() == null) {
-			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.LOWER__BOUND_LOWER);
-
-		}
-	}
-
-	@Check
-	public void checkEmptyUpperValue(Upper upper) {
-		if (upper.getBound_upp().getValue() == null && upper.getBound_upp().getEm() == null) {
-			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.UPPER__BOUND_UPP);
-
-		}
-	}
-
-	@Check
-	public void checkEmptyBoundsValues(Range range) {
-		if (range.getBound_lower().getValue() == null && range.getBound_lower().getEm() == null) {
-			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.RANGE__BOUND_LOWER);
-
-		}
-		if (range.getBound_upp().getValue() == null && range.getBound_upp().getEm() == null) {
-			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.RANGE__BOUND_UPP);
-
-		}
-	}
-
-	@Check
-	public void checkEmptyBoundsValues(Gap gap) {
-		if (gap.getBound_lower().getValue() == null && gap.getBound_lower().getEm() == null) {
-			error("Lower bound must have a value or an expression", AdeptnessPackage.Literals.GAP__BOUND_LOWER);
-
-		}
-		if (gap.getBound_upp().getValue() == null && gap.getBound_upp().getEm() == null) {
-			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.GAP__BOUND_UPP);
-
-		}
-	}
-
-	@Check
-	public void checkLowerUpperBounds(Range range) {
-		if (range.getBound_lower().getValue() != null && range.getBound_upp().getValue() != null) {
-			if (range.getBound_lower().getValue().getDVal() > range.getBound_upp().getValue().getDVal()) {
-				error("Lower bound can't be higher than upper bound", AdeptnessPackage.Literals.RANGE__BOUND_LOWER);
-			}
-		} else {
-			System.out.println(
-					"TODO: check ExpressionsModel to check if lower bound is really lower than upper bound in a range");
-		}
-	}
-
-	@Check
-	public void checkLowerUpperBounds(Gap gap) {
-		if (gap.getBound_lower().getValue() != null && gap.getBound_upp().getValue() != null) {
-			if (gap.getBound_lower().getValue().getDVal() > gap.getBound_upp().getValue().getDVal()) {
-				error("Lower bound can't be higher than upper bound", AdeptnessPackage.Literals.GAP__BOUND_LOWER);
-			}
-		} else {
-			System.out.println(
-					"TODO: check ExpressionsModel to check if lower bound is really lower than upper bound in a gap");
-		}
-	}
-
-	@Check
-	public void checkEmptyLowerValue(Same same) {
-		if (same.getBound_upp().getValue() == null && same.getBound_upp().getEm() == null) {
-			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.SAME__BOUND_UPP);
-		}
-	}
-
-	@Check
-	public void checkEmptyLowerValue(NotSame notSame) {
-		if (notSame.getBound_upp().getValue() == null && notSame.getBound_upp().getEm() == null) {
-			error("Upper bound must have a value or an expression", AdeptnessPackage.Literals.NOT_SAME__BOUND_UPP);
-
-		}
-	}
-
-	@Check
 	public void checkValues(DOUBLE value) {
 		if (value.getDVal() > 9999999 || value.getDVal() < -9999999) {
 			error("This is an invalid value, must be bigger than -9999999 and lower than 9999999",
 					AdeptnessPackage.Literals.DOUBLE__DVAL);
+		}
+	}
+
+	@Check
+	public void checkEmptyDescription(Description desc) {
+		if (desc.getValue() == null) {
+			error("Description cannot be empty", AdeptnessPackage.Literals.DESCRIPTION__VALUE);
 		}
 	}
 }
