@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import com.oracle.truffle.js.scriptengine.GraalJSEngineFactory;
+import com.oracle.truffle.js.scriptengine.GraalJSScriptEngine;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1108,7 +1108,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 	}
 
 	private Object evalExpression(String expression) {
-		ScriptEngine engine = new ScriptEngineManager(null).getEngineByName("JavaScript");
+		GraalJSScriptEngine engine = new GraalJSEngineFactory().getScriptEngine();
 		try {
 			return engine.eval(expression);
 		} catch (ScriptException e) {
