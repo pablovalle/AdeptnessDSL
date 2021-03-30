@@ -109,14 +109,13 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		if (emVar == null) {
 			error("Variable " + name + " is not in the monitoring plan", reference);
 			errorDetected = true;
-		}else {
+		} else {
 			if (emVar.getOpData() == null) {
-				// Not operational data registered. Prevent operational data checks. 
+				// Not operational data registered. Prevent operational data checks.
 				errorDetected = true;
 			}
 		}
-		
-		
+
 	}
 
 	@Check
@@ -125,7 +124,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 
 		// Check if expression model is correctly evaluated otherwise is not well
 		// formated.
-		if (evalExpression(getBasicExpression(data.getElements())) == null) {
+		if (evalExpression(getExpression("basic", data.getElements())) == null) {
 			error("Incorrect expression.", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 			errorDetected = true;
 		}
@@ -656,23 +655,23 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			Boolean isOutOfBounds = false;
 			isOutOfBounds = checkOperationalDataOutOfBounds(confidence, timestamp, reference);
 			if (isOutOfBounds == null) {
-				System.out.println("Too high confidence value detected for " + frk
-						+ " fail reason, removed from failure detection according to operational data.");
+//				System.out.println("Too high confidence value detected for " + frk
+//						+ " fail reason, removed from failure detection according to operational data.");
 				return;
 			}
 
 			switch (frk) {
 			case HIGH_PEAK:
 				if (tpattern == null && isOutOfBounds) {
-					System.out.println("HighPeak detected.");
+//					System.out.println("HighPeak detected.");
 					warning("There is operational data out of bounds.", reference);
 					return;
 				} else if (tpattern != null) {
 					switch (tpattern) {
 					case ATLEAST:
 						if (durCount <= duration && isOutOfBounds) {
-							System.out
-									.println("Operational data out of bounds detected while a timing condition check.");
+//							System.out
+//									.println("Operational data out of bounds detected while a timing condition check.");
 							warning("There is operational data out of bounds.", reference);
 							return;
 						}
@@ -688,14 +687,14 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 						break;
 					case ATMOST:
 						if (durCount == 0 && isOutOfBounds) {
-							System.out.println(
-									"Operational data in between bounds detected after a timing condition check.");
+//							System.out.println(
+//									"Operational data in between bounds detected after a timing condition check.");
 							warning("There is operational data out of bounds.", reference);
 							return;
 						}
 						if (timestamp == (this.savedTimestamp + aWDuration + duration + 1) && !isOutOfBounds) {
-							System.out.println(
-									"Operational data in between bounds detected after a timing condition check.");
+//							System.out.println(
+//									"Operational data in between bounds detected after a timing condition check.");
 							warning("There is operational data out of bounds.", reference);
 							return;
 						}
@@ -711,12 +710,12 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 						break;
 					case EXACTLY:
 						if (durCount <= duration && isOutOfBounds) {
-							System.out.println("Operational data out of bounds detected while timing condition check.");
+//							System.out.println("Operational data out of bounds detected while timing condition check.");
 							warning("There is operational data out of bounds.", reference);
 							return;
 						} else if (durCount > duration && !isOutOfBounds) {
-							System.out.println(
-									"Operational data in between bounds detected after a timing condition check.");
+//							System.out.println(
+//									"Operational data in between bounds detected after a timing condition check.");
 							warning("There is operational data out of bounds.", reference);
 							return;
 						}
@@ -739,7 +738,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 					peakCount++;
 				}
 				if (peakCount >= nPeaks) {
-					System.out.println("High Time Out of Bounds detected (during " + nPeaks + " seconds).");
+//					System.out.println("High Time Out of Bounds detected (during " + nPeaks + " seconds).");
 					warning("There is operational data out of bounds.", reference);
 					return;
 				}
@@ -772,7 +771,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 					savedTimestamp = timestamp;
 				}
 				if (peakCount >= nPeaks) {
-					System.out.println(nPeaks + " peaks detected during " + nSamples + " seconds.");
+//					System.out.println(nPeaks + " peaks detected during " + nSamples + " seconds.");
 					warning("There is operational data out of bounds.", reference);
 					return;
 				}
@@ -820,7 +819,8 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		if (this.oracle.getCheck().getEm() != null) {
 			// signal is an expression
 			// get current signal's value
-			signalVal = (Double) evalExpression(getExpression(this.oracle.getCheck().getEm().getElements(), timestamp));
+			signalVal = (Double) evalExpression(
+					getExpression("opData", this.oracle.getCheck().getEm().getElements(), timestamp));
 		} else {
 			// signal is a single variable
 			signalVal = monitoringVariables.getVariables().get(this.oracle.getCheck().getName()).getOpData()
@@ -913,14 +913,14 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			break;
 		}
 
-		if (timestamp == 0) {
-			System.out.println("Checking if signal is " + pattern + " [" + lowerRefBound + "," + upperRefBound + "]");
-		}
-
-		if (outOfBounds) {
-			System.out.println("  signal at " + timestamp + ":" + signalVal + " is out of bounds for reference ["
-					+ lowerRefBound + "," + upperRefBound + "]");
-		}
+//		if (timestamp == 0) {
+//			System.out.println("Checking if signal is " + pattern + " [" + lowerRefBound + "," + upperRefBound + "]");
+//		}
+//
+//		if (outOfBounds) {
+//			System.out.println("  signal at " + timestamp + ":" + signalVal + " is out of bounds for reference ["
+//					+ lowerRefBound + "," + upperRefBound + "]");
+//		}
 		return outOfBounds;
 	}
 
@@ -929,7 +929,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		if (down.getValue() != null) {
 			lowerRefBound = down.getValue().getDVal();
 		} else {
-			lowerRefBound = (double) evalExpression(getExpression(down.getEm().getElements(), timestamp));
+			lowerRefBound = (double) evalExpression(getExpression("opData", down.getEm().getElements(), timestamp));
 		}
 
 		return lowerRefBound;
@@ -940,14 +940,14 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		if (up.getValue() != null) {
 			upperRefBound = up.getValue().getDVal();
 		} else {
-			upperRefBound = (double) evalExpression(getExpression(up.getEm().getElements(), timestamp));
+			upperRefBound = (double) evalExpression(getExpression("opData", up.getEm().getElements(), timestamp));
 		}
 
 		return upperRefBound;
 	}
 
 	private List<Double> getMaxMinValueCombinations(EList<AbstractElement2> elements) {
-		String expressionWithVars = getExpressionWithVars(elements);
+		String expressionWithVars = getExpression("withVars", elements);
 		List<String> varNames = diffVarNames(expressionWithVars);
 		List<String> exprCombs = new ArrayList<String>();
 		List<Double> maxMinValueCombs = new ArrayList<Double>();
@@ -962,10 +962,12 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 	private List<String> generateCombinations(int index, String expression, List<String> varNames,
 			final List<String> exprCombs) {
 		List<String> exC = new ArrayList<String>(exprCombs);
+
 		String replaceVarMin = replaceVar(expression, varNames.get(index),
-				Double.toString(monitoringVariables.getVariables().get(varNames.get(index)).getMin()));
+				monitoringVariables.getVariables().get(varNames.get(index)).getMin());
 		String replaceVarMax = replaceVar(expression, varNames.get(index),
-				Double.toString(monitoringVariables.getVariables().get(varNames.get(index)).getMax()));
+				monitoringVariables.getVariables().get(varNames.get(index)).getMax());
+
 		if (index == varNames.size() - 1) {
 			exC.add(replaceVarMin);
 			exC.add(replaceVarMax);
@@ -1006,23 +1008,38 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			elements = this.oracle.getWhile().getEm().getElements();
 			break;
 		}
-		String expression = getExpression(elements, timestamp);
+		String expression = getExpression("opData", elements, timestamp);
 
 		isMet = (Boolean) evalExpression(expression);
-		if (isMet) {
-			System.out.println("Precondition met (" + expression + ") at timestamp: " + timestamp);
-		}
+//		if (isMet) {
+//			System.out.println("Precondition met (" + expression + ") at timestamp: " + timestamp);
+//		}
 		return isMet;
 	}
 
-	private String getExpressionWithVars(EList<AbstractElement2> elements) {
+	private String getExpression(String type, EList<AbstractElement2> elements) {
+		return getExpression(type, elements, 0);
+	}
+
+	private String getExpression(String type, EList<AbstractElement2> elements, int timestamp) {
 		String expression = "";
 		for (AbstractElement2 element : elements) {
-			if (element.getFrontParentheses().size() > 0) {
-				expression += "(";
+			for (String parenthesis : element.getFrontParentheses()) {
+				expression += parenthesis;
 			}
 			if (element.getName() != null) {
-				expression += "@@" + element.getName() + "@@";
+				switch (type) {
+				case "basic":
+					expression += "1.0";
+					break;
+				case "opData":
+					double value = monitoringVariables.getVariables().get(element.getName()).getOpData().get(timestamp);
+					expression += (value < 0 ? "(" : "") + Double.toString(value) + (value < 0 ? ")" : "");
+					break;
+				case "withVars":
+					expression += "@@" + element.getName() + "@@";
+					break;
+				}
 			}
 			if (element.getValue() != null) {
 				expression += String.valueOf(element.getValue().getDVal());
@@ -1044,73 +1061,19 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		return expression;
 	}
 
-	private String replaceVar(String expression, String varName, String value) {
-		return expression.replace("@@" + varName + "@@", value);
-	}
-
-	private String getExpression(EList<AbstractElement2> elements, int timestamp) {
-		String expression = "";
-		for (AbstractElement2 element : elements) {
-			if (element.getFrontParentheses().size() > 0) {
-				expression += "(";
-			}
-			if (element.getName() != null) {
-				expression += monitoringVariables.getVariables().get(element.getName()).getOpData().get(timestamp)
-						.toString();
-			}
-			if (element.getValue() != null) {
-				expression += String.valueOf(element.getValue().getDVal());
-			}
-			if (element.getOp() != null) {
-				for (Operators op : element.getOp()) {
-					if (op.getOperator() != null) {
-						expression += op.getOperator().getOp().toString();
-					} else if (op.getComparation() != null) {
-						expression += op.getComparation().getOp().toString();
-					} else if (op.getLogicOperator() != null) {
-						expression += op.getLogicOperator().getOp().toString();
-					} else if (op.getBackParentheses() != null) {
-						expression += op.getBackParentheses();
-					}
-				}
-			}
-		}
-		return expression;
-	}
-
-	private String getBasicExpression(EList<AbstractElement2> elements) {
-		String expression = "";
-		for (AbstractElement2 element : elements) {
-			if (element.getFrontParentheses().size() > 0) {
-				expression += "(";
-			}
-			if (element.getName() != null) {
-				expression += "1.0";
-			}
-			if (element.getValue() != null) {
-				expression += String.valueOf(element.getValue().getDVal());
-			}
-			if (element.getOp() != null) {
-				for (Operators op : element.getOp()) {
-					if (op.getOperator() != null) {
-						expression += op.getOperator().getOp().toString();
-					} else if (op.getComparation() != null) {
-						expression += op.getComparation().getOp().toString();
-					} else if (op.getLogicOperator() != null) {
-						expression += op.getLogicOperator().getOp().toString();
-					} else if (op.getBackParentheses() != null) {
-						expression += op.getBackParentheses();
-					}
-				}
-			}
-		}
-		return expression;
+	private String replaceVar(String expression, String varName, double value) {
+		return expression.replace("@@" + varName + "@@",
+				(value < 0 ? "(" : "") + Double.toString(value) + (value < 0 ? ")" : ""));
 	}
 
 	private Object evalExpression(String expression) {
 		GraalJSScriptEngine engine = new GraalJSEngineFactory().getScriptEngine();
 		try {
-			return engine.eval(expression);
+			Object obj = engine.eval(expression);
+			if (obj.getClass() == Integer.class) {
+				return (double) ((int) obj);
+			}
+			return obj;
 		} catch (ScriptException e) {
 			e.printStackTrace();
 			return null;
