@@ -36,6 +36,12 @@ public class MonitoringVar {
 		return this.min;
 	}
 
+	public void update(String type, double max, double min) {
+		this.type = type;
+		this.max = max;
+		this.min = min;
+	}
+	
 	public Double getMaxOp() {
 		return this.maxOp;
 	}
@@ -43,7 +49,7 @@ public class MonitoringVar {
 	public Double getMinOp() {
 		return this.minOp;
 	}
-
+	
 	public ArrayList<Double> getOpData() {
 		return this.opData;
 	}

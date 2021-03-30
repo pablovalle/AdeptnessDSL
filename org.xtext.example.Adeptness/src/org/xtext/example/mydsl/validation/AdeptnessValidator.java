@@ -4,7 +4,9 @@
 package org.xtext.example.mydsl.validation;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.ComposedChecks;
@@ -44,11 +46,11 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 
 		String type, name;
 		double min, max;
+		Set<String> monitoringVars = new HashSet<String>();
 		for (int i = 0; i < CPS.getSuperType().getMonitoringPlan().size(); i++) {
 			MonitoringVariable monitor = CPS.getSuperType().getMonitoringPlan().get(i).getMonitoringVariables();
 			name = monitor.getName().toString();
-			if (monitoringVariables.getVariables() != null && monitoringVariables.getVariables().get(name) != null)
-				return;
+			monitoringVars.add(name);
 			type = monitor.getMonitoringVariableDatatype().getSig_type().toString();
 			if (type.equals("boolean")) {
 				max = 1;
@@ -58,6 +60,13 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				min = monitor.getMin().getDVal();
 			}
 			monitoringVariables.addVariable(CPS.getName(), name, type, max, min);
+		}
+
+		// remove unused vars
+		for (String varName : monitoringVariables.getVarNames()) {
+			if (!monitoringVars.contains(varName)) {
+				monitoringVariables.removeVariable(varName);
+			}
 		}
 	}
 
