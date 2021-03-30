@@ -116,7 +116,6 @@ var List<String> verdict;
 		for(Oracle o: s.oracle){
 			if(o.check.em!==null){
 				var List<Double> listadoCombinaciones=calcCombinations(o, s.superType.monitoringPlan);
-				
 				maxMap.put(o.name,Collections.max(listadoCombinaciones));
 				minMap.put(o.name,Collections.min(listadoCombinaciones));
 			}
@@ -238,7 +237,10 @@ var List<String> verdict;
 		var String expression = "";
 		for (AbstractElement2 element : elements) {
 			if (element.getFrontParentheses().size() > 0) {
-				expression += "(";
+				for(var i=0; i<element.getFrontParentheses().size(); i++){
+					expression += "(";
+				}
+				
 			}
 			if (element.getName() !== null) {
 				expression += "@@" + element.getName() + "@@";
@@ -827,7 +829,7 @@ var List<String> verdict;
 	def CharSequence create_oracle_json(Signal CPS)'''
 
 	{ 
-		"«CPS.name»":[
+		"«CPS.name»":
 		«"\t"»{
 	    «"\t\t"»"inputVariationPoints": [
 	    «FOR param1:CPS.superType.monitoringPlan»
@@ -842,16 +844,31 @@ var List<String> verdict;
 		«"\t\t\t"»}
 		«"\t\t"»],
 		«"\t\t"»"evaluationFunctions": [
-		«FOR param:CPS.oracle»
+		«getOracleNames(CPS.oracle)»
+		
+		«"\t\t"»]
+		«"\t"»}
+	}
+	'''
+	/*«FOR param:CPS.oracle»
 		«"\t\t\t"»{
 		«"\t\t\t\t"»"name": "«param.name»"
 		«"\t\t\t"»},
-		«ENDFOR»
-		«"\t\t"»]
-		«"\t"»}
-		]
+		«ENDFOR» */
+	def String getOracleNames(EList<Oracle> list) {
+		var String ret="";
+		for(var i=0; i<list.size; i++){
+			ret=ret+"\t\t\t{\n\t\t\t\t\"name\": \""+list.get(i).name+"\"\n";
+			if(i==list.size-1){
+				ret=ret+"\t\t\t}\n";
+			}
+			else{
+				ret=ret+"\t\t\t},\n";
+			}
+		}
+		return ret;
 	}
-	'''
+	
 	/*
 	'''
 	}
