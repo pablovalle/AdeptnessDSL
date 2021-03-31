@@ -63,7 +63,8 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 
 		// remove unused vars
-		for (String varName : monitoringVariables.getVarNames()) {
+		Set<String> varNames = new HashSet<>(monitoringVariables.getVarNames());
+		for (String varName : varNames) {
 			if (!monitoringVars.contains(varName)) {
 				monitoringVariables.removeVariable(varName);
 			}
