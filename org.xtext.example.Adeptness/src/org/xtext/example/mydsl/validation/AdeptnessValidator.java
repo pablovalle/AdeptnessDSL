@@ -12,7 +12,6 @@ import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.At_least;
 import org.xtext.example.mydsl.adeptness.At_most;
-import org.xtext.example.mydsl.adeptness.BernoulliDistribution;
 import org.xtext.example.mydsl.adeptness.Checks;
 import org.xtext.example.mydsl.adeptness.ConstDeg;
 import org.xtext.example.mydsl.adeptness.DOUBLE;
@@ -25,14 +24,12 @@ import org.xtext.example.mydsl.adeptness.HighTime;
 import org.xtext.example.mydsl.adeptness.Lower;
 import org.xtext.example.mydsl.adeptness.MonitoringFile;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
-import org.xtext.example.mydsl.adeptness.NormalDistribution;
 import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.Range;
 import org.xtext.example.mydsl.adeptness.Reference;
 import org.xtext.example.mydsl.adeptness.Same;
 import org.xtext.example.mydsl.adeptness.Signal;
-import org.xtext.example.mydsl.adeptness.UncertaintyProb;
 import org.xtext.example.mydsl.adeptness.Upper;
 import org.xtext.example.mydsl.adeptness.When;
 import org.xtext.example.mydsl.adeptness.While;
@@ -116,6 +113,8 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 
 	}
+
+
 
 	@Check
 	public void getOraclesNames(Signal CPS) {
@@ -215,22 +214,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 	}
 
-	@Check
-	public void checkCheckSignal(Checks check) {
-		// Left part in check must contain at least a variable name
-		List<AbstractElement2> elems = check.getEm().getElements();
-		boolean anyVar = false;
-		for (AbstractElement2 elem : elems) {
-			if (elem.getName() != null || elem.getUncer()!= null) {
-				anyVar = true;
-				break;
-			}
-		}
-		if (!anyVar) {
-			error("Checks' left part must represent a signal, can not be a value.",
-					AdeptnessPackage.Literals.CHECKS__EM);
-		}
-	}
+
 
 	@Check
 	public void checkFailsIfCount(Checks check) {
@@ -408,6 +392,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 
 	}
 
+
 	@Check
 	public void checkConfidenceHighTime(HighTime HTime) {
 		if (HTime != null) {
@@ -418,7 +403,8 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 
 	}
-
+	
+	
 	@Check
 	public void checkConfidenceConstDeg(ConstDeg constDeg) {
 		if (constDeg != null) {
@@ -632,43 +618,6 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	
-	@Check
-	public void checkMonitoringVariablesNormalDistribution(NormalDistribution var) {
-		String checkName = var.getName().toString();
-//		double max, min;
-		boolean is = false;
-		for (int i = 0; i < monitoringVariableList.size(); i++) {
-			System.out.println(monitoringVariableList.get(i).getName());
-			if (checkName.equals(monitoringVariableList.get(i).getName())) {
-				System.out.println(checkName + "      " + monitoringVariableList.get(i).getName());
-				is = true;
-
-				break;
-			}
-		}
-		if (!is) {
-			error("This variable is not in the monitoring plan", AdeptnessPackage.Literals.NORMAL_DISTRIBUTION__NAME);
-		}
-	}
-	
-	@Check
-	public void checkMonitoringVariablesBernoulliDistribution(BernoulliDistribution var) {
-		String checkName = var.getName().toString();
-//		double max, min;
-		boolean is = false;
-		for (int i = 0; i < monitoringVariableList.size(); i++) {
-			System.out.println(monitoringVariableList.get(i).getName());
-			if (checkName.equals(monitoringVariableList.get(i).getName())) {
-				System.out.println(checkName + "      " + monitoringVariableList.get(i).getName());
-				is = true;
-
-				break;
-			}
-		}
-		if (!is) {
-			error("This variable is not in the monitoring plan", AdeptnessPackage.Literals.BERNOULLI_DISTRIBUTION__NAME);
-		}
-	}
 	
 	@Check
 	public void checkExpressions(ExpressionsModel data) {
@@ -724,23 +673,23 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 
 	}
 
-	@Check
-	public void checkWhileConditions(While data) {
-		int contLogicOp = 0, contCompOp = 0;
-		for (int i = 0; i < data.getEm().getElements().size(); i++) {
-			AbstractElement2 element = data.getEm().getElements().get(i);
-			for (int j = 0; j < element.getOp().size(); j++) {
-				if (element.getOp().get(j).getLogicOperator() != null) {
-					contLogicOp++;
-				} else if (element.getOp().get(j).getComparation() != null) {
-					contCompOp++;
-				}
-			}
-		}
-		if (contLogicOp + 1 != contCompOp) {
-			error("Only conditions are available for while type", AdeptnessPackage.Literals.WHILE__EM);
-		}
-	}
+//	@Check
+//	public void checkWhileConditions(While data) {
+//		int contLogicOp = 0, contCompOp = 0;
+//		for (int i = 0; i < data.getEm().getElements().size(); i++) {
+//			AbstractElement2 element = data.getEm().getElements().get(i);
+//			for (int j = 0; j < element.getOp().size(); j++) {
+//				if (element.getOp().get(j).getLogicOperator() != null) {
+//					contLogicOp++;
+//				} else if (element.getOp().get(j).getComparation() != null) {
+//					contCompOp++;
+//				}
+//			}
+//		}
+//		if (contLogicOp + 1 != contCompOp) {
+//			error("Only conditions are available for while type", AdeptnessPackage.Literals.WHILE__EM);
+//		}
+//	}
 
 	@Check
 	public void checkWhenConditions(When data) {
@@ -932,6 +881,44 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //@Check
 //public void checkOracleConfigValues(Oracle oracle, Signal CPS) {
