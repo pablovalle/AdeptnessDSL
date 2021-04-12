@@ -1,55 +1,51 @@
 package org.xtext.example.mydsl.validation;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Set;
 
 public class MonitoringVariables {
-	private String name, type;
-	private double max, min;
-	private Double maxOp, minOp;
-	private ArrayList<Double> opData;
+	
+	private static MonitoringVariables monitoringVariables;
+	private static String currentCPS;
+	private HashMap<String, HashMap<String, MonitoringVar>> monitoringVariablesList;
 
-	public MonitoringVariables(String name, String type, double max, double min) {
-		super();
-		this.name = name;
-		this.type = type;
-		this.max = max;
-		this.min = min;
+	
+	private MonitoringVariables() {
+		monitoringVariablesList = new HashMap<String, HashMap<String, MonitoringVar>>();
 	}
-
-	public String getName() {
-		return this.name;
+	
+	public static MonitoringVariables getInstance(String CPS) {
+		if (monitoringVariables == null)
+			monitoringVariables = new MonitoringVariables();
+		currentCPS = CPS;
+		return monitoringVariables;
 	}
-
-	public String getType() {
-		return this.type;
-	}
-
-	public double getMax() {
-		return this.max;
-	}
-
-	public double getMin() {
-		return this.min;
-	}
-
-	public Double getMaxOp() {
-		return this.maxOp;
-	}
-
-	public Double getMinOp() {
-		return this.minOp;
-	}
-
-	public ArrayList<Double> getOpData() {
-		return this.opData;
-	}
-
-	public void setOpData(ArrayList<Double> data) {
-		if (data != null) {
-			this.opData = data;
-			this.minOp = Collections.min(data);
-			this.maxOp = Collections.max(data);
+	
+	public void addVariable(String CPS, String varName, String type, double max, double min) {
+		if (monitoringVariablesList.get(CPS) != null && monitoringVariablesList.get(CPS).get(varName) != null) {
+			monitoringVariablesList.get(CPS).get(varName).update(type, max, min);
+		}else {
+			HashMap<String, MonitoringVar> monitoringVar = monitoringVariablesList.get(CPS);
+			if (monitoringVar == null) {
+				monitoringVar = new HashMap<String, MonitoringVar>();
+			}
+			monitoringVar.put(varName, new MonitoringVar(varName, type, max, min));
+			monitoringVariablesList.put(CPS, monitoringVar);
 		}
 	}
+	
+	public void removeVariable(String varName) {
+		monitoringVariablesList.get(currentCPS).remove(varName);
+	}
+	
+	public Set<String> getVarNames(){
+		return monitoringVariablesList.get(currentCPS).keySet();
+	}
+	
+	public HashMap<String, MonitoringVar> getVariables(){
+		return monitoringVariablesList.get(currentCPS);
+	}
+	
+	
+
 }
