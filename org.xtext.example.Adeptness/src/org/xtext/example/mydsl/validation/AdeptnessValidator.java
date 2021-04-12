@@ -24,7 +24,7 @@ import org.xtext.example.mydsl.adeptness.Signal;
  * See
  * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
-@ComposedChecks(validators= { UncertaintyValidator.class, OracleAssesment.class })
+@ComposedChecks(validators= { OracleAssesment.class, UncertaintyValidator.class })
 public class AdeptnessValidator extends AbstractAdeptnessValidator {
 
 	public static String DUPLICATED_NAME = "Duplicated Name";

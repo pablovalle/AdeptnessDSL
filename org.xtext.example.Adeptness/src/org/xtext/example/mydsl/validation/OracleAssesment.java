@@ -92,6 +92,11 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 	// DETECT ERRORS WITHIN EXPRESSIONS
 	@Check
 	public void checkExpressionModelVarsInMonitoringVariablesFile(AbstractElement2 elem) {
+		if (elem.getUncer1() != null || elem.getUncer2() != null || elem.getUncer3() != null) {
+			// TODO: check with operational data when uncertainty type checks is set
+			errorDetected = true;
+			return;
+		}
 		if (elem.getName() == null)
 			return;
 		checkNameInMonitoringVariablesFile(elem.getName(), AdeptnessPackage.Literals.ABSTRACT_ELEMENT2__NAME);
@@ -260,7 +265,8 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		List<AbstractElement2> elems = check.getEm().getElements();
 		boolean anyVar = false;
 		for (AbstractElement2 elem : elems) {
-			if (elem.getName() != null) {
+			if (elem.getName() != null || elem.getUncer1() != null || elem.getUncer2() != null
+					|| elem.getUncer3() != null) {
 				anyVar = true;
 				break;
 			}
@@ -271,6 +277,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			errorDetected = true;
 			return;
 		}
+
 	}
 
 	@Check
