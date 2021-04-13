@@ -31,6 +31,9 @@ import javax.script.ScriptEngine
 import javax.script.ScriptEngineManager
 import javax.script.ScriptException
 import org.xtext.example.mydsl.adeptness.FailReason
+import java.util.stream.Collectors
+import org.xtext.example.mydsl.adeptness.ExpressionsModel
+import org.xtext.example.mydsl.adeptness.UncertaintyProb
 
 /**
  * Generates code from your model files on save.
@@ -51,6 +54,7 @@ var HashMap<String, Double> maxMap;
 var HashMap<String, Double> minMap;
 var HashMap<String, List<String>> checkVar;
 var List<String> verdict;
+var List<String> uncerNames;
     override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
     	//fsa.generateFile("adeptness.xml", resource.allContents.toIterable.filter(Signal).createXML());
     		for(a: resource.allContents.toIterable.filter(ValidationPlan)){
@@ -91,6 +95,7 @@ var List<String> verdict;
 			checkVar= new HashMap();
 			maxMap= new HashMap();
 			minMap= new HashMap();
+			uncerNames= getUncer(e);
 			getAllNames(e);
 			findSignalsMaxMinValues(e);
 			for(q: e.oracle){
@@ -105,12 +110,113 @@ var List<String> verdict;
 				//Runtime.getRuntime().exec("matlab -nosplash -nodesktop -r run('"+directory+d.name.toString+"')");
 			}
 			fsa.generateFile(e.fullyQualifiedName.toString("/")+".json", e.create_oracle_json())
+			fsa.generateFile(e.name+"_Uncer.c", e.create_uncer_c())
+			fsa.generateFile(e.name+"_Uncer.h", e.create_uncer_h())
 			fsa.generateFile("Array.h", e.create_array_h())
 			fsa.generateFile("Array.c", e.create_array_c())
 			fsa.generateFile(e.fullyQualifiedName.toString()+".h", e.create_global_h())
 			
 		}
     }
+	def List<String> getUncer(Signal signal) {
+		var List<String> uncer= new ArrayList();
+		var String name=""
+		for(Oracle o: signal.oracle){
+			if(o.when!==null && o.when.em!==null){
+				for(AbstractElement2 element: o.when.em.elements){
+					if(element.uncer1!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+				}
+			}
+			if(o.^while!==null && o.^while.em!==null){
+				for(AbstractElement2 element: o.^while.em.elements){
+					if(element.uncer1!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+				}
+			}
+			if(o.check!==null && o.check.em!==null){
+				for(AbstractElement2 element: o.check.em.elements){
+					if(element.uncer1!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+				}
+			}
+		}
+		uncer=uncer.stream().distinct().collect(Collectors.toList());
+		return uncer;
+	}
+	
+	def String getUncerType(AbstractElement2 element) {
+		var String ret="NO";
+		if(element.uncer1.bernoulliDistribution!==null){
+			if(element.uncer1.bernoulliDistribution.bernProb!==null){
+				ret="BernoulliDistribution_prob";
+			}
+			else if(element.uncer1.bernoulliDistribution.bernTrials!==null){
+				ret="BernoulliDistribution_trials";
+			}
+			
+		}
+		else if(element.uncer1.gammaDistribution!==null){
+			if(element.uncer1.gammaDistribution.gammaK!==null){
+				ret="GammaDistribution_K";
+			}
+			else if(element.uncer1.gammaDistribution.getGammaMean!==null){
+				ret="GammaDistribution_mean";
+			}
+			
+		}
+		else if(element.uncer1.normalDisstribution!==null){
+			if(element.uncer1.normalDisstribution.mean!==null){
+				ret="NormalDistribution_mean";
+			}
+			else if(element.uncer1.normalDisstribution.normDistStd!==null){
+				ret="NormalDistribution_normDistStd";
+			}
+			
+		}
+		
+		return ret;
+	}
+	
+	/*«IF param.check.em!==null»
+	«distributionFunction(param.check.em.elements)»
+	«ENDIF»
+	«IF param.^while!==null && param.^while.em!==null»
+	«distributionFunction(param.^while.em.elements)»
+	«ENDIF»
+	«IF param.when!==null && param.when.em!==null»
+	«distributionFunction(param.when.em.elements)»
+	«ENDIF» */
+	def CharSequence create_uncer_h(Signal signal)'''
+	#ifndef «signal.name.toUpperCase»_UNCER_H
+	#define «signal.name.toUpperCase»_UNCER_H
+	#include <stdio.h>
+	«FOR name:uncerNames»
+	double calc«name»(double var);
+	«ENDFOR»
+	#endif
+	'''
+	
+	def CharSequence create_uncer_c(Signal signal)'''
+	#include "«signal.name»_Uncer.h"
+	«FOR name:uncerNames»
+	double calc«name»(double var){
+		
+	}«ENDFOR»
+	'''
+	
 	def findSignalsMaxMinValues(Signal s){
 		
 		for(Oracle o: s.oracle){
@@ -151,7 +257,10 @@ var List<String> verdict;
 		for(String expression:exprCombs){
 			maxMinValueCombs.add(evalExpression(expression) as Double);
 		}
-	
+	//TODO set values
+		if(maxMinValueCombs.size()==0){
+			maxMinValueCombs.add(0.0);
+		}
 		return maxMinValueCombs;
 	}
 	def evalExpression(String expression) {
@@ -199,17 +308,20 @@ var List<String> verdict;
 	
 	def List<String> generateCombinations(int index, String expression, List<String> varNames, List<String> exprCombs, List<Double> maxValues,List<Double> minValues) {
 		var List<String> exC = new ArrayList<String>(exprCombs)
-		var String replaceVarMin = replaceVar(expression, varNames.get(index),minValues.get(index));
-		var String replaceVarMax = replaceVar(expression, varNames.get(index),maxValues.get(index));
-		if (index == varNames.size() - 1) {
-			exC.add(replaceVarMin);
-			exC.add(replaceVarMax);
-		} else {
-			var List<String> minCombs = generateCombinations(index + 1, replaceVarMin, varNames, exprCombs,maxValues,minValues);
-			var List<String> maxCombs = generateCombinations(index + 1, replaceVarMax, varNames, exprCombs,maxValues,minValues);
-			exC.addAll(minCombs);
-			exC.addAll(maxCombs);
+		if(!expression.equals("")){
+			var String replaceVarMin = replaceVar(expression, varNames.get(index),minValues.get(index));
+			var String replaceVarMax = replaceVar(expression, varNames.get(index),maxValues.get(index));
+			if (index == varNames.size() - 1) {
+				exC.add(replaceVarMin);
+				exC.add(replaceVarMax);
+			} else {
+				var List<String> minCombs = generateCombinations(index + 1, replaceVarMin, varNames, exprCombs,maxValues,minValues);
+				var List<String> maxCombs = generateCombinations(index + 1, replaceVarMax, varNames, exprCombs,maxValues,minValues);
+				exC.addAll(minCombs);
+				exC.addAll(maxCombs);
+			}
 		}
+		
 		return exC;
 	}
 	
@@ -469,19 +581,19 @@ var List<String> verdict;
 						isWHile=false;
 					}
 				}
+				whileNames=addUncerNames(wile.em, whileNames);
 				var a="";
 				var b="";
 				for(var i=0; i< whileNames.size; i++){
 					if(i!=whileNames.size-1){
-						a=a+"int "+whileNames.get(i)+", ";
+						a=a+"double "+whileNames.get(i)+", ";
 						b=b+whileNames.get(i)+".array[cycle], ";
 					}
 					else{
-						a=a+"int "+whileNames.get(i);
+						a=a+"double "+whileNames.get(i);
 						b=b+whileNames.get(i)+".array[cycle] ";
 					}
 				}
-				println(a);
 				whileMap.put(oracle.name,a);
 				whileMap_preconds.put(oracle.name,b);
 			}
@@ -514,15 +626,16 @@ var List<String> verdict;
 						isWhen=false;
 					}
 				}
+				whenNames=addUncerNames(when.em, whenNames);
 				var a="";
 				var b="";
 				for(var i=0; i< whenNames.size; i++){
 					if(i!=whenNames.size-1){
-						a=a+"int "+whenNames.get(i)+", ";
+						a=a+"double "+whenNames.get(i)+", ";
 						b=b+whenNames.get(i)+".array[cycle], ";
 					}
 					else{
-						a=a+"int "+whenNames.get(i);
+						a=a+"double "+whenNames.get(i);
 						b=b+whenNames.get(i)+".array[cycle]";
 					}
 				}
@@ -753,10 +866,108 @@ var List<String> verdict;
 				}
 				
 			}
-				
+			namelists=getDistributionNames(oracle,namelists);	
 			nameMap.put(oracle.name, namelists);
 			checkVar.put(oracle.name,checkNames);
 		}
+	}
+	
+	def List<String> addUncerNames(ExpressionsModel model, List<String> names) {
+		var boolean is=false;
+		var String name="";
+		for(AbstractElement2 element: model.elements){
+			if(element.uncer1!==null){
+				name=getUncerName(element.uncer1);
+				for(String isName: names){
+					if(isName!==null && isName.equals(name)){
+						is=true;
+					}
+				}
+				if(!is){
+					names.add(name);
+				}
+				is=false;
+			}
+		}
+		names.remove(null);
+		return names;
+	}
+	def List<String> getDistributionNames(Oracle o,List<String> strings) {
+		var boolean is=false;
+		var String name="";
+		if(o.when!==null && o.when.em!==null){
+			for(var i=0; i<o.when.em.elements.size; i++){
+				if(o.when.em.elements.get(i).uncer1!==null){
+					name=getUncerName(o.when.em.elements.get(i).uncer1)
+					for(String isName:strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+			}
+		}
+		if(o.^while!==null && o.^while.em!==null){
+			for(var i=0; i<o.^while.em.elements.size; i++){
+				if(o.^while.em.elements.get(i).uncer1!==null){
+					name=getUncerName(o.^while.em.elements.get(i).uncer1);
+					for(String isName:strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+			}
+			
+		}
+		if(o.check!==null && o.check.em!==null){
+			for(var i=0; i<o.check.em.elements.size; i++){
+				if(o.check.em.elements.get(i).uncer1!==null){
+					name=getUncerName(o.check.em.elements.get(i).uncer1)
+					for(String isName: strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+			}
+		}
+
+		return strings
+	}
+	
+	def String getUncerName(UncertaintyProb prob) {
+		var String ret="";
+		if(prob.bernoulliDistribution!==null){
+			ret=prob.bernoulliDistribution.name;
+		}
+		
+		else if(prob.gammaDistribution!==null){
+			ret=prob.gammaDistribution.name;
+		}
+		
+		else if(prob.normalDisstribution!==null){
+			ret=prob.normalDisstribution.name;
+		}
+		
+		else if(prob.uniformDistribution!==null){
+			ret=prob.uniformDistribution.name;
+		}
+		
+		
+		return ret;
 	}
 		
 	/*def createXML(Iterable<Signal> signals)'''
@@ -1190,6 +1401,7 @@ var List<String> verdict;
 	#define «param.name.toString().toUpperCase»_H
 	
 	#include "oracle_commons.h"
+	#include "«name»_uncer.h"
 	
 	int preprocessInputs_«param.name»(SensorInput *inputs);
 	«IF param.when!==null || param.^while!==null»
@@ -1328,7 +1540,7 @@ var List<String> verdict;
 	«IF param.when!==null || param.^while!==null»
 
 	int evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap.get(param.name).toString»«ENDIF») {
-		return «IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»;
+		return «IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSEIF param1.value!==null»«param1.value.DVal»«ELSE»«DistributionManagement(param1)»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSEIF param1.value!==null»«param1.value.DVal»«ELSE»«DistributionManagement(param1)»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»;
 	}
 	«ENDIF»
 	Verdict evaluatePostConditions_«param.name»(Verdict verdict, SensorInput *inputs) {
@@ -1364,13 +1576,13 @@ var List<String> verdict;
 		insertArray(&preconditionGiven,evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap_preconds.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap_preconds.get(param.name).toString»«ENDIF»));	
 		if(preconditionGiven.array[cycle]==1){
 		//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
-			insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
+			insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSEIF param1.value!==null»«param1.value.DVal»«ELSE»«DistributionManagement(param1)»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
 		}else{
 			insertArray(&conf,2);
 		}
 		«ELSE»
 		insertArray(&preconditionGiven,2);
-		insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
+		insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSEIF param1.value!==null»«param1.value.DVal»«ELSE»«DistributionManagement(param1)»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
 		«ENDIF»
 
 		//Step 4: Sacar confidence
@@ -1452,5 +1664,99 @@ var List<String> verdict;
 	«ENDFOR»
 	
 	'''
+	
+	def String distributionFunction(EList<AbstractElement2> list) {
+		var String ret="";
+		for(AbstractElement2 element : list){
+			if(element.uncer1!==null){
+				if(element.uncer1.bernoulliDistribution!==null){
+					if(element.uncer1.bernoulliDistribution.bernProb!==null){
+						ret=ret+"\ndouble calcBernoulliDistribution_prob(double var){\n\n}";
+					}
+					else if(element.uncer1.bernoulliDistribution.bernTrials!==null){
+						ret=ret+"\ndouble calcBernoulliDistribution_trials(double var){\n\n}";
+					}
+					
+				}
+				
+				else if(element.uncer1.gammaDistribution!==null){
+					if(element.uncer1.gammaDistribution.gammaK!==null){
+						ret=ret+"\ndouble calcGammaDistribution_K(double var){\n\n}";
+					}
+					else if(element.uncer1.gammaDistribution.getGammaMean!==null){
+						ret=ret+"\ndouble calcGammaDistribution_mean(double var){\n\n}";
+					}
+					
+				}
+				
+				else if(element.uncer1.normalDisstribution!==null){
+					if(element.uncer1.normalDisstribution.mean!==null){
+						ret=ret+"\ndouble calcNormalDistribution_mean(double var){\n\n}";
+					}
+					else if(element.uncer1.normalDisstribution.normDistStd!==null){
+						ret=ret+"\ndouble calcNormalDistribution_normDistStd(double var){\n\n}";
+					}
+					
+				}
+				
+				else if(element.uncer1.uniformDistribution!==null){
+					if(element.uncer1.uniformDistribution.uniformMax!==null){
+						ret=ret+"\ndouble calcUniformDistribution_Max(double var){\n\n}";
+					}
+					else if(element.uncer1.uniformDistribution.uniformMin!==null){
+						ret=ret+"\ndouble calcUniformDistribution_Min(double var){\n\n}";
+					}
+					
+				}
+			}
+			
+		}
+		return ret;
+	}
+	
+	
+	def String DistributionManagement(AbstractElement2 element){
+		var String ret="calc";
+		if(element.uncer1.bernoulliDistribution!==null){
+			if(element.uncer1.bernoulliDistribution.bernProb!==null){
+				ret=ret+"BernoulliDistribution_prob("+element.uncer1.bernoulliDistribution.name+")";
+			}
+			else if(element.uncer1.bernoulliDistribution.bernTrials!==null){
+				ret=ret+"BernoulliDistribution_trials("+element.uncer1.bernoulliDistribution.name+")";
+			}
+			
+		}
+		
+		else if(element.uncer1.gammaDistribution!==null){
+			if(element.uncer1.gammaDistribution.gammaK!==null){
+				ret=ret+"GammaDistribution_K("+element.uncer1.gammaDistribution.name+")";
+			}
+			else if(element.uncer1.gammaDistribution.getGammaMean!==null){
+				ret=ret+"GammaDistribution_mean("+element.uncer1.gammaDistribution.name+")";
+			}
+			
+		}
+		
+		else if(element.uncer1.normalDisstribution!==null){
+			if(element.uncer1.normalDisstribution.mean!==null){
+				ret=ret+"NormalDistribution_mean("+element.uncer1.normalDisstribution.name+")";
+			}
+			else if(element.uncer1.normalDisstribution.normDistStd!==null){
+				ret=ret+"NormalDistribution_normDistStd("+element.uncer1.normalDisstribution.name+")";
+			}
+			
+		}
+		
+		else if(element.uncer1.uniformDistribution!==null){
+			if(element.uncer1.uniformDistribution.uniformMax!==null){
+				ret=ret+"UniformDistribution_Max("+element.uncer1.uniformDistribution.name+")";
+			}
+			else if(element.uncer1.uniformDistribution.uniformMin!==null){
+				ret=ret+"UniformDistribution_Min("+element.uncer1.uniformDistribution.name+")";
+			}
+			
+		}
+		return ret;
+	}
 	
 }
