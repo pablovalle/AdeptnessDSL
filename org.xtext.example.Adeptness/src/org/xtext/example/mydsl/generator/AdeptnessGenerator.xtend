@@ -34,6 +34,8 @@ import org.xtext.example.mydsl.adeptness.FailReason
 import java.util.stream.Collectors
 import org.xtext.example.mydsl.adeptness.ExpressionsModel
 import org.xtext.example.mydsl.adeptness.UncertaintyProb
+import org.xtext.example.mydsl.adeptness.UncertaintyAmbiguity
+import org.xtext.example.mydsl.adeptness.UncertaintyVagueness
 
 /**
  * Generates code from your model files on save.
@@ -130,11 +132,35 @@ var List<String> uncerNames;
 							uncer.add(name);
 						}
 					}
+					else if(element.uncer2!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+					else if(element.uncer3!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
 				}
 			}
 			if(o.^while!==null && o.^while.em!==null){
 				for(AbstractElement2 element: o.^while.em.elements){
 					if(element.uncer1!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+					else if(element.uncer2!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+					else if(element.uncer3!==null){
 						name=getUncerType(element);
 						if(!name.equals("NO")){
 							uncer.add(name);
@@ -150,6 +176,18 @@ var List<String> uncerNames;
 							uncer.add(name);
 						}
 					}
+					else if(element.uncer2!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+					else if(element.uncer3!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
 				}
 			}
 		}
@@ -159,33 +197,53 @@ var List<String> uncerNames;
 	
 	def String getUncerType(AbstractElement2 element) {
 		var String ret="NO";
-		if(element.uncer1.bernoulliDistribution!==null){
-			if(element.uncer1.bernoulliDistribution.bernProb!==null){
-				ret="BernoulliDistribution_prob";
+		if(element.uncer1!==null){
+			if(element.uncer1.bernoulliDistribution!==null){
+				if(element.uncer1.bernoulliDistribution.bernProb!==null){
+					ret="BernoulliDistribution_prob";
+				}
+				else if(element.uncer1.bernoulliDistribution.bernTrials!==null){
+					ret="BernoulliDistribution_trials";
+				}
+				
 			}
-			else if(element.uncer1.bernoulliDistribution.bernTrials!==null){
-				ret="BernoulliDistribution_trials";
+			else if(element.uncer1.gammaDistribution!==null){
+				if(element.uncer1.gammaDistribution.gammaK!==null){
+					ret="GammaDistribution_K";
+				}
+				else if(element.uncer1.gammaDistribution.getGammaMean!==null){
+					ret="GammaDistribution_mean";
+				}
+				
 			}
-			
+			else if(element.uncer1.normalDisstribution!==null){
+				if(element.uncer1.normalDisstribution.mean!==null){
+					ret="NormalDistribution_mean";
+				}
+				else if(element.uncer1.normalDisstribution.normDistStd!==null){
+					ret="NormalDistribution_normDistStd";
+				}
+				
+			}
 		}
-		else if(element.uncer1.gammaDistribution!==null){
-			if(element.uncer1.gammaDistribution.gammaK!==null){
-				ret="GammaDistribution_K";
+		else if(element.uncer2!==null){
+			if(element.uncer2.fuzzyInterval!==null){
+				if(element.uncer2.fuzzyInterval.maxfuzzyNumber!==null){
+					ret="FuzzyInterval_maxfuzzyNumber";
+				}
+				else if(element.uncer2.fuzzyInterval.minfuzzyNumber!==null){
+					ret="FuzzyInterval_minfuzzyNumber";
+				}
 			}
-			else if(element.uncer1.gammaDistribution.getGammaMean!==null){
-				ret="GammaDistribution_mean";
-			}
-			
+			//TODO finish other distributions
 		}
-		else if(element.uncer1.normalDisstribution!==null){
-			if(element.uncer1.normalDisstribution.mean!==null){
-				ret="NormalDistribution_mean";
+		else if(element.uncer3!==null){
+			if(element.uncer3.pignisticDistribution!==null){
+				ret="PignisticDistribution_expression";
 			}
-			else if(element.uncer1.normalDisstribution.normDistStd!==null){
-				ret="NormalDistribution_normDistStd";
-			}
-			
+			//TODO finish other distributions
 		}
+		
 		
 		return ret;
 	}
@@ -888,10 +946,53 @@ var List<String> uncerNames;
 				}
 				is=false;
 			}
+			else if(element.uncer2!==null){
+				name=getUncerName2(element.uncer2);
+				for(String isName: names){
+					if(isName!==null && isName.equals(name)){
+						is=true;
+					}
+				}
+				if(!is){
+					names.add(name);
+				}
+				is=false;
+			}
+			else if(element.uncer3!==null){
+				name=getUncerName3(element.uncer3);
+				for(String isName: names){
+					if(isName!==null && isName.equals(name)){
+						is=true;
+					}
+				}
+				if(!is){
+					names.add(name);
+				}
+				is=false;
+			}
 		}
 		names.remove(null);
 		return names;
 	}
+	
+	def getUncerName2(UncertaintyVagueness vagueness) {
+		var String name="";
+		if(vagueness.fuzzyInterval!==null){
+			name=vagueness.fuzzyInterval.name;
+		}
+		//TODO finish other distributions
+		return name;
+	}
+	
+	def getUncerName3(UncertaintyAmbiguity ambiguity) {
+		var String name="";
+		if(ambiguity.pignisticDistribution!==null){
+			name=ambiguity.pignisticDistribution.name;
+		}
+		//TODO finish other distributions
+		return name;
+	}
+	
 	def List<String> getDistributionNames(Oracle o,List<String> strings) {
 		var boolean is=false;
 		var String name="";
@@ -899,6 +1000,30 @@ var List<String> uncerNames;
 			for(var i=0; i<o.when.em.elements.size; i++){
 				if(o.when.em.elements.get(i).uncer1!==null){
 					name=getUncerName(o.when.em.elements.get(i).uncer1)
+					for(String isName:strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+				else if(o.when.em.elements.get(i).uncer2!==null){
+					name=getUncerName2(o.when.em.elements.get(i).uncer2)
+					for(String isName:strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+				else if(o.when.em.elements.get(i).uncer3!==null){
+					name=getUncerName3(o.when.em.elements.get(i).uncer3)
 					for(String isName:strings){
 						if(isName!==null && isName.equals(name)){
 							is=true;
@@ -925,6 +1050,30 @@ var List<String> uncerNames;
 					}
 					is=false;
 				}
+				else if(o.^while.em.elements.get(i).uncer2!==null){
+					name=getUncerName2(o.^while.em.elements.get(i).uncer2);
+					for(String isName:strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+				else if(o.^while.em.elements.get(i).uncer3!==null){
+					name=getUncerName3(o.^while.em.elements.get(i).uncer3);
+					for(String isName:strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
 			}
 			
 		}
@@ -932,6 +1081,30 @@ var List<String> uncerNames;
 			for(var i=0; i<o.check.em.elements.size; i++){
 				if(o.check.em.elements.get(i).uncer1!==null){
 					name=getUncerName(o.check.em.elements.get(i).uncer1)
+					for(String isName: strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+				else if(o.check.em.elements.get(i).uncer2!==null){
+					name=getUncerName2(o.check.em.elements.get(i).uncer2)
+					for(String isName: strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+				else if(o.check.em.elements.get(i).uncer3!==null){
+					name=getUncerName3(o.check.em.elements.get(i).uncer3)
 					for(String isName: strings){
 						if(isName!==null && isName.equals(name)){
 							is=true;
@@ -1709,6 +1882,23 @@ var List<String> uncerNames;
 					
 				}
 			}
+			else if(element.uncer2!==null){
+				if(element.uncer2.fuzzyInterval!==null){
+					if(element.uncer2.fuzzyInterval.maxfuzzyNumber!==null){
+						ret=ret+"\ndouble calcFuzzyInterval_maxfuzzyNumber(double var){\n\n}";
+					}
+					else if(element.uncer2.fuzzyInterval.minfuzzyNumber!==null){
+						ret=ret+"\ndouble calcFuzzyInterval_minfuzzyNumber(double var){\n\n}";
+					}
+				}
+				//TODO finish other distributions
+			}
+			else if(element.uncer3!==null){
+				if(element.uncer3.pignisticDistribution!==null){
+					ret=ret+"\ndouble calcPignisticDistribution_expression(double var){\n\n}";
+				}
+				//TODO finish other distributions
+			}
 			
 		}
 		return ret;
@@ -1717,45 +1907,65 @@ var List<String> uncerNames;
 	
 	def String DistributionManagement(AbstractElement2 element){
 		var String ret="calc";
-		if(element.uncer1.bernoulliDistribution!==null){
-			if(element.uncer1.bernoulliDistribution.bernProb!==null){
-				ret=ret+"BernoulliDistribution_prob("+element.uncer1.bernoulliDistribution.name+")";
-			}
-			else if(element.uncer1.bernoulliDistribution.bernTrials!==null){
-				ret=ret+"BernoulliDistribution_trials("+element.uncer1.bernoulliDistribution.name+")";
+		if(element.uncer1!==null){
+			if(element.uncer1.bernoulliDistribution!==null){
+				if(element.uncer1.bernoulliDistribution.bernProb!==null){
+					ret=ret+"BernoulliDistribution_prob("+element.uncer1.bernoulliDistribution.name+")";
+				}
+				else if(element.uncer1.bernoulliDistribution.bernTrials!==null){
+					ret=ret+"BernoulliDistribution_trials("+element.uncer1.bernoulliDistribution.name+")";
+				}
+				
 			}
 			
+			else if(element.uncer1.gammaDistribution!==null){
+				if(element.uncer1.gammaDistribution.gammaK!==null){
+					ret=ret+"GammaDistribution_K("+element.uncer1.gammaDistribution.name+")";
+				}
+				else if(element.uncer1.gammaDistribution.getGammaMean!==null){
+					ret=ret+"GammaDistribution_mean("+element.uncer1.gammaDistribution.name+")";
+				}
+				
+			}
+			
+			else if(element.uncer1.normalDisstribution!==null){
+				if(element.uncer1.normalDisstribution.mean!==null){
+					ret=ret+"NormalDistribution_mean("+element.uncer1.normalDisstribution.name+")";
+				}
+				else if(element.uncer1.normalDisstribution.normDistStd!==null){
+					ret=ret+"NormalDistribution_normDistStd("+element.uncer1.normalDisstribution.name+")";
+				}
+				
+			}
+			
+			else if(element.uncer1.uniformDistribution!==null){
+				if(element.uncer1.uniformDistribution.uniformMax!==null){
+					ret=ret+"UniformDistribution_Max("+element.uncer1.uniformDistribution.name+")";
+				}
+				else if(element.uncer1.uniformDistribution.uniformMin!==null){
+					ret=ret+"UniformDistribution_Min("+element.uncer1.uniformDistribution.name+")";
+				}
+				
+			}
+		}
+		else if(element.uncer2!==null){
+			if(element.uncer2.fuzzyInterval!==null){
+				if(element.uncer2.fuzzyInterval.maxfuzzyNumber!==null){
+					ret=ret+"FuzzyInterval_maxfuzzyNumber("+element.uncer2.fuzzyInterval.name+")";
+				}
+				else if(element.uncer2.fuzzyInterval.minfuzzyNumber!==null){
+					ret=ret+"FuzzyInterval_minfuzzyNumber("+element.uncer2.fuzzyInterval.name+")";
+				}
+			}
+			//TODO finish other distributions
+		}
+		else if(element.uncer3!==null){
+			if(element.uncer3.pignisticDistribution!==null){
+				ret=ret+"PignisticDistribution_expression("+element.uncer3.pignisticDistribution.name+")";
+			}
+			//TODO finish other distributions
 		}
 		
-		else if(element.uncer1.gammaDistribution!==null){
-			if(element.uncer1.gammaDistribution.gammaK!==null){
-				ret=ret+"GammaDistribution_K("+element.uncer1.gammaDistribution.name+")";
-			}
-			else if(element.uncer1.gammaDistribution.getGammaMean!==null){
-				ret=ret+"GammaDistribution_mean("+element.uncer1.gammaDistribution.name+")";
-			}
-			
-		}
-		
-		else if(element.uncer1.normalDisstribution!==null){
-			if(element.uncer1.normalDisstribution.mean!==null){
-				ret=ret+"NormalDistribution_mean("+element.uncer1.normalDisstribution.name+")";
-			}
-			else if(element.uncer1.normalDisstribution.normDistStd!==null){
-				ret=ret+"NormalDistribution_normDistStd("+element.uncer1.normalDisstribution.name+")";
-			}
-			
-		}
-		
-		else if(element.uncer1.uniformDistribution!==null){
-			if(element.uncer1.uniformDistribution.uniformMax!==null){
-				ret=ret+"UniformDistribution_Max("+element.uncer1.uniformDistribution.name+")";
-			}
-			else if(element.uncer1.uniformDistribution.uniformMin!==null){
-				ret=ret+"UniformDistribution_Min("+element.uncer1.uniformDistribution.name+")";
-			}
-			
-		}
 		return ret;
 	}
 	
