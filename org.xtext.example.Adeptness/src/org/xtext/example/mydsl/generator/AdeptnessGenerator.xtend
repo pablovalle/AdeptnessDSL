@@ -1602,7 +1602,7 @@ var List<String> uncerNames;
 	
 	def create_verdict_c(Oracle param, List<String> nameList){
 		verdict.add("Verdict checkGlobalVerdict_"+param.name+"(Array conf, Array timeStampOracle){");
-		verdict.add("	verdict.verdict=VERDICT_INCONCLUSIVE;");
+		verdict.add("	Verdict verdict;\n    verdict.verdict=VERDICT_INCONCLUSIVE;");
 		verdict.add("	double times;");
 		verdict.add("	int fail, is, deg,i,time;");
 		verdict.add("	i=0;");
@@ -1910,40 +1910,40 @@ var List<String> uncerNames;
 		if(element.uncer1!==null){
 			if(element.uncer1.bernoulliDistribution!==null){
 				if(element.uncer1.bernoulliDistribution.bernProb!==null){
-					ret=ret+"BernoulliDistribution_prob("+element.uncer1.bernoulliDistribution.name+")";
+					ret=ret+"BernoulliDistribution_prob("+element.uncer1.bernoulliDistribution.name+".array[cycle])";
 				}
 				else if(element.uncer1.bernoulliDistribution.bernTrials!==null){
-					ret=ret+"BernoulliDistribution_trials("+element.uncer1.bernoulliDistribution.name+")";
+					ret=ret+"BernoulliDistribution_trials("+element.uncer1.bernoulliDistribution.name+".array[cycle])";
 				}
 				
 			}
 			
 			else if(element.uncer1.gammaDistribution!==null){
 				if(element.uncer1.gammaDistribution.gammaK!==null){
-					ret=ret+"GammaDistribution_K("+element.uncer1.gammaDistribution.name+")";
+					ret=ret+"GammaDistribution_K("+element.uncer1.gammaDistribution.name+".array[cycle])";
 				}
 				else if(element.uncer1.gammaDistribution.getGammaMean!==null){
-					ret=ret+"GammaDistribution_mean("+element.uncer1.gammaDistribution.name+")";
+					ret=ret+"GammaDistribution_mean("+element.uncer1.gammaDistribution.name+".array[cycle])";
 				}
 				
 			}
 			
 			else if(element.uncer1.normalDisstribution!==null){
 				if(element.uncer1.normalDisstribution.mean!==null){
-					ret=ret+"NormalDistribution_mean("+element.uncer1.normalDisstribution.name+")";
+					ret=ret+"NormalDistribution_mean("+element.uncer1.normalDisstribution.name+".array[cycle])";
 				}
 				else if(element.uncer1.normalDisstribution.normDistStd!==null){
-					ret=ret+"NormalDistribution_normDistStd("+element.uncer1.normalDisstribution.name+")";
+					ret=ret+"NormalDistribution_normDistStd("+element.uncer1.normalDisstribution.name+".array[cycle])";
 				}
 				
 			}
 			
 			else if(element.uncer1.uniformDistribution!==null){
 				if(element.uncer1.uniformDistribution.uniformMax!==null){
-					ret=ret+"UniformDistribution_Max("+element.uncer1.uniformDistribution.name+")";
+					ret=ret+"UniformDistribution_Max("+element.uncer1.uniformDistribution.name+".array[cycle])";
 				}
 				else if(element.uncer1.uniformDistribution.uniformMin!==null){
-					ret=ret+"UniformDistribution_Min("+element.uncer1.uniformDistribution.name+")";
+					ret=ret+"UniformDistribution_Min("+element.uncer1.uniformDistribution.name+".array[cycle])";
 				}
 				
 			}
@@ -1951,17 +1951,17 @@ var List<String> uncerNames;
 		else if(element.uncer2!==null){
 			if(element.uncer2.fuzzyInterval!==null){
 				if(element.uncer2.fuzzyInterval.maxfuzzyNumber!==null){
-					ret=ret+"FuzzyInterval_maxfuzzyNumber("+element.uncer2.fuzzyInterval.name+")";
+					ret=ret+"FuzzyInterval_maxfuzzyNumber("+element.uncer2.fuzzyInterval.name+".array[cycle])";
 				}
 				else if(element.uncer2.fuzzyInterval.minfuzzyNumber!==null){
-					ret=ret+"FuzzyInterval_minfuzzyNumber("+element.uncer2.fuzzyInterval.name+")";
+					ret=ret+"FuzzyInterval_minfuzzyNumber("+element.uncer2.fuzzyInterval.name+".array[cycle])";
 				}
 			}
 			//TODO finish other distributions
 		}
 		else if(element.uncer3!==null){
 			if(element.uncer3.pignisticDistribution!==null){
-				ret=ret+"PignisticDistribution_expression("+element.uncer3.pignisticDistribution.name+")";
+				ret=ret+"PignisticDistribution_expression("+element.uncer3.pignisticDistribution.name+".array[cycle])";
 			}
 			//TODO finish other distributions
 		}
