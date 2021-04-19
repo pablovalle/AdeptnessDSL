@@ -17,7 +17,7 @@ public class MonitoringVar {
 		this.type = type;
 		this.max = max;
 		this.min = min;
-		this.setOpData(opCon.getVariableOpData(name));
+		this.setOpData(opCon.getVariableOpData(name, type));
 	}
 
 	public String getName() {

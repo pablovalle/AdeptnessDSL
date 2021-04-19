@@ -38,7 +38,7 @@ public class OperationalDataConnector {
 		}
 	}
 
-	public ArrayList<Double> getVariableOpData(String variableName) {
+	public ArrayList<Double> getVariableOpData(String variableName, String type) {
 		if (this.sheet == null)
 			return null;
 		try {
@@ -46,7 +46,7 @@ public class OperationalDataConnector {
 			// timestamps in seconds
 			ArrayList<Double> timestamps = this.readColumn("timestamp");
 
-			opData = this.normalize(opData, timestamps);
+			opData = this.normalize(opData, timestamps, type);
 
 			return opData;
 		} catch (Exception e) {
@@ -67,7 +67,7 @@ public class OperationalDataConnector {
 				continue;
 			Cell cell = row.getCell(columnIdx);
 			CellValue cellVal = evaluator.evaluate(cell);
-			
+
 			switch (cellVal.getCellType()) {
 			case NUMERIC:
 				columnValues.add(cellVal.getNumberValue());
@@ -102,7 +102,7 @@ public class OperationalDataConnector {
 	}
 
 	// every second
-	private ArrayList<Double> normalize(ArrayList<Double> data, ArrayList<Double> timestamps) {
+	private ArrayList<Double> normalize(ArrayList<Double> data, ArrayList<Double> timestamps, String type) {
 		if (timestamps.size() != data.size() || timestamps.size() < 2)
 			return null;
 		ArrayList<Double> normalizedData = new ArrayList<Double>();
@@ -132,14 +132,22 @@ public class OperationalDataConnector {
 				t0 = timestamps.get(t0idx);
 			}
 
-			normalizedData.add(this.linearInterpolation(t0, t, t1, data.get(t0idx), data.get(t1idx)));
+			normalizedData.add(this.linearInterpolation(t0, t, t1, data.get(t0idx), data.get(t1idx), type));
 		}
 
 		return normalizedData;
 	}
 
-	private Double linearInterpolation(Double t0, Double t, Double t1, Double v0, Double v1) {
-		return v0 * (1 - ((t - t0) / (t1 - t0))) + v1 * ((t - t0) / (t1 - t0));
+	private Double linearInterpolation(Double t0, Double t, Double t1, Double v0, Double v1, String type) {
+		Double val = (v0 * (1 - ((t - t0) / (t1 - t0))) + v1 * ((t - t0) / (t1 - t0)));
+		if (type.equals("boolean")) {
+			if (val < 0.5) {
+				val = 0.0;
+			} else {
+				val = 1.0;
+			}
+		}
+		return val;
 	}
 
 }
