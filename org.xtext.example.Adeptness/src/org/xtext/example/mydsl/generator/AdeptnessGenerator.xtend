@@ -195,7 +195,7 @@ var List<String> uncerNames;
 		return uncer;
 	}
 	
-		def String getUncerType(AbstractElement2 element) {
+	def String getUncerType(AbstractElement2 element) {
 		var String ret="NO";
 		if(element.uncer1!==null){
 			if(element.uncer1.bernoulliDistribution!==null){
@@ -362,7 +362,7 @@ var List<String> uncerNames;
 				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumber!==null){
 					ret="TriangularFuzzyNumber_number"
 				}
-				
+
 			}
 		}
 		else if(element.uncer3!==null){
@@ -407,6 +407,8 @@ var List<String> uncerNames;
 			ret="PossibleDistribution_expression";
 		    }
 		}
+		
+		
 		return ret;
 	}
 	
@@ -1136,13 +1138,13 @@ var List<String> uncerNames;
 		names.remove(null);
 		return names;
 	}
-
+	
 	def String getUncerName2(UncertaintyVagueness vagueness) {
 		var String name="";
 		if(vagueness.fuzzyInterval!==null){
 			name=vagueness.fuzzyInterval.name;
 		}
-		
+
 		else if(vagueness.fuzzySetCut!==null){
 			name=vagueness.fuzzySetCut.name;
 		}
@@ -1194,7 +1196,7 @@ var List<String> uncerNames;
 		if(ambiguity.pignisticDistribution!==null){
 			name=ambiguity.pignisticDistribution.name;
 		}
-		
+				
 		else if(ambiguity.shannonEntropy!==null){
 			name=ambiguity.shannonEntropy.name;
 		}
@@ -1502,7 +1504,7 @@ var List<String> uncerNames;
 				"cfileDirectory":"«param.fullyQualifiedName.toString("/")+".c"»",
 				"hfileDirectory":"«param.fullyQualifiedName.toString("/")+".h"»",
 				«"\t\t"»"Inputs":[«FOR name:nameMap.get(param.name)»"«name»", «ENDFOR»"timeStamp"],
-			«"\t"»"While":"«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»",«ELSE��null",«ENDIF»
+			«"\t"»"While":"«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»",«ELSE»null",«ENDIF»
 			«"\t"»"When":{
 				«"\t"»"Value":"«IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»",«ELSE»null",«ENDIF»
 				«"\t"»"AfterWhen":{
@@ -2094,14 +2096,14 @@ var List<String> uncerNames;
 						ret=ret+"\ndouble calcGammaDistribution_K(double var[]){\n\n}";
 					}
 					else if(element.uncer1.gammaDistribution.getGammaMean!==null){
-						ret=ret+"\ndouble calcGammaDistribution_mean(double var[]){\n int length=0;\n length=sizeof(var);\n int i;\n float s=var[0];\n for(i=1;i<length;i++)\n  s=s+var[i];\n ave=s/length;\n return ave;\n}";
+						ret=ret+"\ndouble calcGammaDistribution_mean(double var[]){\n int length=0;\n length=sizeof(var);\n int i;\n float s=var[0];\n for(i=1;i<length;i++)\n s=s+var[i];\n ave=s/length;\n return ave;\n}";
 					}
 					
 				}
 				
 				else if(element.uncer1.normalDisstribution!==null){
 					if(element.uncer1.normalDisstribution.mean!==null){
-						ret=ret+"\ndouble calcNormalDistribution_mean(double var[]){\n int length=0;\n length=sizeof(var);\n int i;\n float s=var[0];\n for(i=1;i<length;i++)\n  s=s+var[i];\n ave=s/length;\n return ave;\n}";
+						ret=ret+"\ndouble calcNormalDistribution_mean(double var[]){\n  int length=0;\n length=sizeof(var);\n int i;\n float s=var[0];\n for(i=1;i<length;i++)\n s=s+var[i];\n ave=s/length;\n return ave;\n}";
 					}
 					else if(element.uncer1.normalDisstribution.normDistStd!==null){
 						ret=ret+"\ndouble calcNormalDistribution_normDistStd(double var[]){\n\n}";
