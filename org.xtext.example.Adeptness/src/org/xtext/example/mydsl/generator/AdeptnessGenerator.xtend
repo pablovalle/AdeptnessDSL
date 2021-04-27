@@ -426,7 +426,7 @@ var List<String> uncerNames;
 	#define «signal.name.toUpperCase»_UNCER_H
 	#include <stdio.h>
 	«FOR name:uncerNames»
-	double calc«name»(double var);
+	double * calc«name»(double var, double *ret);
 	«ENDFOR»
 	#endif
 	'''
@@ -434,9 +434,9 @@ var List<String> uncerNames;
 	def CharSequence create_uncer_c(Signal signal)'''
 	#include "«signal.name»_Uncer.h"
 	«FOR name:uncerNames»
-	double[] calc«name»(double[] var){
-		«distributionFunction(name)»
-	}
+	double * calc«name»(double[] var, double* ret)«distributionFunction(name)»
+	
+	
 	«ENDFOR»
 	'''
 	
@@ -2091,10 +2091,10 @@ var List<String> uncerNames;
 				ret="{\n\n}";
 			}
 			case "GammaDistribution_mean":{
-				ret="{\n int length=0;\n length=sizeof(var);\n int i;\n float s=var[0];\n for(i=1;i<length;i++)\n s=s+var[i];\n ave=s/length;\n return ave;\n}";
+				ret="{\n\tint length=0;\n\t length=sizeof(var);\n\t int i;\n\t float s=var[0];\n\t for(i=1;i<length;i++)\n\t s=s+var[i];\n\t ave=s/length;\n\t return ave;\n}";
 			}
 			case "NormalDistribution_mean":{
-				ret="{\n  int length=0;\n length=sizeof(var);\n int i;\n float s=var[0];\n for(i=1;i<length;i++)\n s=s+var[i];\n ave=s/length;\n return ave;\n}";
+				ret="{\n\tint length=0;\n\t length=sizeof(var);\n\t int i;\n\t float s=var[0];\n\t for(i=1;i<length;i++)\n\t s=s+var[i];\n\t ave=s/length;\n\t return ave;\n}";
 			}
 			case "NormalDistribution_normDistStd":{
 				ret="{\n\n}";
@@ -2252,12 +2252,7 @@ var List<String> uncerNames;
 			case "PossibleDistribution_expression":{
 				ret="{\n\n}";
 			}
-			
-			
-			
-			
-			
-			
+
 			//TODO finish 
 		}				
 
