@@ -425,8 +425,11 @@ var List<String> uncerNames;
 	#ifndef «signal.name.toUpperCase»_UNCER_H
 	#define «signal.name.toUpperCase»_UNCER_H
 	#include <stdio.h>
+	#include <stdlib.h>
+	#include <math.h>
+	#include <string.h>
 	«FOR name:uncerNames»
-	double * calc«name»(double[] var, double *ret);
+	double * calc«name»(double var[], double *ret);
 	«ENDFOR»
 	#endif
 	'''
@@ -434,7 +437,7 @@ var List<String> uncerNames;
 	def CharSequence create_uncer_c(Signal signal)'''
 	#include "«signal.name»_Uncer.h"
 	«FOR name:uncerNames»
-	double * calc«name»(double[] var, double* ret)«distributionFunction(name)»
+	double * calc«name»(double var[], double* ret)«distributionFunction(name)»
 	
 	
 	«ENDFOR»
@@ -1145,7 +1148,6 @@ var List<String> uncerNames;
 		if(vagueness.fuzzyInterval!==null){
 			name=vagueness.fuzzyInterval.name;
 		}
-
 		else if(vagueness.fuzzySetCut!==null){
 			name=vagueness.fuzzySetCut.name;
 		}
@@ -1505,7 +1507,7 @@ var List<String> uncerNames;
 				"cfileDirectory":"«param.fullyQualifiedName.toString("/")+".c"»",
 				"hfileDirectory":"«param.fullyQualifiedName.toString("/")+".h"»",
 				«"\t\t"»"Inputs":[«FOR name:nameMap.get(param.name)»"«name»", «ENDFOR»"timeStamp"],
-			«"\t"»"While":"«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»",«ELSE»null",«ENDIF»
+			«"\t"»"While":"«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»",«ELSE��null",«ENDIF»
 			«"\t"»"When":{
 				«"\t"»"Value":"«IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»",«ELSE»null",«ENDIF»
 				«"\t"»"AfterWhen":{
@@ -2091,146 +2093,150 @@ var List<String> uncerNames;
 				ret="{\n\n}";
 			}
 			case "GammaDistribution_mean":{
-				ret="{\n\tint length=0;\n\t length=sizeof(var);\n\t int i;\n\t float s=var[0];\n\t for(i=1;i<length;i++)\n\t s=s+var[i];\n\t ave=s/length;\n\t return ave;\n}";
+				ret="{\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t double ave, s=var[0];\n\t for(i=1;i<length;i++){\n\t  s=s+var[i];\n\t  ave=s/(float)length;\n\t }\n\t return ave;\n}";
 			}
 			case "NormalDistribution_mean":{
-				ret="{\n\tint length=0;\n\t length=sizeof(var);\n\t int i;\n\t float s=var[0];\n\t for(i=1;i<length;i++)\n\t s=s+var[i];\n\t ave=s/length;\n\t return ave;\n}";
+				ret="{\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t double ave, s=var[0];\n\t for(i=1;i<length;i++){\n\t  s=s+var[i];\n\t  ave=s/(float)length;\n\t }\n\t return ave;\n}";
 			}
 			case "NormalDistribution_normDistStd":{
-				ret="{\n\n}";
+				ret="{\n\t double sum=0.0, mean, SD=0.0;\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t for (i=0; i<length; ++i){\n\t  sum += var[i];\n\t }\n\t mean=sum/length;\n\t for(i=0; i<length; ++i){\n\t  SD += POW(var[i]-mean, 2);\n\t }\n\t return sqrt(SD/length);\n}";
 			}
 			case "UniformDistribution_Max":{
-				ret="{\n\n}";
+				ret="{\n\t double max=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(max<var[i])\n\t   max=var[i];\n\t }\n\t return max;\n}";
 			}
 			case "UniformDistribution_Min":{
-				ret="{\n\n}";
+				ret="{\n\t double min=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(min>var[i])\n\t   min=var[i];\n\t }\n\t return min;\n}";
 			}
 			case "FuzzyInterval_maxfuzzyNumber":{
 				ret="{\n\n}";
 			}
-			case "FuzzySetCut_lambda":{
+			case "FuzzyInterval_minfuzzyNumber":{
 				ret="{\n\n}";
 			}
-			case "FuzzySetCut_isStrong":{
-				ret="{\n\n}";
-			}
-			case "FuzzySetCut_kind":{
-				ret="{\n\n}";
-			}
-			case "FuzzyLogic_operator":{
-				ret="{\n\n}";
-			}
-			case "FuzzyLogic_var":{
-				ret="{\n\n}";
-			}
-			case "FuzzyLogic_set":{
-				ret="{\n\n}";
-			}
-			case "FuzzyLogic_set.Fuzziness":{
-				ret="{\n\n}";
-			}
-			case "FuzzyLogic_set.FuzzyEntropy":{
-				ret="{\n\n}";
-			}
-			case "FuzzyLogic_set.Roughness":{
-				ret="{\n\n}";
-			}
+//			case "FuzzySetCut_lambda":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzySetCut_isStrong":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzySetCut_kind":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyLogic_operator":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyLogic_var":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyLogic_set":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyLogic_set.Fuzziness":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyLogic_set.FuzzyEntropy":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyLogic_set.Roughness":{
+//				ret="{\n\n}";
+//			}
+			
+			//The Fuzzy function of different system is different, there is no uniform calculation. It should be customized according to different system. Here give an example used in D4.1 document.  
+			//The input should be one parameter, since here is array, it can be var[0]
 			case "FuzzySet_MembershipDegree_value":{
-				ret="{\n\n}";
+				ret="{\n\t double value=0.0;\n\t if(var[0]>=-0.8 && var[0]<=0)\n\t  value=-1.25*var[0];\n\t else if(var[0]>0 && var[0]<=0.8)\n\t  value=1.25*var[0];\n\t else\n\t  value=1;\n\t return value;\n}";
 			}
-			case "FuzzySet_MembershipDegree_hedge":{
-				ret="{\n\n}";
-			}
+			//The element type is string, so the output should be string, considering the output type of the predefined function is double, here, use -1(represent LEFT) and 1(represent RIGHT) in example.
 			case "FuzzySet_MembershipDegree_element":{
-				ret="{\n\n}";
+				ret="{\n\t double element=0.0;\n\t if(var[0]<0)\n\t  element=-1.0;\n\t else\n\t  element=1.0;\n\t return element;\n}";
 			}
-			case "FuzzySet_Fuzziness":{
-				ret="{\n\n}";
-			}
-			case "FuzzySet_FuzzinessEntropy":{
-				ret="{\n\n}";
-			}
-			case "FuzzySet_Roughness":{
-				ret="{\n\n}";
-			}
-			case "IntervalValuedFuzzySet_MembershipDegree":{
-				ret="{\n\n}";
-			}
-			case "IntervalValuedFuzzySet_Fuzziness":{
-				ret="{\n\n}";
-			}
-			case "IntervalValuedFuzzySet_FuzzyEntropy":{
-				ret="{\n\n}";
-			}
-			case "IntervalValuedFuzzySet_Roughness":{
-				ret="{\n\n}";
-			}
-			case "LFuzzySet_MembershipDegree":{
-				ret="{\n\n}";
-			}
-			case "LFuzzySet_Fuzziness":{
-				ret="{\n\n}";
-			}
-			case "LFuzzySet_FuzzyEntropy":{
-				ret="{\n\n}";
-			}
-			case "LFuzzySet_Roughness":{
-				ret="{\n\n}";
-			}
-			case "IntuitionsticFuzzySet_MembershipDegree":{
-				ret="{\n\n}";
-			}
-			case "IntuitionsticFuzzySet_Fuzzyness":{
-				ret="{\n\n}";
-			}
-			case "IntuitionsticFuzzySet_FuzzyEntropy":{
-				ret="{\n\n}";
-			}
-			case "IntuitionsticFuzzySet_Roughness":{
-				ret="{\n\n}";
-			}
-			case "VagueSet_MembershipDegree":{
-				ret="{\n\n}";
-			}
-			case "VagueSet_Fuzziness":{
-				ret="{\n\n}";
-			}
-			case "VagueSet_FuzzyEntropy":{
-				ret="{\n\n}";
-			}
-			case "VagueSet_Roughness":{
-				ret="{\n\n}";
-			}
-			case "TriangularFuzzyNumber_isSharped":{
-				ret="{\n\n}";
-			}
-			case "TriangularFuzzyNumber_a":{
-				ret="{\n\n}";
-			}
-			case "TriangularFuzzyNumber_b":{
-				ret="{\n\n}";
-			}
-			case "TriangularFuzzyNumber_c":{
-				ret="{\n\n}";
-			}
-			case "TriangularFuzzyNumber_number":{
-				ret="{\n\n}";
-			}
-			case "PignisticDistribution_expression":{
-				ret="{\n\n}";
-			}
+//			case "FuzzySet_Fuzziness":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzySet_FuzzinessEntropy":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzySet_Roughness":{
+//				ret="{\n\n}";
+//			}
+//			case "IntervalValuedFuzzySet_MembershipDegree":{
+//				ret="{\n\n}";
+//			}
+//			case "IntervalValuedFuzzySet_Fuzziness":{
+//				ret="{\n\n}";
+//			}
+//			case "IntervalValuedFuzzySet_FuzzyEntropy":{
+//				ret="{\n\n}";
+//			}
+//			case "IntervalValuedFuzzySet_Roughness":{
+//				ret="{\n\n}";
+//			}
+//			case "LFuzzySet_MembershipDegree":{
+//				ret="{\n\n}";
+//			}
+//			case "LFuzzySet_Fuzziness":{
+//				ret="{\n\n}";
+//			}
+//			case "LFuzzySet_FuzzyEntropy":{
+//				ret="{\n\n}";
+//			}
+//			case "LFuzzySet_Roughness":{
+//				ret="{\n\n}";
+//			}
+//			case "IntuitionsticFuzzySet_MembershipDegree":{
+//				ret="{\n\n}";
+//			}
+//			case "IntuitionsticFuzzySet_Fuzzyness":{
+//				ret="{\n\n}";
+//			}
+//			case "IntuitionsticFuzzySet_FuzzyEntropy":{
+//				ret="{\n\n}";
+//			}
+//			case "IntuitionsticFuzzySet_Roughness":{
+//				ret="{\n\n}";
+//			}
+//			case "VagueSet_MembershipDegree":{
+//				ret="{\n\n}";
+//			}
+//			case "VagueSet_Fuzziness":{
+//				ret="{\n\n}";
+//			}
+//			case "VagueSet_FuzzyEntropy":{
+//				ret="{\n\n}";
+//			}
+//			case "VagueSet_Roughness":{
+//				ret="{\n\n}";
+//			}
+//			case "TriangularFuzzyNumber_isSharped":{
+//				ret="{\n\n}";
+//			}
+//			case "TriangularFuzzyNumber_a":{
+//				ret="{\n\n}";
+//			}
+//			case "TriangularFuzzyNumber_b":{
+//				ret="{\n\n}";
+//			}
+//			case "TriangularFuzzyNumber_c":{
+//				ret="{\n\n}";
+//			}
+//			case "TriangularFuzzyNumber_number":{
+//				ret="{\n\n}";
+//			}
+//			case "PignisticDistribution_expression":{
+//				ret="{\n\n}";
+//			}
 			case "ShannonEntropy_h":{
-				ret="{\n\n}";
+				ret="{\n\t double entropy=0.0;\n\t double count;\n\t int i, length=0, SIZE=256;\n\t length=sizeof(var);\n\t for(i=0; i<SIZE; i++){\n\t  if(var[i]!=0){\n\t   count=(double)var[i] / (double)length;\n\t   entropy+=-count * log2(count);\n\t  }\n\t } return entropy;\n}";
 			}
 			case "HartleyMeasure_h":{
-				ret="{\n\n}";
+				ret="{\n\t double hartley=0.0;\n\t int length=0;\n\t length=sizeof(var);\n\t hartley=log10(length);\n\t return hartley;\n}";
 			}
-			case "AlternativeMeasure_h":{
-				ret="{\n\n}";
-			}
-			case "U_Uncertainty_h":{
-				ret="{\n\n}";
-			}
+//			case "AlternativeMeasure_h":{
+//				ret="{\n\n}";
+//			}
+//			case "U_Uncertainty_h":{
+//				ret="{\n\n}";
+//			}
 			case "DissonanceMeasure_e":{
 				ret="{\n\n}";
 			}
@@ -2240,24 +2246,20 @@ var List<String> uncerNames;
 			case "DissonanceMeasure_Conflict":{
 				ret="{\n\n}";
 			}
-			case "Distribution_expression":{
-				ret="{\n\n}";
-			}
 			case "BeliefInterval_min":{
-				ret="{\n\n}";
+				ret="{\n\t double beliefMin=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(beliefMin>var[i])\n\t   beliefMin=var[i];\n\t }\n\t return beliefMin;\n}";
 			}
 			case "BeliefInterval_max":{
-				ret="{\n\n}";
+				ret="{\n\t double beliefMax=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(beliefMax<var[i])\n\t   beliefMax=var[i];\n\t }\n\t return beliefMax;\n}";
 			}
-			case "PossibleDistribution_expression":{
-				ret="{\n\n}";
-			}
-
+		
 			//TODO finish 
 		}				
-
 		return ret;
 	}
+	
+	
+
 	
 	
 	def String DistributionManagement(AbstractElement2 element){
