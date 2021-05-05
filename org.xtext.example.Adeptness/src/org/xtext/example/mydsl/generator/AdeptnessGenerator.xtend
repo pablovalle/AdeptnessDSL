@@ -18,7 +18,7 @@ import org.eclipse.xtext.generator.IGeneratorContext
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.xtext.example.mydsl.adeptness.Oracle
 import org.xtext.example.mydsl.adeptness.Signal
-import org.xtext.example.mydsl.adeptness.ValidationPlan
+//import org.xtext.example.mydsl.adeptness.ValidationPlan
 import org.xtext.example.mydsl.validation.MonitoringVariables
 import java.util.Collections
 import org.xtext.example.mydsl.adeptness.AbstractElement2
@@ -53,10 +53,10 @@ var HashMap<String, List<String>> checkVar;
 var List<String> verdict;
     override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
     	//fsa.generateFile("adeptness.xml", resource.allContents.toIterable.filter(Signal).createXML());
-    		for(a: resource.allContents.toIterable.filter(ValidationPlan)){
-    			fsa.generateFile(a.fullyQualifiedName.toString("/")+".json", a.create_VP_json())
-  
-    		}
+//    		for(a: resource.allContents.toIterable.filter(ValidationPlan)){
+//    			fsa.generateFile(a.fullyQualifiedName.toString("/")+".json", a.create_VP_json())
+//  
+//    		}
       		for(e: resource.allContents.toIterable.filter(Signal)){
        	
 			/*for(f: e.check_range){
@@ -385,26 +385,26 @@ var List<String> verdict;
 	#endif
 	'''
 	
-	def create_VP_json(ValidationPlan plan)'''
-	{
-	«"\t"»"tests" : {
-	«FOR test: plan.test»
-	«"\t\t"»"«test.name»" : {
-	«"\t\t\t"»"SUT": "«test.sut»" ,
-	«"\t\t\t"»"TestLevel": "«test.testLevel»" ,
-	«"\t\t\t"»"inputs": «FOR input : test.inputs» "«input.value»", «ENDFOR»
-	«"\t\t\t"»"oracles": {«FOR oracle: test.oracles»
-	«"\t\t\t\t"»"«oracle.name»" :{
-	«"\t\t\t\t\t"»"type": "«oracle.type»",
-	«"\t\t\t\t\t"»"prams": «FOR param: oracle.parameters»"«FOR param1: param.value.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»,"«ENDFOR»
-	«"\t\t\t\t"»},
-	«ENDFOR»
-	«"\t\t\t"»},
-	«"\t\t"»},
-	«ENDFOR»
-	«"\t"»}
-	}
-	'''
+//	def create_VP_json(ValidationPlan plan)'''
+//	{
+//	«"\t"»"tests" : {
+//	«FOR test: plan.test»
+//	«"\t\t"»"«test.name»" : {
+//	«"\t\t\t"»"SUT": "«test.sut»" ,
+//	«"\t\t\t"»"TestLevel": "«test.testLevel»" ,
+//	«"\t\t\t"»"inputs": «FOR input : test.inputs» "«input.value»", «ENDFOR»
+//	«"\t\t\t"»"oracles": {«FOR oracle: test.oracles»
+//	«"\t\t\t\t"»"«oracle.name»" :{
+//	«"\t\t\t\t\t"»"type": "«oracle.type»",
+//	«"\t\t\t\t\t"»"prams": «FOR param: oracle.parameters»"«FOR param1: param.value.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»,"«ENDFOR»
+//	«"\t\t\t\t"»},
+//	«ENDFOR»
+//	«"\t\t\t"»},
+//	«"\t\t"»},
+//	«ENDFOR»
+//	«"\t"»}
+//	}
+//	'''
 	
 	def getAllNames(Signal signal) {
 		var List<String> namelists;

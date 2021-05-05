@@ -24,29 +24,28 @@ QualifiedName:
 ;
 
 Type:
-	DataType | Signal | MonitoringFile | ValidationPlan
+	Signal | MonitoringFile // | ValidationPlan | DataType  
 ;
 
-ValidationPlan:
+/*ValidationPlan:
 	'VALIDATIONPLAN' name=ID ':' ('implements'superType=[MonitoringFile|QualifiedName])?
 	(test+=Test)+ 'ENDVALIDATIONPLAN'
 ;
 
 Test:
 	'TEST' name=ID ':'
-	'SUT:' sut=STRING ','
-	'TestLevel:' testLevel=STRING ','
-	"Inputs:" (inputs+=Inputs)+
+	'SUT' ':' sut=STRING ','
+	'TestLevel' ':' testLevel=STRING ','
+	'Inputs' ':' (inputs+=Inputs)+
 	(oracles+=TestingOracle)+
 	'ENDTEST'
 ;
 
 TestingOracle:
-	"TESTINGORACLE" name=ID ':'
-	'Type:' type=STRING ','
-	'Params:' (parameters+=Parameters)+
+	'TESTINGORACLE' name=ID ':'
+	'Type' ':' type=STRING ','
+	'Params' ':' (parameters+=Parameters)+
 	'ENDTESTINGORACLE'
-	
 ;
 
 Parameters:
@@ -56,6 +55,7 @@ Parameters:
 Inputs:
 	(value=STRING) ','
 ;
+*/
 
 MonitoringFile:
 	'MONITORINGPLAN' name=ID ':'
@@ -78,9 +78,9 @@ MonitoringPlan:
   //'}';	*/
 MonitoringVariable: 
 	'MONITOR' name=ID ':'
-		'type'':' (MonitoringVariableDatatype = Sig_type)
-		('max'':' max = DOUBLE
-		'min'':' min = DOUBLE)?
+		'type' ':' (MonitoringVariableDatatype = Sig_type)
+		('max' ':' max = DOUBLE
+		'min' ':' min = DOUBLE)?
 		//(monvar+=MonVar)+
 		'ENDMONITOR'
 ;	
@@ -112,9 +112,9 @@ Signal:
 		(check_gap+=Check_Gap)*/
 ;
 
-ImportMonitoringPlan:
-	'import' importURI = STRING
-;
+//ImportMonitoringPlan:
+//	'import' importURI = STRING
+//;
 
 Oracle: 
 	'ORACLE' name=ID ':'
@@ -123,12 +123,12 @@ Oracle:
 ;
 
 While:
-	'while:' em = ExpressionsModel
+	'while' ':' em = ExpressionsModel
 			//precondReference = PrecondReference
 ;
 
 When:
-	'when:' em = ExpressionsModel
+	'when' ':' em = ExpressionsModel
 			(aw = AfterWhen)?
 			//precondReference = PrecondReference
 ;
@@ -138,13 +138,13 @@ AfterWhen:
 ;
 
 Wait:
-	'after('  time = DOUBLE ',' unit=TimeType ')'
+	'after' ':' time = DOUBLE unit=TimeType 
 ;
 
 
 
 Checks:
-	'checks:' (name=ID |em = ExpressionsModel) //'is'
+	'checks' ':' (name=ID |em = ExpressionsModel) //'is'
 	(reference=Reference)
 	(failReason+=FailReason)+
 	(description=Description) //','
@@ -152,77 +152,77 @@ Checks:
 ;
 
 Description:
-	'Description: ' value=STRING
+	'description' ':' value=STRING 
 ;
 
 FailReason:
-	'fails if :'
+	'fails' 'if' ':'
 	(reason=Reason)
 	
 ;
 
 Reason:
-	((highPeak=HighPeak)|(highTime=HighTime)|(constDeg=ConstDeg)|(xPeaks=XPeaks)) ';'
+	((highPeak=HighPeak)|(highTime=HighTime)|(constDeg=ConstDeg)|(xPeaks=XPeaks)) 
 ;
 
 XPeaks:
-	'confidence is below' (cant=DOUBLE) 'more than' (nPeaks=DOUBLE) 'times within' (time=DOUBLE) (unit=TimeType) //nola jarri integer-ak?
+	'confidence' 'is' 'below' (cant=DOUBLE) 'more' 'than' (nPeaks=DOUBLE) 'times' 'within' (time=DOUBLE) (unit=TimeType) //nola jarri integer-ak?
 ;
 
 ConstDeg:
-	'confidence is in constant degradation'  (cant=DOUBLE) //(((upper=Upper)|(lower=Lower)))
+	'confidence' 'is' 'in' 'constant' 'degradation'  (cant=DOUBLE) //(((upper=Upper)|(lower=Lower)))
 ;
 
 HighTime:
-	'confidence is below' (cant=DOUBLE) 'within' (time=DOUBLE) (unit=TimeType)
+	'confidence' 'is' 'below' (cant=DOUBLE) 'within' (time=DOUBLE) (unit=TimeType)
 ;
 
 HighPeak:
-	'confidence is below' (cant=DOUBLE)
+	'confidence' 'is' 'below' (cant=DOUBLE)
 ;
 Reference:
-	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap)|(same=Same)|(notsame=NotSame))';'
+	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap)|(same=Same)|(notsame=NotSame))
 ;
 
-PrecondReference:
-	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap)|(same=Same)|(notsame=NotSame))';'
-;
+//PrecondReference:
+//	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap)|(same=Same)|(notsame=NotSame))';'
+//;
 
 Same:
-	'should be' (bound_upp=Bound_up) 
+	'should' 'be' (bound_upp=Bound_up) 
 	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
 ;
 
 NotSame:
-	'should not be' (bound_upp=Bound_up)
+	'should' 'not' 'be' (bound_upp=Bound_up)
 	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
 ;
 
 //Oracle for upper limit --> Below reference signal
 Upper:
-	'is below' (bound_upp=Bound_up)
+	'is' 'below' (bound_upp=Bound_up)
 	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
 ;
 //Oracle for lower limit --> Above reference signal
 Lower:
-	'is above' (bound_lower=Bound_Down)
+	'is' 'above' (bound_lower=Bound_Down)
 	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
 ;
 //Oracle for Above and Below limit --> In range reference signal
 Range:
-	'is in range between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
+	'is' 'in' 'range' 'between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
 	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
 ;
 //Oracle for !Above and !Below limit --> Gap reference signal
 Gap:
-	'not in range between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
+	'not' 'in' 'range' 'between' (bound_lower=Bound_Down) 'and' (bound_upp=Bound_up)
 	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
 ;
 
 //If the limits must be included ==
-InclusiveBound:
-	'inclusiveBound' name=ID '=' value= BOOLEAN
-;
+//InclusiveBound:
+//	'inclusiveBound' name=ID '=' value= BOOLEAN
+//;
 
 //exactly at a especified time
 Exactly:
@@ -230,11 +230,11 @@ Exactly:
 	(time=DOUBLE) (unit=TimeType)
 ;
 At_most:
-	'at most'
+	'at' 'most'
 	(time=DOUBLE) (unit=TimeType)
 ;
 At_least:
-	'at least'
+	'at' 'least'
 	(time=DOUBLE) (unit=TimeType)
 ;
 
@@ -249,10 +249,10 @@ Bound_Down:
 	 (value=DOUBLE|/*variable=AbstractElement2|*/em = ExpressionsModel)
 ;
 //Boolean declaration
-BOOLEAN:
-	bool=b	
-;
-b returns ecore::EBoolean: 'true' | 'false';
+//BOOLEAN:
+//	bool=b	
+//;
+//b returns ecore::EBoolean: 'true' | 'false';
 //Double declaration
 DOUBLE:
 	dVal = d
@@ -265,9 +265,10 @@ TimeType:
 ;
 
 //DataType declaration
-DataType:
-	'datatype' name=ID
-;
+//DataType:
+//	'datatype' name=ID
+//;
+
 //Package declaration
 PackageDeclaration:
 	'package' name=QualifiedName '{'
@@ -300,10 +301,10 @@ BackParentheses:
 Operators:
 	(operator=Op|comparation=CompOp|logicOperator=LogicOp| backParentheses=BackParentheses /*|elements=Comas*/)
 ;
-
-Comas:
-	op=(",")
-;
+//
+//Comas:
+//	op=(",")
+//;
 
 CompOp:
 	op=("=="|"!="|">="|"<="|"<"|">")
