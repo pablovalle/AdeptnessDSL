@@ -31,6 +31,8 @@ import javax.script.ScriptEngine
 import javax.script.ScriptEngineManager
 import javax.script.ScriptException
 import org.xtext.example.mydsl.adeptness.FailReason
+import com.oracle.truffle.js.scriptengine.GraalJSScriptEngine
+import com.oracle.truffle.js.scriptengine.GraalJSEngineFactory
 
 /**
  * Generates code from your model files on save.
@@ -155,9 +157,10 @@ var List<String> verdict;
 		return maxMinValueCombs;
 	}
 	def evalExpression(String expression) {
-		var ScriptEngine engine = new ScriptEngineManager(null).getEngineByName("JavaScript");
+		var engine = new GraalJSEngineFactory().getScriptEngine();
 		try {
-			return engine.eval(expression);
+			var obj = engine.eval(expression);
+			return obj;
 		} catch (ScriptException e) {
 			e.printStackTrace();
 			return null;
