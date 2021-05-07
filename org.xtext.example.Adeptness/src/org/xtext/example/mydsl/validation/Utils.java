@@ -36,6 +36,8 @@ public class Utils {
 
 	// TODO: configurable sampling frequency  
 	public static int getNSamples(int samples, String timeUnit) {
+		if (samples <= 0) return samples;
+		
 		// 1 sample = 1 second
 		int nSamples = samples;
 		switch (timeUnit) {
