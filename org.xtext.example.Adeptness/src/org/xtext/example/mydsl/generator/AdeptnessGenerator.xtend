@@ -150,7 +150,7 @@ var List<String> verdict;
 		var List<Double> maxValues= getMaxValues(varNames,list);
 		exprCombs = generateCombinations(0, expresionWithVars, varNames, exprCombs, minValues,maxValues);
 		for(String expression:exprCombs){
-			maxMinValueCombs.add(evalExpression(expression) as Double);
+			maxMinValueCombs.add(evalExpression(expression));
 		}
 	
 		return maxMinValueCombs;
@@ -158,8 +158,9 @@ var List<String> verdict;
 	def evalExpression(String expression) {
 		var engine = new GraalJSEngineFactory().getScriptEngine();
 		try {
-			var obj = engine.eval(expression);
-			return obj;
+			var obj = String.valueOf(engine.eval(expression));
+			var ret= Double.valueOf(obj);
+			return ret;
 		} catch (ScriptException e) {
 			e.printStackTrace();
 			return null;
