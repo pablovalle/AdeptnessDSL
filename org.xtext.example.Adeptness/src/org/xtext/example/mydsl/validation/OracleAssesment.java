@@ -564,8 +564,8 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 
 		boolean failsError = false;
 		// check structural errors.
-		if (nSamples == 0 || nPeaks == 0) {
-			error("Duration or number of peaks cannot be zero.", reference);
+		if (nSamples <= 0 || nPeaks <= 0) {
+			error("Duration or number of peaks cannot be zero or lower.", reference);
 			failsError = true;
 		}
 		if (pattern.equals(Constants.PATTERNS.NOTSAME_REFERENCE) && confidence != 0) {
