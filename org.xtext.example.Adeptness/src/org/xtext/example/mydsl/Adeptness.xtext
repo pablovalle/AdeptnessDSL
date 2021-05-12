@@ -147,7 +147,7 @@ Checks:
 	'checks' ':' (name=ID |em = ExpressionsModel) //'is'
 	(reference=Reference)
 	(failReason+=FailReason)+
-	(description=Description) //','
+	(description=Description)? //','
 	
 ;
 

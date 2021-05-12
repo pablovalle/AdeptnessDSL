@@ -1322,7 +1322,7 @@ var List<String> verdict;
 	'''
 	#include "«param.name.toString()».h"
 	
-	//«param.check.description.value»
+	«IF param.check.description!==null»//«param.check.description.value»«ENDIF»
 	
 	int preprocessInputs_«param.name»(SensorInput *inputs) {
 		//TODO.
