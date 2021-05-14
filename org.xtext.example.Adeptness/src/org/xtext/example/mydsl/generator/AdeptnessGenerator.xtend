@@ -97,9 +97,10 @@ var List<String> verdict;
 			findSignalsMaxMinValues(e);
 			for(v:e.superType.monitoringInferVariables){
 			
-				fsa.generateFile(v.fullyQualifiedName.toString("/")+".c",v.create_infer_c())
-				fsa.generateFile(v.fullyQualifiedName.toString("/")+".h",v.create_infer_h())
-			
+				fsa.generateFile(e.name+"/"+v.name+".c",v.create_infer_c())
+				fsa.generateFile(e.name+"/"+v.name+".h",v.create_infer_h())
+				fsa.generateFile(e.name+"/gen_model_for_"+v.name+".py", v.create_model_py())
+				
 			}
 			for(q: e.oracle){
 				verdict= new ArrayList();
@@ -119,6 +120,210 @@ var List<String> verdict;
 			
 		}
     }
+	
+	def create_model_py(MonitoringInferVariables plan)'''
+	import matplotlib.pyplot as plt
+	import numpy as np
+	import pandas as pd
+	import seaborn as sns
+	
+	# Make numpy printouts easier to read.
+	np.set_printoptions(precision=3, suppress=True)
+	
+	import tensorflow as tf
+	
+	from tensorflow import keras
+	from tensorflow.keras import layers
+	from tensorflow.keras.layers.experimental import preprocessing
+	
+	def plot_loss(history):
+	    plt.plot(history.history['loss'], label='loss')
+	    plt.plot(history.history['val_loss'], label='val_loss')
+	    plt.ylim([0, 10])
+	    plt.xlabel('Epoch')
+	    plt.ylabel('Error [«plan.name»]')
+	    plt.legend()
+	    plt.grid(True)
+	    plt.show()
+	
+	def plot_results(test_labels, test_predictions):
+	    plt.axes(aspect='equal')
+	    plt.scatter(test_labels, test_predictions)
+	    plt.xlabel('True Values [MPG]')
+	    plt.ylabel('Predictions [MPG]')
+	    lims = [0, 50]
+	    plt.xlim(lims)
+	    plt.ylim(lims)
+	    _ = plt.plot(lims, lims)
+	    plt.show()
+	
+	    error = test_predictions - test_labels
+	    plt.hist(error, bins=25)
+	    plt.xlabel('Prediction Error [MPG]')
+	    _ = plt.ylabel('Count')
+	    plt.show()
+	
+	def get_linear_model(train_features, train_labels):
+	
+	    linear_model = tf.keras.Sequential([
+	        tf.keras.layers.InputLayer(input_shape=(2,)),
+	        layers.Dense(units=1)
+	    ])
+	
+	
+	    linear_model.compile(
+	        optimizer=tf.optimizers.Adam(learning_rate=0.1),
+	        loss='mean_absolute_error'
+	    )
+	
+	    linear_model.summary()
+	
+	    history = linear_model.fit(
+	        train_features, train_labels, 
+	        epochs=100,
+	        # suppress logging
+	        verbose=0,
+	        # Calculate validation results on 20% of the training data
+	        validation_split = 0.2
+	    )
+	
+	    plot_loss(history)
+	
+	    return linear_model
+	
+	def get_dnn_model(train_features, train_labels):
+	
+	    model = keras.Sequential([
+	        tf.keras.layers.InputLayer(input_shape=(2,)),
+	        layers.Dense(64, activation='relu'),
+	        layers.Dense(32, activation='relu'),
+	        layers.Dense(16, activation='relu'),
+	        layers.Dense(32, activation='relu'),
+	        layers.Dense(64, activation='relu'),
+	        layers.Dense(1)
+	    ])
+	
+	    model.compile(
+	        loss='mean_absolute_error',
+	        optimizer=tf.keras.optimizers.Adam(0.001)
+	    )
+	
+	    model.summary()
+	
+	    history = model.fit(
+	        train_features,
+	        train_labels,
+	        validation_split=0.2,
+	        verbose=0,
+	        epochs=100
+	    )
+	
+	    plot_loss(history)
+	
+	    return model
+	
+	def main():
+	    print(tf.__version__)
+	
+	#THIS MUST BE FILLED BY THE USER
+	    filenames = [
+	        
+	    ]
+	
+	    colnames = [
+	        «FOR a:plan.variables»
+	        '«a.toString»',
+	        «ENDFOR»
+	        '«plan.name»'
+	    ]
+	
+	    raw_dataset = pd.DataFrame()
+	
+	    for filename in filenames:
+	        one_dataset = pd.read_csv(
+	            f'data/{filename}.csv',
+	            names=colnames,
+	            na_values='NaN',
+	            sep=',',
+	            skipinitialspace=True
+	        )
+	        one_dataset['dataset'] = filename
+	        raw_dataset = pd.concat([raw_dataset, one_dataset])
+	
+	    dataset = raw_dataset.copy()
+	    print(dataset.tail())
+	
+	    dataset = dataset.dropna()
+	
+	    #for filename in filenames:
+	    filename = filenames[0]
+	    print(f"\n\n==============  {filename}  ==============\n\n")
+	    # train_dataset = dataset.sample(frac=0.8, random_state=0)
+	    test_dataset = dataset[dataset['dataset'] == filename]
+	    train_dataset = dataset.drop(test_dataset.index)
+	
+	    print(train_dataset.describe().transpose())
+	
+	    selected_columns = [
+	        «FOR a:plan.variables»
+	        '«a.toString»',
+	        «ENDFOR»
+	        '«plan.name»'
+	    ]
+	
+	    train_features = train_dataset[selected_columns].copy()
+	    test_features = test_dataset[selected_columns].copy()
+	
+	    train_labels = train_features.pop('«plan.name»')
+	    test_labels = test_features.pop('«plan.name»')
+	
+	    test_results = {}
+	
+	    linear_model = get_linear_model(
+	        train_features,
+	        train_labels
+	    )
+	
+	    test_results['linear_model'] = linear_model.evaluate(
+	        test_features,
+	        test_labels,
+	        verbose=0
+	    )
+	
+	    dnn_model = get_dnn_model(
+	        train_features,
+	        train_labels
+	    )
+	
+	    test_results['dnn_model'] = dnn_model.evaluate(
+	        test_features,
+	        test_labels,
+	        verbose=0
+	    )
+	
+	    print(pd.DataFrame(test_results, index=['Mean absolute error [«plan.name»]']).T)
+	
+	    test_predictions = dnn_model.predict(test_features).flatten()
+	
+	    plot_results(test_labels, test_predictions)
+	
+	    dnn_model.save('dnn_model_«plan.name»')
+	
+	#IGUAL HAU KENDU DAITEKE
+	    input_data = np.array([[
+	        6.0,
+	        0.0
+	    ]], dtype=np.float32)
+	    output_data = dnn_model.predict(input_data).flatten()
+	    print(input_data)
+	    print(output_data)
+	
+	
+	if __name__ == "__main__":
+	    # execute only if run as a script
+	    main()
+	
+	'''
 	
 	def create_infer_c(MonitoringInferVariables plan)'''
 	#include "«plan.name.toUpperCase».h"
