@@ -1134,7 +1134,7 @@ var List<String> verdict;
 		«IF CPS.superType.monitoringInferVariables.indexOf(SV)!==CPS.superType.monitoringInferVariables.size-1»
 		«"\t\t\t"»{
 		«"\t\t\t\t"»"name":"«SV.name»",
-		«"\t\t\t\t"»"datatype":"«SV.monitoringVariableDatatype»",
+		«"\t\t\t\t"»"datatype":"«SV.monitoringVariableDatatype.sig_type»",
 		«"\t\t\t\t"»"model":"«SV.model»"
 		«"\t\t\t"»},
 		«ENDIF»
