@@ -307,7 +307,7 @@ var List<String> verdict;
 	
 	    plot_results(test_labels, test_predictions)
 	
-	    dnn_model.save('dnn_model_«plan.name»')
+	    dnn_model.save('«plan.model»')
 	
 	#IGUAL HAU KENDU DAITEKE
 	    input_data = np.array([[
