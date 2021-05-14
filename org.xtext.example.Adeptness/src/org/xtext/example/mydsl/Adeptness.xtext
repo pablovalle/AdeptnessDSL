@@ -59,7 +59,9 @@ Inputs:
 
 MonitoringFile:
 	'MONITORINGPLAN' name=ID ':'
-		(monitoringPlan+=MonitoringPlan)+'ENDMONITORINGPLAN'
+		(monitoringPlan+=MonitoringPlan)+
+		(monitoringInferVariables+=MonitoringInferVariables)*
+		'ENDMONITORINGPLAN'
 		/*(check_static_upper+=Check_Static_upper_only)*
 		(check_static_lower+=Check_Static_lower_only)*
 		(check_range+=Check_Range)*
@@ -68,8 +70,18 @@ MonitoringFile:
 
 
 MonitoringPlan:
-	monitoringVariables = MonitoringVariable 
+	monitoringVariables = MonitoringVariable  
 	
+;
+
+MonitoringInferVariables:
+	'MONITOR_INFERENCE' name=ID ':'
+	'type' ':' (MonitoringVariableDatatype = Sig_type)
+	('max' ':' max = DOUBLE
+	'min' ':' min = DOUBLE)?
+	'model' ':' model=STRING
+	'dependent variables' ':[' (variables+=ID)+"]"
+	'ENDMONITOR_INFERENCE'
 ;
 
 /*MonitoringVariable: 

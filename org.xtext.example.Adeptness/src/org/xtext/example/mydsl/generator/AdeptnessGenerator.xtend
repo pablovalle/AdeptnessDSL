@@ -33,6 +33,7 @@ import javax.script.ScriptException
 import org.xtext.example.mydsl.adeptness.FailReason
 import com.oracle.truffle.js.scriptengine.GraalJSScriptEngine
 import com.oracle.truffle.js.scriptengine.GraalJSEngineFactory
+import org.xtext.example.mydsl.adeptness.MonitoringInferVariables
 
 /**
  * Generates code from your model files on save.
@@ -94,6 +95,12 @@ var List<String> verdict;
 			minMap= new HashMap();
 			getAllNames(e);
 			findSignalsMaxMinValues(e);
+			for(v:e.superType.monitoringInferVariables){
+			
+				fsa.generateFile(v.fullyQualifiedName.toString("/")+".c",v.create_infer_c())
+				fsa.generateFile(v.fullyQualifiedName.toString("/")+".h",v.create_infer_h())
+			
+			}
 			for(q: e.oracle){
 				verdict= new ArrayList();
 				q.create_verdict_c(nameMap.get(q.name));
@@ -112,6 +119,76 @@ var List<String> verdict;
 			
 		}
     }
+	
+	def create_infer_c(MonitoringInferVariables plan)'''
+	#include "«plan.name.toUpperCase».h"
+	#include "tensorflow/lite/c/c_api.h"
+	
+	void infer_«plan.name.toUpperCase»(SensorInput *inputs){
+	
+	    float input [«plan.variables.size»];
+	    float output [1];
+	
+	    // ------- DSL ---------
+	    TfLiteModel* model =
+	        TfLiteModelCreateFromFile("./«plan.model»");
+	    // ---------------------
+	
+	    TfLiteInterpreterOptions* options =
+	        TfLiteInterpreterOptionsCreate();
+	    TfLiteInterpreterOptionsSetNumThreads(options, 1);
+	
+	    TfLiteInterpreter* interpreter =
+	        TfLiteInterpreterCreate(model, options);
+	
+	    TfLiteInterpreterAllocateTensors(interpreter);
+	
+	    TfLiteTensor* input_tensor =
+	        TfLiteInterpreterGetInputTensor(interpreter, 0);
+	
+	    // ------- DSL ---------
+	    «FOR a:plan.variables»
+	    input[«plan.variables.indexOf(a)»] = inputs->«a.toString»;
+	    «ENDFOR»
+	    // ---------------------
+	  
+	    TfLiteTensorCopyFromBuffer(
+	        input_tensor,
+	        input,
+	        sizeof(input)
+	    );
+	
+	    TfLiteInterpreterInvoke(interpreter);
+	
+	    const TfLiteTensor* output_tensor =
+	        TfLiteInterpreterGetOutputTensor(interpreter, 0);
+	    TfLiteTensorCopyToBuffer(
+	        output_tensor, output, sizeof(output)
+	    );
+	
+	    // ------- DSL ---------
+	    inputs->«plan.name» = output[0];
+	    // ---------------------
+	
+	    TfLiteInterpreterDelete(interpreter);
+	    TfLiteInterpreterOptionsDelete(options);
+	    TfLiteModelDelete(model);
+	
+	}
+	
+	'''
+	def create_infer_h(MonitoringInferVariables plan)'''
+	#ifndef «plan.name.toUpperCase»_H
+	#define «plan.name.toUpperCase»_H
+	
+	#include "oracle_commons.h"
+	
+	void infer_«plan.name.toUpperCase»(SensorInput *inputs);
+	
+	#endif
+	
+	'''
+	
 	def findSignalsMaxMinValues(Signal s){
 		
 		for(Oracle o: s.oracle){
@@ -844,6 +921,23 @@ var List<String> verdict;
 	    «"\t\t\t"»{ 
 		«"\t\t\t\t"»"name": "timeStamp",
 		«"\t\t\t\t"»"datatype": "double"
+		«"\t\t\t"»}
+		«"\t\t"»],
+		«"\t\t"»"sinteticVariationPoints": [
+		«FOR SV: CPS.superType.monitoringInferVariables»
+		
+		«IF CPS.superType.monitoringInferVariables.indexOf(SV)!==CPS.superType.monitoringInferVariables.size-1»
+		«"\t\t\t"»{
+		«"\t\t\t\t"»"name":"«SV.name»",
+		«"\t\t\t\t"»"datatype":"«SV.monitoringVariableDatatype»",
+		«"\t\t\t\t"»"model":"«SV.model»"
+		«"\t\t\t"»},
+		«ENDIF»
+		«ENDFOR»
+		«"\t\t\t"»{
+		«"\t\t\t\t"»"name":"«CPS.superType.monitoringInferVariables.get(CPS.superType.monitoringInferVariables.size-1).name»",
+		«"\t\t\t\t"»"datatype":"«CPS.superType.monitoringInferVariables.get(CPS.superType.monitoringInferVariables.size-1).monitoringVariableDatatype»",
+		«"\t\t\t\t"»"model":"«CPS.superType.monitoringInferVariables.get(CPS.superType.monitoringInferVariables.size-1).model»"
 		«"\t\t\t"»}
 		«"\t\t"»],
 		«"\t\t"»"evaluationFunctions": [
