@@ -34,6 +34,7 @@ import org.xtext.example.mydsl.adeptness.FailReason;
 import org.xtext.example.mydsl.adeptness.Gap;
 import org.xtext.example.mydsl.adeptness.HighPeak;
 import org.xtext.example.mydsl.adeptness.HighTime;
+import org.xtext.example.mydsl.adeptness.Library;
 import org.xtext.example.mydsl.adeptness.Lower;
 import org.xtext.example.mydsl.adeptness.NotSame;
 import org.xtext.example.mydsl.adeptness.Operators;
@@ -55,6 +56,11 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 	@Check
 	public void init(Signal CPS) {
 		monitoringVariables = MonitoringVariables.getInstance(CPS.getName());
+	}
+	
+	@Check
+	public void checkMath(Library lib) {
+		errorDetected = true;
 	}
 
 	private Oracle oracle;

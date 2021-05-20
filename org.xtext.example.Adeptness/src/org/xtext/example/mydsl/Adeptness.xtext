@@ -287,10 +287,8 @@ PackageDeclaration:
 
  AbstractElement2:
  	(frontParentheses+=FrontParentheses)*
-	((name=ID) | (value=DOUBLE))
+	((name=ID) | (value=DOUBLE) | math=Math)
 	(op+=Operators)*
-
-	
 ;
 FrontParentheses:
 	"("
@@ -317,6 +315,23 @@ LogicOp:
 Op:
 	op=("+"|"-"|"*"|"/")
 ;
+
+
+Math:
+	"Math." library = Library 
+;
+
+Library:  (cos = cos | sin = sin | modulus = modulus | derivative = derivative);
+
+cos: "cos";
+
+sin: "sin";
+
+modulus: "modulus";
+
+derivative: "derivative";
+
+
 /*
 ExpressionsModel:
 	 (elements+=AbstractElement2)*;
