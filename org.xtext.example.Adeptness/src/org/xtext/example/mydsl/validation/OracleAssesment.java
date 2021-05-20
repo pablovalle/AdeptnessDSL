@@ -659,7 +659,6 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 //						+ " fail reason, removed from failure detection according to operational data.");
 				return;
 			}
-
 			switch (frk) {
 			case HIGH_PEAK:
 				if (tpattern == null && isOutOfBounds) {
@@ -736,6 +735,8 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			case HIGH_TIME_OUT_BOUNDS:
 				if (isOutOfBounds) {
 					peakCount++;
+				}else {
+					peakCount = 0;
 				}
 				if (peakCount >= nPeaks) {
 //					System.out.println("High Time Out of Bounds detected (during " + nPeaks + " seconds).");

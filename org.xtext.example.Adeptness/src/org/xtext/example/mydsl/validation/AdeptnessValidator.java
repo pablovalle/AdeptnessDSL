@@ -139,13 +139,13 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 	}
 
-	@Check
-	public void checkValues(DOUBLE value) {
-		if (value.getDVal() > 9999999 || value.getDVal() < -9999999) {
-			error("This is an invalid value, must be bigger than -9999999 and lower than 9999999",
-					AdeptnessPackage.Literals.DOUBLE__DVAL);
-		}
-	}
+//	@Check
+//	public void checkValues(DOUBLE value) {
+//		if (value.getDVal() > 9999999 || value.getDVal() < -9999999) {
+//			error("This is an invalid value, must be bigger than -9999999 and lower than 9999999",
+//					AdeptnessPackage.Literals.DOUBLE__DVAL);
+//		}
+//	}
 
 	@Check
 	public void checkEmptyDescription(Description desc) {
