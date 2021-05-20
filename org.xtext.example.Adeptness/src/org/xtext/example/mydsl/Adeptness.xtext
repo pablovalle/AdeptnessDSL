@@ -27,6 +27,7 @@ Type:
 	Signal | MonitoringFile // | ValidationPlan | DataType  
 ;
 
+
 /*ValidationPlan:
 	'VALIDATIONPLAN' name=ID ':' ('implements'superType=[MonitoringFile|QualifiedName])?
 	(test+=Test)+ 'ENDVALIDATIONPLAN'
@@ -80,7 +81,7 @@ MonitoringInferVariables:
 	('max' ':' max = DOUBLE
 	'min' ':' min = DOUBLE)?
 	'model' ':' model=STRING
-	'dependent variables' ':[' (variables+=ID)+"]"
+	'independent variables' ':[' (variables+=ID)+"]"
 	'ENDMONITOR_INFERENCE'
 ;
 
@@ -117,11 +118,20 @@ Sig_type:
 Signal:
 	//imp = ImportMonitoringPlan
 	'CPS' name=ID ('[' cardinalityNumCPS = INT ']')? ':' ('implements'superType=[MonitoringFile|QualifiedName])?
-		(oracle+=Oracle)+'ENDCPS'
+		((oracle+=Oracle)|(customOracle+=CustomOracle))+'ENDCPS'
 		/*(check_static_upper+=Check_Static_upper_only)*
 		(check_static_lower+=Check_Static_lower_only)*
 		(check_range+=Check_Range)*
 		(check_gap+=Check_Gap)*/
+;
+
+CustomOracle:
+	'CUSTOMORACLE' name=ID ':'
+		('Precondition'':' precondition=("while"|"when")
+		'Precondition Inputs' ':' '[' (predInputs+=ID)+ ']')?
+		'Check Inputs' ':' '[' (checkInputs+=ID)+ ']'
+		('Description' ':' description=STRING)?
+	'ENDCUSTOMORACLE' 
 ;
 
 //ImportMonitoringPlan:
