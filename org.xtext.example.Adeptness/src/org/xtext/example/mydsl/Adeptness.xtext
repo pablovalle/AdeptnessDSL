@@ -24,9 +24,44 @@ QualifiedName:
 ;
 
 Type:
-	Signal | MonitoringFile // | ValidationPlan | DataType  
+	Signal | MonitoringFile | ModelFile // | ValidationPlan | DataType  
 ;
 
+ModelFile:
+	'MODELFILE' name=ID':'
+		((trainableModel+=TrainableModel)|(nonTrainableModel+=NonTrainableModel))+
+	'ENDMODELFILE'
+;
+
+NonTrainableModel:
+	'NONTRAINABLEMODEL' name=ID ':'
+		'Independent variables' ':' '[' (variables+=ID)+ ']'
+		'Model URL' ':' model=STRING
+	'ENDNONTRAINABLEMODEL'
+;
+
+
+TrainableModel:
+	'TRAINABLEMODEL' name=ID ':'
+		'Independent variables' ':' '[' (variables+=ID)+ ']'
+		'Data file' ':' dataFile=STRING
+		'Layers' ':' (layers+=Layer)+
+		'EndLayers'
+	'ENDTRAINABLEMODEL'
+;
+
+Layer:
+	'Layer' name=ID ':'
+		'type' ':' (dense=DenseType)
+	'EndLayer'
+;
+
+DenseType:
+	'Dense'
+	'units' ':' units=INT
+	'activation' ':' activation=('deserializable'|'elu'|'exponential'|'gelu'|'get'|'hard_sigmoid'|'linear'|'relu'|'selu'|
+									'serializable'|'sigmoid'|'softmax'|'softplus'|'sofsign'|'swish'|'tanh')
+;
 
 /*ValidationPlan:
 	'VALIDATIONPLAN' name=ID ':' ('implements'superType=[MonitoringFile|QualifiedName])?
