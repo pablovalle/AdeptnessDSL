@@ -66,6 +66,11 @@ public class UncertaintyValidator extends AbstractAdeptnessValidator {
 	public void checkMonitoringVariablesUniformDistribution(UniformDistribution var) {
 		checkNameInMonitoringVariablesFile(var.getName(), AdeptnessPackage.Literals.UNIFORM_DISTRIBUTION__NAME);
 	}
+	
+	@Check
+	public void checkMonitoringVariablesPercentage(UniformDistribution var) {
+		checkNameInMonitoringVariablesFile(var.getName(), AdeptnessPackage.Literals.PERCENTAGE__NAME);
+	}
 
 	@Check
 	public void checkMonitoringVariablesFuzzySetCut(FuzzySetCut var) {
