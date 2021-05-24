@@ -342,12 +342,13 @@ Op:
 
 UncertaintyProb:
 	(normalDisstribution=NormalDistribution|bernoulliDistribution=BernoulliDistribution
-		|gammaDistribution = GammaDistribution| uniformDistribution = UniformDistribution 
+		|gammaDistribution = GammaDistribution| uniformDistribution = UniformDistribution |percentage=Percentage 
 //		|triangularDistribution = TriangularDistribution | binomialDistribution = BinomialDistribution |
 //		exponentialDistribution = ExponentialDistribution | poissonDistribution = PoissonDistribution 
 //		| geometricDistribution = GeometricDistribution | logarithmicDistribution = LogarithmicDistribution | interval=Interval
-//		|probabilityInterval=ProbabilityInterval |percentage=Percentage |probability=Probability
-//		|condidenceLevel=ConfidenceLevel|confidenceInterval=ConfidenceInterval
+//		|probabilityInterval=ProbabilityInterval 
+        
+//		|probability=Probability|condidenceLevel=ConfidenceLevel|confidenceInterval=ConfidenceInterval
 //		|probabilityConfidenceInterval=ProbabilityConfidenceInterval
 //		|probability_4Scale = Probability_4Scale|probability_5Scale = Probability_5Scale
 //		|probability_7Scale = Probability_7Scale|P3Senumeration=P3ScalEnumeration|P4Senumeration=P4ScalEnumeration
@@ -425,6 +426,12 @@ UniformMin:
 UniformMax:
 	max = '.max()'
 ;
+Percentage:
+	distr='Percentage('(name=ID)')'(valuePer = ValuePer)
+;
+ValuePer:
+	value='.value()'
+;
 
 ///*
 // * Triangular distribution
@@ -445,7 +452,6 @@ UniformMax:
 //TriangularMode:
 //	mode = '.mode()'
 //;
-
 
 ///*
 // * Binomial distribution
@@ -538,12 +544,7 @@ UniformMax:
 ///*
 // * Percentage
 //  */
-//Percentage:
-//	distr='Percentage('(name=ID)')'(valuePer = ValuePer)
-//;
-//ValuePer:
-//	value='.value()'
-//;
+
 //
 ///*
 // * Probability
