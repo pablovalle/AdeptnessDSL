@@ -8,9 +8,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.ComposedChecks;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
+import org.xtext.example.mydsl.adeptness.CustomOracle;
 import org.xtext.example.mydsl.adeptness.Description;
 import org.xtext.example.mydsl.adeptness.MonitoringFile;
 import org.xtext.example.mydsl.adeptness.MonitoringInferVariables;
@@ -62,7 +66,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			}
 			monitoringVariables.addVariable(CPS.getName(), name, type, max, min);
 		}
-		
+
 		for (int i = 0; i < CPS.getSuperType().getMonitoringInferVariables().size(); i++) {
 			MonitoringInferVariables monitor = CPS.getSuperType().getMonitoringInferVariables().get(i);
 			name = monitor.getName().toString();
@@ -188,7 +192,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 					AdeptnessPackage.Literals.MONITORING_VARIABLE__MONITORING_VARIABLE_DATATYPE);
 		}
 	}
-	
+
 	@Check
 	public void checkBooleanMinMaxValidation(MonitoringInferVariables monitoringVariable) {
 		if (monitoringVariable.getMonitoringVariableDatatype().getSig_type().toString().equals("boolean")
@@ -210,7 +214,7 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			error("Max value must be higher than min value", AdeptnessPackage.Literals.MONITORING_VARIABLE__MAX);
 		}
 	}
-	
+
 	@Check
 	public void checkMinMaxValues(MonitoringInferVariables monitoringVariable) {
 		if (monitoringVariable.getMax().getDVal() < monitoringVariable.getMin().getDVal()) {
@@ -221,25 +225,15 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	@Check
 	public void checkEmptyDescription(MonitoringInferVariables monitoringVariable) {
 		if (!monitoringVariable.getModel().endsWith(".tflite")) {
-			error("Model must be of type TensorFlow Lite.", AdeptnessPackage.Literals.MONITORING_INFER_VARIABLES__MODEL);
+			error("Model must be of type TensorFlow Lite.",
+					AdeptnessPackage.Literals.MONITORING_INFER_VARIABLES__MODEL);
 		}
 	}
-	
+
 	@Check
 	public void checkIndepentVariablesInMonitoringFile(MonitoringInferVariables monitoringVariable) {
-		boolean found;
-		for (int i = 0; i < monitoringVariable.getVariables().size(); i++) {
-			String varName = monitoringVariable.getVariables().get(i);
-			found = false; 
-			for (int j = 0; j < monitoringVariableNames.size(); j++) {
-				if (monitoringVariableNames.get(j).equals(varName)) {
-					found= true;
-				}
-			}
-			if (!found) {
-				error("Variable " + varName + " is not in the monitoring plan", AdeptnessPackage.Literals.MONITORING_INFER_VARIABLES__VARIABLES);
-			}
-		}
+		checkVariablesInMonitoringPlan(monitoringVariable.getVariables(), "Independent variables list cannot be empty.",
+				AdeptnessPackage.Literals.MONITORING_INFER_VARIABLES__VARIABLES);
 	}
 
 	@Check
@@ -247,7 +241,35 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		if (desc.getValue() == null) {
 			error("Description cannot be empty", AdeptnessPackage.Literals.DESCRIPTION__VALUE);
 		}
-	}	
-	
-	
+	}
+
+	@Check
+	public void checkCustomOracle(CustomOracle cuOr) {
+		checkVariablesInMonitoringPlan(cuOr.getCheckInputs(), "Checks input variables list cannot be empty.",
+				AdeptnessPackage.Literals.MONITORING_INFER_VARIABLES__VARIABLES);
+		checkVariablesInMonitoringPlan(cuOr.getPredInputs(), "Precondition input variables list cannot be empty.",
+				AdeptnessPackage.Literals.CUSTOM_ORACLE__PRED_INPUTS);
+
+	}
+
+	private void checkVariablesInMonitoringPlan(EList<String> variables, String emptyErrorMessage,
+			EAttribute reference) {
+		if (variables.size() == 0) {
+			error(emptyErrorMessage, reference);
+		}
+		boolean found;
+		for (int i = 0; i < variables.size(); i++) {
+			String varName = variables.get(i);
+			found = false;
+			for (int j = 0; j < monitoringVariableNames.size(); j++) {
+				if (monitoringVariableNames.get(j).equals(varName)) {
+					found = true;
+				}
+			}
+			if (!found) {
+				error("Variable " + varName + " is not in the monitoring plan", reference);
+			}
+		}
+	}
+
 }
