@@ -192,7 +192,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 	@Check
 	public void checkWhileConditions(While whi) {
 		this.precond = Constants.PRECONDS.WHILE;
-		checkComparisson(whi.getEm(), AdeptnessPackage.Literals.WHILE__EM);
+		checkComparison(whi.getEm(), AdeptnessPackage.Literals.WHILE__EM);
 	}
 
 	@Check
@@ -202,10 +202,10 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		} else {
 			this.precond = Constants.PRECONDS.WHEN;
 		}
-		checkComparisson(whe.getEm(), AdeptnessPackage.Literals.WHEN__EM);
+		checkComparison(whe.getEm(), AdeptnessPackage.Literals.WHEN__EM);
 	}
 
-	private void checkComparisson(ExpressionsModel expr, EReference reference) {
+	private void checkComparison(ExpressionsModel expr, EReference reference) {
 		if (expr == null) {
 			error("Condition cannot be empty.", reference);
 			errorDetected = true;
@@ -213,12 +213,28 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		}
 
 		int contLogicOp = 0, contCompOp = 0;
+		boolean mathFound = false;
+		int frontParenthesis = 0, backParenthesis = 0;
 		for (int i = 0; i < expr.getElements().size(); i++) {
 			AbstractElement2 element = expr.getElements().get(i);
+			if (element.getMath() != null) {
+				mathFound = true;
+			}
+			if (mathFound) {
+				frontParenthesis += element.getFrontParentheses().size();
+			}
 			for (int j = 0; j < element.getOp().size(); j++) {
-				if (element.getOp().get(j).getLogicOperator() != null) {
+				if (mathFound && element.getOp().get(j).getBackParentheses() != null) {
+					backParenthesis++;
+					if (frontParenthesis == backParenthesis) {
+						mathFound = false;
+						frontParenthesis = 0;
+						backParenthesis = 0;
+					}
+				}
+				if (!mathFound && element.getOp().get(j).getLogicOperator() != null) {
 					contLogicOp++;
-				} else if (element.getOp().get(j).getComparation() != null) {
+				} else if (!mathFound && element.getOp().get(j).getComparation() != null) {
 					contCompOp++;
 				}
 			}
