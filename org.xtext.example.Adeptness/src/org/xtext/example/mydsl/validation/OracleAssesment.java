@@ -57,7 +57,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 	public void init(Signal CPS) {
 		monitoringVariables = MonitoringVariables.getInstance(CPS.getName());
 	}
-	
+
 	@Check
 	public void checkMath(Library lib) {
 		errorDetected = true;
@@ -192,7 +192,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 	@Check
 	public void checkWhileConditions(While whi) {
 		this.precond = Constants.PRECONDS.WHILE;
-		checkComparisson(whi.getEm(), AdeptnessPackage.Literals.WHILE__EM);
+		checkComparison(whi.getEm(), AdeptnessPackage.Literals.WHILE__EM);
 	}
 
 	@Check
@@ -202,10 +202,10 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		} else {
 			this.precond = Constants.PRECONDS.WHEN;
 		}
-		checkComparisson(whe.getEm(), AdeptnessPackage.Literals.WHEN__EM);
+		checkComparison(whe.getEm(), AdeptnessPackage.Literals.WHEN__EM);
 	}
 
-	private void checkComparisson(ExpressionsModel expr, EReference reference) {
+	private void checkComparison(ExpressionsModel expr, EReference reference) {
 		if (expr == null) {
 			error("Condition cannot be empty.", reference);
 			errorDetected = true;
@@ -213,12 +213,28 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		}
 
 		int contLogicOp = 0, contCompOp = 0;
+		boolean mathFound = false;
+		int frontParenthesis = 0, backParenthesis = 0;
 		for (int i = 0; i < expr.getElements().size(); i++) {
 			AbstractElement2 element = expr.getElements().get(i);
+			if (element.getMath() != null) {
+				mathFound = true;
+			}
+			if (mathFound) {
+				frontParenthesis += element.getFrontParentheses().size();
+			}
 			for (int j = 0; j < element.getOp().size(); j++) {
-				if (element.getOp().get(j).getLogicOperator() != null) {
+				if (mathFound && element.getOp().get(j).getBackParentheses() != null) {
+					backParenthesis++;
+					if (frontParenthesis == backParenthesis) {
+						mathFound = false;
+						frontParenthesis = 0;
+						backParenthesis = 0;
+					}
+				}
+				if (!mathFound && element.getOp().get(j).getLogicOperator() != null) {
 					contLogicOp++;
-				} else if (element.getOp().get(j).getComparation() != null) {
+				} else if (!mathFound && element.getOp().get(j).getComparation() != null) {
 					contCompOp++;
 				}
 			}
@@ -566,6 +582,9 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			nSamples = Utils.getNSamples((int) fr.getXPeaks().getTime().getDVal(), fr.getXPeaks().getUnit().getTime());
 			frk = Constants.FAILREASONS.X_PEAKS_XSECONDS;
 			reference = AdeptnessPackage.Literals.REASON__XPEAKS;
+		} else if (fr.getConstDeg() != null) {
+			frk = Constants.FAILREASONS.CONSTANT_DEGRADATION;
+			reference = AdeptnessPackage.Literals.REASON__CONST_DEG;
 		}
 
 		boolean failsError = false;
@@ -579,10 +598,21 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 					reference);
 			failsError = true;
 		}
-		if (!frk.equals(Constants.FAILREASONS.HIGH_PEAK) && this.tpattern != null) {
+		if ((frk.equals(Constants.FAILREASONS.HIGH_TIME_OUT_BOUNDS)
+				|| frk.equals(Constants.FAILREASONS.X_PEAKS_XSECONDS)) && this.tpattern != null) {
 			error("Temporary conditions are either set within the assertion or the failure statement, but not in both.",
 					reference);
 			failsError = true;
+		}
+		if (frk.equals(Constants.FAILREASONS.CONSTANT_DEGRADATION)) {
+			if (this.precond == Constants.PRECONDS.WHEN || this.precond == Constants.PRECONDS.WHENAFTERWHEN) {
+				error("Constant degradation only allows while preconditions or no preconditions at all.", reference);
+				failsError = true;
+			}
+			if (this.tpattern != null) {
+				error("Constant degradation does not allow temporary conditions.", reference);
+				failsError = true;
+			}
 		}
 		if (!failReasons.add(frk)) {
 			error("Duplicated " + frk + " detection.", reference);
@@ -741,7 +771,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			case HIGH_TIME_OUT_BOUNDS:
 				if (isOutOfBounds) {
 					peakCount++;
-				}else {
+				} else {
 					peakCount = 0;
 				}
 				if (peakCount >= nPeaks) {

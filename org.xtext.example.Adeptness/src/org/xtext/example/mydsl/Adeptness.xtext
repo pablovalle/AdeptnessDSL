@@ -72,7 +72,6 @@ MonitoringFile:
 
 MonitoringPlan:
 	monitoringVariables = MonitoringVariable  
-	
 ;
 
 MonitoringInferVariables:
@@ -81,7 +80,7 @@ MonitoringInferVariables:
 	('max' ':' max = DOUBLE
 	'min' ':' min = DOUBLE)?
 	'model' ':' model=STRING
-	'independent variables' ':[' (variables+=ID)+"]"
+	'independent' 'variables' ':' '[' (variables+=ID)+ ']'
 	'ENDMONITOR_INFERENCE'
 ;
 
@@ -127,10 +126,10 @@ Signal:
 
 CustomOracle:
 	'CUSTOMORACLE' name=ID ':'
-		('Precondition'':' precondition=("while"|"when")
-		'Precondition Inputs' ':' '[' (predInputs+=ID)+ ']')?
-		'Check Inputs' ':' '[' (checkInputs+=ID)+ ']'
-		('Description' ':' description=STRING)?
+		('precondition'':' precondition=("while"|"when")
+		'precondition' 'inputs' ':' '[' (predInputs+=ID)+ ']')?
+		'checks' 'inputs' ':' '[' (checkInputs+=ID)+ ']'
+		('description' ':' description=STRING)?
 	'ENDCUSTOMORACLE' 
 ;
 
@@ -302,9 +301,7 @@ PackageDeclaration:
  * MATH ELEMENTS
  */
  ExpressionsModel:
-
  	(elements+=AbstractElement2)*
-
 ;
 
  AbstractElement2:
