@@ -211,7 +211,7 @@ var List<String> uncerNames;
 				if(element.uncer1.gammaDistribution.gammaK!==null){
 					ret="GammaDistribution_K";
 				}
-				else if(element.uncer1.gammaDistribution.getGammaMean!==null){
+				else if(element.uncer1.gammaDistribution.gammaMean!==null){
 					ret="GammaDistribution_mean";
 				}
 				
@@ -224,6 +224,11 @@ var List<String> uncerNames;
 					ret="NormalDistribution_normDistStd";
 				}
 				
+			}
+			else if(element.uncer1.percentage!==null){
+				if(element.uncer1.percentage.valuePer!==null){
+					ret="Percentage_value";
+				}
 			}
 		}
 		else if(element.uncer2!==null){
@@ -1383,6 +1388,10 @@ var List<String> uncerNames;
 			ret=prob.uniformDistribution.name;
 		}
 		
+		else if(prob.percentage!==null){
+			ret=prob.percentage.name;
+		}
+		
 		
 		return ret;
 	}
@@ -2083,15 +2092,15 @@ var List<String> uncerNames;
 	def String distributionFunction(String name) {
 		var String ret="";
 		switch(name){
-			case "BernoulliDistribution_prob":{
-				ret="{\n\n}";
-			}
-			case "BernoulliDistribution_trials":{
-				ret="{\n\n}";
-			}
-			case "GammaDistribution_K":{
-				ret="{\n\n}";
-			}
+//			case "BernoulliDistribution_prob":{
+//				ret="{\n\n}";
+//			}
+//			case "BernoulliDistribution_trials":{
+//				ret="{\n\n}";
+//			}
+//			case "GammaDistribution_K":{
+//				ret="{\n\n}";
+//			}
 			case "GammaDistribution_mean":{
 				ret="{\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t double ave, s=var[0];\n\t for(i=1;i<length;i++){\n\t  s=s+var[i];\n\t  ave=s/(float)length;\n\t }\n\t return ave;\n}";
 			}
@@ -2099,7 +2108,7 @@ var List<String> uncerNames;
 				ret="{\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t double ave, s=var[0];\n\t for(i=1;i<length;i++){\n\t  s=s+var[i];\n\t  ave=s/(float)length;\n\t }\n\t return ave;\n}";
 			}
 			case "NormalDistribution_normDistStd":{
-				ret="{\n\t double sum=0.0, mean, SD=0.0;\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t for (i=0; i<length; ++i){\n\t  sum += var[i];\n\t }\n\t mean=sum/length;\n\t for(i=0; i<length; ++i){\n\t  SD += POW(var[i]-mean, 2);\n\t }\n\t return sqrt(SD/length);\n}";
+				ret="{\n\t double sum=0.0, mean, SD=0.0;\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t for(i=0; i<length; ++i){\n\t  sum += var[i];\n\t }\n\t mean=sum/length;\n\t for(i=0; i<length; ++i){\n\t  SD += POW(var[i]-mean, 2);\n\t }\n\t return sqrt(SD/length);\n}";
 			}
 			case "UniformDistribution_Max":{
 				ret="{\n\t double max=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(max<var[i])\n\t   max=var[i];\n\t }\n\t return max;\n}";
@@ -2107,12 +2116,16 @@ var List<String> uncerNames;
 			case "UniformDistribution_Min":{
 				ret="{\n\t double min=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(min>var[i])\n\t   min=var[i];\n\t }\n\t return min;\n}";
 			}
-			case "FuzzyInterval_maxfuzzyNumber":{
-				ret="{\n\n}";
+			//The percentage calculation depends on the specific problem, here implement based on example in D4.1 
+			case"Percentage_value":{
+				ret="{\n\t double percentage=0.0;\n\t int length=0, count=0;\n\t length=sizeof(var);\n\t for(i=0; i<length; i++){\n\t  if(var[i]<=30)\n\t  count=count+1;\n\t }\n\t percentage=(double)count/(double)length;\n\t return percentage;\n}";
 			}
-			case "FuzzyInterval_minfuzzyNumber":{
-				ret="{\n\n}";
-			}
+//			case "FuzzyInterval_maxfuzzyNumber":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyInterval_minfuzzyNumber":{
+//				ret="{\n\n}";
+//			}
 //			case "FuzzySetCut_lambda":{
 //				ret="{\n\n}";
 //			}
@@ -2141,7 +2154,7 @@ var List<String> uncerNames;
 //				ret="{\n\n}";
 //			}
 			
-			//The Fuzzy function of different system is different, there is no uniform calculation. It should be customized according to different system. Here give an example used in D4.1 document.  
+			//The Fuzzy function of different system is different, there is no uniform calculation. It should be customized according to different system. Here give an example based on self-driving car's deviation correction function.  
 			//The input should be one parameter, since here is array, it can be var[0]
 			case "FuzzySet_MembershipDegree_value":{
 				ret="{\n\t double value=0.0;\n\t if(var[0]>=-0.8 && var[0]<=0)\n\t  value=-1.25*var[0];\n\t else if(var[0]>0 && var[0]<=0.8)\n\t  value=1.25*var[0];\n\t else\n\t  value=1;\n\t return value;\n}";
@@ -2237,22 +2250,22 @@ var List<String> uncerNames;
 //			case "U_Uncertainty_h":{
 //				ret="{\n\n}";
 //			}
-			case "DissonanceMeasure_e":{
-				ret="{\n\n}";
-			}
-			case "DissonanceMeasure_complementary":{
-				ret="{\n\n}";
-			}
-			case "DissonanceMeasure_Conflict":{
-				ret="{\n\n}";
-			}
-			case "BeliefInterval_min":{
-				ret="{\n\t double beliefMin=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(beliefMin>var[i])\n\t   beliefMin=var[i];\n\t }\n\t return beliefMin;\n}";
-			}
-			case "BeliefInterval_max":{
-				ret="{\n\t double beliefMax=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(beliefMax<var[i])\n\t   beliefMax=var[i];\n\t }\n\t return beliefMax;\n}";
-			}
-		
+//			case "DissonanceMeasure_e":{
+//				ret="{\n\n}";
+//			}
+//			case "DissonanceMeasure_complementary":{
+//				ret="{\n\n}";
+//			}
+//			case "DissonanceMeasure_Conflict":{
+//				ret="{\n\n}";
+//			}
+//			case "BeliefInterval_min":{
+//				ret="{\n\t double beliefMin=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(beliefMin>var[i])\n\t   beliefMin=var[i];\n\t }\n\t return beliefMin;\n}";
+//			}
+//			case "BeliefInterval_max":{
+//				ret="{\n\t double beliefMax=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(beliefMax<var[i])\n\t   beliefMax=var[i];\n\t }\n\t return beliefMax;\n}";
+//			}
+//		
 			//TODO finish 
 		}				
 		return ret;
@@ -2303,6 +2316,12 @@ var List<String> uncerNames;
 					ret=ret+"UniformDistribution_Min("+element.uncer1.uniformDistribution.name+".array[cycle])";
 				}
 				
+			}
+			
+			else if(element.uncer1.percentage!==null){
+				if(element.uncer1.percentage.valuePer!==null){
+					ret=ret+"Percentage_value("+element.uncer1.percentage.name+".array[cycle])";
+				}
 			}
 		}
 		else if(element.uncer2!==null){
