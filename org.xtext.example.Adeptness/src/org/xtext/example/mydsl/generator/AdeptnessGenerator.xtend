@@ -473,7 +473,7 @@ var CharSequence confCalculationBody;
 		
 		for(Oracle o: s.oracle){
 			if(o.check.em!==null){
-				var List<Double> listadoCombinaciones=calcCombinations(o, s.superType.monitoringPlan);
+				var List<Double> listadoCombinaciones=calcCombinations(o, s.superType.monitoringPlan, s.superType.monitoringInferVariables);
 				maxMap.put(o.name,Collections.max(listadoCombinaciones));
 				minMap.put(o.name,Collections.min(listadoCombinaciones));
 			}
@@ -498,13 +498,13 @@ var CharSequence confCalculationBody;
 		}
 	}
 	
-	def calcCombinations(Oracle oracle, EList<MonitoringPlan> list) {
+	def calcCombinations(Oracle oracle, EList<MonitoringPlan> list,EList<MonitoringInferVariables> listInfer) {
 		var String expresionWithVars=getExpressionWithVars(oracle.check.em.elements);
 		var List<String> varNames = diffVarNames(oracle);
 		var List<String> exprCombs = new ArrayList<String>();
 		var List<Double> maxMinValueCombs = new ArrayList();
-		var List<Double> minValues= getMinValues(varNames,list);
-		var List<Double> maxValues= getMaxValues(varNames,list);
+		var List<Double> minValues= getMinValues(varNames,list,listInfer);
+		var List<Double> maxValues= getMaxValues(varNames,list,listInfer);
 		exprCombs = generateCombinations(0, expresionWithVars, varNames, exprCombs, minValues,maxValues);
 		for(String expression:exprCombs){
 			maxMinValueCombs.add(evalExpression(expression));
@@ -523,7 +523,7 @@ var CharSequence confCalculationBody;
 			return null;
 		}
 	}
-	def getMinValues(List<String> strings, EList<MonitoringPlan> list) {
+	def getMinValues(List<String> strings, EList<MonitoringPlan> list ,EList<MonitoringInferVariables> listInfer) {
 		var List<Double> minValues= new ArrayList();
 		for(String name: strings){
 			for(MonitoringPlan plan: list){
@@ -536,11 +536,23 @@ var CharSequence confCalculationBody;
 					}
 				}
 			}
+			if(listInfer!==null){
+				for(MonitoringInferVariables variable: listInfer){
+					if(variable.name.equals(name)){
+						if(variable.monitoringVariableDatatype.sig_type.equals("boolean")){
+							minValues.add(0.0);
+						}
+						else{
+							minValues.add(variable.min.DVal);
+						}
+					}
+				}
+			}
 		}
 		return minValues;
 	}
 	
-	def getMaxValues(List<String> strings, EList<MonitoringPlan> list) {
+	def getMaxValues(List<String> strings, EList<MonitoringPlan> list,EList<MonitoringInferVariables> listInfer) {
 		var List<Double> maxValues= new ArrayList();
 		for(String name: strings){
 			for(MonitoringPlan plan: list){
@@ -550,6 +562,17 @@ var CharSequence confCalculationBody;
 					}
 					else{
 						maxValues.add(plan.monitoringVariables.max.DVal);
+					}
+				}
+			}if(listInfer!==null){
+				for(MonitoringInferVariables variable: listInfer){
+					if(variable.name.equals(name)){
+						if(variable.monitoringVariableDatatype.sig_type.equals("boolean")){
+							maxValues.add(0.0);
+						}
+						else{
+							maxValues.add(variable.max.DVal);
+						}
 					}
 				}
 			}
@@ -1203,6 +1226,7 @@ var CharSequence confCalculationBody;
 		«"\t\t\t\t"»"datatype": "double"
 		«"\t\t\t"»}
 		«"\t\t"»],
+		«IF CPS.superType.monitoringInferVariables.size!==0»
 		«"\t\t"»"sinteticVariationPoints": [
 		«FOR SV: CPS.superType.monitoringInferVariables»
 		
@@ -1214,12 +1238,14 @@ var CharSequence confCalculationBody;
 		«"\t\t\t"»},
 		«ENDIF»
 		«ENDFOR»
+		
 		«"\t\t\t"»{
 		«"\t\t\t\t"»"name":"«CPS.superType.monitoringInferVariables.get(CPS.superType.monitoringInferVariables.size-1).name»",
 		«"\t\t\t\t"»"datatype":"«CPS.superType.monitoringInferVariables.get(CPS.superType.monitoringInferVariables.size-1).monitoringVariableDatatype»",
 		«"\t\t\t\t"»"model":"«CPS.superType.monitoringInferVariables.get(CPS.superType.monitoringInferVariables.size-1).model»"
 		«"\t\t\t"»}
 		«"\t\t"»],
+		«ENDIF»
 		«"\t\t"»"evaluationFunctions": [
 		«getOracleNames(CPS.oracle)»
 		
