@@ -24,11 +24,17 @@ QualifiedName:
 ;
 
 Type:
-	Signal | MonitoringFile | ModelFile // | ValidationPlan | DataType  
+	Signal | InferMonitoringFile | ModelFile | MonitoringFile  // | ValidationPlan | DataType  
+;
+
+InferMonitoringFile:
+	'INFERENCEMONITORINGPLAN' name=ID ':' 'implements'(superType=[ModelFile|QualifiedName])
+		(monitoringInferVariables+=MonitoringInferVariables)+
+		'ENDINFERENCEMONITORINGPLAN'
 ;
 
 ModelFile:
-	'MODELFILE' name=ID':'
+	'MODELFILE' name=ID':' 'implements'(superType=[MonitoringFile|QualifiedName])
 		((trainableModel+=TrainableModel)|(nonTrainableModel+=NonTrainableModel))+
 	'ENDMODELFILE'
 ;
@@ -57,7 +63,7 @@ Layer:
 ;
 
 DenseType:
-	'Dense'
+	name='Dense'
 	'units' ':' units=INT
 	'activation' ':' activation=('deserializable'|'elu'|'exponential'|'gelu'|'get'|'hard_sigmoid'|'linear'|'relu'|'selu'|
 									'serializable'|'sigmoid'|'softmax'|'softplus'|'sofsign'|'swish'|'tanh')
@@ -96,7 +102,6 @@ Inputs:
 MonitoringFile:
 	'MONITORINGPLAN' name=ID ':'
 		(monitoringPlan+=MonitoringPlan)+
-		(monitoringInferVariables+=MonitoringInferVariables)*
 		'ENDMONITORINGPLAN'
 		/*(check_static_upper+=Check_Static_upper_only)*
 		(check_static_lower+=Check_Static_lower_only)*
@@ -152,13 +157,14 @@ Sig_type:
 //Each signal could have more than one oracles
 Signal:
 	//imp = ImportMonitoringPlan
-	'CPS' name=ID ('[' cardinalityNumCPS = INT ']')? ':' ('implements'superType=[MonitoringFile|QualifiedName])?
+	'CPS' name=ID ('[' cardinalityNumCPS = INT ']')? ':' 'implements'(superType=[MonitoringFile|QualifiedName]) ('and 'superTypeInfer=[InferMonitoringFile|QualifiedName])?
 		((oracle+=Oracle)|(customOracle+=CustomOracle))+'ENDCPS'
 		/*(check_static_upper+=Check_Static_upper_only)*
 		(check_static_lower+=Check_Static_lower_only)*
 		(check_range+=Check_Range)*
 		(check_gap+=Check_Gap)*/
 ;
+
 
 CustomOracle:
 	'CUSTOMORACLE' name=ID ':'
