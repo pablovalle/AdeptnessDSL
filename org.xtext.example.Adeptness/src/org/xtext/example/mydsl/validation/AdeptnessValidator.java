@@ -247,12 +247,24 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 
 	@Check
 	public void checkCustomOracle(CustomOracle cuOr) {
-		checkVariablesInMonitoringPlan(cuOr.getCheckInputs(), "Checks input variables list cannot be empty.",
-				AdeptnessPackage.Literals.MONITORING_INFER_VARIABLES__VARIABLES);
-		checkVariablesInMonitoringPlan(cuOr.getPredInputs(), "Precondition input variables list cannot be empty.",
-				AdeptnessPackage.Literals.CUSTOM_ORACLE__PRED_INPUTS);
+		if (cuOr.getCheckInputs() == null || cuOr.getCheckInputs().size() == 0) {
+			checkVariablesInMonitoringPlan(cuOr.getCheckInputs(), "Checks input variables list cannot be empty.",
+					AdeptnessPackage.Literals.CUSTOM_ORACLE__CHECK_INPUTS);
+		}
 
+		if (cuOr.getPrecondition() != null) {
+			if (cuOr.getPredInputs() == null ) {
+				error("Precondition inputs must be set if a precondition is defined.",
+						AdeptnessPackage.Literals.CUSTOM_ORACLE__PRECONDITION);
+			}else if (cuOr.getPredInputs() != null && cuOr.getPredInputs().size() == 0) {
+				checkVariablesInMonitoringPlan(cuOr.getPredInputs(),
+						"Precondition input variables list cannot be empty.",
+						AdeptnessPackage.Literals.CUSTOM_ORACLE__PRED_INPUTS);
+			}
+		}
 	}
+	
+
 
 	@Check
 	public void checkMathLibrary(ExpressionsModel exp) {
@@ -273,34 +285,32 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				mathFound = true;
 				library = getLibrary(el.getMath().getLibrary());
 				if (library.equals("unknown")) {
-					error("Unknown mathematical library.",
-							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+					error("Unknown mathematical library.", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 					return;
 				}
 				// Math must be followed by a front parenthesis
 				if (exp.getElements().get(i + 1) == null
 						|| exp.getElements().get(i + 1).getFrontParentheses().size() == 0) {
-					error("The expression to apply " + library
-							+ " must be surrounded by parenthesis.",
+					error("The expression to apply " + library + " must be surrounded by parenthesis.",
 							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 				}
-			} 
-			
+			}
+
 			if (mathFound) {
 				frontParenthesis += el.getFrontParentheses().size();
 				if (el.getName() != null) {
 					signalFound = true;
-				} 
+				}
 				if (el.getOp() != null) {
 					for (int j = 0; j < el.getOp().size(); j++) {
 						if (mathFound && el.getOp().get(j).getComparation() != null) {
 							error("Mathematical functions does not allow comparison operators.",
 									AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-						} 
+						}
 						if (mathFound && el.getOp().get(j).getLogicOperator() != null) {
 							error("Mathematical functions does not allow logical operators.",
 									AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-						} 
+						}
 						if (mathFound && el.getOp().get(j).getBackParentheses() != null) {
 							backParenthesis++;
 							if (frontParenthesis == backParenthesis) {
@@ -316,34 +326,31 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 						}
 					}
 				}
-			} 
-			
+			}
+
 		}
 		if (mathFound && frontParenthesis != backParenthesis) {
-			error("The expression to apply " + library
-					+ " must be surrounded by parenthesis.",
+			error("The expression to apply " + library + " must be surrounded by parenthesis.",
 					AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 		}
 	}
-	
-	
 
 	// PRIVATE FUNCTIONS
 	private String getLibrary(Library lib) {
 		if (lib == null) {
 			return "unknown";
-		}else if (lib.getCos() != null) {
+		} else if (lib.getCos() != null) {
 			return "cosine";
-		}else if (lib.getSin() != null) {
+		} else if (lib.getSin() != null) {
 			return "sine";
-		}else if (lib.getDerivative() != null) {
+		} else if (lib.getDerivative() != null) {
 			return "devirative";
-		}else if (lib.getModulus() != null) {
+		} else if (lib.getModulus() != null) {
 			return "modulus";
 		}
 		return "unknown";
 	}
-	
+
 	private void checkVariablesInMonitoringPlan(EList<String> variables, String emptyErrorMessage,
 			EAttribute reference) {
 		if (variables.size() == 0) {
