@@ -1071,7 +1071,7 @@ var CharSequence confCalculationBody;
 							}
 						}
 						if(!is){
-						checkNames.add(oracle.check.reference.same.bound_upp.em.elements.get(i).name);
+							checkNames.add(oracle.check.reference.same.bound_upp.em.elements.get(i).name);
 						}
 						else{
 							is=false;
@@ -1136,9 +1136,14 @@ var CharSequence confCalculationBody;
 				}
 				
 			}
-				
+			var namelists2= new ArrayList();
+			for(var i=0; i<checkNames.size; i++){
+				if(checkNames.get(i)!==null){
+					namelists2.add(checkNames.get(i));
+				}
+			}	
 			nameMap.put(oracle.name, namelists);
-			checkVar.put(oracle.name,checkNames);
+			checkVar.put(oracle.name,namelists2);
 		}
 	}
 		
