@@ -4,6 +4,5 @@ INFERENCEMONITORINGPLAN ML_INFERENCEPLAN : implements ML_MODELS
 		max : 100
 		min : 0
 		model : "ModelD"
-		independent variables :[A B C]
 	ENDMONITOR_INFERENCE
 ENDINFERENCEMONITORINGPLAN

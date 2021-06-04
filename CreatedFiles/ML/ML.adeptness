@@ -1,4 +1,4 @@
-CPS ML_FORGAS : implements ML_MONITORING and  ML_INFERENCEPLAN	
+CPS ML_FROGAK : implements ML_MONITORING and  ML_INFERENCEPLAN	
 	ORACLE A:
 		checks : (B-10) is above 10
 		fails if : confidence is below 0
