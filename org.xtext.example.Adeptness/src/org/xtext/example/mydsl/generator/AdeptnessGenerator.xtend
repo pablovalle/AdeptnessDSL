@@ -55,6 +55,7 @@ var HashMap<String, String> whileMap_preconds;
 var HashMap<String, Double> maxMap;
 var HashMap<String, Double> minMap;
 var HashMap<String, List<String>> checkVar;
+var HashMap<String, EList<String>> modelVarFile;
 var List<String> verdict;
     override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
     	//fsa.generateFile("adeptness.xml", resource.allContents.toIterable.filter(Signal).createXML());
@@ -62,10 +63,13 @@ var List<String> verdict;
 //    			fsa.generateFile(a.fullyQualifiedName.toString("/")+".json", a.create_VP_json())
 //  
 //    		}
+			modelVarFile= new HashMap();
 			for(modelFile: resource.allContents.toIterable.filter(ModelFile)){
+				updateModelVarFile(modelFile);
 				for(model:modelFile.trainableModel){
 					fsa.generateFile("models/gen_"+model.name+".py", model.create_model_py())
 				}
+				
 			}
       		for(e: resource.allContents.toIterable.filter(Signal)){
        	
@@ -104,7 +108,9 @@ var List<String> verdict;
 			getAllNames(e);
 			findSignalsMaxMinValues(e);
 			if(e.superTypeInfer!==null){
+				updateModelVarFile(e.superTypeInfer.superType);
 				for(v:e.superTypeInfer.monitoringInferVariables){
+					
 					fsa.generateFile(e.name+"/"+v.name+".c",v.create_infer_c())
 					fsa.generateFile(e.name+"/"+v.name+".h",v.create_infer_h())
 				}
@@ -128,6 +134,15 @@ var List<String> verdict;
 			
 		}
     }
+	
+	def updateModelVarFile(ModelFile modelFile) {
+		for(model : modelFile.nonTrainableModel){
+			modelVarFile.put(model.name, model.variables);
+		}
+		for(model: modelFile.trainableModel){
+			modelVarFile.put(model.name, model.variables);
+		}
+	}
 	
 	def create_model_py(TrainableModel model)'''
 	import pandas as pd
@@ -227,7 +242,7 @@ var List<String> verdict;
 	
 	void infer_«plan.name.toUpperCase»(SensorInput *inputs){
 	
-	    float input [«plan.variables.size»];
+	    float input [«modelVarFile.get(plan.model).size»];
 	    float output [1];
 	
 	    // ------- DSL ---------
@@ -248,8 +263,8 @@ var List<String> verdict;
 	        TfLiteInterpreterGetInputTensor(interpreter, 0);
 	
 	    // ------- DSL ---------
-	    «FOR a:plan.variables»
-	    input[«plan.variables.indexOf(a)»] = inputs->«a.toString»;
+	    «FOR a:modelVarFile.get(plan.model)»
+	    input[«modelVarFile.get(plan.model).indexOf(a)»] = inputs->«a.toString»;
 	    «ENDFOR»
 	    // ---------------------
 	  

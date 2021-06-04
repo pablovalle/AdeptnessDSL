@@ -121,7 +121,6 @@ MonitoringInferVariables:
 	('max' ':' max = DOUBLE
 	'min' ':' min = DOUBLE)?
 	'model' ':' model=STRING
-	'independent variables' ':[' (variables+=ID)+"]"
 	'ENDMONITOR_INFERENCE'
 ;
 
