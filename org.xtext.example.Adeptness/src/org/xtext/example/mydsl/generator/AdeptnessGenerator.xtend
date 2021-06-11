@@ -708,7 +708,7 @@ var CharSequence confCalculationBody;
 	enum VerdictType{
 		VERDICTTYPE_CYCLE,
 		VERDICTTYPE_PARTIAL,
-		VERDICTTYPLE_GLOBAL
+		VERDICTTYPE_GLOBAL
 	};
 	typedef struct Verdict{
 		enum VerdictValue verdict;
@@ -1235,7 +1235,7 @@ var CharSequence confCalculationBody;
 	
 	def create_verdict_c(Oracle param, List<String> nameList){
 		verdict.add("Verdict checkGlobalVerdict_"+param.name+"(Array conf, Array timeStampOracle){");
-		verdict.add("	Verdict verdict={VERDICT_INCONCLUISVE, 0.0, VERDICTTYPLE_GLOBAL};");
+		verdict.add("	Verdict verdict={VERDICT_INCONCLUISVE, 0.0, VERDICTTYPE_GLOBAL};");
 		verdict.add("	double times;");
 		verdict.add("	int fail, is, deg,i,time;");
 		verdict.add("	i=0;");
