@@ -98,6 +98,11 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 	// DETECT ERRORS WITHIN EXPRESSIONS
 	@Check
 	public void checkExpressionModelVarsInMonitoringVariablesFile(AbstractElement2 elem) {
+		if (elem.getUncer1() != null || elem.getUncer2() != null || elem.getUncer3() != null) {
+			// TODO: check with operational data when uncertainty type checks is set
+			errorDetected = true;
+			return;
+		}
 		if (elem.getName() == null)
 			return;
 		checkNameInMonitoringVariablesFile(elem.getName(), AdeptnessPackage.Literals.ABSTRACT_ELEMENT2__NAME);
@@ -127,16 +132,15 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 	@Check
 	public void checkExpressions(ExpressionsModel data) {
 		int conOpenPar = 0, conClosePar = 0;
-
-		// Check if expression model is correctly evaluated otherwise is not well
-		// formated.
-		if (evalExpression(getExpression("basic", data.getElements())) == null) {
-			error("Incorrect expression.", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-			errorDetected = true;
-		}
+		boolean uncer = false;
 
 		for (int i = 0; i < data.getElements().size(); i++) {
 			AbstractElement2 elements = data.getElements().get(i);
+
+			if (elements.getUncer1() != null || elements.getUncer2() != null || elements.getUncer3() != null) {
+				uncer = true;
+			}
+
 			conOpenPar = conOpenPar + elements.getFrontParentheses().size();
 
 			// current element (which is not the first one) contains name or value,
@@ -184,6 +188,13 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		if (conOpenPar != conClosePar) {
 			error("Parentheses are not correctly opened and closed",
 					AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+			errorDetected = true;
+		}
+
+		// Check if expression model is correctly evaluated otherwise is not well
+		// formated.
+		if (!uncer && evalExpression(getExpression("basic", data.getElements())) == null) {
+			error("Incorrect expression.", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
 			errorDetected = true;
 		}
 	}
@@ -282,7 +293,8 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		List<AbstractElement2> elems = check.getEm().getElements();
 		boolean anyVar = false;
 		for (AbstractElement2 elem : elems) {
-			if (elem.getName() != null) {
+			if (elem.getName() != null || elem.getUncer1() != null || elem.getUncer2() != null
+					|| elem.getUncer3() != null) {
 				anyVar = true;
 				break;
 			}
@@ -293,6 +305,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 			errorDetected = true;
 			return;
 		}
+
 	}
 
 	@Check
@@ -1107,7 +1120,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		GraalJSScriptEngine engine = new GraalJSEngineFactory().getScriptEngine();
 		try {
 			Object obj = engine.eval(expression);
-			if (obj.getClass() == Integer.class) {
+			if (obj != null && obj.getClass() == Integer.class) {
 				return (double) ((int) obj);
 			}
 			return obj;

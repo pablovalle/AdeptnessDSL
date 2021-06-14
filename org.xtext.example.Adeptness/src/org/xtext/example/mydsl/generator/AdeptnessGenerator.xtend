@@ -30,6 +30,11 @@ import org.xtext.example.mydsl.adeptness.Operators
 import org.xtext.example.mydsl.adeptness.Oracle
 import org.xtext.example.mydsl.adeptness.Signal
 import java.util.HashSet
+import java.util.stream.Collectors
+import org.xtext.example.mydsl.adeptness.ExpressionsModel
+import org.xtext.example.mydsl.adeptness.UncertaintyProb
+import org.xtext.example.mydsl.adeptness.UncertaintyAmbiguity
+import org.xtext.example.mydsl.adeptness.UncertaintyVagueness
 
 /**
  * Generates code from your model files on save.
@@ -52,6 +57,7 @@ var List<String> verdict;
 var List<String> first;
 var Set<String> predAndCheckInputs;
 var CharSequence confCalculationBody;
+var List<String> uncerNames;
     override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
     	
       	for(e: resource.allContents.toIterable.filter(Signal)){
@@ -65,6 +71,7 @@ var CharSequence confCalculationBody;
 			checkVar= new HashMap();
 			maxMap= new HashMap();
 			minMap= new HashMap();
+			uncerNames= getUncer(e);
 			getAllNames(e);
 			findSignalsMaxMinValues(e);
 			for(v:e.superType.monitoringInferVariables){
@@ -96,6 +103,8 @@ var CharSequence confCalculationBody;
 				
 			}
 			fsa.generateFile(e.fullyQualifiedName.toString("/")+".json", e.create_oracle_json())
+			fsa.generateFile(e.name+"_Uncer.c", e.create_uncer_c())
+			fsa.generateFile(e.name+"_Uncer.h", e.create_uncer_h())
 			fsa.generateFile("Array.h", e.create_array_h())
 			fsa.generateFile("Array.c", e.create_array_c())
 			fsa.generateFile(e.fullyQualifiedName.toString()+".h", e.create_global_h())
@@ -439,7 +448,334 @@ var CharSequence confCalculationBody;
 	void infer_«plan.name.toUpperCase»(SensorInput *inputs);
 	
 	#endif
+	'''
 	
+	def List<String> getUncer(Signal signal) {
+		var List<String> uncer= new ArrayList();
+		var String name=""
+		for(Oracle o: signal.oracle){
+			if(o.when!==null && o.when.em!==null){
+				for(AbstractElement2 element: o.when.em.elements){
+					if(element.uncer1!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+					else if(element.uncer2!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+					else if(element.uncer3!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+				}
+			}
+			if(o.^while!==null && o.^while.em!==null){
+				for(AbstractElement2 element: o.^while.em.elements){
+					if(element.uncer1!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+					else if(element.uncer2!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+					else if(element.uncer3!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+				}
+			}
+			if(o.check!==null && o.check.em!==null){
+				for(AbstractElement2 element: o.check.em.elements){
+					if(element.uncer1!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+					else if(element.uncer2!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+					else if(element.uncer3!==null){
+						name=getUncerType(element);
+						if(!name.equals("NO")){
+							uncer.add(name);
+						}
+					}
+				}
+			}
+		}
+		uncer=uncer.stream().distinct().collect(Collectors.toList());
+		return uncer;
+	}
+	
+	def String getUncerType(AbstractElement2 element) {
+		var String ret="NO";
+		if(element.uncer1!==null){
+			if(element.uncer1.bernoulliDistribution!==null){
+				if(element.uncer1.bernoulliDistribution.bernProb!==null){
+					ret="BernoulliDistribution_prob";
+				}
+				else if(element.uncer1.bernoulliDistribution.bernTrials!==null){
+					ret="BernoulliDistribution_trials";
+				}
+				
+			}
+			else if(element.uncer1.gammaDistribution!==null){
+				if(element.uncer1.gammaDistribution.gammaK!==null){
+					ret="GammaDistribution_K";
+				}
+				else if(element.uncer1.gammaDistribution.gammaMean!==null){
+					ret="GammaDistribution_mean";
+				}
+				
+			}
+			else if(element.uncer1.normalDisstribution!==null){
+				if(element.uncer1.normalDisstribution.mean!==null){
+					ret="NormalDistribution_mean";
+				}
+				else if(element.uncer1.normalDisstribution.normDistStd!==null){
+					ret="NormalDistribution_normDistStd";
+				}
+				
+			}
+			else if(element.uncer1.percentage!==null){
+				if(element.uncer1.percentage.valuePer!==null){
+					ret="Percentage_value";
+				}
+			}
+		}
+		else if(element.uncer2!==null){
+			if(element.uncer2.fuzzyInterval!==null){
+				if(element.uncer2.fuzzyInterval.maxfuzzyNumber!==null){
+					ret="FuzzyInterval_maxfuzzyNumber";
+				}
+				else if(element.uncer2.fuzzyInterval.minfuzzyNumber!==null){
+					ret="FuzzyInterval_minfuzzyNumber";
+				}
+			}
+			else if(element.uncer2.fuzzySetCut!==null){
+				if(element.uncer2.fuzzySetCut.fuzzySetCutLam!==null){
+					ret="FuzzySetCut_lambda";
+				}
+				else if(element.uncer2.fuzzySetCut.fuzzySetCutisStr!==null){
+					ret="FuzzySetCut_isStrong";
+				}
+				else if(element.uncer2.fuzzySetCut.fuzzySetCutkin!==null){
+					ret="FuzzySetCut_kind";
+				}
+			}
+			else if(element.uncer2.fuzzyLogic!==null){
+				if(element.uncer2.fuzzyLogic.fuzzyLogicOpera!==null){
+					ret="FuzzyLogic_operator";
+				}
+				else if(element.uncer2.fuzzyLogic.fuzzyLogicVar!==null){
+					ret="FuzzyLogic_var";
+				}
+				else if(element.uncer2.fuzzyLogic.fuzzyLogicSet!==null){
+					if(element.uncer2.fuzzyLogic.fuzzyLogicSet.FLSmembershipDegree!==null){
+						ret="FuzzyLogic_set_MembershipDegree"
+					}
+					else if(element.uncer2.fuzzyLogic.fuzzyLogicSet.FLSfuzziness!==null){
+						ret="FuzzyLogic_set_Fuzziness"
+					}
+					else if(element.uncer2.fuzzyLogic.fuzzyLogicSet. FLSfuzzyEntropy!==null){
+						ret="FuzzyLogic_set_FuzzyEntropy"
+					}
+					else if(element.uncer2.fuzzyLogic.fuzzyLogicSet. FLSroughness!==null){
+						ret="FuzzyLogic_set_Roughness"
+					}
+				}
+			}
+			else if(element.uncer2.fuzzySet!==null){
+				if(element.uncer2.fuzzySet.FSmembershipDegree!==null){
+					if(element.uncer2.fuzzySet.FSmembershipDegree.membershipDegreeValue!==null){
+						ret="FuzzySet_MembershipDegree_value"
+					}
+					else if(element.uncer2.fuzzySet.FSmembershipDegree.membershipDegreeHedge!==null){
+						ret="FuzzySet_MembershipDegree_hedge"
+					}
+					else if(element.uncer2.fuzzySet.FSmembershipDegree.membershipDegreeElement!==null){
+						ret="FuzzySet_MembershipDegree_element"
+					}
+				}
+				else if(element.uncer2.fuzzySet.FSfuzziness!==null){
+					ret="FuzzySet_Fuzziness"
+				}
+				else if(element.uncer2.fuzzySet.FSfuzzyEntropy!==null){
+					ret="FuzzySet_FuzzyEntropy"
+				}
+				else if(element.uncer2.fuzzySet.FSroughness!==null){
+					ret="FuzzySet_Roughness"
+				}
+			}
+			else if(element.uncer2.intervalValuedFuzzySet!==null){
+				if(element.uncer2.intervalValuedFuzzySet.IVFmembershipDegree!==null){
+					ret="IntervalValuedFuzzySet_MembershipDegree"
+				}
+				else if(element.uncer2.intervalValuedFuzzySet.IVFfuzziness!==null){
+					ret="IntervalValuedFuzzySet_Fuzziness"
+				}
+				else if(element.uncer2.intervalValuedFuzzySet.IVFfuzzyEntropy!==null){
+					ret="IntervalValuedFuzzySet_FuzzyEntropy"
+				}
+				else if(element.uncer2.intervalValuedFuzzySet.IVFroughness!==null){
+					ret="IntervalValuedFuzzySet_Roughness"
+				}
+			}
+			else if(element.uncer2.LFuzzySet!==null){
+				if(element.uncer2.LFuzzySet.LFSmembershipDegree!==null){
+					ret="LFuzzySet_MembershipDegree"
+				}
+				else if(element.uncer2.LFuzzySet.LFSfuzziness!==null){
+					ret="LFuzzySet_Fuzziness"
+				}
+				else if(element.uncer2.LFuzzySet.LFSfuzzyEntropy!==null){
+					ret="LFuzzySet_FuzzyEntropy"
+				}
+				else if(element.uncer2.LFuzzySet.LFSroughness!==null){
+					ret="LFuzzySet_Roughness"
+				}
+			}
+			else if(element.uncer2.intuitionisticFuzzySet!==null){
+				if(element.uncer2.intuitionisticFuzzySet.IFmembershipDegree!==null){
+					ret="IntuitionisticFuzzySet_MembershipDegree"
+				}
+				else if(element.uncer2.intuitionisticFuzzySet.IFfuzziness!==null){
+					ret="IntuitionisticFuzzySet_Fuzziness"
+				}
+				else if(element.uncer2.intuitionisticFuzzySet.IFfuzzyEntropy!==null){
+					ret="IntuitionisticFuzzySet_FuzzyEntropy"
+				}
+				else if(element.uncer2.intuitionisticFuzzySet.IFroughness!==null){
+					ret="IntuitionisticFuzzySet_Roughness"
+				}
+			}
+			else if(element.uncer2.vagueSet!==null){
+				if(element.uncer2.vagueSet.VSmembershipDegree!==null){
+					ret="VagueSet_MembershipDegree"
+				}
+				else if(element.uncer2.vagueSet.VSfuzziness!==null){
+					ret="VagueSet_Fuzziness"
+				}
+				else if(element.uncer2.vagueSet.VSfuzzyEntropy!==null){
+					ret="VagueSet_FuzzyEntropy"
+				}
+				else if(element.uncer2.vagueSet.VSroughness!==null){
+					ret="VagueSet_Roughness"
+				}
+			}
+			else if(element.uncer2.triangularFuzzyNumber!==null){
+				if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumberisSha!==null){
+					ret="TriangularFuzzyNumber_isSharped"
+				}
+				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumbera!==null){
+					ret="TriangularFuzzyNumber_a"
+				}
+				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumberb!==null){
+					ret="TriangularFuzzyNumber_b"
+				}
+				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumberc!==null){
+					ret="TriangularFuzzyNumber_c"
+				}
+				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumber!==null){
+					ret="TriangularFuzzyNumber_number"
+				}
+
+			}
+		}
+		else if(element.uncer3!==null){
+			if(element.uncer3.pignisticDistribution!==null){
+				ret="PignisticDistribution_expression";
+			}
+			else if(element.uncer3.shannonEntropy!==null){
+					ret="ShannonEntropy_h";		
+			}
+			else if(element.uncer3.hartleyMeasure!==null){
+					ret="HartleyMeasure_h";		
+			}
+			else if(element.uncer3.alternativeMeasure!==null){
+					ret="AlternativeMeasure_h";		
+			}
+			else if(element.uncer3.u_Uncertainty!==null){
+					ret="U_Uncertainty_h";		
+			}
+			else if(element.uncer3.dissonanceMeasure!==null){
+				if(element.uncer3.dissonanceMeasure.dissonanceMeasureE!==null){
+					ret="DissonanceMeasure_e";
+				}
+				else if(element.uncer3.dissonanceMeasure.dissonanceMeasureComplem!==null){
+					ret="DissonanceMeasure_complementray";
+				}
+				else if(element.uncer3.dissonanceMeasure.conflict!==null){
+					ret="DissonanceMeasure_Conflict";
+				}		
+			}
+			else if(element.uncer3.distribution!==null){
+				ret="Distribution_expression";
+			}
+			else if(element.uncer3.beliefInterval!==null){
+				if(element.uncer3.beliefInterval.min!==null){
+					ret="BeliefInterval_min";
+				}
+				else if(element.uncer3.beliefInterval.max!==null){
+					ret="BeliefInterval_max";
+				}
+			}
+			else if(element.uncer3.possibleDistribution!==null){
+			ret="PossibleDistribution_expression";
+		    }
+		}
+		
+		
+		return ret;
+	}
+	
+	/*«IF param.check.em!==null»
+	«distributionFunction(param.check.em.elements)»
+	«ENDIF»
+	«IF param.^while!==null && param.^while.em!==null»
+	«distributionFunction(param.^while.em.elements)»
+	«ENDIF»
+	«IF param.when!==null && param.when.em!==null»
+	«distributionFunction(param.when.em.elements)»
+	«ENDIF» */
+	def CharSequence create_uncer_h(Signal signal)'''
+	#ifndef «signal.name.toUpperCase»_UNCER_H
+	#define «signal.name.toUpperCase»_UNCER_H
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <math.h>
+	#include <string.h>
+	«FOR name:uncerNames»
+	double * calc«name»(double var[], double *ret);
+	«ENDFOR»
+	#endif
+	'''
+	
+	def CharSequence create_uncer_c(Signal signal)'''
+	#include "«signal.name»_Uncer.h"
+	«FOR name:uncerNames»
+	double * calc«name»(double var[], double* ret)«distributionFunction(name)»
+	
+	
+	«ENDFOR»
 	'''
 	
 	def findSignalsMaxMinValues(Signal s){
@@ -482,7 +818,10 @@ var CharSequence confCalculationBody;
 		for(String expression:exprCombs){
 			maxMinValueCombs.add(evalExpression(expression));
 		}
-	
+	//TODO set values
+		if(maxMinValueCombs.size()==0){
+			maxMinValueCombs.add(0.0);
+		}
 		return maxMinValueCombs;
 	}
 	def evalExpression(String expression) {
@@ -555,16 +894,18 @@ var CharSequence confCalculationBody;
 	
 	def List<String> generateCombinations(int index, String expression, List<String> varNames, List<String> exprCombs, List<Double> maxValues,List<Double> minValues) {
 		var List<String> exC = new ArrayList<String>(exprCombs)
-		var String replaceVarMin = replaceVar(expression, varNames.get(index),minValues.get(index));
-		var String replaceVarMax = replaceVar(expression, varNames.get(index),maxValues.get(index));
-		if (index == varNames.size() - 1) {
-			exC.add(replaceVarMin);
-			exC.add(replaceVarMax);
-		} else {
-			var List<String> minCombs = generateCombinations(index + 1, replaceVarMin, varNames, exprCombs,maxValues,minValues);
-			var List<String> maxCombs = generateCombinations(index + 1, replaceVarMax, varNames, exprCombs,maxValues,minValues);
-			exC.addAll(minCombs);
-			exC.addAll(maxCombs);
+		if(!expression.equals("")){
+			var String replaceVarMin = replaceVar(expression, varNames.get(index),minValues.get(index));
+			var String replaceVarMax = replaceVar(expression, varNames.get(index),maxValues.get(index));
+			if (index == varNames.size() - 1) {
+				exC.add(replaceVarMin);
+				exC.add(replaceVarMax);
+			} else {
+				var List<String> minCombs = generateCombinations(index + 1, replaceVarMin, varNames, exprCombs,maxValues,minValues);
+				var List<String> maxCombs = generateCombinations(index + 1, replaceVarMax, varNames, exprCombs,maxValues,minValues);
+				exC.addAll(minCombs);
+				exC.addAll(maxCombs);
+			}
 		}
 		return exC;
 	}
@@ -825,19 +1166,19 @@ var CharSequence confCalculationBody;
 						isWHile=false;
 					}
 				}
+				whileNames=addUncerNames(wile.em, whileNames);
 				var a="";
 				var b="";
 				for(var i=0; i< whileNames.size; i++){
 					if(i!=whileNames.size-1){
-						a=a+"int "+whileNames.get(i)+", ";
+						a=a+"double "+whileNames.get(i)+", ";
 						b=b+whileNames.get(i)+".array[cycle], ";
 					}
 					else{
-						a=a+"int "+whileNames.get(i);
+						a=a+"double "+whileNames.get(i);
 						b=b+whileNames.get(i)+".array[cycle] ";
 					}
 				}
-				println(a);
 				whileMap.put(oracle.name,a);
 				whileMap_preconds.put(oracle.name,b);
 			}
@@ -870,15 +1211,16 @@ var CharSequence confCalculationBody;
 						isWhen=false;
 					}
 				}
+				whenNames=addUncerNames(when.em, whenNames);
 				var a="";
 				var b="";
 				for(var i=0; i< whenNames.size; i++){
 					if(i!=whenNames.size-1){
-						a=a+"int "+whenNames.get(i)+", ";
+						a=a+"double "+whenNames.get(i)+", ";
 						b=b+whenNames.get(i)+".array[cycle], ";
 					}
 					else{
-						a=a+"int "+whenNames.get(i);
+						a=a+"double "+whenNames.get(i);
 						b=b+whenNames.get(i)+".array[cycle]";
 					}
 				}
@@ -1115,9 +1457,303 @@ var CharSequence confCalculationBody;
 					namelists2.add(checkNames.get(i));
 				}
 			}	
+			namelists=getDistributionNames(oracle,namelists);	
 			nameMap.put(oracle.name, namelists);
 			checkVar.put(oracle.name,namelists2);
 		}
+	}
+	
+	def List<String> addUncerNames(ExpressionsModel model, List<String> names) {
+		var boolean is=false;
+		var String name="";
+		for(AbstractElement2 element: model.elements){
+			if(element.uncer1!==null){
+				name=getUncerName(element.uncer1);
+				for(String isName: names){
+					if(isName!==null && isName.equals(name)){
+						is=true;
+					}
+				}
+				if(!is){
+					names.add(name);
+				}
+				is=false;
+			}
+			else if(element.uncer2!==null){
+				name=getUncerName2(element.uncer2);
+				for(String isName: names){
+					if(isName!==null && isName.equals(name)){
+						is=true;
+					}
+				}
+				if(!is){
+					names.add(name);
+				}
+				is=false;
+			}
+			else if(element.uncer3!==null){
+				name=getUncerName3(element.uncer3);
+				for(String isName: names){
+					if(isName!==null && isName.equals(name)){
+						is=true;
+					}
+				}
+				if(!is){
+					names.add(name);
+				}
+				is=false;
+			}
+		}
+		names.remove(null);
+		return names;
+	}
+	
+	def String getUncerName2(UncertaintyVagueness vagueness) {
+		var String name="";
+		if(vagueness.fuzzyInterval!==null){
+			name=vagueness.fuzzyInterval.name;
+		}
+		else if(vagueness.fuzzySetCut!==null){
+			name=vagueness.fuzzySetCut.name;
+		}
+		
+		else if(vagueness.fuzzyLogic!==null){
+			name=vagueness.fuzzyLogic.name;
+		}
+		
+		else if(vagueness.fuzzySet!==null){
+			name=vagueness.fuzzySet.name;
+		}
+		
+		else if(vagueness.intervalValuedFuzzySet!==null){
+			name=vagueness.intervalValuedFuzzySet.name;
+		}
+		
+		else if(vagueness.LFuzzySet!==null){
+			name=vagueness.LFuzzySet.name;
+		}
+		
+		else if(vagueness.intuitionisticFuzzySet!==null){
+			name=vagueness.intuitionisticFuzzySet.name;
+		}
+		
+		else if(vagueness.vagueSet!==null){
+			name=vagueness.vagueSet.name;
+		}
+		
+		else if(vagueness.triangularFuzzyNumber!==null){
+			name=vagueness.triangularFuzzyNumber.name;
+		}
+		
+		else if(vagueness.roughSet!==null){
+			name=vagueness.roughSet.name;
+		}
+		
+		else if(vagueness.sharpness!==null){
+			name=vagueness.sharpness.name;
+		}
+		
+		else if(vagueness.sharpness!==null){
+			name=vagueness.sharpness.name;
+		}
+		return name;
+	}
+	
+	def String getUncerName3(UncertaintyAmbiguity ambiguity) {
+		var String name="";
+		if(ambiguity.pignisticDistribution!==null){
+			name=ambiguity.pignisticDistribution.name;
+		}
+				
+		else if(ambiguity.shannonEntropy!==null){
+			name=ambiguity.shannonEntropy.name;
+		}
+		
+		else if(ambiguity.hartleyMeasure!==null){
+			name=ambiguity.hartleyMeasure.name;
+		}
+		
+		else if(ambiguity.alternativeMeasure!==null){
+			name=ambiguity.alternativeMeasure.name;
+		}
+		
+		else if(ambiguity.u_Uncertainty!==null){
+			name=ambiguity.u_Uncertainty.name;
+		}
+		
+		else if(ambiguity.dissonanceMeasure!==null){
+			name=ambiguity.dissonanceMeasure.name;
+		}
+		
+		else if(ambiguity.distribution!==null){
+			name=ambiguity.distribution.name;
+		}
+		
+		else if(ambiguity.beliefInterval!==null){
+			name=ambiguity.beliefInterval.name;
+		}
+		
+		else if(ambiguity.possibleDistribution!==null){
+			name=ambiguity.possibleDistribution.name;
+		}
+		
+		else if(ambiguity.possibleDistribution!==null){
+			name=ambiguity.possibleDistribution.name;
+		}
+		return name;
+	}
+	
+	def List<String> getDistributionNames(Oracle o,List<String> strings) {
+		var boolean is=false;
+		var String name="";
+		if(o.when!==null && o.when.em!==null){
+			for(var i=0; i<o.when.em.elements.size; i++){
+				if(o.when.em.elements.get(i).uncer1!==null){
+					name=getUncerName(o.when.em.elements.get(i).uncer1)
+					for(String isName:strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+				else if(o.when.em.elements.get(i).uncer2!==null){
+					name=getUncerName2(o.when.em.elements.get(i).uncer2)
+					for(String isName:strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+				else if(o.when.em.elements.get(i).uncer3!==null){
+					name=getUncerName3(o.when.em.elements.get(i).uncer3)
+					for(String isName:strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+			}
+		}
+		if(o.^while!==null && o.^while.em!==null){
+			for(var i=0; i<o.^while.em.elements.size; i++){
+				if(o.^while.em.elements.get(i).uncer1!==null){
+					name=getUncerName(o.^while.em.elements.get(i).uncer1);
+					for(String isName:strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+				else if(o.^while.em.elements.get(i).uncer2!==null){
+					name=getUncerName2(o.^while.em.elements.get(i).uncer2);
+					for(String isName:strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+				else if(o.^while.em.elements.get(i).uncer3!==null){
+					name=getUncerName3(o.^while.em.elements.get(i).uncer3);
+					for(String isName:strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+			}
+			
+		}
+		if(o.check!==null && o.check.em!==null){
+			for(var i=0; i<o.check.em.elements.size; i++){
+				if(o.check.em.elements.get(i).uncer1!==null){
+					name=getUncerName(o.check.em.elements.get(i).uncer1)
+					for(String isName: strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+				else if(o.check.em.elements.get(i).uncer2!==null){
+					name=getUncerName2(o.check.em.elements.get(i).uncer2)
+					for(String isName: strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+				else if(o.check.em.elements.get(i).uncer3!==null){
+					name=getUncerName3(o.check.em.elements.get(i).uncer3)
+					for(String isName: strings){
+						if(isName!==null && isName.equals(name)){
+							is=true;
+						}
+					}
+					if(!is){
+						strings.add(name);
+					}
+					is=false;
+				}
+			}
+		}
+		return strings
+	}
+	
+	def String getUncerName(UncertaintyProb prob) {
+		var String ret="";
+		if(prob.bernoulliDistribution!==null){
+			ret=prob.bernoulliDistribution.name;
+		}
+		
+		else if(prob.gammaDistribution!==null){
+			ret=prob.gammaDistribution.name;
+		}
+		
+		else if(prob.normalDisstribution!==null){
+			ret=prob.normalDisstribution.name;
+		}
+		
+		else if(prob.uniformDistribution!==null){
+			ret=prob.uniformDistribution.name;
+		}
+		
+		else if(prob.percentage!==null){
+			ret=prob.percentage.name;
+		}
+		
+		
+		return ret;
 	}
 		
 	
@@ -1192,6 +1828,7 @@ var CharSequence confCalculationBody;
 	#define «param.name.toString().toUpperCase»_H
 	
 	#include "oracle_commons.h"
+	#include "«name»_uncer.h"
 	
 	int preprocessInputs_«param.name»(SensorInput *inputs);
 	«IF param.when!==null || param.^while!==null»
@@ -1346,7 +1983,7 @@ var CharSequence confCalculationBody;
 	«IF param.when!==null || param.^while!==null»
 
 	int evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap.get(param.name).toString»«ENDIF») {
-		return «IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«param1.value.DVal»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»;
+		return «IF param.when!==null»«FOR param1: param.when.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSEIF param1.value!==null»«param1.value.DVal»«ELSE»«DistributionManagement(param1)»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»«IF param.^while!==null»«FOR param1: param.^while.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSEIF param1.value!==null»«param1.value.DVal»«ELSE»«DistributionManagement(param1)»«ENDIF» «FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op» «ELSEIF parent.logicOperator!==null»«parent.logicOperator.op» «ELSEIF parent.operator!==null»«parent.operator.op» «ENDIF»«ENDFOR»«ENDFOR»«ENDIF»;
 	}
 	«ENDIF»
 	Verdict evaluatePostConditions_«param.name»(Verdict verdict, SensorInput *inputs) {
@@ -1382,6 +2019,7 @@ var CharSequence confCalculationBody;
 	«"\t"»insertArray(&preconditionGiven,evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap_preconds.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap_preconds.get(param.name).toString»«ENDIF»));	
 	«"\t"»if(preconditionGiven.array[cycle]==1){
 		//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
+<<<<<<< HEAD
 	«"\t"»	insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSEIF param1.value!==null»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ELSE»«IF param1.math.library.cos!==null»calcCos«ELSEIF param1.math.library.sin!==null»calcSin«ELSEIF param1.math.library.derivative!==null»calcDerivative«ELSE»calcModulus«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
 	«"\t"»}else{
 	«"\t"»	insertArray(&conf,2);
@@ -1390,6 +2028,16 @@ var CharSequence confCalculationBody;
 	«"\t"»insertArray(&preconditionGiven,2);
 	«"\t"»insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSEIF param1.value!==null»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ELSE»«IF param1.math.library.cos!==null»calcCos«ELSEIF param1.math.library.sin!==null»calcSin«ELSEIF param1.math.library.derivative!==null»calcDerivative«ELSE»calcModulus«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
 	«ENDIF»
+=======
+			insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSEIF param1.value!==null»«param1.value.DVal»«ELSE»«DistributionManagement(param1)»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
+		}else{
+			insertArray(&conf,2);
+		}
+		«ELSE»
+		insertArray(&preconditionGiven,2);
+		insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSEIF param1.value!==null»«param1.value.DVal»«ELSE»«DistributionManagement(param1)»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
+		«ENDIF»
+>>>>>>> UncertaintyDSL
 
 		//Step 4: Sacar confidence
 
@@ -1398,6 +2046,7 @@ var CharSequence confCalculationBody;
 		
 	    return verdict;
 	}
+<<<<<<< HEAD
 		
 	double confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»double «param1.toString»,«ENDFOR»double signal){
 		double conf=0;
@@ -1414,6 +2063,71 @@ var CharSequence confCalculationBody;
 		}
 		else if(signal>«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSEIF param1.value!==null»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ELSE»«IF param1.math.library.cos!==null»calcCos«ELSEIF param1.math.library.sin!==null»calcSin«ELSEIF param1.math.library.derivative!==null»calcDerivative«ELSE»calcModulus«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
 			conf=(signal-«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSEIF param1.value!==null»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ELSE»«IF param1.math.library.cos!==null»calcCos«ELSEIF param1.math.library.sin!==null»calcSin«ELSEIF param1.math.library.derivative!==null»calcDerivative«ELSE»calcModulus«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«maxMap.get(param.name)»-«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSEIF param1.value!==null»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ELSE»«IF param1.math.library.cos!==null»calcCos«ELSEIF param1.math.library.sin!==null»calcSin«ELSEIF param1.math.library.derivative!==null»calcDerivative«ELSE»calcModulus«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+=======
+	
+	double confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»double «param1.toString»,«ENDFOR»double signal){
+		double conf=0;
+		«IF param.check.reference.upper!==null»
+		if(signal<«IF param.check.reference.upper.bound_upp.value!==null»«IF param.check.reference.upper.bound_upp.value.DVal>=0»«param.check.reference.upper.bound_upp.value.DVal»«ELSE»(«param.check.reference.upper.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf= («IF param.check.reference.upper.bound_upp.value!==null»«IF param.check.reference.upper.bound_upp.value.DVal>=0»«param.check.reference.upper.bound_upp.value.DVal»«ELSE»(«param.check.reference.upper.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«IF param.check.reference.upper.bound_upp.value!==null»«IF param.check.reference.upper.bound_upp.value.DVal>=0»«param.check.reference.upper.bound_upp.value.DVal»«ELSE»(«param.check.reference.upper.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF minMap.get(param.name)<0»(«minMap.get(param.name)») «ELSE»«minMap.get(param.name)»«ENDIF»);
+		}
+		else{
+			conf= («IF param.check.reference.upper.bound_upp.value!==null»«IF param.check.reference.upper.bound_upp.value.DVal>=0»«param.check.reference.upper.bound_upp.value.DVal»«ELSE»(«param.check.reference.upper.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«maxMap.get(param.name)»-«IF param.check.reference.upper.bound_upp.value!==null»«IF param.check.reference.upper.bound_upp.value.DVal>=0»«param.check.reference.upper.bound_upp.value.DVal»«ELSE»(«param.check.reference.upper.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.upper.bound_upp.em.elements!==null»«FOR param1:param.check.reference.upper.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+		}
+		«ELSEIF param.check.reference.lower!==null»
+		if(signal>«IF param.check.reference.lower.bound_lower.value!==null»«IF param.check.reference.lower.bound_lower.value.DVal>=0»«param.check.reference.lower.bound_lower.value.DVal»«ELSE»(«param.check.reference.lower.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+				
+			conf=(signal-«IF param.check.reference.lower.bound_lower.value!==null»«IF param.check.reference.lower.bound_lower.value.DVal>=0»«param.check.reference.lower.bound_lower.value.DVal»«ELSE»(«param.check.reference.lower.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«maxMap.get(param.name)»-«IF param.check.reference.lower.bound_lower.value!==null»«IF param.check.reference.lower.bound_lower.value.DVal>=0»«param.check.reference.lower.bound_lower.value.DVal»«ELSE»(«param.check.reference.lower.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+		}
+		else{
+			conf=(signal-«IF param.check.reference.lower.bound_lower.value!==null»«IF param.check.reference.lower.bound_lower.value.DVal>=0»«param.check.reference.lower.bound_lower.value.DVal»«ELSE»(«param.check.reference.lower.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«IF param.check.reference.lower.bound_lower.value!==null»«IF param.check.reference.lower.bound_lower.value.DVal>=0»«param.check.reference.lower.bound_lower.value.DVal»«ELSE»(«param.check.reference.lower.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.lower.bound_lower.em.elements!==null»«FOR param1:param.check.reference.lower.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF minMap.get(param.name)<0»(«minMap.get(param.name)») «ELSE»«minMap.get(param.name)»«ENDIF»);
+		}
+		«ELSEIF param.check.reference.same!==null»
+		if(signal==«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=1;
+		}
+		else if(signal<«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(signal-«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF minMap.get(param.name)<0»(«minMap.get(param.name)») «ELSE»«minMap.get(param.name)»«ENDIF»);
+		}
+		else if(signal>«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«maxMap.get(param.name)»-«IF param.check.reference.same.bound_upp.value!==null»«IF param.check.reference.same.bound_upp.value.DVal>=0»«param.check.reference.same.bound_upp.value.DVal»«ELSE»(«param.check.reference.same.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.same.bound_upp.em.elements!==null»«FOR param1:param.check.reference.same.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+		}
+		«ELSEIF param.check.reference.notsame!==null»
+		if(signal==«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=-1;
+		}
+		else if(signal<«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF minMap.get(param.name)<0»(«minMap.get(param.name)») «ELSE»«minMap.get(param.name)»«ENDIF»);
+		}
+		else if(signal>«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(signal-«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«maxMap.get(param.name)»-«IF param.check.reference.notsame.bound_upp.value!==null»«IF param.check.reference.notsame.bound_upp.value.DVal>=0»«param.check.reference.notsame.bound_upp.value.DVal»«ELSE»(«param.check.reference.notsame.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.notsame.bound_upp.em.elements!==null»«FOR param1:param.check.reference.notsame.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+		}
+		«ELSEIF param.check.reference.range!==null»
+		if(signal<«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal>«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
+			conf=(«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/((«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2);
+		}
+		else if(signal>«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal<«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
+			conf=(signal-«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/((«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2);
+		}
+		else if(signal<«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(signal-«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«IF param.check.reference.range.bound_lower.value!==null»«IF param.check.reference.range.bound_lower.value.DVal>=0»«param.check.reference.range.bound_lower.value.DVal»«ELSE»(«param.check.reference.range.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_lower.em.elements!==null»«FOR param1:param.check.reference.range.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF minMap.get(param.name)<0»(«minMap.get(param.name)») «ELSE»«minMap.get(param.name)»«ENDIF»);
+		}
+		else if(signal>«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«maxMap.get(param.name)»-«IF param.check.reference.range.bound_upp.value!==null»«IF param.check.reference.range.bound_upp.value.DVal>=0»«param.check.reference.range.bound_upp.value.DVal»«ELSE»(«param.check.reference.range.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.range.bound_upp.em.elements!==null»«FOR param1:param.check.reference.range.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+		}
+		«ELSEIF param.check.reference.gap!==null»
+		if(signal<«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal>«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
+			conf=(signal-«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/((«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2);
+		}
+		else if(signal>«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» && signal<«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF» + («IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2){
+			conf=(«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/((«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/2);
+		}
+		else if(signal<«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-signal)/(«IF param.check.reference.gap.bound_lower.value!==null»«IF param.check.reference.gap.bound_lower.value.DVal>=0»«param.check.reference.gap.bound_lower.value.DVal»«ELSE»(«param.check.reference.gap.bound_lower.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_lower.em.elements!==null»«FOR param1:param.check.reference.gap.bound_lower.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»-«IF minMap.get(param.name)<0»(«minMap.get(param.name)») «ELSE»«minMap.get(param.name)»«ENDIF»);
+		}
+		else if(signal>«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»){
+			conf=(signal-«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»)/(«maxMap.get(param.name)»-«IF param.check.reference.gap.bound_upp.value!==null»«IF param.check.reference.gap.bound_upp.value.DVal>=0»«param.check.reference.gap.bound_upp.value.DVal»«ELSE»(«param.check.reference.gap.bound_upp.value.DVal»)«ENDIF»«ELSEIF param.check.reference.gap.bound_upp.em.elements!==null»«FOR param1:param.check.reference.gap.bound_upp.em.elements» «FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name»«ELSE»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR»«ENDFOR»«ENDIF»);
+>>>>>>> UncertaintyDSL
 		}
 		«ENDIF»
 		return conf;
@@ -1499,5 +2213,425 @@ var CharSequence confCalculationBody;
 		verdict.verdict=VERDICT_INCONCLUSIVE;
 	}	
 	'''
+
+	def String distributionFunction(String name) {
+		var String ret="";
+		switch(name){
+//			case "BernoulliDistribution_prob":{
+//				ret="{\n\n}";
+//			}
+//			case "BernoulliDistribution_trials":{
+//				ret="{\n\n}";
+//			}
+//			case "GammaDistribution_K":{
+//				ret="{\n\n}";
+//			}
+			case "GammaDistribution_mean":{
+				ret="{\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t double ave, s=var[0];\n\t for(i=1;i<length;i++){\n\t  s=s+var[i];\n\t  ave=s/(float)length;\n\t }\n\t return ave;\n}";
+			}
+			case "NormalDistribution_mean":{
+				ret="{\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t double ave, s=var[0];\n\t for(i=1;i<length;i++){\n\t  s=s+var[i];\n\t  ave=s/(float)length;\n\t }\n\t return ave;\n}";
+			}
+			case "NormalDistribution_normDistStd":{
+				ret="{\n\t double sum=0.0, mean, SD=0.0;\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t for(i=0; i<length; ++i){\n\t  sum += var[i];\n\t }\n\t mean=sum/length;\n\t for(i=0; i<length; ++i){\n\t  SD += POW(var[i]-mean, 2);\n\t }\n\t return sqrt(SD/length);\n}";
+			}
+			case "UniformDistribution_Max":{
+				ret="{\n\t double max=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(max<var[i])\n\t   max=var[i];\n\t }\n\t return max;\n}";
+			}
+			case "UniformDistribution_Min":{
+				ret="{\n\t double min=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(min>var[i])\n\t   min=var[i];\n\t }\n\t return min;\n}";
+			}
+			//The percentage calculation depends on the specific problem, here implement based on example in D4.1 
+			case"Percentage_value":{
+				ret="{\n\t double percentage=0.0;\n\t int length=0, count=0;\n\t length=sizeof(var);\n\t for(i=0; i<length; i++){\n\t  if(var[i]<=30)\n\t  count=count+1;\n\t }\n\t percentage=(double)count/(double)length;\n\t return percentage;\n}";
+			}
+//			case "FuzzyInterval_maxfuzzyNumber":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyInterval_minfuzzyNumber":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzySetCut_lambda":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzySetCut_isStrong":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzySetCut_kind":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyLogic_operator":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyLogic_var":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyLogic_set":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyLogic_set.Fuzziness":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyLogic_set.FuzzyEntropy":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzyLogic_set.Roughness":{
+//				ret="{\n\n}";
+//			}
+			
+			//The Fuzzy function of different system is different, there is no uniform calculation. It should be customized according to different system. Here give an example based on self-driving car's deviation correction function.  
+			//The input should be one parameter, since here is array, it can be var[0]
+			case "FuzzySet_MembershipDegree_value":{
+				ret="{\n\t double value=0.0;\n\t if(var[0]>=-0.8 && var[0]<=0)\n\t  value=-1.25*var[0];\n\t else if(var[0]>0 && var[0]<=0.8)\n\t  value=1.25*var[0];\n\t else\n\t  value=1;\n\t return value;\n}";
+			}
+			//The element type is string, so the output should be string, considering the output type of the predefined function is double, here, use -1(represent LEFT) and 1(represent RIGHT) in example.
+			case "FuzzySet_MembershipDegree_element":{
+				ret="{\n\t double element=0.0;\n\t if(var[0]<0)\n\t  element=-1.0;\n\t else\n\t  element=1.0;\n\t return element;\n}";
+			}
+//			case "FuzzySet_Fuzziness":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzySet_FuzzinessEntropy":{
+//				ret="{\n\n}";
+//			}
+//			case "FuzzySet_Roughness":{
+//				ret="{\n\n}";
+//			}
+//			case "IntervalValuedFuzzySet_MembershipDegree":{
+//				ret="{\n\n}";
+//			}
+//			case "IntervalValuedFuzzySet_Fuzziness":{
+//				ret="{\n\n}";
+//			}
+//			case "IntervalValuedFuzzySet_FuzzyEntropy":{
+//				ret="{\n\n}";
+//			}
+//			case "IntervalValuedFuzzySet_Roughness":{
+//				ret="{\n\n}";
+//			}
+//			case "LFuzzySet_MembershipDegree":{
+//				ret="{\n\n}";
+//			}
+//			case "LFuzzySet_Fuzziness":{
+//				ret="{\n\n}";
+//			}
+//			case "LFuzzySet_FuzzyEntropy":{
+//				ret="{\n\n}";
+//			}
+//			case "LFuzzySet_Roughness":{
+//				ret="{\n\n}";
+//			}
+//			case "IntuitionsticFuzzySet_MembershipDegree":{
+//				ret="{\n\n}";
+//			}
+//			case "IntuitionsticFuzzySet_Fuzzyness":{
+//				ret="{\n\n}";
+//			}
+//			case "IntuitionsticFuzzySet_FuzzyEntropy":{
+//				ret="{\n\n}";
+//			}
+//			case "IntuitionsticFuzzySet_Roughness":{
+//				ret="{\n\n}";
+//			}
+//			case "VagueSet_MembershipDegree":{
+//				ret="{\n\n}";
+//			}
+//			case "VagueSet_Fuzziness":{
+//				ret="{\n\n}";
+//			}
+//			case "VagueSet_FuzzyEntropy":{
+//				ret="{\n\n}";
+//			}
+//			case "VagueSet_Roughness":{
+//				ret="{\n\n}";
+//			}
+//			case "TriangularFuzzyNumber_isSharped":{
+//				ret="{\n\n}";
+//			}
+//			case "TriangularFuzzyNumber_a":{
+//				ret="{\n\n}";
+//			}
+//			case "TriangularFuzzyNumber_b":{
+//				ret="{\n\n}";
+//			}
+//			case "TriangularFuzzyNumber_c":{
+//				ret="{\n\n}";
+//			}
+//			case "TriangularFuzzyNumber_number":{
+//				ret="{\n\n}";
+//			}
+//			case "PignisticDistribution_expression":{
+//				ret="{\n\n}";
+//			}
+			case "ShannonEntropy_h":{
+				ret="{\n\t double entropy=0.0;\n\t double count;\n\t int i, length=0, SIZE=256;\n\t length=sizeof(var);\n\t for(i=0; i<SIZE; i++){\n\t  if(var[i]!=0){\n\t   count=(double)var[i] / (double)length;\n\t   entropy+=-count * log2(count);\n\t  }\n\t } return entropy;\n}";
+			}
+			case "HartleyMeasure_h":{
+				ret="{\n\t double hartley=0.0;\n\t int length=0;\n\t length=sizeof(var);\n\t hartley=log10(length);\n\t return hartley;\n}";
+			}
+//			case "AlternativeMeasure_h":{
+//				ret="{\n\n}";
+//			}
+//			case "U_Uncertainty_h":{
+//				ret="{\n\n}";
+//			}
+//			case "DissonanceMeasure_e":{
+//				ret="{\n\n}";
+//			}
+//			case "DissonanceMeasure_complementary":{
+//				ret="{\n\n}";
+//			}
+//			case "DissonanceMeasure_Conflict":{
+//				ret="{\n\n}";
+//			}
+//			case "BeliefInterval_min":{
+//				ret="{\n\t double beliefMin=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(beliefMin>var[i])\n\t   beliefMin=var[i];\n\t }\n\t return beliefMin;\n}";
+//			}
+//			case "BeliefInterval_max":{
+//				ret="{\n\t double beliefMax=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(beliefMax<var[i])\n\t   beliefMax=var[i];\n\t }\n\t return beliefMax;\n}";
+//			}
+//		
+			//TODO finish 
+		}				
+		return ret;
+	}
+	
+	
+
+	
+	
+	def String DistributionManagement(AbstractElement2 element){
+		var String ret="calc";
+		if(element.uncer1!==null){
+			if(element.uncer1.bernoulliDistribution!==null){
+				if(element.uncer1.bernoulliDistribution.bernProb!==null){
+					ret=ret+"BernoulliDistribution_prob("+element.uncer1.bernoulliDistribution.name+".array[cycle])";
+				}
+				else if(element.uncer1.bernoulliDistribution.bernTrials!==null){
+					ret=ret+"BernoulliDistribution_trials("+element.uncer1.bernoulliDistribution.name+".array[cycle])";
+				}
+				
+			}
+			
+			else if(element.uncer1.gammaDistribution!==null){
+				if(element.uncer1.gammaDistribution.gammaK!==null){
+					ret=ret+"GammaDistribution_K("+element.uncer1.gammaDistribution.name+".array[cycle])";
+				}
+				else if(element.uncer1.gammaDistribution.getGammaMean!==null){
+					ret=ret+"GammaDistribution_mean("+element.uncer1.gammaDistribution.name+".array[cycle])";
+				}
+				
+			}
+			
+			else if(element.uncer1.normalDisstribution!==null){
+				if(element.uncer1.normalDisstribution.mean!==null){
+					ret=ret+"NormalDistribution_mean("+element.uncer1.normalDisstribution.name+".array[cycle])";
+				}
+				else if(element.uncer1.normalDisstribution.normDistStd!==null){
+					ret=ret+"NormalDistribution_normDistStd("+element.uncer1.normalDisstribution.name+".array[cycle])";
+				}
+				
+			}
+			
+			else if(element.uncer1.uniformDistribution!==null){
+				if(element.uncer1.uniformDistribution.uniformMax!==null){
+					ret=ret+"UniformDistribution_Max("+element.uncer1.uniformDistribution.name+".array[cycle])";
+				}
+				else if(element.uncer1.uniformDistribution.uniformMin!==null){
+					ret=ret+"UniformDistribution_Min("+element.uncer1.uniformDistribution.name+".array[cycle])";
+				}
+				
+			}
+			
+			else if(element.uncer1.percentage!==null){
+				if(element.uncer1.percentage.valuePer!==null){
+					ret=ret+"Percentage_value("+element.uncer1.percentage.name+".array[cycle])";
+				}
+			}
+		}
+		else if(element.uncer2!==null){
+			if(element.uncer2.fuzzyInterval!==null){
+				if(element.uncer2.fuzzyInterval.maxfuzzyNumber!==null){
+					ret=ret+"FuzzyInterval_maxfuzzyNumber("+element.uncer2.fuzzyInterval.name+".array[cycle])";
+				}
+				else if(element.uncer2.fuzzyInterval.minfuzzyNumber!==null){
+					ret=ret+"FuzzyInterval_minfuzzyNumber("+element.uncer2.fuzzyInterval.name+".array[cycle])";
+				}
+			}
+			else if(element.uncer2.fuzzySetCut!==null){
+				if(element.uncer2.fuzzySetCut.fuzzySetCutLam!==null){
+					ret=ret+"FuzzySetCut_lambda("+element.uncer2.fuzzySetCut.name+".array[cycle])";
+				}
+				else if(element.uncer2.fuzzySetCut.fuzzySetCutisStr!==null){
+					ret=ret+"FuzzySetCut_isStrong("+element.uncer2.fuzzySetCut.name+".array[cycle])";
+				}
+				else if(element.uncer2.fuzzySetCut.fuzzySetCutkin!==null){
+					ret=ret+"FuzzySetCut_kind("+element.uncer2.fuzzySetCut.name+".array[cycle])";
+				}
+			}
+			else if(element.uncer2.fuzzyLogic!==null){
+				if(element.uncer2.fuzzyLogic.fuzzyLogicOpera!==null){
+					ret=ret+"FuzzyLogic_operator("+element.uncer2.fuzzyLogic.name+".array[cycle])";
+				}
+				else if(element.uncer2.fuzzyLogic.fuzzyLogicVar!==null){
+					ret=ret+"FuzzyLogic_var("+element.uncer2.fuzzyLogic.name+".array[cycle])";
+				}
+				else if(element.uncer2.fuzzyLogic.fuzzyLogicSet!==null){
+					if(element.uncer2.fuzzyLogic.fuzzyLogicSet.FLSmembershipDegree!==null){
+						ret=ret+"FuzzyLogic_set("+element.uncer2.fuzzyLogic.name+").MembershipDegree("+element.uncer2.fuzzyLogic.fuzzyLogicSet.FLSmembershipDegree.name+".array[cycle])";///////////
+					}
+					else if(element.uncer2.fuzzyLogic.fuzzyLogicSet.FLSfuzziness!==null){
+						ret=ret+"FuzzyLogic_set.Fuzziness("+element.uncer2.fuzzyLogic.name+".array[cycle])";
+					}
+					else if(element.uncer2.fuzzyLogic.fuzzyLogicSet. FLSfuzzyEntropy!==null){
+						ret=ret+"FuzzyLogic_set.FuzzyEntropy("+element.uncer2.fuzzyLogic.name+".array[cycle])";
+					}
+					else if(element.uncer2.fuzzyLogic.fuzzyLogicSet. FLSroughness!==null){
+						ret=ret+"FuzzyLogic_set.Roughness("+element.uncer2.fuzzyLogic.name+".array[cycle])";
+					}
+				}
+			}
+			else if(element.uncer2.fuzzySet!==null){
+				if(element.uncer2.fuzzySet.FSmembershipDegree!==null){
+					if(element.uncer2.fuzzySet.FSmembershipDegree.membershipDegreeValue!==null){
+						ret=ret+"FuzzySet_MembershipDegree_value("+element.uncer2.fuzzySet.name+".array[cycle])";
+					}
+					else if(element.uncer2.fuzzySet.FSmembershipDegree.membershipDegreeHedge!==null){
+						ret=ret+"FuzzySet_MembershipDegree_hedge("+element.uncer2.fuzzySet.name+".array[cycle])";
+					}
+					else if(element.uncer2.fuzzySet.FSmembershipDegree.membershipDegreeElement!==null){
+						ret=ret+"FuzzySet_MembershipDegree_element("+element.uncer2.fuzzySet.name+".array[cycle])";
+					}
+				}
+				else if(element.uncer2.fuzzySet.FSfuzziness!==null){
+					ret=ret+"FuzzySet_Fuzziness("+element.uncer2.fuzzySet.name+".array[cycle])";
+				}
+				else if(element.uncer2.fuzzySet.FSfuzzyEntropy!==null){
+					ret=ret+"FuzzySet_FuzzyEntropy("+element.uncer2.fuzzySet.name+".array[cycle])";
+				}
+				else if(element.uncer2.fuzzySet.FSroughness!==null){
+					ret=ret+"FuzzySet_Roughness("+element.uncer2.fuzzySet.name+".array[cycle])";
+				}	
+			}
+			else if(element.uncer2.intervalValuedFuzzySet!==null){
+				if(element.uncer2.intervalValuedFuzzySet.IVFmembershipDegree!==null){
+					ret=ret+"IntervalValuedFuzzySet_MembershipDegree("+element.uncer2.intervalValuedFuzzySet.name+".array[cycle])";
+				}
+				else if(element.uncer2.intervalValuedFuzzySet.IVFfuzziness!==null){
+					ret=ret+"IntervalValuedFuzzySet_Fuzziness("+element.uncer2.intervalValuedFuzzySet.name+".array[cycle])";
+				}
+				else if(element.uncer2.intervalValuedFuzzySet.IVFfuzzyEntropy!==null){
+					ret=ret+"IntervalValuedFuzzySet_FuzzyEntropy("+element.uncer2.intervalValuedFuzzySet.name+".array[cycle])";
+				}
+				else if(element.uncer2.intervalValuedFuzzySet.IVFroughness!==null){
+					ret=ret+"IntervalValuedFuzzySet_Roughness("+element.uncer2.intervalValuedFuzzySet.name+".array[cycle])";
+				}	
+			}
+			else if(element.uncer2.LFuzzySet!==null){
+				if(element.uncer2.LFuzzySet.LFSmembershipDegree!==null){
+					ret=ret+"LFuzzySet_MembershipDegree("+element.uncer2.LFuzzySet.name+".array[cycle])";
+				}
+				else if(element.uncer2.LFuzzySet.LFSfuzziness!==null){
+					ret=ret+"LFuzzySet_Fuzziness("+element.uncer2.LFuzzySet.name+".array[cycle])";
+				}
+				else if(element.uncer2.LFuzzySet.LFSfuzzyEntropy!==null){
+					ret=ret+"LFuzzySet_FuzzyEntropy("+element.uncer2.LFuzzySet.name+".array[cycle])";
+				}
+				else if(element.uncer2.LFuzzySet.LFSroughness!==null){
+					ret=ret+"LFuzzySet_Roughness("+element.uncer2.LFuzzySet.name+".array[cycle])";
+				}
+			}
+			else if(element.uncer2.intuitionisticFuzzySet!==null){
+				if(element.uncer2.intuitionisticFuzzySet.IFmembershipDegree!==null){
+					ret=ret+"IntuitionisticFuzzySet_MembershipDegree("+element.uncer2.intuitionisticFuzzySet.name+".array[cycle])";
+				}
+				else if(element.uncer2.intuitionisticFuzzySet.IFfuzziness!==null){
+					ret=ret+"IntuitionisticFuzzySet_Fuzziness("+element.uncer2.intuitionisticFuzzySet.name+".array[cycle])";
+				}
+				else if(element.uncer2.intuitionisticFuzzySet.IFfuzzyEntropy!==null){
+					ret=ret+"IntuitionisticFuzzySet_FuzzyEntropy("+element.uncer2.intuitionisticFuzzySet.name+".array[cycle])";
+				}
+				else if(element.uncer2.intuitionisticFuzzySet.IFroughness!==null){
+					ret=ret+"IntuitionisticFuzzySet_Roughness("+element.uncer2.intuitionisticFuzzySet.name+".array[cycle])";
+				}
+			}
+			else if(element.uncer2.vagueSet!==null){
+				if(element.uncer2.vagueSet.VSmembershipDegree!==null){
+					ret=ret+"VagueSet_MembershipDegree("+element.uncer2.vagueSet.name+".array[cycle])";
+				}
+				else if(element.uncer2.vagueSet.VSfuzziness!==null){
+					ret=ret+"VagueSet_Fuzziness("+element.uncer2.vagueSet.name+".array[cycle])";
+				}
+				else if(element.uncer2.vagueSet.VSfuzzyEntropy!==null){
+					ret=ret+"VagueSet_FuzzyEntropy("+element.uncer2.vagueSet.name+".array[cycle])";
+				}
+				else if(element.uncer2.vagueSet.VSroughness!==null){
+					ret=ret+"VagueSet_Roughness("+element.uncer2.vagueSet.name+".array[cycle])";
+				}
+			}
+			else if(element.uncer2.triangularFuzzyNumber!==null){
+				if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumberisSha!==null){
+					ret=ret+"TriangularFuzzyNumber_isSharped("+element.uncer2.triangularFuzzyNumber.name+".array[cycle])";
+				}
+				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumbera!==null){
+					ret=ret+"TriangularFuzzyNumber_a("+element.uncer2.triangularFuzzyNumber.name+".array[cycle])";
+				}
+				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumberb!==null){
+					ret=ret+"TriangularFuzzyNumber_b("+element.uncer2.triangularFuzzyNumber.name+".array[cycle])";
+				}
+				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumberc!==null){
+					ret=ret+"TriangularFuzzyNumber_c("+element.uncer2.triangularFuzzyNumber.name+".array[cycle])";
+				}
+				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumber!==null){
+					ret=ret+"TriangularFuzzyNumber_number("+element.uncer2.triangularFuzzyNumber.name+".array[cycle])";
+				}
+			}
+		}
+		else if(element.uncer3!==null){
+			if(element.uncer3.pignisticDistribution!==null){
+				ret=ret+"PignisticDistribution_expression("+element.uncer3.pignisticDistribution.name+".array[cycle])";
+			}
+			else if(element.uncer3.shannonEntropy!==null){
+				ret=ret+"ShannonEntropy_h("+element.uncer3.shannonEntropy.name+".array[cycle])";
+			}
+			else if(element.uncer3.hartleyMeasure!==null){
+				ret=ret+"HartleyMeasure_h("+element.uncer3.hartleyMeasure.name+".array[cycle])";
+			}
+			else if(element.uncer3.alternativeMeasure!==null){
+				ret=ret+"AlternativeMeasure_h("+element.uncer3.alternativeMeasure.name+".array[cycle])";
+			}
+			else if(element.uncer3.u_Uncertainty!==null){
+				ret=ret+"U_Uncertainty_h("+element.uncer3.u_Uncertainty.name+".array[cycle])";
+			}
+			else if(element.uncer3.dissonanceMeasure!==null){
+				if(element.uncer3.dissonanceMeasure.dissonanceMeasureE!==null){
+					ret=ret+"DissonanceMeasure_e("+element.uncer3.dissonanceMeasure.name+".array[cycle])";
+				}
+				else if(element.uncer3.dissonanceMeasure.dissonanceMeasureComplem!==null){
+					ret=ret+"DissonanceMeasure_complementray("+element.uncer3.dissonanceMeasure.name+".array[cycle])";
+				}
+				else if(element.uncer3.dissonanceMeasure.conflict!==null){
+					ret=ret+"DissonanceMeasure_Conflict("+element.uncer3.dissonanceMeasure.name+".array[cycle])";
+				}
+			}
+			else if(element.uncer3.distribution!==null){
+				ret=ret+"Distribution_expression("+element.uncer3.distribution.name+".array[cycle])";
+			}
+			else if(element.uncer3.beliefInterval!==null){
+				if(element.uncer3.beliefInterval.min!==null){
+					ret=ret+"BeliefInterval_min("+element.uncer3.beliefInterval.name+".array[cycle])";
+				}
+				else if(element.uncer3.beliefInterval.max!==null){
+					ret=ret+"BeliefInterval_max("+element.uncer3.beliefInterval.name+".array[cycle])";
+				}
+			}
+			else if(element.uncer3.possibleDistribution!==null){
+				ret=ret+"PossibleDistribution_expression("+element.uncer3.beliefInterval.name+".array[cycle])";
+			}
+		}
+		
+		return ret;
+	}
+	
 }
 
