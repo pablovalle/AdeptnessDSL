@@ -243,46 +243,48 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 
 	@Check
 	public void checkCustomOracle(CustomOracle cuOr) {
-		if (cuOr.getCheckInputs() == null || cuOr.getCheckInputs().size() == 0) {
+		if (cuOr.getPrecondition() != null) {
+			if (cuOr.getPredInputs() == null) {
+				error("Precondition inputs must be set if a precondition is defined.",
+						AdeptnessPackage.Literals.CUSTOM_ORACLE__PRECONDITION);
+				return;
+			}else {
+				boolean emptyError = checkVariablesInMonitoringPlan(cuOr.getPredInputs(),
+						"Precondition input variables list cannot be empty.",
+						AdeptnessPackage.Literals.CUSTOM_ORACLE__PRED_INPUTS);
+				if (emptyError) {
+					return;
+				}
+			}
+		}
+
+		if (cuOr.getCheckInputs() == null) {
+			error("Must define a checks input variable list", AdeptnessPackage.Literals.CUSTOM_ORACLE__CHECK_INPUTS);
+		} else {
 			checkVariablesInMonitoringPlan(cuOr.getCheckInputs(), "Checks input variables list cannot be empty.",
 					AdeptnessPackage.Literals.CUSTOM_ORACLE__CHECK_INPUTS);
 		}
-
-		if (cuOr.getPrecondition() != null) {
-			if (cuOr.getPredInputs() == null ) {
-				error("Precondition inputs must be set if a precondition is defined.",
-						AdeptnessPackage.Literals.CUSTOM_ORACLE__PRECONDITION);
-			}else if (cuOr.getPredInputs() != null && cuOr.getPredInputs().size() == 0) {
-				checkVariablesInMonitoringPlan(cuOr.getPredInputs(),
-						"Precondition input variables list cannot be empty.",
-						AdeptnessPackage.Literals.CUSTOM_ORACLE__PRED_INPUTS);
-			}
-		}
 	}
-	
-
-
-
 
 	// PRIVATE FUNCTIONS
-	private void checkVariablesInMonitoringPlan(EList<String> variables, String emptyErrorMessage,
+	private boolean checkVariablesInMonitoringPlan(EList<String> variables, String emptyErrorMessage,
 			EAttribute reference) {
 		if (variables.size() == 0) {
 			error(emptyErrorMessage, reference);
+			return true;
 		}
-		boolean found;
+
+		MonitoringVar emVar;
 		for (int i = 0; i < variables.size(); i++) {
-			String varName = variables.get(i);
-			found = false;
-			for (int j = 0; j < monitoringVariableNames.size(); j++) {
-				if (monitoringVariableNames.get(j).equals(varName)) {
-					found = true;
-				}
-			}
-			if (!found) {
-				error("Variable " + varName + " is not in the monitoring plan", reference);
+			String name = variables.get(i);
+
+			emVar = monitoringVariables.getVariables().get(name);
+			if (emVar == null) {
+				error("Variable " + name + " is not in the monitoring plan", reference);
+				
 			}
 		}
+		return false;
 	}
 
 }
