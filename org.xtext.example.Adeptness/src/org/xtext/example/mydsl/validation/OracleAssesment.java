@@ -58,11 +58,6 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		monitoringVariables = MonitoringVariables.getInstance(CPS.getName());
 	}
 
-	@Check
-	public void checkMath(Library lib) {
-		errorDetected = true;
-	}
-
 	private Oracle oracle;
 	private Constants.PRECONDS precond;
 	private boolean whenPrecondMet = false;
@@ -121,7 +116,103 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 				errorDetected = true;
 			}
 		}
+	}
+	
+	@Check
+	public void checkMathLibrary(ExpressionsModel exp) {
+		boolean mathFound = false;
+		boolean signalFound = false;
+		String library = "";
+		int frontParenthesis = 0;
+		int backParenthesis = 0;
+		// error if comparison or logical operator
+		for (int i = 0; i < exp.getElements().size(); i++) {
+			AbstractElement2 el = exp.getElements().get(i);
+			if (el.getMath() != null) {
+				// Math libraries cannot be used recursively
+				if (mathFound) {
+					error("Mathematical functions cannot be used recursively.",
+							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+					errorDetected = true;
+					return;
+				}
+				mathFound = true;
+				library = getLibrary(el.getMath().getLibrary());
+				if (library.equals("unknown")) {
+					error("Unknown mathematical library.", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+					errorDetected = true;
+					return;
+				}
+				// Math must be followed by a front parenthesis
+				if (exp.getElements().get(i + 1) == null
+						|| exp.getElements().get(i + 1).getFrontParentheses().size() == 0) {
+					error("The expression to apply " + library + " must be surrounded by parenthesis.",
+							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+					errorDetected = true;
+					return;
+				}
+			}
 
+			if (mathFound) {
+				frontParenthesis += el.getFrontParentheses().size();
+				if (el.getName() != null) {
+					signalFound = true;
+				}
+				if (el.getOp() != null) {
+					for (int j = 0; j < el.getOp().size(); j++) {
+						if (mathFound && el.getOp().get(j).getComparation() != null) {
+							error("Mathematical functions does not allow comparison operators.",
+									AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+							errorDetected = true;
+							return;
+						}
+						if (mathFound && el.getOp().get(j).getLogicOperator() != null) {
+							error("Mathematical functions does not allow logical operators.",
+									AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+							errorDetected = true;
+							return;
+						}
+						if (mathFound && el.getOp().get(j).getBackParentheses() != null) {
+							backParenthesis++;
+							if (frontParenthesis == backParenthesis) {
+								if (!signalFound) {
+									error("Mathematical functions must be applied to at least one signal.",
+											AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+									errorDetected = true;
+									return;
+								}
+								mathFound = false;
+								frontParenthesis = 0;
+								backParenthesis = 0;
+								signalFound = false;
+							}
+						}
+					}
+				}
+			}
+
+		}
+		if (mathFound && frontParenthesis != backParenthesis) {
+			error("The expression to apply " + library + " must be surrounded by parenthesis.",
+					AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+			errorDetected = true;
+			return;
+		}
+	}
+	
+	private String getLibrary(Library lib) {
+		if (lib == null) {
+			return "unknown";
+		} else if (lib.getCos() != null) {
+			return "cosine";
+		} else if (lib.getSin() != null) {
+			return "sine";
+		} else if (lib.getDerivative() != null) {
+			return "devirative";
+		} else if (lib.getModulus() != null) {
+			return "modulus";
+		}
+		return "unknown";
 	}
 
 	@Check
@@ -647,7 +738,7 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		if (key.equals(""))
 			return;
 
-		// get signal's max and min values. used on assessment, to recalculate reference
+		// get signal's max and min values. used on assessment to recalculate reference
 		// according to the confidence value
 		findSignalsMaxMinValues();
 
@@ -1060,9 +1151,24 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 
 	private String getExpression(String type, EList<AbstractElement2> elements, int timestamp) {
 		String expression = "";
-		for (AbstractElement2 element : elements) {
+		boolean derivative = false;
+		int idxDevStart = 0;
+		int idxDevEnd = 0;
+		int devFrontParen = 0;
+		int devBackParen = 0;
+		int ts = 0;
+		AbstractElement2 element;
+		for (int idx = 0; idx < elements.size(); idx++) {
+			element = elements.get(idx);
 			for (String parenthesis : element.getFrontParentheses()) {
 				expression += parenthesis;
+				if (derivative) {
+					if (devFrontParen == 0 && idxDevEnd == 0) {
+						idxDevStart = idx - 1;
+						expression += "(";
+					}
+					devFrontParen++;
+				}
 			}
 			if (element.getName() != null) {
 				switch (type) {
@@ -1070,8 +1176,16 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 					expression += "1.0";
 					break;
 				case "opData":
-					double value = monitoringVariables.getVariables().get(element.getName()).getOpData().get(timestamp);
+					ts = timestamp;
+					if (derivative && idxDevEnd != 0) {
+						ts = timestamp - 1;
+						if (ts == -1) {
+							ts = 0;
+						}
+					}
+					double value = monitoringVariables.getVariables().get(element.getName()).getOpData().get(ts);
 					expression += (value < 0 ? "(" : "") + Double.toString(value) + (value < 0 ? ")" : "");
+
 					break;
 				case "withVars":
 					expression += "@@" + element.getName() + "@@";
@@ -1091,6 +1205,45 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 						expression += op.getLogicOperator().getOp().toString();
 					} else if (op.getBackParentheses() != null) {
 						expression += op.getBackParentheses();
+						if (derivative) {
+							devBackParen++;
+							if (devFrontParen == devBackParen) {
+								if (idxDevEnd == 0) {
+									idxDevEnd = idx;
+									idx = idxDevStart;
+									devFrontParen = 0;
+									devBackParen = 0;
+									expression += "-";
+								} else {
+									derivative = false;
+									devFrontParen = 0;
+									devBackParen = 0;
+									idxDevEnd = 0;
+									idxDevStart = 0;
+									expression += ")";
+									// expresion += "/" + timestamp + "-(" + prevTimestamp + ")"; 
+									// => always 1 because of the normalization
+								}
+							}
+						}
+					}
+				}
+			}
+			if (element.getMath() != null) {
+				if (element.getMath().getLibrary().getCos() != null) {
+					expression += "Math.cos";
+				} else if (element.getMath().getLibrary().getSin() != null) {
+					expression += "Math.sin";
+				} else if (element.getMath().getLibrary().getModulus() != null) {
+					expression += "Math.abs";
+				} else if (element.getMath().getLibrary().getDerivative() != null) {
+					switch (type) {
+					case "basic":
+					case "withVars":
+						expression += "";
+						break;
+					case "opData":
+						derivative = true;
 					}
 				}
 			}

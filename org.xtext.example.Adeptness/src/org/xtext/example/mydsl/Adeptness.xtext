@@ -210,12 +210,12 @@ Reference:
 //;
 
 Same:
-	'should' 'be' (bound_upp=Bound_up) 
+	'should be' (bound_upp=Bound_up) 
 	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
 ;
 
 NotSame:
-	'should' 'not' 'be' (bound_upp=Bound_up)
+	'should not be' (bound_upp=Bound_up)
 	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
 ;
 
