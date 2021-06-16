@@ -1310,12 +1310,12 @@ var CharSequence confCalculationBody;
 				verdict.add("	time=0;");
 				verdict.add("	fail=0;");
 				verdict.add("	while(i<conf.used && fail==0){")
-				verdict.add("		if(conf.array[i]<"+param1.reason.XPeaks.cant.DVal+"»){");
+				verdict.add("		if(conf.array[i]<"+param1.reason.XPeaks.cant.DVal+"){");
 				verdict.add("			if(time==0){");
 				verdict.add("				time=i;");
 				verdict.add("			}");
 				verdict.add("			times--;");
-				verdict.add("			if(times==0 && timeStampOracle.array[i] - timeStampOracle.array[time]<"+param1.reason.XPeaks.time.DVal+"»){");
+				verdict.add("			if(times==0 && timeStampOracle.array[i] - timeStampOracle.array[time]<"+param1.reason.XPeaks.time.DVal+"){");
 				verdict.add("				fail=1;	");
 				verdict.add("			}");
 				verdict.add("			else if(times==0){");
