@@ -1678,8 +1678,6 @@ var List<String> uncerNames;
 		return ret;
 	}
 		
-	
-	//TODO ajustar paramteros necesarios
 	def CharSequence create_oracle_json(Signal CPS)'''
 
 	{ 
