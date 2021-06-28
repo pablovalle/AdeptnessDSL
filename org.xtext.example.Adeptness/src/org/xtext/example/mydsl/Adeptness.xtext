@@ -26,9 +26,50 @@ QualifiedName:
 ;
 
 Type:
-	Signal | MonitoringFile // | ValidationPlan | DataType  
+	Signal | InferMonitoringFile | ModelFile | MonitoringFile  // | ValidationPlan | DataType  
 ;
 
+InferMonitoringFile:
+	'INFERENCEMONITORINGPLAN' name=ID ':' 'implements'(superType=[ModelFile|QualifiedName])
+		(monitoringInferVariables+=MonitoringInferVariables)+
+		'ENDINFERENCEMONITORINGPLAN'
+;
+
+ModelFile:
+	'MODELFILE' name=ID':' 'implements'(superType=[MonitoringFile|QualifiedName])
+		((trainableModel+=TrainableModel)|(nonTrainableModel+=NonTrainableModel))+
+	'ENDMODELFILE'
+;
+
+NonTrainableModel:
+	'NONTRAINABLEMODEL' name=ID ':'
+		'Independent variables' ':' '[' (variables+=ID)+ ']'
+		'Model URL' ':' model=STRING
+	'ENDNONTRAINABLEMODEL'
+;
+
+
+TrainableModel:
+	'TRAINABLEMODEL' name=ID ':'
+		'Independent variables' ':' '[' (variables+=ID)+ ']'
+		'Data file' ':' dataFile=STRING
+		'Layers' ':' (layers+=Layer)+
+		'EndLayers'
+	'ENDTRAINABLEMODEL'
+;
+
+Layer:
+	'Layer' name=ID ':'
+		'type' ':' (dense=DenseType)
+	'EndLayer'
+;
+
+DenseType:
+	name='Dense'
+	'units' ':' units=INT
+	'activation' ':' activation=('deserializable'|'elu'|'exponential'|'gelu'|'get'|'hard_sigmoid'|'linear'|'relu'|'selu'|
+									'serializable'|'sigmoid'|'softmax'|'softplus'|'sofsign'|'swish'|'tanh')
+;
 
 /*ValidationPlan:
 	'VALIDATIONPLAN' name=ID ':' ('implements'superType=[MonitoringFile|QualifiedName])?
@@ -63,7 +104,6 @@ Inputs:
 MonitoringFile:
 	'MONITORINGPLAN' name=ID ':'
 		(monitoringPlan+=MonitoringPlan)+
-		(monitoringInferVariables+=MonitoringInferVariables)*
 		'ENDMONITORINGPLAN'
 		/*(check_static_upper+=Check_Static_upper_only)*
 		(check_static_lower+=Check_Static_lower_only)*
@@ -82,7 +122,6 @@ MonitoringInferVariables:
 	('max' ':' max = DOUBLE
 	'min' ':' min = DOUBLE)?
 	'model' ':' model=STRING
-	'independent' 'variables' ':' '[' (variables+=ID)+ ']'
 	'ENDMONITOR_INFERENCE'
 ;
 
@@ -118,13 +157,14 @@ Sig_type:
 //Each signal could have more than one oracles
 Signal:
 	//imp = ImportMonitoringPlan
-	'CPS' name=ID ('[' cardinalityNumCPS = INT ']')? ':' ('implements'superType=[MonitoringFile|QualifiedName])?
+	'CPS' name=ID ('[' cardinalityNumCPS = INT ']')? ':' 'implements'(superType=[MonitoringFile|QualifiedName]) ('and 'superTypeInfer=[InferMonitoringFile|QualifiedName])?
 		((oracle+=Oracle)|(customOracle+=CustomOracle))+'ENDCPS'
 		/*(check_static_upper+=Check_Static_upper_only)*
 		(check_static_lower+=Check_Static_lower_only)*
 		(check_range+=Check_Range)*
 		(check_gap+=Check_Gap)*/
 ;
+
 
 CustomOracle:
 	'CUSTOMORACLE' name=ID ':'
