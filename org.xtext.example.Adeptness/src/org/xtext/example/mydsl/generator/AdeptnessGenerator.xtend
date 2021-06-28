@@ -1896,7 +1896,7 @@ var List<String> uncerNames;
 	'''
 	#include "«param.name.toString()».h"
 			
-	«IF param.check.description!==null»//«param.check.description.value»«ENDIF»
+	«IF param.check.description!==null»/*«param.check.description.value»*/«ENDIF»
 	
 	int preprocessInputs_«param.name»(SensorInput *inputs) {
 		//TODO.
@@ -1986,7 +1986,7 @@ var List<String> uncerNames;
 	def create_C_oracle_c(CustomOracle param)'''
 	#include "«param.name.toString()».h"
 				
-	«IF param.description!==null»//«param.description»«ENDIF»
+	«IF param.description!==null»/*«param.description»*/«ENDIF»
 	
 	int preprocessInputs_«param.name»(SensorInput *inputs) {
 			//TODO.
