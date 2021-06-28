@@ -17,12 +17,15 @@ import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.CustomOracle;
 import org.xtext.example.mydsl.adeptness.Description;
 import org.xtext.example.mydsl.adeptness.ExpressionsModel;
+import org.xtext.example.mydsl.adeptness.InferMonitoringFile;
 import org.xtext.example.mydsl.adeptness.Library;
 import org.xtext.example.mydsl.adeptness.MonitoringFile;
 import org.xtext.example.mydsl.adeptness.MonitoringInferVariables;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
+import org.xtext.example.mydsl.adeptness.NonTrainableModel;
 import org.xtext.example.mydsl.adeptness.Oracle;
 import org.xtext.example.mydsl.adeptness.Signal;
+import org.xtext.example.mydsl.adeptness.TrainableModel;
 
 /**
  * This class contains custom validation rules.
@@ -69,8 +72,8 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			monitoringVariables.addVariable(CPS.getName(), name, type, max, min);
 		}
 
-		for (int i = 0; i < CPS.getSuperType().getMonitoringInferVariables().size(); i++) {
-			MonitoringInferVariables monitor = CPS.getSuperType().getMonitoringInferVariables().get(i);
+		for (int i = 0; i < CPS.getSuperTypeInfer().getMonitoringInferVariables().size(); i++) {
+			MonitoringInferVariables monitor = CPS.getSuperTypeInfer().getMonitoringInferVariables().get(i);
 			name = monitor.getName().toString();
 			monitoringVars.add(name);
 			type = monitor.getMonitoringVariableDatatype().getSig_type().toString();
@@ -96,14 +99,19 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	@Check
 	public void getMonitoringVariablesNames(MonitoringFile file) {
 		monitoringVariableNames = new ArrayList<>();
-		inferenceVariableNames = new ArrayList<>();
+		
 		for (int i = 0; i < file.getMonitoringPlan().size(); i++) {
 			monitoringVariableNames.add(file.getMonitoringPlan().get(i).getMonitoringVariables().getName().toString());
 		}
+	}
+	
+	@Check
+	public void getInferNames(InferMonitoringFile file) {
+		inferenceVariableNames = new ArrayList<>();
+
 		for (int i = 0; i < file.getMonitoringInferVariables().size(); i++) {
 			inferenceVariableNames.add(file.getMonitoringInferVariables().get(i).getName().toString());
 		}
-
 	}
 
 	@Check
@@ -232,11 +240,24 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}
 	}
 
+//	@Check
+//	public void checkIndepentVariablesInMonitoringFile(MonitoringInferVariables monitoringVariable) {
+//		checkVariablesInMonitoringPlan(monitoringVariable.getVariables(), "Independent variables list cannot be empty.",
+//				AdeptnessPackage.Literals.INFER_MONITORING_FILE__MONITORING_INFER_VARIABLES);
+//	}
+	
 	@Check
-	public void checkIndepentVariablesInMonitoringFile(MonitoringInferVariables monitoringVariable) {
+	public void checkIndepentVariablesInMonitoringFile(NonTrainableModel monitoringVariable) {
 		checkVariablesInMonitoringPlan(monitoringVariable.getVariables(), "Independent variables list cannot be empty.",
-				AdeptnessPackage.Literals.MONITORING_INFER_VARIABLES__VARIABLES);
+				AdeptnessPackage.Literals.NON_TRAINABLE_MODEL__VARIABLES);
 	}
+	
+	@Check
+	public void checkIndepentVariablesInMonitoringFile(TrainableModel monitoringVariable) {
+		checkVariablesInMonitoringPlan(monitoringVariable.getVariables(), "Independent variables list cannot be empty.",
+				AdeptnessPackage.Literals.TRAINABLE_MODEL__VARIABLES);
+	}
+	
 
 	@Check
 	public void checkEmptyDescription(Description desc) {

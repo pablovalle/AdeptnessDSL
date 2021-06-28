@@ -43,16 +43,16 @@ ModelFile:
 
 NonTrainableModel:
 	'NONTRAINABLEMODEL' name=ID ':'
-		'Independent variables' ':' '[' (variables+=ID)+ ']'
-		'Model URL' ':' model=STRING
+		'Independent' 'variables' ':' '[' (variables+=ID)+ ']'
+		'Model' 'URL' ':' model=STRING
 	'ENDNONTRAINABLEMODEL'
 ;
 
 
 TrainableModel:
 	'TRAINABLEMODEL' name=ID ':'
-		'Independent variables' ':' '[' (variables+=ID)+ ']'
-		'Data file' ':' dataFile=STRING
+		'Independent' 'variables' ':' '[' (variables+=ID)+ ']'
+		'Data' 'file' ':' dataFile=STRING
 		'Layers' ':' (layers+=Layer)+
 		'EndLayers'
 	'ENDTRAINABLEMODEL'
@@ -157,7 +157,7 @@ Sig_type:
 //Each signal could have more than one oracles
 Signal:
 	//imp = ImportMonitoringPlan
-	'CPS' name=ID ('[' cardinalityNumCPS = INT ']')? ':' 'implements'(superType=[MonitoringFile|QualifiedName]) ('and 'superTypeInfer=[InferMonitoringFile|QualifiedName])?
+	'CPS' name=ID ('[' cardinalityNumCPS = INT ']')? ':' 'implements'(superType=[MonitoringFile|QualifiedName]) ('and' superTypeInfer=[InferMonitoringFile|QualifiedName])?
 		((oracle+=Oracle)|(customOracle+=CustomOracle))+'ENDCPS'
 		/*(check_static_upper+=Check_Static_upper_only)*
 		(check_static_lower+=Check_Static_lower_only)*
