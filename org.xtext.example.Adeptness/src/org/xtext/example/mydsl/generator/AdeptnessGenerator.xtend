@@ -703,7 +703,14 @@ var List<String> uncerNames;
 		
 		for(Oracle o: s.oracle){
 			if(o.check.em!==null){
-				var List<Double> listadoCombinaciones=calcCombinations(o, s.superType.monitoringPlan, s.superTypeInfer.monitoringInferVariables);
+				var List<Double> listadoCombinaciones;
+				if(s.superTypeInfer!==null){
+					listadoCombinaciones=calcCombinations(o, s.superType.monitoringPlan, s.superTypeInfer.monitoringInferVariables);
+				
+				}
+				else{
+					listadoCombinaciones=calcCombinations2(o,s.superType.monitoringPlan);
+				}
 				maxMap.put(o.name,Collections.max(listadoCombinaciones));
 				minMap.put(o.name,Collections.min(listadoCombinaciones));
 			}
@@ -726,6 +733,58 @@ var List<String> uncerNames;
 				minMap.put(o.name,min);
 			}
 		}
+	}
+	
+	def calcCombinations2(Oracle oracle, EList<MonitoringPlan> list) {
+		var String expresionWithVars=getExpressionWithVars(oracle.check.em.elements);
+		var List<String> varNames = diffVarNames(oracle);
+		var List<String> exprCombs = new ArrayList<String>();
+		var List<Double> maxMinValueCombs = new ArrayList();
+		var List<Double> minValues= getMinValues2(varNames,list);
+		var List<Double> maxValues= getMaxValues2(varNames,list);
+		exprCombs = generateCombinations(0, expresionWithVars, varNames, exprCombs, minValues,maxValues);
+		for(String expression:exprCombs){
+			maxMinValueCombs.add(evalExpression(expression));
+		}
+	//TODO set values
+		if(maxMinValueCombs.size()==0){
+			maxMinValueCombs.add(0.0);
+		}
+		return maxMinValueCombs;
+	}
+	
+	def getMaxValues2(List<String> strings, EList<MonitoringPlan> list) {
+		var List<Double> maxValues= new ArrayList();
+		for(String name: strings){
+			for(MonitoringPlan plan: list){
+				if(plan.monitoringVariables.name.equals(name)){
+					if(plan.monitoringVariables.monitoringVariableDatatype.sig_type.equals("boolean")){
+						maxValues.add(1.0);
+					}
+					else{
+						maxValues.add(plan.monitoringVariables.max.DVal);
+					}
+				}
+			}	
+		}
+		return maxValues;
+	}
+	
+	def getMinValues2(List<String> strings, EList<MonitoringPlan> list) {
+		var List<Double> minValues= new ArrayList();
+		for(String name: strings){
+			for(MonitoringPlan plan: list){
+				if(plan.monitoringVariables.name.equals(name)){
+					if(plan.monitoringVariables.monitoringVariableDatatype.sig_type.equals("boolean")){
+						minValues.add(0.0);
+					}
+					else{
+						minValues.add(plan.monitoringVariables.min.DVal);
+					}
+				}
+			}
+		}
+		return minValues;
 	}
 	
 	def calcCombinations(Oracle oracle, EList<MonitoringPlan> list,EList<MonitoringInferVariables> listInfer) {
@@ -1698,6 +1757,7 @@ var List<String> uncerNames;
 		«ENDIF»
 	    «ENDFOR»
 		«"\t\t"»],
+		«IF CPS.superTypeInfer!==null»
 		«IF CPS.superTypeInfer.monitoringInferVariables.size!==0»
 		«"\t\t"»"sinteticVariationPoints": [
 		«FOR SV: CPS.superTypeInfer.monitoringInferVariables»
@@ -1717,7 +1777,7 @@ var List<String> uncerNames;
 		«"\t\t\t\t"»"model":"«CPS.superTypeInfer.monitoringInferVariables.get(CPS.superTypeInfer.monitoringInferVariables.size-1).model»"
 		«"\t\t\t"»}
 		«"\t\t"»],
-		«ENDIF»
+		«ENDIF»«ENDIF»
 		«"\t\t"»"evaluationFunctions": [
 		«getOracleNames(CPS.oracle)»
 		

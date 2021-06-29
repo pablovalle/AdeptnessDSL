@@ -42,7 +42,7 @@ ModelFile:
 ;
 
 NonTrainableModel:
-	'NONTRAINABLEMODEL' name=ID ':'
+	'NONTRAINABLEMODEL' name=STRING ':'
 		'Independent' 'variables' ':' '[' (variables+=ID)+ ']'
 		'Model' 'URL' ':' model=STRING
 	'ENDNONTRAINABLEMODEL'
@@ -50,7 +50,7 @@ NonTrainableModel:
 
 
 TrainableModel:
-	'TRAINABLEMODEL' name=ID ':'
+	'TRAINABLEMODEL' name=STRING ':'
 		'Independent' 'variables' ':' '[' (variables+=ID)+ ']'
 		'Data' 'file' ':' dataFile=STRING
 		'Layers' ':' (layers+=Layer)+
