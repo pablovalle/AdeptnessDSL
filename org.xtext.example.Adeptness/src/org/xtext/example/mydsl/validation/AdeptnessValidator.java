@@ -12,13 +12,10 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.ComposedChecks;
-import org.xtext.example.mydsl.adeptness.AbstractElement2;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.CustomOracle;
 import org.xtext.example.mydsl.adeptness.Description;
-import org.xtext.example.mydsl.adeptness.ExpressionsModel;
 import org.xtext.example.mydsl.adeptness.InferMonitoringFile;
-import org.xtext.example.mydsl.adeptness.Library;
 import org.xtext.example.mydsl.adeptness.MonitoringFile;
 import org.xtext.example.mydsl.adeptness.MonitoringInferVariables;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
@@ -35,7 +32,6 @@ import org.xtext.example.mydsl.adeptness.TrainableModel;
  */
 @ComposedChecks(validators= { OracleAssesment.class, UncertaintyValidator.class })
 public class AdeptnessValidator extends AbstractAdeptnessValidator {
-
 	public static String DUPLICATED_NAME = "Duplicated Name";
 
 	double cantHigh;
@@ -268,128 +264,48 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 
 	@Check
 	public void checkCustomOracle(CustomOracle cuOr) {
-		if (cuOr.getCheckInputs() == null || cuOr.getCheckInputs().size() == 0) {
-			checkVariablesInMonitoringPlan(cuOr.getCheckInputs(), "Checks input variables list cannot be empty.",
-					AdeptnessPackage.Literals.CUSTOM_ORACLE__CHECK_INPUTS);
-		}
-
 		if (cuOr.getPrecondition() != null) {
-			if (cuOr.getPredInputs() == null ) {
+			if (cuOr.getPredInputs() == null) {
 				error("Precondition inputs must be set if a precondition is defined.",
 						AdeptnessPackage.Literals.CUSTOM_ORACLE__PRECONDITION);
-			}else if (cuOr.getPredInputs() != null && cuOr.getPredInputs().size() == 0) {
-				checkVariablesInMonitoringPlan(cuOr.getPredInputs(),
+				return;
+			}else {
+				boolean emptyError = checkVariablesInMonitoringPlan(cuOr.getPredInputs(),
 						"Precondition input variables list cannot be empty.",
 						AdeptnessPackage.Literals.CUSTOM_ORACLE__PRED_INPUTS);
-			}
-		}
-	}
-	
-
-
-	@Check
-	public void checkMathLibrary(ExpressionsModel exp) {
-		boolean mathFound = false;
-		boolean signalFound = false;
-		String library = "";
-		int frontParenthesis = 0;
-		int backParenthesis = 0;
-		// error if comparison or logical operator
-		for (int i = 0; i < exp.getElements().size(); i++) {
-			AbstractElement2 el = exp.getElements().get(i);
-			if (el.getMath() != null) {
-				// Math libraries cannot be used recursively
-				if (mathFound) {
-					error("Mathematical functions cannot be used recursively.",
-							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-				}
-				mathFound = true;
-				library = getLibrary(el.getMath().getLibrary());
-				if (library.equals("unknown")) {
-					error("Unknown mathematical library.", AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+				if (emptyError) {
 					return;
 				}
-				// Math must be followed by a front parenthesis
-				if (exp.getElements().get(i + 1) == null
-						|| exp.getElements().get(i + 1).getFrontParentheses().size() == 0) {
-					error("The expression to apply " + library + " must be surrounded by parenthesis.",
-							AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-				}
 			}
-
-			if (mathFound) {
-				frontParenthesis += el.getFrontParentheses().size();
-				if (el.getName() != null) {
-					signalFound = true;
-				}
-				if (el.getOp() != null) {
-					for (int j = 0; j < el.getOp().size(); j++) {
-						if (mathFound && el.getOp().get(j).getComparation() != null) {
-							error("Mathematical functions does not allow comparison operators.",
-									AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-						}
-						if (mathFound && el.getOp().get(j).getLogicOperator() != null) {
-							error("Mathematical functions does not allow logical operators.",
-									AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-						}
-						if (mathFound && el.getOp().get(j).getBackParentheses() != null) {
-							backParenthesis++;
-							if (frontParenthesis == backParenthesis) {
-								if (!signalFound) {
-									error("Mathematical functions must be applied to at least one signal.",
-											AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
-								}
-								mathFound = false;
-								frontParenthesis = 0;
-								backParenthesis = 0;
-								signalFound = false;
-							}
-						}
-					}
-				}
-			}
-
 		}
-		if (mathFound && frontParenthesis != backParenthesis) {
-			error("The expression to apply " + library + " must be surrounded by parenthesis.",
-					AdeptnessPackage.Literals.EXPRESSIONS_MODEL__ELEMENTS);
+
+		if (cuOr.getCheckInputs() == null) {
+			error("Must define a checks input variable list", AdeptnessPackage.Literals.CUSTOM_ORACLE__CHECK_INPUTS);
+		} else {
+			checkVariablesInMonitoringPlan(cuOr.getCheckInputs(), "Checks input variables list cannot be empty.",
+					AdeptnessPackage.Literals.CUSTOM_ORACLE__CHECK_INPUTS);
 		}
 	}
 
 	// PRIVATE FUNCTIONS
-	private String getLibrary(Library lib) {
-		if (lib == null) {
-			return "unknown";
-		} else if (lib.getCos() != null) {
-			return "cosine";
-		} else if (lib.getSin() != null) {
-			return "sine";
-		} else if (lib.getDerivative() != null) {
-			return "devirative";
-		} else if (lib.getModulus() != null) {
-			return "modulus";
-		}
-		return "unknown";
-	}
-
-	private void checkVariablesInMonitoringPlan(EList<String> variables, String emptyErrorMessage,
+	private boolean checkVariablesInMonitoringPlan(EList<String> variables, String emptyErrorMessage,
 			EAttribute reference) {
 		if (variables.size() == 0) {
 			error(emptyErrorMessage, reference);
+			return true;
 		}
-		boolean found;
+
+		MonitoringVar emVar;
 		for (int i = 0; i < variables.size(); i++) {
-			String varName = variables.get(i);
-			found = false;
-			for (int j = 0; j < monitoringVariableNames.size(); j++) {
-				if (monitoringVariableNames.get(j).equals(varName)) {
-					found = true;
-				}
-			}
-			if (!found) {
-				error("Variable " + varName + " is not in the monitoring plan", reference);
+			String name = variables.get(i);
+
+			emVar = monitoringVariables.getVariables().get(name);
+			if (emVar == null) {
+				error("Variable " + name + " is not in the monitoring plan", reference);
+				
 			}
 		}
+		return false;
 	}
 
 }
