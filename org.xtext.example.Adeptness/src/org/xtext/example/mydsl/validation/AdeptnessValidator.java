@@ -16,6 +16,7 @@ import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
 import org.xtext.example.mydsl.adeptness.CustomOracle;
 import org.xtext.example.mydsl.adeptness.Description;
 import org.xtext.example.mydsl.adeptness.InferMonitoringFile;
+import org.xtext.example.mydsl.adeptness.ModelFile;
 import org.xtext.example.mydsl.adeptness.MonitoringFile;
 import org.xtext.example.mydsl.adeptness.MonitoringInferVariables;
 import org.xtext.example.mydsl.adeptness.MonitoringVariable;
@@ -42,6 +43,8 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	List<String> oracleNames;
 	List<String> monitoringVariableNames;
 	List<String> inferenceVariableNames;
+	List<String> models;
+	List<String> independentVariables;
 
 	MonitoringVariables monitoringVariables;
 
@@ -104,9 +107,26 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	@Check
 	public void getInferNames(InferMonitoringFile file) {
 		inferenceVariableNames = new ArrayList<>();
+		models = new ArrayList<>();
 
 		for (int i = 0; i < file.getMonitoringInferVariables().size(); i++) {
 			inferenceVariableNames.add(file.getMonitoringInferVariables().get(i).getName().toString());
+		}
+
+		for (int i = 0; i < file.getSuperType().getNonTrainableModel().size(); i++) {
+			models.add(file.getSuperType().getNonTrainableModel().get(i).getName());
+		}
+		
+		for (int i = 0; i< file.getSuperType().getTrainableModel().size(); i++) {
+			models.add(file.getSuperType().getTrainableModel().get(i).getName());
+		}
+	}
+	
+	@Check
+	public void getIndependentVariables(ModelFile file) {
+		independentVariables = new ArrayList<>();
+		for (int i = 0; i < file.getSuperType().getMonitoringPlan().size(); i++) {
+			independentVariables.add(file.getSuperType().getMonitoringPlan().get(i).getMonitoringVariables().getName());
 		}
 	}
 
@@ -229,18 +249,24 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 	}
 
 	@Check
-	public void checkEmptyDescription(MonitoringInferVariables monitoringVariable) {
-		if (!monitoringVariable.getModel().endsWith(".tflite")) {
+	public void checkInfereceModel(MonitoringInferVariables monitoringVariable) {
+		boolean modelDefined = false;
+		for (String model : models) {
+			if (monitoringVariable.getModel().equals(model)) {
+				modelDefined = true;
+			}
+		}
+		if (monitoringVariable.getModel().isEmpty()) {
+			error("Model cannot be empty.",
+					AdeptnessPackage.Literals.MONITORING_INFER_VARIABLES__MODEL);
+		}else if (!modelDefined) {
+			error("Model is not defined in the imported models' file.",
+					AdeptnessPackage.Literals.MONITORING_INFER_VARIABLES__MODEL);
+		}else if (!monitoringVariable.getModel().endsWith(".tflite")) {
 			error("Model must be of type TensorFlow Lite.",
 					AdeptnessPackage.Literals.MONITORING_INFER_VARIABLES__MODEL);
 		}
 	}
-
-//	@Check
-//	public void checkIndepentVariablesInMonitoringFile(MonitoringInferVariables monitoringVariable) {
-//		checkVariablesInMonitoringPlan(monitoringVariable.getVariables(), "Independent variables list cannot be empty.",
-//				AdeptnessPackage.Literals.INFER_MONITORING_FILE__MONITORING_INFER_VARIABLES);
-//	}
 	
 	@Check
 	public void checkIndepentVariablesInMonitoringFile(NonTrainableModel monitoringVariable) {
@@ -254,7 +280,23 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 				AdeptnessPackage.Literals.TRAINABLE_MODEL__VARIABLES);
 	}
 	
-
+	@Check
+	public void checkModelLastLayer(TrainableModel tm) {
+		if (tm.getLayers().get(tm.getLayers().size() - 1).getDense().getUnits() != 1) {
+			error("Last layer's units must be 1.", AdeptnessPackage.Literals.TRAINABLE_MODEL__LAYERS);
+		}
+		if (tm.getDataFile().isBlank()) {
+			error("Data file cannot be empty.", AdeptnessPackage.Literals.TRAINABLE_MODEL__DATA_FILE);
+		}
+	}
+	
+//	@Check
+//	public void checkActivation(Layer layer) {
+//		if (layer.getDense().getActivation().isEmpty()) {
+//			error("Activation cannot be empty.", AdeptnessPackage.Literals.LAYER__DENSE);
+//		}
+//	}
+	
 	@Check
 	public void checkEmptyDescription(Description desc) {
 		if (desc.getValue() == null) {
@@ -295,14 +337,11 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 			return true;
 		}
 
-		MonitoringVar emVar;
 		for (int i = 0; i < variables.size(); i++) {
 			String name = variables.get(i);
 
-			emVar = monitoringVariables.getVariables().get(name);
-			if (emVar == null) {
+			if (!independentVariables.contains(name)) {
 				error("Variable " + name + " is not in the monitoring plan", reference);
-				
 			}
 		}
 		return false;
