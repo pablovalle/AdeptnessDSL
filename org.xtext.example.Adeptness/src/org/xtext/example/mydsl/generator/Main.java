@@ -23,56 +23,77 @@ import org.xtext.example.mydsl.AdeptnessStandaloneSetup;
 
 public class Main {
 
-	public static void main(String[] args) {
-		if (args.length != 2) {
-			System.err.println("Aborting: an oracle and a monitoring plan files should be provided!");
-			return;
-		}
-		Injector injector = new AdeptnessStandaloneSetup().createInjectorAndDoEMFRegistration();
-		Main main = injector.getInstance(Main.class);
-		main.runGenerator(args[0], args[1]);
-	}
+        public static void main(String[] args) {
+                if (args.length < 2) {
+                        System.err.println("Aborting: an oracle and a monitoring plan files should at least be provided");
+                        return;
+                }else if (args.length == 3) {
+                        System.err.println("Aborting: incorrect number of files provided.");
+                        return;
+                } else if (args.length > 4) {
+                        System.err.println("Aborting: too many files provided");
+                        return;
+                }
+                Injector injector = new AdeptnessStandaloneSetup().createInjectorAndDoEMFRegistration();
+                Main main = injector.getInstance(Main.class);
 
-	@Inject
-	private Provider<ResourceSet> resourceSetProvider;
+                if (args.length == 2) {
+                        main.runGenerator(args[0], args[1], null, null);
+                }else {
+                        main.runGenerator(args[0], args[1], args[2], args[3]);
+                }
+        }
 
-	@Inject
-	private IResourceValidator validator;
+        @Inject
+        private Provider<ResourceSet> resourceSetProvider;
 
-	@Inject
-	private GeneratorDelegate generator;
+        @Inject
+        private IResourceValidator validator;
 
-	@Inject 
-	private JavaIoFileSystemAccess fileAccess;
+        @Inject
+        private GeneratorDelegate generator;
 
-	protected void runGenerator(String file1, String file2) {
-		// Load resources
-		List<Resource> resources = new ArrayList<Resource>();
-		ResourceSet set = resourceSetProvider.get();
-		Resource oracle = set.getResource(URI.createFileURI(file1), true);
-		resources.add(oracle);
-	    
-	    Resource monitoringPlan = set.getResource(URI.createFileURI(file2), true);
-	    resources.add(monitoringPlan);
+        @Inject
+        private JavaIoFileSystemAccess fileAccess;
 
-		// Validate resources
-		for (Resource r: resources) {
-			List<Issue> list = validator.validate(r, CheckMode.ALL, CancelIndicator.NullImpl);
-			if (!list.isEmpty()) {
-				for (Issue issue : list) {
-					System.err.println(issue);
-				}
-				return;
-			}
-		}
-		
+        protected void runGenerator(String file1, String file2, String file3, String file4) {
+                // Load resources
+                List<Resource> resources = new ArrayList<Resource>();
+                ResourceSet set = resourceSetProvider.get();
+                Resource oracle = set.getResource(URI.createFileURI(file1), true);
+                resources.add(oracle);
 
-		// Configure and start the generator
-		fileAccess.setOutputPath("src-gen/");
-		GeneratorContext context = new GeneratorContext();
-		context.setCancelIndicator(CancelIndicator.NullImpl);
-		generator.generate(oracle, fileAccess, context);
+            Resource monitoringPlan = set.getResource(URI.createFileURI(file2), true);
+            resources.add(monitoringPlan);
 
-		System.out.println("Code generation finished.");
-	}
+            if (file3 != null && file4 != null) {
+                Resource inferenceFile = set.getResource(URI.createFileURI(file3), true);
+                    resources.add(inferenceFile);
+                Resource modelFile = set.getResource(URI.createFileURI(file4), true);
+                    resources.add(modelFile);
+            }
+
+
+
+                // Validate resources
+                for (Resource r: resources) {
+                        System.out.println(r.getURI().toString());
+                        List<Issue> list = validator.validate(r, CheckMode.ALL, CancelIndicator.NullImpl);
+                        if (!list.isEmpty()) {
+                                for (Issue issue : list) {
+                                        System.err.println(issue);
+                                }
+                                return;
+                        }
+                }
+
+
+                // Configure and start the generator
+                fileAccess.setOutputPath("src-gen/");
+                GeneratorContext context = new GeneratorContext();
+                context.setCancelIndicator(CancelIndicator.NullImpl);
+                generator.generate(oracle, fileAccess, context);
+
+                System.out.println("Code generation finished.");
+        }
 }

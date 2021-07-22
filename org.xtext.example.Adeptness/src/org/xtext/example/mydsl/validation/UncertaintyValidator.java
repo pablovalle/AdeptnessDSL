@@ -1,10 +1,6 @@
 
 package org.xtext.example.mydsl.validation;
 
-import java.util.ArrayList;
-import java.util.List;
-//import org.xtext.example.mydsl.adeptness.UncertaintyProb;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.xtext.validation.Check;
 import org.xtext.example.mydsl.adeptness.AdeptnessPackage;
