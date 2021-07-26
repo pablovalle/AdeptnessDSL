@@ -60,6 +60,7 @@ var HashMap<String, Double> maxMap;
 var HashMap<String, Double> minMap;
 var HashMap<String, List<String>> checkVar;
 var HashMap<String, EList<String>> modelVarFile;
+var HashMap<String, Set<String>>varAndOracles;
 var List<String> verdict;
 var List<String> first;
 var Set<String> predAndCheckInputs;
@@ -123,6 +124,7 @@ var List<String> uncerNames;
 				fsa.generateFile(co.fullyQualifiedName.toString("/")+".h", co.create_C_oracle_h(e.fullyQualifiedName.toString()))
 				
 			}
+			varAndOracles=getVarAndOracles(e);
 			fsa.generateFile(e.fullyQualifiedName.toString("/")+".json", e.create_oracle_json())
 			fsa.generateFile(e.name+"_Uncer.c", e.create_uncer_c())
 			fsa.generateFile(e.name+"_Uncer.h", e.create_uncer_h())
@@ -132,6 +134,250 @@ var List<String> uncerNames;
 			
 		}
     }
+	
+	def getVarAndOracles(Signal signal) {
+		var HashMap<String, Set<String>> ret=new HashMap();
+		var Set<String> list = new HashSet();
+		if(signal.customOracle!==null){
+			for(customOracle:signal.customOracle){
+				if(customOracle.checkInputs!==null){
+					for(input: customOracle.checkInputs){
+						if(ret.get(input)!==null){
+							list=ret.get(input);
+							list.add(customOracle.name);
+							ret.put(input,list);
+						}
+						else{
+							list= new HashSet();
+							list.add(customOracle.name);
+							ret.put(input, list);
+						}
+					}
+				}
+				if(customOracle.predInputs!==null){
+					for(input: customOracle.predInputs){
+						if(ret.get(input)!==null){
+							list=ret.get(input);
+							list.add(customOracle.name);
+							ret.put(input,list);
+						}
+						else{
+							list= new HashSet();
+							list.add(customOracle.name);
+							ret.put(input, list);
+						}
+					}
+				}
+			}
+		}
+		
+		if(signal.oracle!==null){
+			for(oracle: signal.oracle){
+				if(oracle.when!==null){
+					for(expression: oracle.when.em.elements){
+						if(expression.name!==null){
+							if(ret.get(expression.name)!==null){
+								list=ret.get(expression.name);
+								list.add(oracle.name);
+								ret.put(expression.name,list);
+							}
+							else{
+								list= new HashSet();
+								list.add(oracle.name);
+								ret.put(expression.name, list);
+							}
+						}
+					}
+				}
+				else if(oracle.^while!==null){
+					for(expression: oracle.^while.em.elements){
+						if(expression.name!==null){
+							if(ret.get(expression.name)!==null){
+								list=ret.get(expression.name);
+								list.add(oracle.name);
+								ret.put(expression.name,list);
+							}
+							else{
+								list= new HashSet();
+								list.add(oracle.name);
+								ret.put(expression.name, list);
+							}
+						}
+					}
+				}
+				if(oracle.check.name===null){
+					for(expression: oracle.check.em.elements){
+						if(expression.name!==null){
+							if(ret.get(expression.name)!==null){
+								list=ret.get(expression.name);
+								list.add(oracle.name);
+								ret.put(expression.name,list);
+							}
+							else{
+								list= new HashSet();
+								list.add(oracle.name);
+								ret.put(expression.name, list);
+							}
+						}
+					}
+				}
+				else{
+					if(ret.get(oracle.check.name)!==null){
+						list=ret.get(oracle.check.name);
+						list.add(oracle.name);
+						ret.put(oracle.check.name,list);
+					}
+					else{
+						list= new HashSet();
+						list.add(oracle.name);
+						ret.put(oracle.check.name, list);
+					}
+				}
+				if(oracle.check.reference.gap!==null){
+					if(oracle.check.reference.gap.bound_upp.value===null){
+						for(expression: oracle.check.reference.gap.bound_upp.em.elements){
+							if(expression.name!==null){
+								if(ret.get(expression.name)!==null){
+									list=ret.get(expression.name);
+									list.add(oracle.name);
+									ret.put(expression.name,list);
+								}
+								else{
+									list= new HashSet();
+									list.add(oracle.name);
+									ret.put(expression.name, list);
+								}
+							}
+						}
+					}
+					if(oracle.check.reference.gap.bound_lower.value===null){
+						for(expression: oracle.check.reference.gap.bound_lower.em.elements){
+							if(expression.name!==null){
+								if(ret.get(expression.name)!==null){
+									list=ret.get(expression.name);
+									list.add(oracle.name);
+									ret.put(expression.name,list);
+								}
+								else{
+									list= new HashSet();
+									list.add(oracle.name);
+									ret.put(expression.name, list);
+								}
+							}
+						}
+					}
+				}
+				else if(oracle.check.reference.lower!==null){
+					if(oracle.check.reference.lower.bound_lower.value===null){
+						for(expression: oracle.check.reference.lower.bound_lower.em.elements){
+							if(expression.name!==null){
+								if(ret.get(expression.name)!==null){
+									list=ret.get(expression.name);
+									list.add(oracle.name);
+									ret.put(expression.name,list);
+								}
+								else{
+									list= new HashSet();
+									list.add(oracle.name);
+									ret.put(expression.name, list);
+								}
+							}
+						}
+					}
+				}
+				else if(oracle.check.reference.notsame!==null){
+					if(oracle.check.reference.notsame.bound_upp.value===null){
+						for(expression: oracle.check.reference.notsame.bound_upp.em.elements){
+							if(expression.name!==null){
+								if(ret.get(expression.name)!==null){
+									list=ret.get(expression.name);
+									list.add(oracle.name);
+									ret.put(expression.name,list);
+								}
+								else{
+									list= new HashSet();
+									list.add(oracle.name);
+									ret.put(expression.name, list);
+								}
+							}
+						}
+					}
+				}
+				else if(oracle.check.reference.range!==null){
+					if(oracle.check.reference.range.bound_upp.value===null){
+						for(expression: oracle.check.reference.range.bound_upp.em.elements){
+							if(expression.name!==null){
+								if(ret.get(expression.name)!==null){
+									list=ret.get(expression.name);
+									list.add(oracle.name);
+									ret.put(expression.name,list);
+								}
+								else{
+									list= new HashSet();
+									list.add(oracle.name);
+									ret.put(expression.name, list);
+								}
+							}
+						}
+					}
+					if(oracle.check.reference.range.bound_lower.value===null){
+						for(expression: oracle.check.reference.range.bound_lower.em.elements){
+							if(expression.name!==null){
+								if(ret.get(expression.name)!==null){
+									list=ret.get(expression.name);
+									list.add(oracle.name);
+									ret.put(expression.name,list);
+								}
+								else{
+									list= new HashSet();
+									list.add(oracle.name);
+									ret.put(expression.name, list);
+								}
+							}
+						}
+					}
+				}
+				else if(oracle.check.reference.same!==null){
+					if(oracle.check.reference.same.bound_upp.value===null){
+						for(expression: oracle.check.reference.same.bound_upp.em.elements){
+							if(expression.name!==null){
+								if(ret.get(expression.name)!==null){
+									list=ret.get(expression.name);
+									list.add(oracle.name);
+									ret.put(expression.name,list);
+								}
+								else{
+									list= new HashSet();
+									list.add(oracle.name);
+									ret.put(expression.name, list);
+								}
+							}
+						}
+					}
+				}
+				else if(oracle.check.reference.upper!==null){
+					if(oracle.check.reference.upper.bound_upp.value===null){
+						for(expression: oracle.check.reference.upper.bound_upp.em.elements){
+							if(expression.name!==null){
+								if(ret.get(expression.name)!==null){
+									list=ret.get(expression.name);
+									list.add(oracle.name);
+									ret.put(expression.name,list);
+								}
+								else{
+									list= new HashSet();
+									list.add(oracle.name);
+									ret.put(expression.name, list);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+				
+		return ret;
+	}
 	
 
 	def void getPredAndCheckInputs(CustomOracle oracle){
@@ -1747,12 +1993,18 @@ var List<String> uncerNames;
 	    «IF CPS.superType.monitoringPlan.indexOf(param1)!==CPS.superType.monitoringPlan.size-1»
 	    «"\t\t\t"»{
 	«"\t\t\t\t"»"name":"«param1.monitoringVariables.name»",
-	«"\t\t\t\t"»"datatype": "«param1.monitoringVariables.monitoringVariableDatatype.sig_type»"
+	«"\t\t\t\t"»"datatype": "«param1.monitoringVariables.monitoringVariableDatatype.sig_type»",
+	«"\t\t\t\t"»"used by" : [
+	«getOracles(param1.monitoringVariables.name)»
+	«"\t\t\t\t"»]
 	«"\t\t\t"»}, 
 		«ELSE»
 	    «"\t\t\t"»{
 	«"\t\t\t\t"»"name":"«param1.monitoringVariables.name»",
-	«"\t\t\t\t"»"datatype": "«param1.monitoringVariables.monitoringVariableDatatype.sig_type»"
+	«"\t\t\t\t"»"datatype": "«param1.monitoringVariables.monitoringVariableDatatype.sig_type»",
+	«"\t\t\t\t"»"used by" : [
+	«getOracles(param1.monitoringVariables.name)»
+	«"\t\t\t\t"»]
 	«"\t\t\t"»} 
 		«ENDIF»
 	    «ENDFOR»
@@ -1785,6 +2037,24 @@ var List<String> uncerNames;
 		«"\t"»}
 	}
 	'''
+	
+	def String getOracles(String name) {
+		var String ret="";
+		var Set<String> list=varAndOracles.get(name);
+		
+		if(list!==null){
+			for(var i=0; i< list.size; i++){
+				if(i<list.size-1){
+					ret=ret+"\t\t\t\t\t \""+list.get(i)+"\",\n";
+				}	
+				else{
+					ret=ret+"\t\t\t\t\t \""+list.get(i)+"\"\n";
+				}			
+			}
+		}
+		
+		return ret;
+	}
 	
 	def String getOracleNames(EList<Oracle> list) {
 		var String ret="";
