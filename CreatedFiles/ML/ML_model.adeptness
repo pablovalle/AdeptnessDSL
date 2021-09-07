@@ -1,5 +1,7 @@
+import ML_MONITORINGFILE
+
 MODELFILE ML_MODELS : implements ML_MONITORING
-	TRAINABLEMODEL ModelD : 
+	TRAINABLEMODEL "ModelD.tflite": 
 		Independent variables : [A B C ]
 		Data file : "asdf"
 		Layers : 

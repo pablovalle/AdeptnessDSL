@@ -1,11 +1,14 @@
+import ML_INFERMONITORING
+import ML_MONITORINGFILE
+
 CPS ML_FROGAK : implements ML_MONITORING and  ML_INFERENCEPLAN	
 	ORACLE A:
-		checks : (B-10) is above 10
+		checks : (D - 10) is above 10
 		fails if : confidence is below 0
 		description : "ADAD"
 	ENDORACLE
 	ORACLE AS:
-		checks : (B-10) is above 10
+		checks : (B - 10) is above 10
 		fails if : confidence is below 0
 		description : "ADAD"
 	ENDORACLE
