@@ -930,7 +930,7 @@ var List<String> uncerNames;
 	#include <math.h>
 	#include <string.h>
 	«FOR name:uncerNames»
-	double * calc«name»(double var[], double *ret);
+	double calc«name»(double var[]);
 	«ENDFOR»
 	#endif
 	'''
@@ -938,7 +938,7 @@ var List<String> uncerNames;
 	def CharSequence create_uncer_c(Signal signal)'''
 	#include "«signal.name»_Uncer.h"
 	«FOR name:uncerNames»
-	double * calc«name»(double var[], double* ret)«distributionFunction(name)»
+	double calc«name»(double var[])«distributionFunction(name)»
 	
 	
 	«ENDFOR»
@@ -2410,14 +2410,14 @@ var List<String> uncerNames;
 				ret="{\n\t double sum=0.0, mean, SD=0.0;\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t for(i=0; i<length; ++i){\n\t  sum += var[i];\n\t }\n\t mean=sum/length;\n\t for(i=0; i<length; ++i){\n\t  SD += POW(var[i]-mean, 2);\n\t }\n\t return sqrt(SD/length);\n}";
 			}
 			case "UniformDistribution_Max":{
-				ret="{\n\t double max=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(max<var[i])\n\t   max=var[i];\n\t }\n\t return max;\n}";
+				ret="{\n\t double max=var[0];\n\t int length=0, i=0;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(max<var[i])\n\t   max=var[i];\n\t }\n\t return max;\n}";
 			}
 			case "UniformDistribution_Min":{
-				ret="{\n\t double min=var[0];\n\t int length=0, i;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(min>var[i])\n\t   min=var[i];\n\t }\n\t return min;\n}";
+				ret="{\n\t double min=var[0];\n\t int length=0, i=0;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(min>var[i])\n\t   min=var[i];\n\t }\n\t return min;\n}";
 			}
 			//The percentage calculation depends on the specific problem, here implement based on example in D4.1 
 			case"Percentage_value":{
-				ret="{\n\t double percentage=0.0;\n\t int length=0, count=0;\n\t length=sizeof(var);\n\t for(i=0; i<length; i++){\n\t  if(var[i]<=30)\n\t  count=count+1;\n\t }\n\t percentage=(double)count/(double)length;\n\t return percentage;\n}";
+				ret="{\n\t double percentage=0.0;\n\t int length=0,i=0, count=0;\n\t length=sizeof(var);\n\t for(i=0; i<length; i++){\n\t  if(var[i]<=30)\n\t  count=count+1;\n\t }\n\t percentage=(double)count/(double)length;\n\t return percentage;\n}";
 			}
 //			case "FuzzyInterval_maxfuzzyNumber":{
 //				ret="{\n\n}";
