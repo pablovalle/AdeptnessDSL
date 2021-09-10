@@ -402,8 +402,8 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 	@Check
 	public void checkReferenceBetweenMonitoringVariableMinMax(Checks check) {
 		if (check.getEm() != null) {
-			System.out.println(
-					"TODO Check if expressionsModel within Checks statement is correct according to min, max variable values in monitoring plan");
+//			System.out.println(
+//					"TODO Check if expressionsModel within Checks statement is correct according to min, max variable values in monitoring plan");
 			return;
 		}
 
@@ -435,8 +435,8 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		Double boundup = null, boundown = null;
 		if (bound_up != null) {
 			if (bound_up.getEm() != null) {
-				System.out.println(
-						"TODO Check if expressionsModel within Upper bound statement is correct according to min, max variable values in monitoring plan");
+//				System.out.println(
+//						"TODO Check if expressionsModel within Upper bound statement is correct according to min, max variable values in monitoring plan");
 			}
 			boundup = bound_up.getValue().getDVal();
 			if (boundup > max) {
@@ -452,8 +452,8 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 		}
 		if (bound_down != null) {
 			if (bound_down.getEm() != null) {
-				System.out.println(
-						"TODO Check if expressionsModel within Lower bound statement is correct according to min, max variable values in monitoring plan");
+//				System.out.println(
+//						"TODO Check if expressionsModel within Lower bound statement is correct according to min, max variable values in monitoring plan");
 			}
 			boundown = bound_down.getValue().getDVal();
 			if (boundown > max) {
@@ -571,8 +571,8 @@ public class OracleAssesment extends AbstractAdeptnessValidator {
 				errorDetected = true;
 			}
 		} else {
-			System.out.println(
-					"TODO: check ExpressionsModel to check if lower bound is really lower than upper bound in a range");
+//			System.out.println(
+//					"TODO: check ExpressionsModel to check if lower bound is really lower than upper bound in a range");
 		}
 	}
 

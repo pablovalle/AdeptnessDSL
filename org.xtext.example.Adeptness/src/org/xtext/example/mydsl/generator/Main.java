@@ -77,7 +77,6 @@ public class Main {
 
                 // Validate resources
                 for (Resource r: resources) {
-                        System.out.println(r.getURI().toString());
                         List<Issue> list = validator.validate(r, CheckMode.ALL, CancelIndicator.NullImpl);
                         if (!list.isEmpty()) {
                                 for (Issue issue : list) {

@@ -50,7 +50,7 @@ public class OperationalDataConnector {
 
 			return opData;
 		} catch (Exception e) {
-			System.out.println(e.toString());
+//			System.out.println(e.toString());
 			return null;
 		}
 	}
