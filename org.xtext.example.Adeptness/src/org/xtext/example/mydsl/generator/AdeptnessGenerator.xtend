@@ -2407,7 +2407,7 @@ var List<String> uncerNames;
 				ret="{\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t double ave, s=var[0];\n\t for(i=1;i<length;i++){\n\t  s=s+var[i];\n\t  ave=s/(float)length;\n\t }\n\t return ave;\n}";
 			}
 			case "NormalDistribution_normDistStd":{
-				ret="{\n\t double sum=0.0, mean, SD=0.0;\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t for(i=0; i<length; ++i){\n\t  sum += var[i];\n\t }\n\t mean=sum/length;\n\t for(i=0; i<length; ++i){\n\t  SD += POW(var[i]-mean, 2);\n\t }\n\t return sqrt(SD/length);\n}";
+				ret="{\n\t double sum=0.0, mean, SD=0.0;\n\t int length=0;\n\t length=sizeof(var);\n\t int i;\n\t for(i=0; i<length; ++i){\n\t  sum += var[i];\n\t }\n\t mean=sum/length;\n\t for(i=0; i<length; ++i){\n\t  SD += pow(var[i]-mean, 2);\n\t }\n\t return sqrt(SD/length);\n}";
 			}
 			case "UniformDistribution_Max":{
 				ret="{\n\t double max=var[0];\n\t int length=0, i=0;\n\t length=sizeof(var);\n\t for(i=1; i<length; i++){\n\t  if(max<var[i])\n\t   max=var[i];\n\t }\n\t return max;\n}";
@@ -2579,228 +2579,228 @@ var List<String> uncerNames;
 		if(element.uncer1!==null){
 			if(element.uncer1.bernoulliDistribution!==null){
 				if(element.uncer1.bernoulliDistribution.bernProb!==null){
-					ret=ret+"BernoulliDistribution_prob("+element.uncer1.bernoulliDistribution.name+".array[cycle])";
+					ret=ret+"BernoulliDistribution_prob("+element.uncer1.bernoulliDistribution.name+".array)";
 				}
 				else if(element.uncer1.bernoulliDistribution.bernTrials!==null){
-					ret=ret+"BernoulliDistribution_trials("+element.uncer1.bernoulliDistribution.name+".array[cycle])";
+					ret=ret+"BernoulliDistribution_trials("+element.uncer1.bernoulliDistribution.name+".array)";
 				}
 				
 			}
 			
 			else if(element.uncer1.gammaDistribution!==null){
 				if(element.uncer1.gammaDistribution.gammaK!==null){
-					ret=ret+"GammaDistribution_K("+element.uncer1.gammaDistribution.name+".array[cycle])";
+					ret=ret+"GammaDistribution_K("+element.uncer1.gammaDistribution.name+".array)";
 				}
 				else if(element.uncer1.gammaDistribution.getGammaMean!==null){
-					ret=ret+"GammaDistribution_mean("+element.uncer1.gammaDistribution.name+".array[cycle])";
+					ret=ret+"GammaDistribution_mean("+element.uncer1.gammaDistribution.name+".array)";
 				}
 				
 			}
 			
 			else if(element.uncer1.normalDisstribution!==null){
 				if(element.uncer1.normalDisstribution.mean!==null){
-					ret=ret+"NormalDistribution_mean("+element.uncer1.normalDisstribution.name+".array[cycle])";
+					ret=ret+"NormalDistribution_mean("+element.uncer1.normalDisstribution.name+".array)";
 				}
 				else if(element.uncer1.normalDisstribution.normDistStd!==null){
-					ret=ret+"NormalDistribution_normDistStd("+element.uncer1.normalDisstribution.name+".array[cycle])";
+					ret=ret+"NormalDistribution_normDistStd("+element.uncer1.normalDisstribution.name+".array)";
 				}
 				
 			}
 			
 			else if(element.uncer1.uniformDistribution!==null){
 				if(element.uncer1.uniformDistribution.uniformMax!==null){
-					ret=ret+"UniformDistribution_Max("+element.uncer1.uniformDistribution.name+".array[cycle])";
+					ret=ret+"UniformDistribution_Max("+element.uncer1.uniformDistribution.name+".array)";
 				}
 				else if(element.uncer1.uniformDistribution.uniformMin!==null){
-					ret=ret+"UniformDistribution_Min("+element.uncer1.uniformDistribution.name+".array[cycle])";
+					ret=ret+"UniformDistribution_Min("+element.uncer1.uniformDistribution.name+".array)";
 				}
 				
 			}
 			
 			else if(element.uncer1.percentage!==null){
 				if(element.uncer1.percentage.valuePer!==null){
-					ret=ret+"Percentage_value("+element.uncer1.percentage.name+".array[cycle])";
+					ret=ret+"Percentage_value("+element.uncer1.percentage.name+".array)";
 				}
 			}
 		}
 		else if(element.uncer2!==null){
 			if(element.uncer2.fuzzyInterval!==null){
 				if(element.uncer2.fuzzyInterval.maxfuzzyNumber!==null){
-					ret=ret+"FuzzyInterval_maxfuzzyNumber("+element.uncer2.fuzzyInterval.name+".array[cycle])";
+					ret=ret+"FuzzyInterval_maxfuzzyNumber("+element.uncer2.fuzzyInterval.name+".array)";
 				}
 				else if(element.uncer2.fuzzyInterval.minfuzzyNumber!==null){
-					ret=ret+"FuzzyInterval_minfuzzyNumber("+element.uncer2.fuzzyInterval.name+".array[cycle])";
+					ret=ret+"FuzzyInterval_minfuzzyNumber("+element.uncer2.fuzzyInterval.name+".array)";
 				}
 			}
 			else if(element.uncer2.fuzzySetCut!==null){
 				if(element.uncer2.fuzzySetCut.fuzzySetCutLam!==null){
-					ret=ret+"FuzzySetCut_lambda("+element.uncer2.fuzzySetCut.name+".array[cycle])";
+					ret=ret+"FuzzySetCut_lambda("+element.uncer2.fuzzySetCut.name+".array)";
 				}
 				else if(element.uncer2.fuzzySetCut.fuzzySetCutisStr!==null){
-					ret=ret+"FuzzySetCut_isStrong("+element.uncer2.fuzzySetCut.name+".array[cycle])";
+					ret=ret+"FuzzySetCut_isStrong("+element.uncer2.fuzzySetCut.name+".array)";
 				}
 				else if(element.uncer2.fuzzySetCut.fuzzySetCutkin!==null){
-					ret=ret+"FuzzySetCut_kind("+element.uncer2.fuzzySetCut.name+".array[cycle])";
+					ret=ret+"FuzzySetCut_kind("+element.uncer2.fuzzySetCut.name+".array)";
 				}
 			}
 			else if(element.uncer2.fuzzyLogic!==null){
 				if(element.uncer2.fuzzyLogic.fuzzyLogicOpera!==null){
-					ret=ret+"FuzzyLogic_operator("+element.uncer2.fuzzyLogic.name+".array[cycle])";
+					ret=ret+"FuzzyLogic_operator("+element.uncer2.fuzzyLogic.name+".array)";
 				}
 				else if(element.uncer2.fuzzyLogic.fuzzyLogicVar!==null){
-					ret=ret+"FuzzyLogic_var("+element.uncer2.fuzzyLogic.name+".array[cycle])";
+					ret=ret+"FuzzyLogic_var("+element.uncer2.fuzzyLogic.name+".array)";
 				}
 				else if(element.uncer2.fuzzyLogic.fuzzyLogicSet!==null){
 					if(element.uncer2.fuzzyLogic.fuzzyLogicSet.FLSmembershipDegree!==null){
-						ret=ret+"FuzzyLogic_set("+element.uncer2.fuzzyLogic.name+").MembershipDegree("+element.uncer2.fuzzyLogic.fuzzyLogicSet.FLSmembershipDegree.name+".array[cycle])";///////////
+						ret=ret+"FuzzyLogic_set("+element.uncer2.fuzzyLogic.name+").MembershipDegree("+element.uncer2.fuzzyLogic.fuzzyLogicSet.FLSmembershipDegree.name+".array)";///////////
 					}
 					else if(element.uncer2.fuzzyLogic.fuzzyLogicSet.FLSfuzziness!==null){
-						ret=ret+"FuzzyLogic_set.Fuzziness("+element.uncer2.fuzzyLogic.name+".array[cycle])";
+						ret=ret+"FuzzyLogic_set.Fuzziness("+element.uncer2.fuzzyLogic.name+".array)";
 					}
 					else if(element.uncer2.fuzzyLogic.fuzzyLogicSet. FLSfuzzyEntropy!==null){
-						ret=ret+"FuzzyLogic_set.FuzzyEntropy("+element.uncer2.fuzzyLogic.name+".array[cycle])";
+						ret=ret+"FuzzyLogic_set.FuzzyEntropy("+element.uncer2.fuzzyLogic.name+".array)";
 					}
 					else if(element.uncer2.fuzzyLogic.fuzzyLogicSet. FLSroughness!==null){
-						ret=ret+"FuzzyLogic_set.Roughness("+element.uncer2.fuzzyLogic.name+".array[cycle])";
+						ret=ret+"FuzzyLogic_set.Roughness("+element.uncer2.fuzzyLogic.name+".array)";
 					}
 				}
 			}
 			else if(element.uncer2.fuzzySet!==null){
 				if(element.uncer2.fuzzySet.FSmembershipDegree!==null){
 					if(element.uncer2.fuzzySet.FSmembershipDegree.membershipDegreeValue!==null){
-						ret=ret+"FuzzySet_MembershipDegree_value("+element.uncer2.fuzzySet.name+".array[cycle])";
+						ret=ret+"FuzzySet_MembershipDegree_value("+element.uncer2.fuzzySet.name+".array)";
 					}
 					else if(element.uncer2.fuzzySet.FSmembershipDegree.membershipDegreeHedge!==null){
-						ret=ret+"FuzzySet_MembershipDegree_hedge("+element.uncer2.fuzzySet.name+".array[cycle])";
+						ret=ret+"FuzzySet_MembershipDegree_hedge("+element.uncer2.fuzzySet.name+".array)";
 					}
 					else if(element.uncer2.fuzzySet.FSmembershipDegree.membershipDegreeElement!==null){
-						ret=ret+"FuzzySet_MembershipDegree_element("+element.uncer2.fuzzySet.name+".array[cycle])";
+						ret=ret+"FuzzySet_MembershipDegree_element("+element.uncer2.fuzzySet.name+".array)";
 					}
 				}
 				else if(element.uncer2.fuzzySet.FSfuzziness!==null){
-					ret=ret+"FuzzySet_Fuzziness("+element.uncer2.fuzzySet.name+".array[cycle])";
+					ret=ret+"FuzzySet_Fuzziness("+element.uncer2.fuzzySet.name+".array)";
 				}
 				else if(element.uncer2.fuzzySet.FSfuzzyEntropy!==null){
-					ret=ret+"FuzzySet_FuzzyEntropy("+element.uncer2.fuzzySet.name+".array[cycle])";
+					ret=ret+"FuzzySet_FuzzyEntropy("+element.uncer2.fuzzySet.name+".array)";
 				}
 				else if(element.uncer2.fuzzySet.FSroughness!==null){
-					ret=ret+"FuzzySet_Roughness("+element.uncer2.fuzzySet.name+".array[cycle])";
+					ret=ret+"FuzzySet_Roughness("+element.uncer2.fuzzySet.name+".array)";
 				}	
 			}
 			else if(element.uncer2.intervalValuedFuzzySet!==null){
 				if(element.uncer2.intervalValuedFuzzySet.IVFmembershipDegree!==null){
-					ret=ret+"IntervalValuedFuzzySet_MembershipDegree("+element.uncer2.intervalValuedFuzzySet.name+".array[cycle])";
+					ret=ret+"IntervalValuedFuzzySet_MembershipDegree("+element.uncer2.intervalValuedFuzzySet.name+".array)";
 				}
 				else if(element.uncer2.intervalValuedFuzzySet.IVFfuzziness!==null){
-					ret=ret+"IntervalValuedFuzzySet_Fuzziness("+element.uncer2.intervalValuedFuzzySet.name+".array[cycle])";
+					ret=ret+"IntervalValuedFuzzySet_Fuzziness("+element.uncer2.intervalValuedFuzzySet.name+".array)";
 				}
 				else if(element.uncer2.intervalValuedFuzzySet.IVFfuzzyEntropy!==null){
-					ret=ret+"IntervalValuedFuzzySet_FuzzyEntropy("+element.uncer2.intervalValuedFuzzySet.name+".array[cycle])";
+					ret=ret+"IntervalValuedFuzzySet_FuzzyEntropy("+element.uncer2.intervalValuedFuzzySet.name+".array)";
 				}
 				else if(element.uncer2.intervalValuedFuzzySet.IVFroughness!==null){
-					ret=ret+"IntervalValuedFuzzySet_Roughness("+element.uncer2.intervalValuedFuzzySet.name+".array[cycle])";
+					ret=ret+"IntervalValuedFuzzySet_Roughness("+element.uncer2.intervalValuedFuzzySet.name+".array)";
 				}	
 			}
 			else if(element.uncer2.LFuzzySet!==null){
 				if(element.uncer2.LFuzzySet.LFSmembershipDegree!==null){
-					ret=ret+"LFuzzySet_MembershipDegree("+element.uncer2.LFuzzySet.name+".array[cycle])";
+					ret=ret+"LFuzzySet_MembershipDegree("+element.uncer2.LFuzzySet.name+".array)";
 				}
 				else if(element.uncer2.LFuzzySet.LFSfuzziness!==null){
-					ret=ret+"LFuzzySet_Fuzziness("+element.uncer2.LFuzzySet.name+".array[cycle])";
+					ret=ret+"LFuzzySet_Fuzziness("+element.uncer2.LFuzzySet.name+".array)";
 				}
 				else if(element.uncer2.LFuzzySet.LFSfuzzyEntropy!==null){
-					ret=ret+"LFuzzySet_FuzzyEntropy("+element.uncer2.LFuzzySet.name+".array[cycle])";
+					ret=ret+"LFuzzySet_FuzzyEntropy("+element.uncer2.LFuzzySet.name+".array)";
 				}
 				else if(element.uncer2.LFuzzySet.LFSroughness!==null){
-					ret=ret+"LFuzzySet_Roughness("+element.uncer2.LFuzzySet.name+".array[cycle])";
+					ret=ret+"LFuzzySet_Roughness("+element.uncer2.LFuzzySet.name+".array)";
 				}
 			}
 			else if(element.uncer2.intuitionisticFuzzySet!==null){
 				if(element.uncer2.intuitionisticFuzzySet.IFmembershipDegree!==null){
-					ret=ret+"IntuitionisticFuzzySet_MembershipDegree("+element.uncer2.intuitionisticFuzzySet.name+".array[cycle])";
+					ret=ret+"IntuitionisticFuzzySet_MembershipDegree("+element.uncer2.intuitionisticFuzzySet.name+".array)";
 				}
 				else if(element.uncer2.intuitionisticFuzzySet.IFfuzziness!==null){
-					ret=ret+"IntuitionisticFuzzySet_Fuzziness("+element.uncer2.intuitionisticFuzzySet.name+".array[cycle])";
+					ret=ret+"IntuitionisticFuzzySet_Fuzziness("+element.uncer2.intuitionisticFuzzySet.name+".array)";
 				}
 				else if(element.uncer2.intuitionisticFuzzySet.IFfuzzyEntropy!==null){
-					ret=ret+"IntuitionisticFuzzySet_FuzzyEntropy("+element.uncer2.intuitionisticFuzzySet.name+".array[cycle])";
+					ret=ret+"IntuitionisticFuzzySet_FuzzyEntropy("+element.uncer2.intuitionisticFuzzySet.name+".array)";
 				}
 				else if(element.uncer2.intuitionisticFuzzySet.IFroughness!==null){
-					ret=ret+"IntuitionisticFuzzySet_Roughness("+element.uncer2.intuitionisticFuzzySet.name+".array[cycle])";
+					ret=ret+"IntuitionisticFuzzySet_Roughness("+element.uncer2.intuitionisticFuzzySet.name+".array)";
 				}
 			}
 			else if(element.uncer2.vagueSet!==null){
 				if(element.uncer2.vagueSet.VSmembershipDegree!==null){
-					ret=ret+"VagueSet_MembershipDegree("+element.uncer2.vagueSet.name+".array[cycle])";
+					ret=ret+"VagueSet_MembershipDegree("+element.uncer2.vagueSet.name+".array)";
 				}
 				else if(element.uncer2.vagueSet.VSfuzziness!==null){
-					ret=ret+"VagueSet_Fuzziness("+element.uncer2.vagueSet.name+".array[cycle])";
+					ret=ret+"VagueSet_Fuzziness("+element.uncer2.vagueSet.name+".array)";
 				}
 				else if(element.uncer2.vagueSet.VSfuzzyEntropy!==null){
-					ret=ret+"VagueSet_FuzzyEntropy("+element.uncer2.vagueSet.name+".array[cycle])";
+					ret=ret+"VagueSet_FuzzyEntropy("+element.uncer2.vagueSet.name+".array)";
 				}
 				else if(element.uncer2.vagueSet.VSroughness!==null){
-					ret=ret+"VagueSet_Roughness("+element.uncer2.vagueSet.name+".array[cycle])";
+					ret=ret+"VagueSet_Roughness("+element.uncer2.vagueSet.name+".array)";
 				}
 			}
 			else if(element.uncer2.triangularFuzzyNumber!==null){
 				if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumberisSha!==null){
-					ret=ret+"TriangularFuzzyNumber_isSharped("+element.uncer2.triangularFuzzyNumber.name+".array[cycle])";
+					ret=ret+"TriangularFuzzyNumber_isSharped("+element.uncer2.triangularFuzzyNumber.name+".array)";
 				}
 				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumbera!==null){
-					ret=ret+"TriangularFuzzyNumber_a("+element.uncer2.triangularFuzzyNumber.name+".array[cycle])";
+					ret=ret+"TriangularFuzzyNumber_a("+element.uncer2.triangularFuzzyNumber.name+".array)";
 				}
 				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumberb!==null){
-					ret=ret+"TriangularFuzzyNumber_b("+element.uncer2.triangularFuzzyNumber.name+".array[cycle])";
+					ret=ret+"TriangularFuzzyNumber_b("+element.uncer2.triangularFuzzyNumber.name+".array)";
 				}
 				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumberc!==null){
-					ret=ret+"TriangularFuzzyNumber_c("+element.uncer2.triangularFuzzyNumber.name+".array[cycle])";
+					ret=ret+"TriangularFuzzyNumber_c("+element.uncer2.triangularFuzzyNumber.name+".array)";
 				}
 				else if(element.uncer2.triangularFuzzyNumber.triangularFuzzyNumber!==null){
-					ret=ret+"TriangularFuzzyNumber_number("+element.uncer2.triangularFuzzyNumber.name+".array[cycle])";
+					ret=ret+"TriangularFuzzyNumber_number("+element.uncer2.triangularFuzzyNumber.name+".array)";
 				}
 			}
 		}
 		else if(element.uncer3!==null){
 			if(element.uncer3.pignisticDistribution!==null){
-				ret=ret+"PignisticDistribution_expression("+element.uncer3.pignisticDistribution.name+".array[cycle])";
+				ret=ret+"PignisticDistribution_expression("+element.uncer3.pignisticDistribution.name+".array)";
 			}
 			else if(element.uncer3.shannonEntropy!==null){
-				ret=ret+"ShannonEntropy_h("+element.uncer3.shannonEntropy.name+".array[cycle])";
+				ret=ret+"ShannonEntropy_h("+element.uncer3.shannonEntropy.name+".array)";
 			}
 			else if(element.uncer3.hartleyMeasure!==null){
-				ret=ret+"HartleyMeasure_h("+element.uncer3.hartleyMeasure.name+".array[cycle])";
+				ret=ret+"HartleyMeasure_h("+element.uncer3.hartleyMeasure.name+".array)";
 			}
 			else if(element.uncer3.alternativeMeasure!==null){
-				ret=ret+"AlternativeMeasure_h("+element.uncer3.alternativeMeasure.name+".array[cycle])";
+				ret=ret+"AlternativeMeasure_h("+element.uncer3.alternativeMeasure.name+".array)";
 			}
 			else if(element.uncer3.u_Uncertainty!==null){
-				ret=ret+"U_Uncertainty_h("+element.uncer3.u_Uncertainty.name+".array[cycle])";
+				ret=ret+"U_Uncertainty_h("+element.uncer3.u_Uncertainty.name+".array)";
 			}
 			else if(element.uncer3.dissonanceMeasure!==null){
 				if(element.uncer3.dissonanceMeasure.dissonanceMeasureE!==null){
-					ret=ret+"DissonanceMeasure_e("+element.uncer3.dissonanceMeasure.name+".array[cycle])";
+					ret=ret+"DissonanceMeasure_e("+element.uncer3.dissonanceMeasure.name+".array)";
 				}
 				else if(element.uncer3.dissonanceMeasure.dissonanceMeasureComplem!==null){
-					ret=ret+"DissonanceMeasure_complementray("+element.uncer3.dissonanceMeasure.name+".array[cycle])";
+					ret=ret+"DissonanceMeasure_complementray("+element.uncer3.dissonanceMeasure.name+".array)";
 				}
 				else if(element.uncer3.dissonanceMeasure.conflict!==null){
-					ret=ret+"DissonanceMeasure_Conflict("+element.uncer3.dissonanceMeasure.name+".array[cycle])";
+					ret=ret+"DissonanceMeasure_Conflict("+element.uncer3.dissonanceMeasure.name+".array)";
 				}
 			}
 			else if(element.uncer3.distribution!==null){
-				ret=ret+"Distribution_expression("+element.uncer3.distribution.name+".array[cycle])";
+				ret=ret+"Distribution_expression("+element.uncer3.distribution.name+".array)";
 			}
 			else if(element.uncer3.beliefInterval!==null){
 				if(element.uncer3.beliefInterval.min!==null){
-					ret=ret+"BeliefInterval_min("+element.uncer3.beliefInterval.name+".array[cycle])";
+					ret=ret+"BeliefInterval_min("+element.uncer3.beliefInterval.name+".array)";
 				}
 				else if(element.uncer3.beliefInterval.max!==null){
-					ret=ret+"BeliefInterval_max("+element.uncer3.beliefInterval.name+".array[cycle])";
+					ret=ret+"BeliefInterval_max("+element.uncer3.beliefInterval.name+".array)";
 				}
 			}
 			else if(element.uncer3.possibleDistribution!==null){
-				ret=ret+"PossibleDistribution_expression("+element.uncer3.beliefInterval.name+".array[cycle])";
+				ret=ret+"PossibleDistribution_expression("+element.uncer3.beliefInterval.name+".array)";
 			}
 		}
 		
