@@ -2025,7 +2025,7 @@ var List<String> uncerNames;
 		
 		«"\t\t\t"»{
 		«"\t\t\t\t"»"name":"«CPS.superTypeInfer.monitoringInferVariables.get(CPS.superTypeInfer.monitoringInferVariables.size-1).name»",
-		«"\t\t\t\t"»"datatype":"«CPS.superTypeInfer.monitoringInferVariables.get(CPS.superTypeInfer.monitoringInferVariables.size-1).monitoringVariableDatatype»",
+		«"\t\t\t\t"»"datatype":"«CPS.superTypeInfer.monitoringInferVariables.get(CPS.superTypeInfer.monitoringInferVariables.size-1).monitoringVariableDatatype.sig_type»",
 		«"\t\t\t\t"»"model":"«CPS.superTypeInfer.monitoringInferVariables.get(CPS.superTypeInfer.monitoringInferVariables.size-1).model»"
 		«"\t\t\t"»}
 		«"\t\t"»],
