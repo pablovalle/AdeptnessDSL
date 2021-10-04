@@ -463,7 +463,7 @@ var List<String> uncerNames;
 	def read_data(data_file_name):
 	
 	    dataset = pd.read_csv(
-	        f'data/{data_file_name}.csv',
+	        f'data/{data_file_name}',
 	        na_values='NaN',
 	        sep=',',
 	        skipinitialspace=True
@@ -480,9 +480,9 @@ var List<String> uncerNames;
 	        tf.keras.layers.InputLayer(input_shape=(features.ndim, )),
 	        «FOR layer: model.layers »
 	        «IF model.layers.indexOf(layer)!== model.layers.size()-1»
-	        tf.keras.layer.«layer.dense.name»(«layer.dense.units»,activation='«layer.dense.activation»'),
+	        tf.keras.layers.«layer.dense.name»(«layer.dense.units»,activation='«layer.dense.activation»'),
 	        «ELSE»
-	        tf.keras.layer.«layer.dense.name»(«layer.dense.units»,activation='«layer.dense.activation»')
+	        tf.keras.layers.«layer.dense.name»(«layer.dense.units»,activation='«layer.dense.activation»')
 	        «ENDIF»
 	        «ENDFOR»
 	    ])
@@ -515,19 +515,19 @@ var List<String> uncerNames;
 	    return tflite_model
 	
 	
-	def main(data_file_name, model_file_name, ind_variables, dep_variable):
+	def main(data_file_name, model_file_name, ind_variables):
 	    print(tf.__version__)
 	
 	    dataset = read_data(data_file_name)
 	
 	    features = dataset[ind_variables]
 	
-	    labels = dataset[[dep_variable]]
+	    labels = dataset.iloc[: , -1]
 	
 	    model = generate_model(features, labels)
 	    tflite_model = convert_model(model)
 	
-	    with open(f'{model_file_name}.tflite', 'wb') as f:
+	    with open(f'{model_file_name}', 'wb') as f:
 	        f.write(tflite_model)
 	
 	
@@ -544,8 +544,7 @@ var List<String> uncerNames;
 	        «ENDIF»
 	        «ENDFOR»
 	    ]
-	    dep_variable = "VarToPredict"
-	    main(data_file_name, model_file_name, ind_variables, dep_variable)
+	    main(data_file_name, model_file_name, ind_variables)
 	'''
 	
 	def create_infer_c(MonitoringInferVariables plan)'''
