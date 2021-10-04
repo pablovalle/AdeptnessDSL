@@ -21,3 +21,6 @@ org.xtext.example.Adeptness/bin
 /.metadata/
 
 *.exe
+
+# Java
+*.class
