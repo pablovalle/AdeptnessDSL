@@ -8,7 +8,7 @@ test-bin
 *.xml_gen
 
 .settings
-org.xtext.example.Adeptness/bin
+*/bin
 #tmp
 #bin
 #target
