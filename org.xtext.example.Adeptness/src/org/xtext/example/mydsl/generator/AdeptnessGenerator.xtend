@@ -90,7 +90,7 @@ var List<String> uncerNames;
 			if(e.superTypeInfer!==null){
 				updateModelVarFile(e.superTypeInfer.superType);
 				for(model:e.superTypeInfer.superType.trainableModel){
-					fsa.generateFile("models/gen_"+model.name+".py", model.create_model_py())
+					fsa.generateFile(e.name+"/gen_models/"+model.name+".py", model.create_model_py())
 				}
 				for(v:e.superTypeInfer.monitoringInferVariables){
 					
