@@ -1978,53 +1978,52 @@ var List<String> uncerNames;
 		return ret;
 	}
 		
-	def CharSequence create_oracle_json(Signal CPS)
-	'''
+	def CharSequence create_oracle_json(Signal CPS)	'''
 	{ 
 		"«CPS.name»": {
 			"inputVariationPoints": [
-			«FOR param1:CPS.superType.monitoringPlan»
-			{
-				"name":"«param1.monitoringVariables.name»",
-				"datatype": "«param1.monitoringVariables.monitoringVariableDatatype.sig_type»",
-				"used by" : [
-					«getOracles(param1.monitoringVariables.name)»
-				]
-			}«IF CPS.superType.monitoringPlan.indexOf(param1)!==CPS.superType.monitoringPlan.size-1»,«ENDIF»
-			«ENDFOR»
+				«FOR param1:CPS.superType.monitoringPlan»
+				{
+					"name":"«param1.monitoringVariables.name»",
+					"datatype": "«param1.monitoringVariables.monitoringVariableDatatype.sig_type»",
+					"used by" : [
+						«getOracles(param1.monitoringVariables.name)»
+					]
+				}«IF CPS.superType.monitoringPlan.indexOf(param1)!==CPS.superType.monitoringPlan.size-1»,«ENDIF»
+				«ENDFOR»
 			],
 			«IF CPS.superTypeInfer!==null»
 			«IF CPS.superTypeInfer.monitoringInferVariables.size!==0»
 			"sinteticVariationPoints": [
-			«FOR SV: CPS.superTypeInfer.monitoringInferVariables»
-			{
-				"name":"«SV.name»",
-				"datatype":"«SV.monitoringVariableDatatype.sig_type»",
-				"model":"«SV.model»"
-			}«IF CPS.superTypeInfer.monitoringInferVariables.indexOf(SV)!==CPS.superTypeInfer.monitoringInferVariables.size-1»,«ENDIF»
-			«ENDFOR»
+				«FOR SV: CPS.superTypeInfer.monitoringInferVariables»
+				{
+					"name":"«SV.name»",
+					"datatype":"«SV.monitoringVariableDatatype.sig_type»",
+					"model":"«SV.model»"
+				}«IF CPS.superTypeInfer.monitoringInferVariables.indexOf(SV)!==CPS.superTypeInfer.monitoringInferVariables.size-1»,«ENDIF»
+				«ENDFOR»
 			],
 			«ENDIF»
 			«IF CPS.superTypeInfer.superType.trainableModel!==null»
 			«IF CPS.superTypeInfer.superType.trainableModel.size!==0»
 			"trainableModels": [
-			«FOR TM: CPS.superTypeInfer.superType.trainableModel»
-			{
-				"name":"«TM.name»"
-			}«IF CPS.superTypeInfer.superType.trainableModel.indexOf(TM)!==CPS.superTypeInfer.superType.trainableModel.size-1»,«ENDIF»
-			«ENDFOR»
+				«FOR TM: CPS.superTypeInfer.superType.trainableModel»
+				{
+					"name":"«TM.name»"
+				}«IF CPS.superTypeInfer.superType.trainableModel.indexOf(TM)!==CPS.superTypeInfer.superType.trainableModel.size-1»,«ENDIF»
+				«ENDFOR»
 			],
 			«ENDIF»
 			«ENDIF»
 			«IF CPS.superTypeInfer.superType.nonTrainableModel!==null»
 			«IF CPS.superTypeInfer.superType.nonTrainableModel.size!==0»
 			"nonTrainableModel": [
-			«FOR NTM: CPS.superTypeInfer.superType.nonTrainableModel»
-			{
-				"name":"«NTM.name»",
-				"URL":"«NTM.model»"
-			}«IF CPS.superTypeInfer.superType.nonTrainableModel.indexOf(NTM)!==CPS.superTypeInfer.superType.nonTrainableModel.size-1»,«ENDIF»
-			«ENDFOR»
+				«FOR NTM: CPS.superTypeInfer.superType.nonTrainableModel»
+				{
+					"name":"«NTM.name»",
+					"URL":"«NTM.model»"
+				}«IF CPS.superTypeInfer.superType.nonTrainableModel.indexOf(NTM)!==CPS.superTypeInfer.superType.nonTrainableModel.size-1»,«ENDIF»
+				«ENDFOR»
 			],
 			«ENDIF»
 			«ENDIF»
