@@ -2017,7 +2017,7 @@ var List<String> uncerNames;
 			«ENDIF»
 			«IF CPS.superTypeInfer.superType.nonTrainableModel!==null»
 			«IF CPS.superTypeInfer.superType.nonTrainableModel.size!==0»
-			"nonTrainableModel": [
+			"nonTrainableModels": [
 				«FOR NTM: CPS.superTypeInfer.superType.nonTrainableModel»
 				{
 					"name":"«NTM.name»",
