@@ -42,7 +42,7 @@ ModelFile:
 ;
 
 NonTrainableModel:
-	'NONTRAINABLEMODEL' name=STRING ':'
+	'NONTRAINABLEMODEL' name=ID ':'
 		'Independent' 'variables' ':' '[' (variables+=ID)+ ']'
 		'Model' 'URL' ':' model=STRING
 	'ENDNONTRAINABLEMODEL'
@@ -50,9 +50,9 @@ NonTrainableModel:
 
 
 TrainableModel:
-	'TRAINABLEMODEL' name=STRING ':'
+	'TRAINABLEMODEL' name=ID ':'
 		'Independent' 'variables' ':' '[' (variables+=ID)+ ']'
-		'Data' 'file' ':' dataFile=STRING
+		'Data' 'URL' ':' dataFile=STRING
 		'Layers' ':' (layers+=Layer)+
 		'EndLayers'
 	'ENDTRAINABLEMODEL'
@@ -121,7 +121,7 @@ MonitoringInferVariables:
 	'type' ':' (MonitoringVariableDatatype = Sig_type)
 	('max' ':' max = DOUBLE
 	'min' ':' min = DOUBLE)?
-	'model' ':' model=STRING
+	'model' ':' model=ID
 	'ENDMONITOR_INFERENCE'
 ;
 

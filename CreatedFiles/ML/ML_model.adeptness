@@ -1,9 +1,9 @@
 import ML_MONITORINGFILE
 
 MODELFILE ML_MODELS : implements ML_MONITORING
-	TRAINABLEMODEL "ModelD.tflite": 
+	TRAINABLEMODEL ModelD: 
 		Independent variables : [A B C ]
-		Data file : "asdf"
+		Data URL : "data.csv"
 		Layers : 
 			Layer Dense1:
 				type : Dense
@@ -22,4 +22,8 @@ MODELFILE ML_MODELS : implements ML_MONITORING
 			EndLayer
 		EndLayers
 	ENDTRAINABLEMODEL
-ENDMODELFILE 
+	NONTRAINABLEMODEL ModelE: 
+		Independent variables : [A B C ]
+		Model URL : "model.tflite"
+	ENDNONTRAINABLEMODEL
+ENDMODELFILE

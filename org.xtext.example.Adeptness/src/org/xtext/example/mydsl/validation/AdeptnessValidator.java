@@ -262,9 +262,6 @@ public class AdeptnessValidator extends AbstractAdeptnessValidator {
 		}else if (!modelDefined) {
 			error("Model is not defined in the imported models' file.",
 					AdeptnessPackage.Literals.MONITORING_INFER_VARIABLES__MODEL);
-		}else if (!monitoringVariable.getModel().endsWith(".tflite")) {
-			error("Model must be of type TensorFlow Lite.",
-					AdeptnessPackage.Literals.MONITORING_INFER_VARIABLES__MODEL);
 		}
 	}
 	

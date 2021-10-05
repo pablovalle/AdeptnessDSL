@@ -73,16 +73,9 @@ var List<String> uncerNames;
 //    			fsa.generateFile(a.fullyQualifiedName.toString("/")+".json", a.create_VP_json())
 //  
 //    		}
-			modelVarFile= new HashMap();
-			for(modelFile: resource.allContents.toIterable.filter(ModelFile)){
-				updateModelVarFile(modelFile);
-				for(model:modelFile.trainableModel){
-					fsa.generateFile("models/gen_"+model.name+".py", model.create_model_py())
-				}
-				
-			}
       		for(e: resource.allContents.toIterable.filter(Signal)){
 			
+			modelVarFile= new HashMap();
 			nameMap= new HashMap();
 			whenMap=new HashMap();
 			whileMap= new HashMap();
@@ -96,6 +89,9 @@ var List<String> uncerNames;
 			findSignalsMaxMinValues(e);
 			if(e.superTypeInfer!==null){
 				updateModelVarFile(e.superTypeInfer.superType);
+				for(model:e.superTypeInfer.superType.trainableModel){
+					fsa.generateFile("models/gen_"+model.name+".py", model.create_model_py())
+				}
 				for(v:e.superTypeInfer.monitoringInferVariables){
 					
 					fsa.generateFile(e.name+"/"+v.name+".c",v.create_infer_c())
@@ -463,7 +459,7 @@ var List<String> uncerNames;
 	def read_data(data_file_name):
 	
 	    dataset = pd.read_csv(
-	        f'data/{data_file_name}',
+	        f'{data_file_name}',
 	        na_values='NaN',
 	        sep=',',
 	        skipinitialspace=True
@@ -534,7 +530,7 @@ var List<String> uncerNames;
 	if __name__ == "__main__":
 	    # TODO to be automatically generated according to the Monitoring plan
 	    data_file_name = "«model.dataFile»"
-	    model_file_name = "«model.name»"
+	    model_file_name = "«model.name».tflite"
 	    ind_variables = [
 	        «FOR ind_var: model.variables»
 	        «IF model.variables.indexOf(ind_var)!==model.variables.size()-1»
@@ -558,7 +554,7 @@ var List<String> uncerNames;
 	
 	    // ------- DSL ---------
 	    TfLiteModel* model =
-	        TfLiteModelCreateFromFile("./«plan.model»");
+	        TfLiteModelCreateFromFile("./«plan.model».tflite");
 	    // ---------------------
 	
 	    TfLiteInterpreterOptions* options =
@@ -1982,58 +1978,61 @@ var List<String> uncerNames;
 		return ret;
 	}
 		
-	def CharSequence create_oracle_json(Signal CPS)'''
-
+	def CharSequence create_oracle_json(Signal CPS)
+	'''
 	{ 
-		"«CPS.name»":
-		«"\t"»{
-	    «"\t\t"»"inputVariationPoints": [
-	    «FOR param1:CPS.superType.monitoringPlan»
-	    «IF CPS.superType.monitoringPlan.indexOf(param1)!==CPS.superType.monitoringPlan.size-1»
-	    «"\t\t\t"»{
-	«"\t\t\t\t"»"name":"«param1.monitoringVariables.name»",
-	«"\t\t\t\t"»"datatype": "«param1.monitoringVariables.monitoringVariableDatatype.sig_type»",
-	«"\t\t\t\t"»"used by" : [
-	«getOracles(param1.monitoringVariables.name)»
-	«"\t\t\t\t"»]
-	«"\t\t\t"»}, 
-		«ELSE»
-	    «"\t\t\t"»{
-	«"\t\t\t\t"»"name":"«param1.monitoringVariables.name»",
-	«"\t\t\t\t"»"datatype": "«param1.monitoringVariables.monitoringVariableDatatype.sig_type»",
-	«"\t\t\t\t"»"used by" : [
-	«getOracles(param1.monitoringVariables.name)»
-	«"\t\t\t\t"»]
-	«"\t\t\t"»} 
-		«ENDIF»
-	    «ENDFOR»
-		«"\t\t"»],
-		«IF CPS.superTypeInfer!==null»
-		«IF CPS.superTypeInfer.monitoringInferVariables.size!==0»
-		«"\t\t"»"sinteticVariationPoints": [
-		«FOR SV: CPS.superTypeInfer.monitoringInferVariables»
-		
-		«IF CPS.superTypeInfer.monitoringInferVariables.indexOf(SV)!==CPS.superTypeInfer.monitoringInferVariables.size-1»
-		«"\t\t\t"»{
-		«"\t\t\t\t"»"name":"«SV.name»",
-		«"\t\t\t\t"»"datatype":"«SV.monitoringVariableDatatype.sig_type»",
-		«"\t\t\t\t"»"model":"«SV.model»"
-		«"\t\t\t"»},
-		«ENDIF»
-		«ENDFOR»
-		
-		«"\t\t\t"»{
-		«"\t\t\t\t"»"name":"«CPS.superTypeInfer.monitoringInferVariables.get(CPS.superTypeInfer.monitoringInferVariables.size-1).name»",
-		«"\t\t\t\t"»"datatype":"«CPS.superTypeInfer.monitoringInferVariables.get(CPS.superTypeInfer.monitoringInferVariables.size-1).monitoringVariableDatatype.sig_type»",
-		«"\t\t\t\t"»"model":"«CPS.superTypeInfer.monitoringInferVariables.get(CPS.superTypeInfer.monitoringInferVariables.size-1).model»"
-		«"\t\t\t"»}
-		«"\t\t"»],
-		«ENDIF»«ENDIF»
-		«"\t\t"»"evaluationFunctions": [
-		«getOracleNames(CPS.oracle)»
-		
-		«"\t\t"»]
-		«"\t"»}
+		"«CPS.name»": {
+			"inputVariationPoints": [
+			«FOR param1:CPS.superType.monitoringPlan»
+			{
+				"name":"«param1.monitoringVariables.name»",
+				"datatype": "«param1.monitoringVariables.monitoringVariableDatatype.sig_type»",
+				"used by" : [
+					«getOracles(param1.monitoringVariables.name)»
+				]
+			}«IF CPS.superType.monitoringPlan.indexOf(param1)!==CPS.superType.monitoringPlan.size-1»,«ENDIF»
+			«ENDFOR»
+			],
+			«IF CPS.superTypeInfer!==null»
+			«IF CPS.superTypeInfer.monitoringInferVariables.size!==0»
+			"sinteticVariationPoints": [
+			«FOR SV: CPS.superTypeInfer.monitoringInferVariables»
+			{
+				"name":"«SV.name»",
+				"datatype":"«SV.monitoringVariableDatatype.sig_type»",
+				"model":"«SV.model»"
+			}«IF CPS.superTypeInfer.monitoringInferVariables.indexOf(SV)!==CPS.superTypeInfer.monitoringInferVariables.size-1»,«ENDIF»
+			«ENDFOR»
+			],
+			«ENDIF»
+			«IF CPS.superTypeInfer.superType.trainableModel!==null»
+			«IF CPS.superTypeInfer.superType.trainableModel.size!==0»
+			"trainableModels": [
+			«FOR TM: CPS.superTypeInfer.superType.trainableModel»
+			{
+				"name":"«TM.name»"
+			}«IF CPS.superTypeInfer.superType.trainableModel.indexOf(TM)!==CPS.superTypeInfer.superType.trainableModel.size-1»,«ENDIF»
+			«ENDFOR»
+			],
+			«ENDIF»
+			«ENDIF»
+			«IF CPS.superTypeInfer.superType.nonTrainableModel!==null»
+			«IF CPS.superTypeInfer.superType.nonTrainableModel.size!==0»
+			"nonTrainableModel": [
+			«FOR NTM: CPS.superTypeInfer.superType.nonTrainableModel»
+			{
+				"name":"«NTM.name»",
+				"URL":"«NTM.model»"
+			}«IF CPS.superTypeInfer.superType.nonTrainableModel.indexOf(NTM)!==CPS.superTypeInfer.superType.nonTrainableModel.size-1»,«ENDIF»
+			«ENDFOR»
+			],
+			«ENDIF»
+			«ENDIF»
+			«ENDIF»
+			"evaluationFunctions": [
+				«getOracleNames(CPS.oracle)»
+			]
+		}
 	}
 	'''
 	
@@ -2044,10 +2043,10 @@ var List<String> uncerNames;
 		if(list!==null){
 			for(var i=0; i< list.size; i++){
 				if(i<list.size-1){
-					ret=ret+"\t\t\t\t\t \""+list.get(i)+"\",\n";
+					ret=ret+"\""+list.get(i)+"\",\n";
 				}	
 				else{
-					ret=ret+"\t\t\t\t\t \""+list.get(i)+"\"\n";
+					ret=ret+"\""+list.get(i)+"\"\n";
 				}			
 			}
 		}
@@ -2058,12 +2057,12 @@ var List<String> uncerNames;
 	def String getOracleNames(EList<Oracle> list) {
 		var String ret="";
 		for(var i=0; i<list.size; i++){
-			ret=ret+"\t\t\t{\n\t\t\t\t\"name\": \""+list.get(i).name+"\"\n";
+			ret=ret+"{\n\t\"name\": \""+list.get(i).name+"\"\n";
 			if(i==list.size-1){
-				ret=ret+"\t\t\t}\n";
+				ret=ret+"}\n";
 			}
 			else{
-				ret=ret+"\t\t\t},\n";
+				ret=ret+"},\n";
 			}
 		}
 		return ret;

@@ -5,6 +5,12 @@ INFERENCEMONITORINGPLAN ML_INFERENCEPLAN : implements ML_MODELS
 		type : double 
 		max : 100
 		min : 0
-		model : "ModelD.tflite"
+		model : ModelD
+	ENDMONITOR_INFERENCE
+	MONITOR_INFERENCE E :
+		type : double 
+		max : 100
+		min : 0
+		model : ModelE
 	ENDMONITOR_INFERENCE
 ENDINFERENCEMONITORINGPLAN
