@@ -2280,6 +2280,13 @@ var List<String> uncerNames;
 		verdict = checkGlobalVerdict_«param.name»(conf, timeStampOracle); 
 		verdict.confidence=conf.array[cycle];
 		
+		//Free arrays
+		freeArray(&conf);
+		freeArray(&preconditionGiven);
+		freeArray(&timeStampOracle);
+	«FOR param1: nameMap.get(param.name)»
+		freeArray(&«param1» );
+	«ENDFOR»		
 	    return verdict;
 	}		
 	
