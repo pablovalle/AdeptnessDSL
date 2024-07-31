@@ -1,0 +1,133 @@
+MONITORINGPLAN ORONA_TRAFFIC_MASTER:
+	MONITOR ECOMODE:
+		type: boolean
+	ENDMONITOR
+	MONITOR AWT:
+		type: int 
+		max: 500
+		min: 0
+	ENDMONITOR
+	
+	MONITOR ATTD:
+	 	type: double
+	 	max: 1000
+	 	min: 0
+	ENDMONITOR
+	MONITOR Energy:
+	 	type: double
+	 	max: 13000
+	 	min: 0
+	ENDMONITOR
+	MONITOR NumberOfActiveCalls:
+		type: int
+		max: 1250
+		min: 0
+	ENDMONITOR
+	MONITOR Elevator1LogicPosition:
+		type: int
+		max: 10
+		min: 0
+	ENDMONITOR
+	MONITOR Elevator2LogicPosition:
+		type: int
+		max: 10
+		min: 0
+	ENDMONITOR
+	MONITOR Elevator1Standby:
+		type: boolean
+	ENDMONITOR
+	MONITOR Elevator2Standby:
+		type: boolean
+	ENDMONITOR
+	MONITOR Elevator1DoorStatus:
+		type: int
+		max: 4
+		min: 0
+	ENDMONITOR
+	MONITOR Elevator1DoorSensor:
+		type: boolean
+	ENDMONITOR
+	MONITOR Elevator2DoorStatus:
+		type: int
+		max: 4
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall:
+		type: boolean
+	ENDMONITOR
+	MONITOR ActiveFloorCall:
+		type: boolean
+	ENDMONITOR
+	MONITOR Elevator1AttendingStatus:
+		type: boolean
+	ENDMONITOR
+	MONITOR Elevator2AttendingStatus:
+		type: boolean
+	ENDMONITOR
+	MONITOR Elevator1TimeToStandby:
+		type: double
+		max: 45
+		min: 0
+	ENDMONITOR
+	MONITOR Elevator2TimeToStandby:
+		type: double
+		max: 45
+		min: 0
+	ENDMONITOR
+	MONITOR reset:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR Time:
+		type: int
+		max: 7200
+		min: 0
+	ENDMONITOR
+	MONITOR PATQ:
+		type: int
+		max: 7200
+		min: 0
+	ENDMONITOR
+	MONITOR ic:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR tl:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR bl:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR yout:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR RWs_command:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR RWs_angular_velocity:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR AWTPer5Min:
+		type: int
+		max: 7200
+		min: 0
+	ENDMONITOR
+	MONITOR MaximumallowedEntropy:
+		type: int
+		max: 7200
+		min: 0
+	ENDMONITOR
+	
+ENDMONITORINGPLAN 

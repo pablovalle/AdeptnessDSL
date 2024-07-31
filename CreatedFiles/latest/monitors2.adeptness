@@ -1,0 +1,265 @@
+MONITORINGPLAN ORONA_TRAFFIC_MASTER:
+	
+	MONITOR Elevator1Weight:
+		type: int 
+		max: 500
+		min: 0
+	ENDMONITOR
+	
+	MONITOR Elevator2Weight:
+		type: int 
+		max: 500
+		min: 0
+	ENDMONITOR
+	
+	MONITOR FloorCall:
+		type: int 
+		max: 500
+		min: 0
+	ENDMONITOR
+	
+	
+	/*MONITOR ECOMODE:
+		type: boolean
+	ENDMONITOR
+	
+
+	
+	MONITOR AWT:
+		type: int 
+		max: 500
+		min: 0
+	ENDMONITOR
+	
+	
+	
+	MONITOR ATTD:
+	 	type: double
+	 	max: 1000
+	 	min: 0
+	ENDMONITOR
+	MONITOR Energy:
+	 	type: double
+	 	max: 1000
+	 	min: 0
+	ENDMONITOR
+	MONITOR NumberOfActiveCalls:
+		type: int
+		max: 1250
+		min: 0
+	ENDMONITOR*/
+	
+
+
+	
+	MONITOR Elevator1LogicPosition:
+		type: int
+		max: 10
+		min: 0
+	ENDMONITOR
+	MONITOR Elevator2LogicPosition:
+		type: int
+		max: 10
+		min: 0
+	ENDMONITOR
+	
+	MONITOR Elevator1DoorStatus:
+		type: int
+		max: 5
+		min: 0
+	ENDMONITOR
+
+	MONITOR Elevator2DoorStatus:
+		type: int
+		max: 5
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_arr_1:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_arr_2:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_arr_3:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_arr_4:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_arr_5:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_arr_6:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_arr_7:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_arr_8:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_aba_1:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_aba_2:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_aba_3:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_aba_4:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_aba_5:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_aba_6:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_aba_7:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	MONITOR NewFloorCall_aba_8:
+		type: int
+		max: 1
+		min: 0
+	ENDMONITOR
+	
+	MONITOR Elevator1AttendingStatus:
+		type: int
+		max: 256
+		min: 0
+	ENDMONITOR
+	
+	MONITOR Elevator2AttendingStatus:
+		type: int
+		max: 256
+		min: 0
+	ENDMONITOR
+	MONITOR ECOMODE:
+		type: boolean
+	ENDMONITOR
+	MONITOR AWT:
+		type: int 
+		max: 500
+		min: 0
+	ENDMONITOR
+	
+	MONITOR ATTD:
+	 	type: double
+	 	max: 1000
+	 	min: 0
+	ENDMONITOR
+	MONITOR Energy:
+	 	type: double
+	 	max: 13000
+	 	min: 0
+	ENDMONITOR
+	MONITOR NumberOfActiveCalls:
+		type: int
+		max: 1250
+		min: 0
+	ENDMONITOR
+	
+	
+	MONITOR Elevator1Standby:
+		type: boolean
+	ENDMONITOR
+	MONITOR Elevator2Standby:
+		type: boolean
+	ENDMONITOR
+	
+	MONITOR Elevator1DoorSensor:
+		type: boolean
+	ENDMONITOR
+	
+	MONITOR NewFloorCall:
+		type: boolean
+	ENDMONITOR
+	MONITOR ActiveFloorCall:
+		type: boolean
+	ENDMONITOR
+	
+	MONITOR Elevator1TimeToStandby:
+		type: double
+		max: 45
+		min: 0
+	ENDMONITOR
+	MONITOR Elevator2TimeToStandby:
+		type: double
+		max: 45
+		min: 0
+	ENDMONITOR
+	MONITOR reset:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR ic:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR tl:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR bl:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR yout:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR PATQ:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR MaximumallowedEntropy:
+		type: int
+		max: 100
+		min: 0
+	ENDMONITOR
+	MONITOR AWTPer5Min:
+		type: int
+		max: 7200
+		min: 0
+	ENDMONITOR
+	
+	
+ENDMONITORINGPLAN 

@@ -3,26 +3,25 @@ import AUTOPILOT_MONITORING.adeptness
 // 14 out of 15 requirements modeled
 
 CPS Autopilot: implements MONITORING_PLAN_AUTOPILOT
-	/*
-	 * R1.1 -> G{0,T} ( APEngPrev=0 AND APEng=1 ==> AilCmd~=0 )
-	 */
-	
+
+	 // R1.1 -> G{0,T} ( APEngPrev=0 AND APEng=1 ==> AilCmd~=0 )
 	ORACLE R1_1:
 		while: (APEngPrev=0 && APEng==1) 
-		checks: AilCmd should not be 0;
-		fails if :  confidence is below 0;
-		Description: "desc"
+		checks: AilCmd shall not be 0;
+		fails if :  assurance is below 0;
+		description: "When the pilot selects the autopilot engage switch in the
+					  cockpit then roll autopilot shall engage and when the switch is
+					  deselected then the autopilot shall disengage and when is not 
+					  engaged then te command to the roll actuator shall be zero."
 	ENDORACLE
 	
-	/*
-	 * R1.2 -> G{0,T} ( APEng = 1 AND HDGMode = 0 AND ALTMode = 0 ==> isRoll == 1)
-	  */
-	
+	// R1.2 -> G{0,T} ( APEng = 1 AND HDGMode = 0 AND ALTMode = 0 ==> isRoll == 1)
 	ORACLE R1_2:
-		while: (APEng==1 && HDGMode==0 && ALTMode==0) //TODO: negativos
-		checks: isRoll should be 1;
-		fails if :  confidence is below 0;
-		Description: "desc"
+		while: (APEng==1 && HDGMode==0 && ALTMode==0)
+		checks: isRoll shall be 1;
+		fails if :  assurance is below 0;
+		description: "When the autopilot is engaged and no other lateral mode (HDG mode,
+					  ALT Mode) is active Then roll hold mode shall be the active mode."
 	ENDORACLE
 	
 	/*G{0,T} ( -6<Phi<6    ==> PhiRef= 0   R1_3A

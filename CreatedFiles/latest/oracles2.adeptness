@@ -1,0 +1,294 @@
+import MonitoringFileExample
+  
+CPS Orona2LiftsInstallations: implements ORONA_TRAFFIC_MASTER 
+
+
+	ORACLE ECOMODE:
+		while: (ECOMODE == 1)
+		checks: Energy is below 12000
+		fails if: assurance is in constant degradation 0
+		description: "If ECOMODE is active some energy peaks are accepted
+					  but the mean should remain below 12000Kwh"
+	ENDORACLE
+	
+	
+	ORACLE Elevator1MasCercaDeLlamada: //Situacion 1, 2, 7, 8
+	
+		when:(Elevator1LogicPosition != Elevator2LogicPosition && Elevator1Weight == 0 && Elevator2Weight == 0 && 
+		 (NewFloorCall_arr_1 + NewFloorCall_arr_2  + NewFloorCall_arr_3 + NewFloorCall_arr_4 + NewFloorCall_arr_5
+		+ NewFloorCall_arr_6 + NewFloorCall_arr_7 + NewFloorCall_arr_8 + NewFloorCall_aba_1 + NewFloorCall_aba_2  + 
+		NewFloorCall_aba_3  + NewFloorCall_aba_4 + NewFloorCall_aba_5 + NewFloorCall_aba_6 + NewFloorCall_aba_7  
+		+ NewFloorCall_aba_8)==1
+		&& (Elevator1LogicPosition-(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8))*(Elevator1LogicPosition-(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8)) <(Elevator2LogicPosition-(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8))*(Elevator2LogicPosition-(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8))
+		)
+		after: 500 milliseconds
+		checks: Elevator1AttendingStatus is below 255
+		fails if : confidence is below 0	
+		description: "Cabinas vacías, en diferentes pisos, sin llamadas asignadas. Cuando hay una nueva llamada de piso, enviar el ascensor más cercano." 
+		
+
+	ENDORACLE
+	
+	ORACLE Elevator2MasCercaDeLlamada: //Situacion 3, 4, 5, 6
+	
+		when:(Elevator1LogicPosition != Elevator2LogicPosition && Elevator1Weight == 0 && Elevator2Weight == 0 && 
+		 (NewFloorCall_arr_1 + NewFloorCall_arr_2  + NewFloorCall_arr_3 + NewFloorCall_arr_4 + NewFloorCall_arr_5
+		+ NewFloorCall_arr_6 + NewFloorCall_arr_7 + NewFloorCall_arr_8 + NewFloorCall_aba_1 + NewFloorCall_aba_2  + 
+		NewFloorCall_aba_3  + NewFloorCall_aba_4 + NewFloorCall_aba_5 + NewFloorCall_aba_6 + NewFloorCall_aba_7  
+		+ NewFloorCall_aba_8)==1
+		&& (Elevator1LogicPosition-(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8))*(Elevator1LogicPosition-(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8)) > (Elevator2LogicPosition-(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8))*(Elevator2LogicPosition-(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8))
+		)
+		after: 500 milliseconds
+		checks: Elevator2AttendingStatus is below 255
+		fails if : confidence is below 0	
+		description: "Cabinas vacías, en diferentes pisos, sin llamadas asignadas. Cuando hay una nueva llamada de piso, enviar el ascensor más cercano." 
+		
+
+	ENDORACLE
+	
+	/*
+	ORACLE Elevator1LogicPositionCloser: //sit 1
+		when:(Elevator1LogicPosition != Elevator2LogicPosition && Elevator1Weight == 0 && Elevator2Weight == 0 && (NewFloorCall_arr_1 ==1 ||
+		NewFloorCall_arr_2 ==1 ||NewFloorCall_arr_3 ==1 ||NewFloorCall_arr_4 ==1 ||NewFloorCall_arr_5 ==1 ||NewFloorCall_arr_6 ==1 ||
+		NewFloorCall_arr_7 ==1 ||NewFloorCall_arr_8 ==1 ||	NewFloorCall_aba_1 ==1 ||
+		NewFloorCall_aba_2 ==1 ||NewFloorCall_aba_3 ==1 ||NewFloorCall_aba_4 ==1 ||NewFloorCall_aba_5 ==1 ||NewFloorCall_aba_6 ==1 ||
+		NewFloorCall_aba_7 ==1 ||NewFloorCall_aba_8 ==1 
+		) && Elevator1LogicPosition > Elevator2LogicPosition && 		
+		(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8) >= Elevator1LogicPosition && 
+		(NewFloorCall_arr_1 + NewFloorCall_arr_2  + NewFloorCall_arr_3 + NewFloorCall_arr_4 + NewFloorCall_arr_5
+		+ NewFloorCall_arr_6 + NewFloorCall_arr_7 + NewFloorCall_arr_8 + NewFloorCall_aba_1 + NewFloorCall_aba_2  + 
+		NewFloorCall_aba_3  + NewFloorCall_aba_4 + NewFloorCall_aba_5 + NewFloorCall_aba_6 + NewFloorCall_aba_7  
+		+ NewFloorCall_aba_8)==1
+		)
+		after: 500 milliseconds
+		checks: Elevator1AttendingStatus is below 255
+		fails if : confidence is below 0	
+		description: "Cabinas vacías, en diferentes pisos, sin llamadas asignadas. Cuando hay una nueva llamada de piso, enviar el ascensor más cercano."
+	ENDORACLE
+	
+	ORACLE Elevator2LogicPositionCloser: //sit 8
+		when:(Elevator1LogicPosition != Elevator2LogicPosition && Elevator1Weight == 0 && Elevator2Weight == 0 && (NewFloorCall_arr_1 ==1 ||
+		NewFloorCall_arr_2 ==1 ||NewFloorCall_arr_3 ==1 ||NewFloorCall_arr_4 ==1 ||NewFloorCall_arr_5 ==1 ||NewFloorCall_arr_6 ==1 ||
+		NewFloorCall_arr_7 ==1 ||NewFloorCall_arr_8 ==1 ||	NewFloorCall_aba_1 ==1 ||
+		NewFloorCall_aba_2 ==1 ||NewFloorCall_aba_3 ==1 ||NewFloorCall_aba_4 ==1 ||NewFloorCall_aba_5 ==1 ||NewFloorCall_aba_6 ==1 ||
+		NewFloorCall_aba_7 ==1 ||NewFloorCall_aba_8 ==1 
+		) && 
+		Elevator1LogicPosition < Elevator2LogicPosition && 
+		(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8)  <= Elevator1LogicPosition
+		&& (NewFloorCall_arr_1 + NewFloorCall_arr_2  + NewFloorCall_arr_3 + NewFloorCall_arr_4 + NewFloorCall_arr_5
+		+ NewFloorCall_arr_6 + NewFloorCall_arr_7 + NewFloorCall_arr_8 + NewFloorCall_aba_1 + NewFloorCall_aba_2  + 
+		NewFloorCall_aba_3  + NewFloorCall_aba_4 + NewFloorCall_aba_5 + NewFloorCall_aba_6 + NewFloorCall_aba_7  
+		+ NewFloorCall_aba_8)==1
+		)
+		after: 500 milliseconds
+		checks: Elevator1AttendingStatus is below 255
+		fails if : confidence is below 0	
+		description: "Cabinas vacías, en diferentes pisos, sin llamadas asignadas. Cuando hay una nueva llamada de piso, enviar el ascensor más cercano."
+	ENDORACLE
+	
+	ORACLE Elevator3LogicPositionCloser: //sit 4
+		when:(Elevator1LogicPosition != Elevator2LogicPosition && Elevator1Weight == 0 && Elevator2Weight == 0 && (NewFloorCall_arr_1 ==1 ||
+		NewFloorCall_arr_2 ==1 ||NewFloorCall_arr_3 ==1 ||NewFloorCall_arr_4 ==1 ||NewFloorCall_arr_5 ==1 ||NewFloorCall_arr_6 ==1 ||
+		NewFloorCall_arr_7 ==1 ||NewFloorCall_arr_8 ==1 ||	NewFloorCall_aba_1 ==1 ||
+		NewFloorCall_aba_2 ==1 ||NewFloorCall_aba_3 ==1 ||NewFloorCall_aba_4 ==1 ||NewFloorCall_aba_5 ==1 ||NewFloorCall_aba_6 ==1 ||
+		NewFloorCall_aba_7 ==1 ||NewFloorCall_aba_8 ==1 
+		) && 
+		Elevator1LogicPosition > Elevator2LogicPosition && 
+		(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8)  <= Elevator2LogicPosition &&
+		(NewFloorCall_arr_1 + NewFloorCall_arr_2  + NewFloorCall_arr_3 + NewFloorCall_arr_4 + NewFloorCall_arr_5
+		+ NewFloorCall_arr_6 + NewFloorCall_arr_7 + NewFloorCall_arr_8 + NewFloorCall_aba_1 + NewFloorCall_aba_2  + 
+		NewFloorCall_aba_3  + NewFloorCall_aba_4 + NewFloorCall_aba_5 + NewFloorCall_aba_6 + NewFloorCall_aba_7  
+		+ NewFloorCall_aba_8)==1)
+		after: 500 milliseconds
+		checks: Elevator2AttendingStatus is below 255
+		fails if : confidence is below 0	
+		description: "Cabinas vacías, en diferentes pisos, sin llamadas asignadas. Cuando hay una nueva llamada de piso, enviar el ascensor más cercano."
+	ENDORACLE
+	
+	ORACLE Elevator4LogicPositionCloser: //situacion 5
+		when:(Elevator1LogicPosition != Elevator2LogicPosition && Elevator1Weight == 0 && Elevator2Weight == 0 && (NewFloorCall_arr_1 ==1 ||
+		NewFloorCall_arr_2 ==1 ||NewFloorCall_arr_3 ==1 ||NewFloorCall_arr_4 ==1 ||NewFloorCall_arr_5 ==1 ||NewFloorCall_arr_6 ==1 ||
+		NewFloorCall_arr_7 ==1 ||NewFloorCall_arr_8 ==1 ||	NewFloorCall_aba_1 ==1 ||
+		NewFloorCall_aba_2 ==1 ||NewFloorCall_aba_3 ==1 ||NewFloorCall_aba_4 ==1 ||NewFloorCall_aba_5 ==1 ||NewFloorCall_aba_6 ==1 ||
+		NewFloorCall_aba_7 ==1 ||NewFloorCall_aba_8 ==1 
+		) && 
+		Elevator1LogicPosition < Elevator2LogicPosition && 
+		(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8) >= Elevator2LogicPosition &&
+		(NewFloorCall_arr_1 + NewFloorCall_arr_2  + NewFloorCall_arr_3 + NewFloorCall_arr_4 + NewFloorCall_arr_5
+		+ NewFloorCall_arr_6 + NewFloorCall_arr_7 + NewFloorCall_arr_8 + NewFloorCall_aba_1 + NewFloorCall_aba_2  + 
+		NewFloorCall_aba_3  + NewFloorCall_aba_4 + NewFloorCall_aba_5 + NewFloorCall_aba_6 + NewFloorCall_aba_7  
+		+ NewFloorCall_aba_8)==1)
+		after: 500 milliseconds
+		checks: Elevator2AttendingStatus is below 255
+		fails if : confidence is below 0	
+		description: "Cabinas vacías, en diferentes pisos, sin llamadas asignadas. Cuando hay una nueva llamada de piso, enviar el ascensor más cercano."
+	ENDORACLE
+	
+	*/
+	
+	ORACLE ElevatorsSameFloor:
+		when:(Elevator1LogicPosition == Elevator2LogicPosition && Elevator1Weight == 0 && Elevator2Weight == 0 && (NewFloorCall_arr_1 *1 + 
+		NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8) ==Elevator1LogicPosition &&
+		(Elevator1DoorStatus == 1) && (Elevator2DoorStatus == 3) &&
+		(NewFloorCall_arr_1 + NewFloorCall_arr_2  + NewFloorCall_arr_3 + NewFloorCall_arr_4 + NewFloorCall_arr_5
+		+ NewFloorCall_arr_6 + NewFloorCall_arr_7 + NewFloorCall_arr_8 + NewFloorCall_aba_1 + NewFloorCall_aba_2  + 
+		NewFloorCall_aba_3  + NewFloorCall_aba_4 + NewFloorCall_aba_5 + NewFloorCall_aba_6 + NewFloorCall_aba_7  
+		+ NewFloorCall_aba_8)==1)
+		after: 500 milliseconds
+		checks: Elevator1AttendingStatus is below 255 // attending status o cómo?
+		fails if : confidence is below 0	
+		description: "Dos en el mismo piso, uno puerta abierta y otro puerta cerrada. Nueva llamada desde el mismo piso. Atiende ascensor."
+	ENDORACLE
+	
+	ORACLE ElevatorsSameFloor2:
+		when:(Elevator1LogicPosition == Elevator2LogicPosition && Elevator1Weight == 0 && Elevator2Weight == 0 && 
+			(NewFloorCall_arr_1 *1 + NewFloorCall_arr_2 *2 + NewFloorCall_arr_3*3 + NewFloorCall_arr_4*4 + NewFloorCall_arr_5*5
+		+ NewFloorCall_arr_6*6 + NewFloorCall_arr_7 * 7 + NewFloorCall_arr_8*8 + NewFloorCall_aba_1 *1 + NewFloorCall_aba_2 *2 + 
+		NewFloorCall_aba_3*3 + NewFloorCall_aba_4*4 + NewFloorCall_aba_5*5 + NewFloorCall_aba_6*6 + NewFloorCall_aba_7 * 7 
+		+ NewFloorCall_aba_8*8) ==Elevator1LogicPosition &&
+			(Elevator1DoorStatus == 3) && (Elevator2DoorStatus == 1) && 
+			(NewFloorCall_arr_1 + NewFloorCall_arr_2  + NewFloorCall_arr_3 + NewFloorCall_arr_4 + NewFloorCall_arr_5
+		+ NewFloorCall_arr_6 + NewFloorCall_arr_7 + NewFloorCall_arr_8 + NewFloorCall_aba_1 + NewFloorCall_aba_2  + 
+		NewFloorCall_aba_3  + NewFloorCall_aba_4 + NewFloorCall_aba_5 + NewFloorCall_aba_6 + NewFloorCall_aba_7  
+		+ NewFloorCall_aba_8)==1)
+		after: 500 milliseconds
+		checks: Elevator2AttendingStatus is below 255 // attending status o cómo?
+		fails if : confidence is below 0	
+		description: "Dos en el mismo piso, uno puerta abierta y otro puerta cerrada. Nueva llamada desde el mismo piso. Atiende ascensor."
+	ENDORACLE
+	
+	
+	/*ORACLE FuncionalidadMinusvalido:
+		when:(tipoLlamadaMinus... )
+		after: 10 seconds
+		checks: Elevator1AttendingStatus should be 1 // attending status o cómo?
+		fails if : confidence is below 0	
+		description: "Funcionalidad minusvalido. Chequear que la puerta está abierta. "
+	ENDORACLE
+	*/
+	
+/*
+	ORACLE StdbyECO1:
+		when:(ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&  
+		Elevator1Standby == 1 && Elevator2Standby == 0 && NewFloorCall ==1)
+		after:500 milliseconds 
+		checks: Elevator2AttendingStatus should be 1
+		fails if : confidence is below 0
+		description: "When the ECO mode is active, the elevator that is not in standby shall attend the call"
+	ENDORACLE
+	* 
+	*/
+	
+	
+	/*ORACLE AWTCheckerECO2:
+		while: (ECOMODE == 1 && NumberOfActiveCalls<20)
+		checks: AWT is below 60	
+		fails if : confidence is below -0.5
+		fails if : confidence is below -0.2 within 30 minutes
+		fails if :confidence is below -0.3 more than 5 times within 20 minutes
+		description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE */
+	
+	
+
+	
+	/*
+	ORACLE StdbyECO2: 
+		when:(ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&  
+		Elevator1Standby == 1 && Elevator2Standby == 1 && NewFloorCall ==1)
+		after:500 milliseconds 
+		checks: Elevator1AttendingStatus should be 1
+		fails if : confidence is below 0
+		description: "When the ECO mode is active, if both elevators are in standby and there is a floor call, the first elevator shall attend the call"
+	ENDORACLE
+	
+	ORACLE StdbyECO3: 
+		when: (ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&
+		Elevator1Standby == 0 && Elevator2Standby == 0  &&  
+		Elevator1TimeToStandby<Elevator2TimeToStandby)
+		after: 500 milliseconds
+		checks: Elevator2AttendingStatus should be 1
+		fails if : confidence is below 0
+		description: "When any of the elevators are not in standby, if both elevators are at the  same position and there is a new floor call, the elevator that has a higher time for entering in standby mode shall attend the call."
+	ENDORACLE
+	
+	ORACLE StdbyECO4: 
+		when: (ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&
+		Elevator1Standby == 0 && Elevator2Standby == 0  &&  
+		Elevator1TimeToStandby>Elevator2TimeToStandby)
+		after:500 milliseconds
+		checks: Elevator1AttendingStatus should be 1
+		fails if : confidence is below 0
+		description: "When any of the elevators are not in standby, 
+if both elevators are at the same  position and there is a new floor call, the elevator that has a higher timefor entering in standby mode shall attend the call."
+	ENDORACLE
+
+	/*ORACLE DoorsOpeningStatus:
+		when: (Elevator1DoorSensor == 1)
+		during(2,seconds)
+		checks: Elevator1DoorStatus should be 1;
+		fails if : confidence is below 0;
+		Description: "If a door is opened and an object has been detected in the door, the 
+					 door shall keep being opened for the next 2 seconds."
+	ENDORACLE*/
+	
+	
+	/*
+	ORACLE AWTCheckerECO:
+		while: (ECOMODE == 1 && NumberOfActiveCalls<20)
+		checks: AWT is below 4	
+		fails if : confidence is below -0.5
+		fails if : confidence is below -0.2 within 30 minutes
+		fails if :confidence is below -0.3 more than 5 times within 20 minutes
+		description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+	
+	ORACLE AWTCheckerNonECO:
+		while: (ECOMODE == 0 && NumberOfActiveCalls<20)
+		checks: AWT is below 50
+		fails if : confidence is below -0.5
+		fails if : confidence is below -0.2 within 30 minutes
+		fails if :confidence is below -0.3 more than 5 times within 20 minutes
+		description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE */
+	
+ENDCPS

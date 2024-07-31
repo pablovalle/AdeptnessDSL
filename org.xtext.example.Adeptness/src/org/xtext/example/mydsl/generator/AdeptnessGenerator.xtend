@@ -1253,18 +1253,6 @@ var List<String> uncerNames;
 		a->used = a->size = 0;
 	}
 	
-	int getIndex(Array *a, int value) {
-		int ret = -1;
-		int i = 0;
-		while(i < a->used && ret== -1){
-			if (a->array[i] == value) {
-				ret = i;
-			}
-			i++;
-		}
-		return ret;
-	}
-	
 	'''
 	def create_global_h(Signal s)'''
 	#ifndef «s.fullyQualifiedName.toUpperCase.toString»_H
@@ -1311,7 +1299,6 @@ var List<String> uncerNames;
 	void initArray(Array *a, size_t initialSize);
 	void insertArray(Array *a, double element);
 	void freeArray(Array *a);
-	int getIndex(Array *a, int value);
 	
 	#endif
 	'''
@@ -1406,11 +1393,11 @@ var List<String> uncerNames;
 				for(var i=0; i< whileNames.size; i++){
 					if(i!=whileNames.size-1){
 						a=a+"double "+whileNames.get(i)+", ";
-						b=b+whileNames.get(i)+".array[getIndex(&cycleArray, cycle)], ";
+						b=b+whileNames.get(i)+".array[cycle], ";
 					}
 					else{
 						a=a+"double "+whileNames.get(i);
-						b=b+whileNames.get(i)+".array[getIndex(&cycleArray, cycle)] ";
+						b=b+whileNames.get(i)+".array[cycle] ";
 					}
 				}
 				whileMap.put(oracle.name,a);
@@ -1451,11 +1438,11 @@ var List<String> uncerNames;
 				for(var i=0; i< whenNames.size; i++){
 					if(i!=whenNames.size-1){
 						a=a+"double "+whenNames.get(i)+", ";
-						b=b+whenNames.get(i)+".array[getIndex(&cycleArray, cycle)], ";
+						b=b+whenNames.get(i)+".array[cycle], ";
 					}
 					else{
 						a=a+"double "+whenNames.get(i);
-						b=b+whenNames.get(i)+".array[getIndex(&cycleArray, cycle)]";
+						b=b+whenNames.get(i)+".array[cycle]";
 					}
 				}
 				whenMap.put(oracle.name,a);
@@ -2256,54 +2243,43 @@ var List<String> uncerNames;
 		//Step 1: inicializacion
 	    static int cycle = -1;
 		static Array timeStampOracle; 
-		static Array cycleArray;
 	«FOR param1: nameMap.get(param.name)»
-	«"\t"»static Array «param1»;
+		static Array «param1»;
 	«ENDFOR»
 		static Array conf;
 		static Array preconditionGiven;
 	
 		//Init arrays
-		initArray(&cycleArray,1);
 		initArray(&conf,1);
 		initArray(&preconditionGiven,1);
 		initArray(&timeStampOracle,1);
 	«FOR param1: nameMap.get(param.name)»
-	«"\t"»initArray(&«param1» ,1);
+		initArray(&«param1» ,1);
 	«ENDFOR»
 		//Step 2: meter variables en array
 		cycle++;
-		insertArray(&cycleArray,cycle);
 		insertArray(&timeStampOracle,inputs->timeStamp);
 	«FOR param1: nameMap.get(param.name)»
 	«"\t"»insertArray(&«param1»,inputs->«param1»);
 	«ENDFOR»
 	«IF param.when!==null || param.^while!==null»
 	«"\t"»insertArray(&preconditionGiven,evaluatePreConditions_«param.name»(«IF param.when!==null»«whenMap_preconds.get(param.name).toString»«ELSEIF param.^while!==null»«whileMap_preconds.get(param.name).toString»«ENDIF»));	
-	«"\t"»if(preconditionGiven.array[getIndex(&cycleArray, cycle)]==1){
+	«"\t"»if(preconditionGiven.array[cycle]==1){
 		//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
-	«"\t"»	insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[getIndex(&cycleArray, cycle)], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[getIndex(&cycleArray, cycle)] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[getIndex(&cycleArray, cycle)]«ELSEIF param1.value!==null»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ELSEIF param1.math!==null»«IF param1.math.library.cos!==null»calcCos«ELSEIF param1.math.library.sin!==null»calcSin«ELSEIF param1.math.library.derivative!==null»calcDerivative«ELSE»calcModulus«ENDIF»«ELSE»«DistributionManagement(param1)»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
+	«"\t"»	insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSEIF param1.value!==null»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ELSEIF param1.math!==null»«IF param1.math.library.cos!==null»calcCos«ELSEIF param1.math.library.sin!==null»calcSin«ELSEIF param1.math.library.derivative!==null»calcDerivative«ELSE»calcModulus«ENDIF»«ELSE»«DistributionManagement(param1)»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
 	«"\t"»}else{
 	«"\t"»	insertArray(&conf,2);
 	«"\t"»}
 		«ELSE»
 	«"\t"»insertArray(&preconditionGiven,2);
-	«"\t"»insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[getIndex(&cycleArray, cycle)], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[getIndex(&cycleArray, cycle)] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[getIndex(&cycleArray, cycle)]«ELSEIF param1.value!==null»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ELSEIF param1.math!==null»«IF param1.math.library.cos!==null»calcCos«ELSEIF param1.math.library.sin!==null»calcSin«ELSEIF param1.math.library.derivative!==null»calcDerivative«ELSE»calcModulus«ENDIF»«ELSE»«DistributionManagement(param1)»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
+	«"\t"»insertArray(&conf,confCalculator_«param.name»(«FOR param1:checkVar.get(param.name)»«param1.toString».array[cycle], «ENDFOR»«IF param.check.name!==null»«param.check.name».array[cycle] «ELSE»«FOR param1: param.check.em.elements»«FOR parent: param1.frontParentheses»( «ENDFOR»«IF param1.name!==null»«param1.name».array[cycle]«ELSEIF param1.value!==null»«IF param1.value.DVal>=0»«param1.value.DVal»«ELSE»(«param1.value.DVal»)«ENDIF»«ELSEIF param1.math!==null»«IF param1.math.library.cos!==null»calcCos«ELSEIF param1.math.library.sin!==null»calcSin«ELSEIF param1.math.library.derivative!==null»calcDerivative«ELSE»calcModulus«ENDIF»«ELSE»«DistributionManagement(param1)»«ENDIF»«FOR parent:param1.op»«IF parent.backParentheses!==null») «ELSEIF parent.comparation!==null»«parent.comparation.op»«ELSEIF parent.logicOperator!==null»«parent.logicOperator.op»«ELSEIF parent.operator!==null»«parent.operator.op»«ENDIF»«ENDFOR» «ENDFOR»«ENDIF»));
 		«ENDIF»
 
 		//Step 4: Sacar confidence
 
 		verdict = checkGlobalVerdict_«param.name»(conf, timeStampOracle); 
-		verdict.confidence=conf.array[getIndex(&cycleArray, cycle)];
+		verdict.confidence=conf.array[cycle];
 		
-		//Free arrays
-		freeArray(&conf);
-		freeArray(&preconditionGiven);
-		freeArray(&timeStampOracle);
-		freeArray(&cycleArray);
-	«FOR param1: nameMap.get(param.name)»
-	«"\t"»freeArray(&«param1» );
-	«ENDFOR»		
 	    return verdict;
 	}		
 	
@@ -2380,20 +2356,20 @@ var List<String> uncerNames;
 
 	«IF param.precondition!==null»
 	«"\t"»insertArray(&preconditionGiven,evaluatePreConditions_«param.name»(«FOR inputName:param.predInputs»«IF param.predInputs.indexOf(inputName)<param.predInputs.size()-1»«inputName», «ELSE»«inputName» «ENDIF»«ENDFOR»);	
-	«"\t"»if(preconditionGiven.array[getIndex(&cycleArray, cycle)]==1){
+	«"\t"»if(preconditionGiven.array[cycle]==1){
 	«"\t"»//Step 3: Sacar confidence. Si se da la precondicion (when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1))
-	«"\t\t"»insertArray(&conf,confCalculator_«param.name»(«FOR inputName:param.checkInputs»«IF param.checkInputs.indexOf(inputName)<param.checkInputs.size()-1»«inputName».array[getIndex(&cycleArray, cycle)], «ELSE»«inputName».array[getIndex(&cycleArray, cycle)] «ENDIF»«ENDFOR»);
+	«"\t\t"»insertArray(&conf,confCalculator_«param.name»(«FOR inputName:param.checkInputs»«IF param.checkInputs.indexOf(inputName)<param.checkInputs.size()-1»«inputName».array[cycle], «ELSE»«inputName».array[cycle] «ENDIF»«ENDFOR»);
 	«"\t"»}else{
 	«"\t\t"»insertArray(&conf,2);
 	«"\t"»}
 	«ELSE»
 	«"\t"»insertArray(&preconditionGiven,2);
-	«"\t"»insertArray(&conf,confCalculator_«param.name»(«FOR inputName:param.checkInputs»«IF param.checkInputs.indexOf(inputName)<param.checkInputs.size()-1»«inputName».array[getIndex(&cycleArray, cycle)], «ELSE»«inputName».array[getIndex(&cycleArray, cycle)] «ENDIF»«ENDFOR»);
+	«"\t"»insertArray(&conf,confCalculator_«param.name»(«FOR inputName:param.checkInputs»«IF param.checkInputs.indexOf(inputName)<param.checkInputs.size()-1»«inputName».array[cycle], «ELSE»«inputName».array[cycle] «ENDIF»«ENDFOR»);
 	«ENDIF»
 	//Step 4: Sacar confidence
 	
 		verdict = checkGlobalVerdict_«param.name»(conf, timeStampOracle); 
-		verdict.confidence=conf.array[getIndex(&cycleArray, cycle)];
+		verdict.confidence=conf.array[cycle];
 		
 	    return verdict;
 	}

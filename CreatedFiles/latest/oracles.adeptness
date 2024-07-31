@@ -1,0 +1,458 @@
+import MonitoringFileExample
+  
+CPS Orona2LiftsInstallations: implements ORONA_TRAFFIC_MASTER 
+	
+	//R1.1 -> G{0,T} (( { Reset = 1 } and { IC <= tl } and { Ic >= bl } ==> { yout = Ic } )
+	ORACLE R1_1:
+		when: reset ==1 && ic <= tl && ic >= bl
+		checks: yout shall be ic
+		fails if: assurance is below 0
+	ENDORACLE
+
+	CUSTOMORACLE O30:
+		precondition: when
+		precondition inputs: [ RWs_command ]
+		checks inputs: [ Rws_angular_velocity ]
+		description: "If the value of signal RWs_command is equal to 0 then the value of singal RWs_angular_velocity
+					  shall monotonically decrease to 0 rad/s within 60 s"
+	ENDCUSTOMORACLE
+	
+	
+	ORACLE CheckSystemATWStability:
+		while: ( Time==3600)
+		checks:  ShannonEntropy(AWTPer5Min).h() is below MaximumallowedEntropy
+		fails if: assurance is below 0
+		description: "The observed AWT distribution (collected every 5 mins) shall have low
+					  entropy (MaximumAllowedEntropy) as compared to the expected distribution 
+					  of a specific traffic profile."
+	ENDORACLE
+		
+		
+	ORACLE StdbyECO1:
+		when:(ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&  
+		Elevator1Standby == 1 && Elevator2Standby == 0 && NewFloorCall ==1)
+		after:500 milliseconds 
+		checks: Elevator2AttendingStatus shall be 1
+		fails if : assurance is below 0
+		description: "When the ECO mode is active, the elevator that is not in 
+					  standby shall attend the call"
+	ENDORACLE
+	
+	ORACLE StdbyECO2: 
+		when:(ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&  
+		Elevator1Standby == 1 && Elevator2Standby == 1 && NewFloorCall ==1)
+		after:500 milliseconds 
+		checks: Elevator1AttendingStatus shall be 1
+		fails if : assurance is below 0
+		description: "When the ECO mode is active, if both elevators are in standby and 
+					  there is a floor call, the first elevator shall attend the call"
+	ENDORACLE
+	
+	ORACLE StdbyECO3: 
+		when: (ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&
+		Elevator1Standby == 0 && Elevator2Standby == 0  &&  
+		Elevator1TimeToStandby<Elevator2TimeToStandby)
+		after: 500 milliseconds
+		checks: Elevator2AttendingStatus shall be 1
+		fails if : assurance is below 0
+		description: "When any of the elevators are not in standby, if both elevators are at the  same position and there is a new floor call, the elevator that has a higher time for entering in standby mode shall attend the call."
+	ENDORACLE
+	
+	ORACLE StdbyECO4: 
+		when: (ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&
+		Elevator1Standby == 0 && Elevator2Standby == 0  &&  
+		Elevator1TimeToStandby>Elevator2TimeToStandby)
+		after:500 milliseconds
+		checks: Elevator1AttendingStatus shall be 1
+		fails if : assurance is below 0
+		description: "When any of the elevators are not in standby, if both elevators are at the same  position and there is a new floor call, the elevator that has a higher timefor entering in standby mode shall attend the call."
+	ENDORACLE
+
+	/*ORACLE DoorsOpeningStatus:
+		when: (Elevator1DoorSensor == 1)
+		during(2,seconds)
+		checks: Elevator1DoorStatus shall be 1;
+		fails if : assurance is below 0;
+		Description: "If a door is opened and an object has been detected in the door, the 
+					 door shall keep being opened for the next 2 seconds."
+	ENDORACLE*/
+	
+	
+	
+	ORACLE AWTCheckerECO:
+		while: (ECOMODE == 1 && NumberOfActiveCalls < 20)
+		checks: AWT is below 0.4	
+		fails if : assurance is below 0 within 5 minutes
+		description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+	
+	ORACLE AWTCheckerNonECO:
+		while: (ECOMODE == 0 && NumberOfActiveCalls<20)
+		checks: AWT is below 50
+		fails if : assurance is below -0.5
+		fails if : assurance is below -0.2 within 30 minutes
+		fails if :assurance is below -0.3 more than 5 times within 20 minutes
+		description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+
+	ORACLE NumberOfActiveCalls:
+		checks: Percentage(NumberOfActiveCalls).value() is below 10	
+		fails if : assurance is below 0
+		description: "Uncertainty"
+	ENDORACLE
+	
+ENDCPS
+
+
+
+/*	
+	ORACLE StdbyECO2:
+		when:(ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&  
+		Elevator1Standby == 1 && Elevator2Standby == 1 && NewFloorCall ==1)
+		after(500,milliseconds) 
+		checks: Elevator1AttendingStatus shall be 1;
+		fails if : assurance is below 0;
+		Description: "When the ECO mode is active, if both elevators are in standby and 
+					there is a floor call, the first elevator shall attend the call"
+	ENDORACLE
+	
+	ORACLE StdbyECO3: 
+		when: (ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&
+		Elevator1Standby == 0 && Elevator2Standby == 0  &&  
+		Elevator1TimeToStandby<Elevator2TimeToStandby)
+		after(500,milliseconds)
+		checks: Elevator2AttendingStatus shall be 1;
+		fails if : assurance is below 0;
+		Description: "When any of the elevators are not in standby, if both elevators are at the 
+					 same position and there is a new floor call, the elevator that has a higher time
+					 for entering in standby mode shall attend the call."
+	ENDORACLE
+	
+	ORACLE StdbyECO4: 
+		when: (ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&
+		Elevator1Standby == 0 && Elevator2Standby == 0  &&  
+		Elevator1TimeToStandby>Elevator2TimeToStandby)
+		after(500,milliseconds)
+		checks: Elevator1AttendingStatus shall be 1;
+		fails if : assurance is below 0;
+		Description: "When any of the elevators are not in standby, if both elevators are at the same 
+					 position and there is a new floor call, the elevator that has a higher time
+					 for entering in standby mode shall attend the call."
+	ENDORACLE
+
+	ORACLE DoorsOpeningStatus:
+		when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1)
+		during(2,seconds)
+		checks: Elevator1DoorStatus shall be 1;
+		fails if : assurance is below 0;
+		Description: "If a door is opened and an object has been detected in the door, the 
+					 door shall keep being opened for the next 2 seconds."
+	ENDORACLE
+	
+	ORACLE AWTCheckerNonECO:
+		while: (ECOMODE == 0 && NumberOfActiveCalls<20)
+		checks: AWT is below 50;
+		fails if : assurance is below -0.5;
+		fails if : assurance is below -0.2 within 30 minutes;
+		fails if :assurance is below -0.3 more than 5 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+	
+	ORACLE AWTCheckerECO:
+		while: (ECOMODE == 1 && NumberOfActiveCalls<20)
+		checks: AWT is below 60;
+		fails if : assurance is below -0.5;
+		fails if : assurance is below -0.2 within 30 minutes;
+		fails if :assurance is below -0.3 more than 5 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+
+
+	
+	
+	/*ORACLE AWTChecker3:
+		while: (numLlamadasActivas < 10) 
+		checks: AWT is below 5 ;
+		fails if : assurance is below -0.9;
+		fails if : assurance is below -0.2 within 10 miliseconds;
+		fails if :assurance is below -0.2 more than 30 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+	
+	ORACLE WhenDemo:
+		when: (numLlamadasActivas-5*(5-2+(5*AWT)))<10
+		during(5,seconds)
+		checks: AWT is below 50;
+		fails if : assurance is below 0;
+		Description: "..."
+	
+	ENDORACLE
+	
+	
+	
+	
+	ORACLE AWTChecker2:
+		while: ((numLlamadasActivas-AWT) < 10) 
+		checks: (AWT-ATTD) is in range between 5 and 30;
+		fails if : assurance is below -0.9;
+		fails if : assurance is below -0.2 within 10 miliseconds;
+		fails if :assurance is below -0.2 more than 30 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+	
+
+	ORACLE AWTChecker:
+		while: (numLlamadasActivas > 11 && numLlamadasActivas <50)
+		checks: AWT is in range between 10 and 80;
+		fails if : assurance is below -0.9;
+		fails if : assurance is below -0.2 within 10 miliseconds;
+		fails if :assurance is below -0.2 more than 30 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are a medium amount of calls"
+	ENDORACLE 
+	
+	
+	
+	ORACLE ATTDChecker: 
+		checks: ATTD is in range between 3 and 300;
+		fails if : assurance is below -0.7;
+		Description: "In rage reference signal"
+	ENDORACLE
+		
+	
+	ORACLE TotalMovements:
+		checks: TotalMovements not in range between 10 and 10000;	
+		fails if : assurance is below -0.3 within 20 seconds;
+		fails if : assurance is below -0.5;
+		Description: "Gap reference signal"
+	ENDORACLE
+	
+
+
+
+	
+
+	
+ENDCPS   */
+import MonitoringFileExample
+  
+CPS Orona2LiftsInstallations: implements ORONA_TRAFFIC_MASTER 
+
+	ORACLE StdbyECO1:
+		when:(ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&  
+		Elevator1Standby == 1 && Elevator2Standby == 0 && NewFloorCall ==1)
+		after:500 milliseconds 
+		checks: Elevator2AttendingStatus shall be 1
+		fails if : assurance is below 0
+		description: "When the ECO mode is active, the elevator that is not in standby shall attend the call"
+	ENDORACLE
+	
+	
+	/*ORACLE AWTCheckerECO2:
+		while: (ECOMODE == 1 && NumberOfActiveCalls<20)
+		checks: AWT is below 60	
+		fails if : assurance is below -0.5
+		fails if : assurance is below -0.2 within 30 minutes
+		fails if :assurance is below -0.3 more than 5 times within 20 minutes
+		description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE */
+	
+	
+
+	
+	
+	ORACLE StdbyECO2: 
+		when:(ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&  
+		Elevator1Standby == 1 && Elevator2Standby == 1 && NewFloorCall ==1)
+		after:500 milliseconds 
+		checks: Elevator1AttendingStatus shall be 1
+		fails if : assurance is below 0
+		description: "When the ECO mode is active, if both elevators are in standby and there is a floor call, the first elevator shall attend the call"
+	ENDORACLE
+	
+	ORACLE StdbyECO3: 
+		when: (ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&
+		Elevator1Standby == 0 && Elevator2Standby == 0  &&  
+		Elevator1TimeToStandby<Elevator2TimeToStandby)
+		after: 500 milliseconds
+		checks: Elevator2AttendingStatus shall be 1
+		fails if : assurance is below 0
+		description: "When any of the elevators are not in standby, if both elevators are at the  same position and there is a new floor call, the elevator that has a higher time for entering in standby mode shall attend the call."
+	ENDORACLE
+	
+	ORACLE StdbyECO4: 
+		when: (ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&
+		Elevator1Standby == 0 && Elevator2Standby == 0  &&  
+		Elevator1TimeToStandby>Elevator2TimeToStandby)
+		after:500 milliseconds
+		checks: Elevator1AttendingStatus shall be 1
+		fails if : assurance is below 0
+		description: "When any of the elevators are not in standby, if both elevators are at the same  position and there is a new floor call, the elevator that has a higher timefor entering in standby mode shall attend the call."
+	ENDORACLE
+
+	/*ORACLE DoorsOpeningStatus:
+		when: (Elevator1DoorSensor == 1)
+		during(2,seconds)
+		checks: Elevator1DoorStatus shall be 1;
+		fails if : assurance is below 0;
+		Description: "If a door is opened and an object has been detected in the door, the 
+					 door shall keep being opened for the next 2 seconds."
+	ENDORACLE*/
+	
+	
+	
+	ORACLE AWTCheckerECO:
+		while: (ECOMODE == 1 && NumberOfActiveCalls<20)
+		checks: AWT is below 4	
+		fails if : assurance is below -0.5
+		fails if : assurance is below -0.2 within 30 minutes
+		fails if :assurance is below -0.3 more than 5 times within 20 minutes
+		description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+	
+	ORACLE AWTCheckerNonECO:
+		while: (ECOMODE == 0 && NumberOfActiveCalls<20)
+		checks: AWT is below 50
+		fails if : assurance is below -0.5
+		fails if : assurance is below -0.2 within 30 minutes
+		fails if :assurance is below -0.3 more than 5 times within 20 minutes
+		description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+
+	ORACLE NumberOfActiveCalls:
+		checks: Percentage(NumberOfActiveCalls).value() is below 10	
+		fails if : assurance is below 0
+		description: "Uncertainty"
+	ENDORACLE
+	
+ENDCPS
+
+
+
+/*	
+	ORACLE StdbyECO2:
+		when:(ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&  
+		Elevator1Standby == 1 && Elevator2Standby == 1 && NewFloorCall ==1)
+		after(500,milliseconds) 
+		checks: Elevator1AttendingStatus shall be 1;
+		fails if : assurance is below 0;
+		Description: "When the ECO mode is active, if both elevators are in standby and 
+					there is a floor call, the first elevator shall attend the call"
+	ENDORACLE
+	
+	ORACLE StdbyECO3: 
+		when: (ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&
+		Elevator1Standby == 0 && Elevator2Standby == 0  &&  
+		Elevator1TimeToStandby<Elevator2TimeToStandby)
+		after(500,milliseconds)
+		checks: Elevator2AttendingStatus shall be 1;
+		fails if : assurance is below 0;
+		Description: "When any of the elevators are not in standby, if both elevators are at the 
+					 same position and there is a new floor call, the elevator that has a higher time
+					 for entering in standby mode shall attend the call."
+	ENDORACLE
+	
+	ORACLE StdbyECO4: 
+		when: (ECOMODE == 1 && Elevator1LogicPosition == Elevator2LogicPosition &&
+		Elevator1Standby == 0 && Elevator2Standby == 0  &&  
+		Elevator1TimeToStandby>Elevator2TimeToStandby)
+		after(500,milliseconds)
+		checks: Elevator1AttendingStatus shall be 1;
+		fails if : assurance is below 0;
+		Description: "When any of the elevators are not in standby, if both elevators are at the same 
+					 position and there is a new floor call, the elevator that has a higher time
+					 for entering in standby mode shall attend the call."
+	ENDORACLE
+
+	ORACLE DoorsOpeningStatus:
+		when: (Elevator1DoorStatus==1 && Elevator1DoorSensor == 1)
+		during(2,seconds)
+		checks: Elevator1DoorStatus shall be 1;
+		fails if : assurance is below 0;
+		Description: "If a door is opened and an object has been detected in the door, the 
+					 door shall keep being opened for the next 2 seconds."
+	ENDORACLE
+	
+	ORACLE AWTCheckerNonECO:
+		while: (ECOMODE == 0 && NumberOfActiveCalls<20)
+		checks: AWT is below 50;
+		fails if : assurance is below -0.5;
+		fails if : assurance is below -0.2 within 30 minutes;
+		fails if :assurance is below -0.3 more than 5 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+	
+	ORACLE AWTCheckerECO:
+		while: (ECOMODE == 1 && NumberOfActiveCalls<20)
+		checks: AWT is below 60;
+		fails if : assurance is below -0.5;
+		fails if : assurance is below -0.2 within 30 minutes;
+		fails if :assurance is below -0.3 more than 5 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+
+
+	
+	
+	/*ORACLE AWTChecker3:
+		while: (numLlamadasActivas < 10) 
+		checks: AWT is below 5 ;
+		fails if : assurance is below -0.9;
+		fails if : assurance is below -0.2 within 10 miliseconds;
+		fails if :assurance is below -0.2 more than 30 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+	
+	ORACLE WhenDemo:
+		when: (numLlamadasActivas-5*(5-2+(5*AWT)))<10
+		during(5,seconds)
+		checks: AWT is below 50;
+		fails if : assurance is below 0;
+		Description: "..."
+	
+	ENDORACLE
+	
+	
+	
+	
+	ORACLE AWTChecker2:
+		while: ((numLlamadasActivas-AWT) < 10) 
+		checks: (AWT-ATTD) is in range between 5 and 30;
+		fails if : assurance is below -0.9;
+		fails if : assurance is below -0.2 within 10 miliseconds;
+		fails if :assurance is below -0.2 more than 30 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are few calls"
+	ENDORACLE 
+	
+
+	ORACLE AWTChecker:
+		while: (numLlamadasActivas > 11 && numLlamadasActivas <50)
+		checks: AWT is in range between 10 and 80;
+		fails if : assurance is below -0.9;
+		fails if : assurance is below -0.2 within 10 miliseconds;
+		fails if :assurance is below -0.2 more than 30 times within 20 minutes;
+		Description: "Checks the AWT is relatively low when there are a medium amount of calls"
+	ENDORACLE 
+	
+	
+	
+	ORACLE ATTDChecker: 
+		checks: ATTD is in range between 3 and 300;
+		fails if : assurance is below -0.7;
+		Description: "In rage reference signal"
+	ENDORACLE
+		
+	
+	ORACLE TotalMovements:
+		checks: TotalMovements not in range between 10 and 10000;	
+		fails if : assurance is below -0.3 within 20 seconds;
+		fails if : assurance is below -0.5;
+		Description: "Gap reference signal"
+	ENDORACLE
+	
+
+
+
+	
+
+	
+ENDCPS   */

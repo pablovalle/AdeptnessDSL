@@ -224,19 +224,19 @@ Reason:
 ;
 
 XPeaks:
-	'confidence' 'is' 'below' (cant=DOUBLE) 'more' 'than' (nPeaks=DOUBLE) 'times' 'within' (time=DOUBLE) (unit=TimeType) //nola jarri integer-ak?
+	'assurance' 'is' 'below' (cant=DOUBLE) 'more' 'than' (nPeaks=DOUBLE) 'times' 'within' (time=DOUBLE) (unit=TimeType) //nola jarri integer-ak?
 ;
 
 ConstDeg:
-	'confidence' 'is' 'in' 'constant' 'degradation'  (cant=DOUBLE) //(((upper=Upper)|(lower=Lower)))
+	'assurance' 'is' 'in' 'constant' 'degradation'  (cant=DOUBLE) //(((upper=Upper)|(lower=Lower)))
 ;
 
 HighTime:
-	'confidence' 'is' 'below' (cant=DOUBLE) 'within' (time=DOUBLE) (unit=TimeType)
+	'assurance' 'is' 'below' (cant=DOUBLE) 'within' (time=DOUBLE) (unit=TimeType)
 ;
 
 HighPeak:
-	'confidence' 'is' 'below' (cant=DOUBLE)
+	'assurance' 'is' 'below' (cant=DOUBLE)
 ;
 Reference:
 	((upper=Upper)|(lower=Lower)|(range=Range)|(gap=Gap)|(same=Same)|(notsame=NotSame))
@@ -247,12 +247,12 @@ Reference:
 //;
 
 Same:
-	'should be' (bound_upp=Bound_up) 
+	'shall' 'be' (bound_upp=Bound_up) 
 	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
 ;
 
 NotSame:
-	'should not be' (bound_upp=Bound_up)
+	'shall' 'not' 'be' (bound_upp=Bound_up)
 	((exactly=Exactly)| (atmost=At_most)| (atleast=At_least))?
 ;
 
